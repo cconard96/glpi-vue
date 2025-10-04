@@ -6,13 +6,15 @@
 </script>
 
 <template>
-    <div class="home-container grid h-full">
+    <div class="home-container grid h-screen">
         <NavMenu />
-        <div>
-            <Breadcrumb :home="{ icon: 'pi-home' }"></Breadcrumb>
-            <RouterView class="p-4" v-slot="{ Component }">
+        <div class="px-4 py-2 flex flex-col h-screen overflow-auto">
+            <div class="mb-2">
+                <Breadcrumb :home="{ icon: 'pi pi-home' }"></Breadcrumb>
+            </div>
+            <RouterView v-slot="{ Component }">
                 <Suspense>
-                    <component :is="Component" />
+                    <component class="max-h-full grow-1" :is="Component" />
                     <template #fallback>
                         <div class="flex justify-content-center align-items-center h-full">
                             <ProgressSpinner />
@@ -26,6 +28,6 @@
 
 <style scoped>
     .home-container {
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 300px minmax(0, 1fr);
     }
 </style>

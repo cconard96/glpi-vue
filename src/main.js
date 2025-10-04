@@ -5,6 +5,7 @@ import { useAuth } from "@/composables/useAuth.js";
 import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 import '@/main.css';
+import '@tabler/icons-webfont/dist/fonts/tabler-icons.woff2';
 
 const routes = [
     { name: 'Login', path: '/login', component: () => import('./views/LoginView.vue'), meta: {requiresAuth: false} },
@@ -15,7 +16,7 @@ const routes = [
         children: [
             {
                 name: 'Search',
-                path: 'search/:itemtype',
+                path: ':component_module(assets|assistance)/:itemtype',
                 component: () => import('./components/search/SearchComponent.vue'),
                 props: true
             }
