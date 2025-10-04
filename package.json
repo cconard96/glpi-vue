@@ -1,0 +1,29 @@
+{
+  "name": "glpi-vue",
+  "description": "A Vue-based frontend for GLPI",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@primeuix/themes": "^1.2.5",
+    "@primevue/forms": "^4.4.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "axios": "^1.12.2",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.4.0",
+    "tailwindcss": "^4.1.14",
+    "tailwindcss-primeui": "^0.6.1",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
+    "vite": "^7.0.0",
+    "vite-plugin-vue-devtools": "^7.7.7"
+  }
+}
