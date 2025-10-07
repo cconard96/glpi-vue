@@ -29,14 +29,14 @@
 </script>
 
 <template>
-    <Card class="mx-auto mt-10 w-fit">
+    <Card class="mx-auto mt-10 w-fit" v-focustrap>
         <template #title>
             <h1 class="text-center text-4xl">GLPI</h1>
         </template>
         <template #content>
             <Form @submit="onSubmit">
                 <div class="flex flex-col gap-1 mb-4">
-                    <InputText name="username" autocomplete="username" placeholder="Username" />
+                    <InputText name="username" autocomplete="username" placeholder="Username" autofocus/>
                     <Password name="password" autocomplete="password" placeholder="Password" :feedback="false" />
                 </div>
                 <div class="flex flex-col">

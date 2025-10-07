@@ -1,11 +1,12 @@
 <script setup>
     import PanelMenu from 'primevue/panelmenu';
-    import { RouterLink } from "vue-router";
-    import {ref} from "vue";
+    import {RouterLink, useRoute} from "vue-router";
+    import {ref, watch} from "vue";
 
     const items = ref([
         {
             label: "Assets",
+            key: "assets",
             icon: "ti ti-package",
             items: [
                 {
@@ -87,6 +88,7 @@
         },
         {
             label: "Assistance",
+            key: "assistance",
             icon: "ti ti-headset",
             items: [
                 {
@@ -118,6 +120,7 @@
         },
         {
             label: "Management",
+            key: "management",
             icon: "ti ti-wallet",
             items: [
                 {
@@ -189,6 +192,7 @@
         },
         {
             label: "Tools",
+            key: "tools",
             icon: "ti ti-briefcase",
             items: [
                 {
@@ -230,6 +234,7 @@
         },
         {
             label: "Administration",
+            key: "administration",
             icon: "ti ti-shield-check",
             items: [
                 {
@@ -286,6 +291,7 @@
         },
         {
             label: "Setup",
+            key: "setup",
             icon: "ti ti-settings",
             items: [
                 {
@@ -361,6 +367,22 @@
             ]
         },
     ]);
+
+    // Expanded keys for the PanelMenu based on the current route
+    const expanded_keys = ref({});
+    const route = useRoute();
+    const updateExpandedKeys = () => {
+        const pathSegments = route.path.split('/').filter(segment => segment);
+        if (pathSegments.length > 0) {
+            expanded_keys.value = { [pathSegments[0]]: true };
+        } else {
+            expanded_keys.value = {};
+        }
+    };
+    updateExpandedKeys();
+    watch(() => route.path, () => {
+        updateExpandedKeys();
+    });
 </script>
 
 <template>
@@ -368,8 +390,8 @@
         <RouterLink to="/" class="flex items-center justify-center h-16 bg-primary text-white text-2xl font-bold">
             GLPI
         </RouterLink>
-        <PanelMenu :model="items" class="h-full w-full">
-            <template #item="{ item }">
+        <PanelMenu :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full">
+            <template #item="{ item }" :key="item.key ?? item.label.toLowerCase()">
                 <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom class="w-full">
                     <a class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2" :href="href" @click="navigate">
                         <span :class="item.icon" />

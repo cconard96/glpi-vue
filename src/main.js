@@ -6,6 +6,9 @@ import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 import '@/main.css';
 import '@tabler/icons-webfont/dist/fonts/tabler-icons.woff2';
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import FocusTrap from 'primevue/focustrap';
 
 const routes = [
     { name: 'Login', path: '/login', component: () => import('./views/LoginView.vue'), meta: {requiresAuth: false} },
@@ -16,7 +19,7 @@ const routes = [
         children: [
             {
                 name: 'Search',
-                path: ':component_module(assets|assistance)/:itemtype',
+                path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype',
                 component: () => import('./components/search/SearchComponent.vue'),
                 props: true
             }
@@ -44,8 +47,12 @@ router.beforeEach((to, from) => {
     }
 });
 
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
 createApp(App)
     .use(router)
+    .use(pinia)
     .use(PrimeVue, {
         theme: {
             preset: Lara,
@@ -59,4 +66,5 @@ createApp(App)
             }
         }
     })
+    .directive('focustrap', FocusTrap)
     .mount('#app')

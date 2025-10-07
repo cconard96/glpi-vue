@@ -15,6 +15,8 @@
     "@tabler/icons-webfont": "^3.35.0",
     "@tailwindcss/vite": "^4.1.14",
     "axios": "^1.12.2",
+    "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.5.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.4.0",
     "tailwindcss": "^4.1.14",
