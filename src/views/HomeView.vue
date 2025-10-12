@@ -7,9 +7,11 @@
     import { useSessionStore } from "@/composables/useSessionStore.js";
     import { ref } from "vue";
     import { useAuth } from "@/composables/useAuth.js";
+    import { useRouter } from "vue-router";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
+    const router = useRouter();
     const top_right_menu = ref([
         {
             label: session_store.getFriendlyName,
@@ -38,6 +40,7 @@
                     icon: 'ti ti-logout',
                     command: () => {
                         logout();
+                        router.push({ name: 'Login' });
                     }
                 }
             ]
@@ -48,7 +51,7 @@
 <template>
     <div class="home-container grid h-screen">
         <NavMenu />
-        <div class="px-4 py-2 flex flex-col h-screen overflow-auto">
+        <div class="px-4 pt-2 flex flex-col h-screen overflow-auto">
             <div class="mb-2 flex justify-between">
                 <Breadcrumb :home="{ icon: 'pi pi-home' }"></Breadcrumb>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
@@ -59,7 +62,7 @@
             </div>
             <RouterView v-slot="{ Component }">
                 <Suspense>
-                    <component class="max-h-full grow-1" :is="Component" />
+                    <component class="max-h-full" :is="Component" />
                     <template #fallback>
                         <div class="flex justify-content-center align-items-center h-full">
                             <ProgressSpinner />
