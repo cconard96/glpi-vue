@@ -37,6 +37,15 @@
     const extra_data_promises = [
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then((res) => {
             item.value = res.data;
+            if (item.value.category === null) {
+                item.value.category = { id: 0, name: '' };
+            }
+            if (item.value.request_type === null) {
+                item.value.request_type = { id: 0, name: '' };
+            }
+            if (item.value.location === null) {
+                item.value.location = { id: 0, name: '' };
+            }
         }),
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}/Timeline`).then((res) => {
             items.value = res.data;

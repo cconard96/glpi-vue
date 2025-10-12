@@ -98,7 +98,12 @@
                     <SelectButton v-model="is_deleted" size="small" :options="[{label: 'Active', value: 0}, {label: 'Deleted', value: 1}]" optionLabel="label" optionValue="value"/>
                 </div>
             </template>
-            <Column v-for="col of columns" :field="col.field" :header="col.header"></Column>
+            <Column v-for="col of columns" :field="col.field" :header="col.header">
+                <template #body="slotProps">
+                    <RouterLink v-if="col.field === 'id' || col.field === 'name'" :to="`/${component_module}/${itemtype}/${slotProps.data.id}`">{{ slotProps.data[col.field] }}</RouterLink>
+                    <span v-else>{{ slotProps.data[col.field] }}</span>
+                </template>
+            </Column>
         </DataTable>
     </div>
 </template>
