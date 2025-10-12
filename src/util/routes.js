@@ -16,7 +16,9 @@ export const routes = [
                 path: 'assistance/:itemtype(ticket|change|problem)/:id',
                 component: () => import('../components/timeline/TimelineView.vue'),
                 props: true
-            }
-        ]
+            },
+            { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
+        ],
     },
+    { name: 'NotFoundAnonymous', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
 ];
