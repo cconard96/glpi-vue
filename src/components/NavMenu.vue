@@ -24,11 +24,11 @@
 </script>
 
 <template>
-    <div>
+    <div class="h-screen">
         <RouterLink to="/" class="flex items-center justify-center h-16 bg-primary text-white text-2xl font-bold">
             GLPI
         </RouterLink>
-        <PanelMenu :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full">
+        <PanelMenu :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full overflow-y-auto">
             <template #item="{ item }" :key="item.key ?? item.label.toLowerCase()">
                 <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom class="w-full">
                     <a class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2" :href="href" @click="navigate">
