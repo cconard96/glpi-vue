@@ -216,13 +216,15 @@
             <div></div>
         </div>
         <div class="grid grid-cols-12 h-full">
-            <div ref="left-side" class="col-span-9 flex flex-col space-y-4">
+            <div ref="left-side" class="col-span-9 flex flex-col space-y-4 px-10">
                 <TimelineItem key="content" :item="{
                     type: 'content',
                     item: {
                         name: item.name,
                         content: item.content,
                         user: item.user,
+                        user_editor: item.user_editor,
+                        date_creation: item.date_creation || item.date
                     }
                 }"></TimelineItem>
                 <TimelineItem v-for="item in items" :key="`${item.type}-${item.item.id}`" :item="item" />

@@ -1,6 +1,7 @@
 <script setup>
     import Card from 'primevue/card';
     import Avatar from 'primevue/avatar';
+    import {computed} from "vue";
 
     const { item } = defineProps({
         item: {
@@ -20,16 +21,22 @@
         if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
         return date.toLocaleDateString();
     };
+
+    const timeline_alignment = computed(() => {
+        return (item.item.timeline_position === 3 || item.item.timeline_position === 4) ? 'right' : 'left';
+    });
+
+    //TODO src and href for images stored in GLPI need to be fixed to point to the correct URL and allow access from outside GLPI
 </script>
 
 <template>
-    <div class="flex flex-row">
-        <Avatar icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''"></Avatar>
+    <div :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'}`">
+        <Avatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''"></Avatar>
         <Card :pt="{
             body: { class: 'p-2' }
         }">
             <template #title>
-                <span class="text-base">Created by: {{ item.item.user?.name || '' }}</span>
+                <span class="text-sm">Created {{ human_readable_time(item.item.date_creation || item.item.date) }}</span>
             </template>
             <template #content>
                 <div>
