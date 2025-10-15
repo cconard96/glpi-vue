@@ -5,8 +5,9 @@
 
 html {
     overflow: hidden;
+    font-size: var(--text-base);
 }
 
-body {
-    font-size: 14px;
+@theme {
+    --text-base: 14px;
 }
