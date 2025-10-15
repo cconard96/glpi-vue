@@ -1,13 +1,11 @@
 <script setup>
     import NavMenu from "@/components/NavMenu.vue";
-    import { RouterView } from "vue-router";
-    import { Breadcrumb } from "primevue";
-    import { ProgressSpinner} from "primevue";
-    import { Menubar } from "primevue";
-    import { useSessionStore } from "@/composables/useSessionStore.js";
-    import { ref } from "vue";
-    import { useAuth } from "@/composables/useAuth.js";
-    import { useRouter } from "vue-router";
+    import {RouterView, useRouter} from "vue-router";
+    import {Breadcrumb, Menubar, ProgressSpinner} from "primevue";
+    import {useSessionStore} from "@/composables/useSessionStore.js";
+    import {computed, ref} from "vue";
+    import {useAuth} from "@/composables/useAuth.js";
+    import {useMainMenu} from "@/composables/useMainMenu.js";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
