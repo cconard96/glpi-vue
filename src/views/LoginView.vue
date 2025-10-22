@@ -6,12 +6,14 @@
     import Button from 'primevue/button';
     import { useAuth } from '@/composables/useAuth';
     import { useRouter } from "vue-router";
+    import {onMounted} from "vue";
 
     const { login, isAuthenticated } = useAuth();
     const router = useRouter();
 
     const onSubmit = (data) => {
         login(data.values.username, data.values.password).then(() => {
+            console.log('Login attempt finished');
             if (isAuthenticated()) {
                 // goto the path specified in the query parameter 'redirect' or to the home page
                 const redirectPath = router.currentRoute.value.query.redirect || '/';
@@ -26,6 +28,10 @@
             }
         })
     };
+
+    onMounted(() => {
+        document.title = "GLPI - Login";
+    });
 </script>
 
 <template>

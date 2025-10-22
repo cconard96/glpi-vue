@@ -1,5 +1,9 @@
 <script setup>
+    import {onMounted} from "vue";
 
+    onMounted(() => {
+        document.title = "GLPI - 404";
+    });
 </script>
 
 <template>

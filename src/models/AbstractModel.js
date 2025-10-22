@@ -1,16 +1,33 @@
 import { useApi } from '../composables/useApi.js';
 
 export class AbstractModel {
-    getOpenAPISchemaName() {
+    static getTypeModule() {
+        return null;
+    }
+
+    static getTypeName() {
+        throw new Error('getTypeName() must be implemented by subclasses');
+    }
+
+    /**
+     * @returns {[{label: string, to: string}]}
+     */
+    static getMenuBreadcrumbs() {
+        return [
+            { label: this.getTypeName(), to: `${this.getTypeModule()}/${this.getOpenAPISchemaName()}`.toLowerCase() }
+        ];
+    }
+
+    static getOpenAPISchemaName() {
         throw new Error('getOpenAPISchemaName() must be implemented by subclasses');
     }
 
-    getOpenAPISchema() {
+    static getOpenAPISchema() {
         const { getComponentSchema } = useApi();
         return getComponentSchema(this.getOpenAPISchemaName());
     }
 
-    #getSchemaPropertiesForFields() {
+    static #getSchemaPropertiesForFields() {
         return this.getOpenAPISchema().then(schema => {
             const props = {};
             if (schema && schema.properties) {
@@ -36,7 +53,7 @@ export class AbstractModel {
      *     options: {}
      * }[]>}
      */
-    getFormFields(mode = 'read') {
+    static getFormFields(mode = 'read') {
         return this.#getSchemaPropertiesForFields().then(props => {
             const fields_data = {};
             for (const [key, prop] of props) {
@@ -78,7 +95,7 @@ export class AbstractModel {
      * Get the display order of form fields
      * @returns {Promise<string[]>}
      */
-    getFormFieldOrder() {
+    static getFormFieldOrder() {
         return this.getFormFields().then(fields => {
             return Object.keys(fields);
         });

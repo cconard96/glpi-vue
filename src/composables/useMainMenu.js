@@ -1,3 +1,6 @@
+import { AbstractModel } from "@/models/AbstractModel.js";
+import { Computer } from "@/models/assets/Computer.js";
+
 export const useMainMenu = () => {
     const menu = [
         {
@@ -8,7 +11,8 @@ export const useMainMenu = () => {
                 {
                     label: "Computers",
                     icon: "ti ti-device-laptop",
-                    route: "/assets/computer"
+                    route: "/assets/computer",
+                    itemtype_model: Computer,
                 },
                 {
                     label: "Monitors",

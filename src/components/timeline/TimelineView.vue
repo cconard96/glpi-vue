@@ -12,6 +12,9 @@
     import Select from 'primevue/select';
     import MultiSelect from 'primevue/multiselect';
     import ScrollPanel from 'primevue/scrollpanel';
+    import InputGroup from 'primevue/inputgroup';
+    import InputGroupAddon from 'primevue/inputgroupaddon';
+    import Button from 'primevue/button';
     import { Form } from '@primevue/forms';
     import FloatLabel from 'primevue/floatlabel';
     import { RouterLink } from "vue-router";
@@ -103,6 +106,14 @@
             item.value.date = value ? value.toISOString() : null;
         }
     });
+    const time_to_own = computed({
+        get() {
+            return item.value.time_to_own ? new Date(item.value.time_to_own) : null;
+        },
+        set(value) {
+            item.value.time_to_own = value ? value.toISOString() : null;
+        }
+    });
 
     // Get categories from the API
     const categories = ref([]);
@@ -176,6 +187,7 @@
     });
 
     onMounted(() => {
+        document.title = `GLPI - ${itemtype_name} #${item.value.id} - ${item.value.name}`;
         // Get some data, some of which don't have its own endpoint yet, (plus we can get it all with a single call which is nice)
         doGraphQLRequest(`
             query {
@@ -389,7 +401,22 @@
                                     Service levels
                                 </span>
                             </AccordionHeader>
-                            <AccordionContent>Not implemented</AccordionContent>
+                            <AccordionContent>
+                                <div class="flex flex-col space-y-4">
+                                    <div>
+                                        <InputGroup>
+                                            <FloatLabel variant="in">
+                                                <DatePicker inputId="item_time_to_own" name="time_to_own" v-model="time_to_own"
+                                                            showTime showIcon
+                                                            aria-labelledby="date_label"
+                                                            class="max-w-full"/>
+                                                <label for="item_time_to_own">Opening date</label>
+                                            </FloatLabel>
+                                            <Button type="button" icon="ti ti-stopwatch" title="Assign a SLA"/>
+                                        </InputGroup>
+                                    </div>
+                                </div>
+                            </AccordionContent>
                         </AccordionPanel>
                         <AccordionPanel value="linked_assistance_objects">
                             <AccordionHeader>

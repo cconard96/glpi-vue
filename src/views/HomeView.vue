@@ -51,10 +51,10 @@
         <NavMenu />
         <div class="px-4 pt-2 flex flex-col h-screen overflow-auto">
             <div class="mb-2 flex justify-between">
-                <Breadcrumb :home="{ icon: 'pi pi-home' }"></Breadcrumb>
+                <Breadcrumb :home="{ icon: 'pi pi-home', url: '/' }"></Breadcrumb>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
                     submenu: {
-                        'class': 'justify-self-end'
+                        'class': 'justify-self-end z-1000'
                     }
                 }"></Menubar>
             </div>

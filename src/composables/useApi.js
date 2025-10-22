@@ -157,5 +157,6 @@ export function useApi() {
         doApiRequest,
         normalizeComponentName,
         doGraphQLRequest,
+        getApiSchema,
     };
 }

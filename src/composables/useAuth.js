@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useSessionStore} from "@/composables/useSessionStore.js";
 import { useApi } from "@/composables/useApi.js";
+import { useRouter } from "vue-router";
 
 export function useAuth() {
     const REFRESH_GRACE_PERIOD = 5 * 60 * 1000; // 5 minutes
+    let refresh_timer = null;
 
     const login = (username, password) => {
         const host = import.meta.env.VITE_GLPI_URL;
@@ -27,7 +29,22 @@ export function useAuth() {
             localStorage.setItem('jwt', JSON.stringify(jwt));
             localStorage.removeItem('api_schema'); // Clear cached schema on new login
             console.log('Login successful, tokens received');
-            return loadSession();
+
+            // Timer to keep trying to refresh the token every 30 minutes to ensure it stays valid even when the app is left open
+            refresh_timer = setInterval(() => {
+                refreshAuthToken().catch(() => {
+                    console.warn('Automatic token refresh failed, user may need to log in again');
+                });
+            });
+
+            // Immediately load the API schema, session info, and locales
+            const { getApiSchema } = useApi();
+            console.log('Loading initial data post-login');
+            return Promise.all([
+                getApiSchema(),
+                loadSession(),
+                loadLocales(),
+            ]);
         }).catch(error => {
             console.error('Login failed:', error);
         });
@@ -35,9 +52,20 @@ export function useAuth() {
 
     const loadSession = () => {
         const { doApiRequest } = useApi();
+        console.log('Loading session information');
         return doApiRequest('Session').then(response => {
             const store = useSessionStore();
             store.loadSession(response.data);
+            console.log('Session information loaded');
+        });
+    }
+
+    const loadLocales = () => {
+        const { doApiRequest } = useApi();
+        console.log('Loading localization data');
+        return doApiRequest('locales').then(response => {
+            localStorage.setItem('locales', JSON.stringify(response.data));
+            console.log('Localization data loaded');
         });
     }
 
@@ -61,7 +89,7 @@ export function useAuth() {
                 return reject();
             }
             // If not forcing and won't expire in the next 5 minutes, resolve immediately
-            if (!force && jwt.expiration && (Date.now() < jwt.expiration - REFRESH_GRACE_PERIOD)) {
+            if (!force && jwt.expiration && (Date.now() < (jwt.expiration - REFRESH_GRACE_PERIOD))) {
                 return resolve();
             }
 
@@ -69,7 +97,7 @@ export function useAuth() {
                 grant_type: 'refresh_token',
                 client_id: client_id,
                 client_secret: client_secret,
-                refresh_token: localStorage.getItem('refresh_token'),
+                refresh_token: jwt.refresh_token,
             }).then(response => {
                 const jwt = JSON.parse(localStorage.getItem('jwt')) || {};
                 jwt.access_token = response.data.access_token;
@@ -81,8 +109,10 @@ export function useAuth() {
                 resolve();
             }).catch(error => {
                 console.error('Token refresh failed:', error);
-                logout(); // Log out if refresh fails
-                reject();
+                // Log out if refresh fails
+                logout();
+                const router = useRouter();
+                return router.push({ name: 'Login', query: { redirect: router.currentRoute.value.fullPath } }).then(reject);
             });
         });
     };
@@ -93,8 +123,12 @@ export function useAuth() {
     }
 
     const logout = () => {
+        if (refresh_timer) {
+            clearInterval(refresh_timer);
+        }
         localStorage.removeItem('jwt');
         localStorage.removeItem('api_schema');
+        localStorage.removeItem('locales');
         const store = useSessionStore();
         store.clearSession();
     };
