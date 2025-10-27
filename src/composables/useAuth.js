@@ -43,7 +43,7 @@ export function useAuth() {
             return Promise.all([
                 getApiSchema(),
                 loadSession(),
-                loadLocales(),
+                //loadLocales(),
             ]);
         }).catch(error => {
             console.error('Login failed:', error);

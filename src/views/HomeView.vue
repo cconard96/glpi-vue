@@ -47,9 +47,9 @@
 </script>
 
 <template>
-    <div class="home-container grid h-screen">
-        <NavMenu />
-        <div class="px-4 pt-2 flex flex-col h-screen overflow-auto">
+    <div class="home-container grid grid-cols-[250px_1fr] h-screen">
+        <NavMenu class="row-span-2"/>
+        <div class="px-4 pt-2 h-screen grid grid-cols-1 grid-rows-[50px_auto]">
             <div class="mb-2 flex justify-between">
                 <Breadcrumb :home="{ icon: 'pi pi-home', url: '/' }"></Breadcrumb>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
@@ -74,7 +74,6 @@
 
 <style scoped>
     .home-container {
-        grid-template-columns: 250px minmax(0, 1fr);
         --p-menubar-base-item-padding: 0.5rem 0.75rem;
     }
 </style>

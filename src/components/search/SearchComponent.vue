@@ -80,8 +80,9 @@
 </script>
 
 <template>
-    <div class="">
+    <div class="flex flex-col overflow-hidden">
         <DataTable
+            class="flex-1"
             lazy
             :loading="results_loading"
             :value="flattened_results" scrollable scrollHeight="flex"
