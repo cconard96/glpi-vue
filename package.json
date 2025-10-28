@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@primeuix/themes": "^1.2.5",
@@ -26,7 +28,12 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.0",
+    "@vitest/browser-playwright": "^4.0.4",
+    "@vitest/coverage-v8": "^4.0.4",
+    "playwright": "^1.56.1",
     "vite": "7.1.5",
-    "vite-plugin-vue-devtools": "^8.0.0"
+    "vite-plugin-vue-devtools": "^8.0.0",
+    "vitest": "^4.0.4",
+    "vitest-browser-vue": "^2.0.1"
   }
 }
