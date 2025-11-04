@@ -9,6 +9,4 @@ Don't use this in production.
 - VITE_CLIENT_SECRET=OAuth Client Secret
 - VITE_GLPI_URL=GLPI URL
 
-Requires some GLPI High-Level API features not yet merged into the GLPI codebase.
-For convenience, the required patches are being centralized in this branch on my fork:
-https://github.com/cconard96/glpi/tree/hlapi/v2.1
+This requires the latest GLPI 11 branch which includes the v2.1 of the High-Level API.
