@@ -12,7 +12,12 @@ export default defineConfig({
             instances: [
                 { browser: 'chromium' },
             ],
+            //headless: true,
         },
+        hookTimeout: 10000,
+    },
+    optimizeDeps: {
+        include: ['primevue/config', '@primeuix/themes/lara', 'pinia-plugin-persistedstate', 'primevue/focustrap'],
     },
     resolve: {
         alias: {

@@ -1,4 +1,5 @@
 import { useApi } from '../composables/useApi.js';
+import { DatePicker, Password, InputText, InputNumber, Checkbox } from 'primevue';
 
 export class AbstractModel {
     static getTypeModule() {
@@ -22,12 +23,16 @@ export class AbstractModel {
         throw new Error('getOpenAPISchemaName() must be implemented by subclasses');
     }
 
+    static getIcon() {
+        return 'ti ti-package';
+    }
+
     static getOpenAPISchema() {
         const { getComponentSchema } = useApi();
         return getComponentSchema(this.getOpenAPISchemaName());
     }
 
-    static #getSchemaPropertiesForFields() {
+    static getSchemaPropertiesForFields() {
         return this.getOpenAPISchema().then(schema => {
             const props = {};
             if (schema && schema.properties) {
@@ -42,21 +47,22 @@ export class AbstractModel {
                     props[field_name] = prop;
                 }
             }
+            return props;
         });
     }
 
     /**
      * @param mode
-     * @returns {Promise<{
+     * @returns {Promise<Record<string, {
      *     name: string,
-     *     component: string,
+     *     component: any,
      *     options: {}
-     * }[]>}
+     * }>>}
      */
     static getFormFields(mode = 'read') {
-        return this.#getSchemaPropertiesForFields().then(props => {
+        return this.getSchemaPropertiesForFields().then(props => {
             const fields_data = {};
-            for (const [key, prop] of props) {
+            for (const [key, prop] of Object.entries(props)) {
                 const field = {
                     name: key,
                 };
@@ -64,20 +70,20 @@ export class AbstractModel {
                 switch (prop.type) {
                     case 'string':
                         if (prop.format === 'date' || prop.format === 'date-time') {
-                            field.component = 'DatePicker';
+                            field.component = DatePicker;
                             field.options = {showTime: prop.format === 'date-time'};
                         } else if (prop.format === 'password') {
-                            field.component = 'Password';
+                            field.component = Password;
                         } else {
-                            field.component = 'InputText';
+                            field.component = InputText;
                         }
                         break;
                     case 'integer':
                     case 'number':
-                        field.component = 'InputNumber';
+                        field.component = InputNumber;
                         break;
                     case 'boolean':
-                        field.component = 'Checkbox';
+                        field.component = Checkbox;
                         break;
                     default:
                         continue;
@@ -85,7 +91,7 @@ export class AbstractModel {
                 field.options = field.options || {};
                 field.options['readonly'] = prop.readOnly || false;
                 field.options['writeonly'] = prop.writeOnly || false;
-                fields_data[name] = field;
+                fields_data[field.name] = field;
             }
             return fields_data;
         });

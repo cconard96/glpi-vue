@@ -6,6 +6,7 @@
     import {computed, ref} from "vue";
     import {useAuth} from "@/composables/useAuth.js";
     import {useMainMenu} from "@/composables/useMainMenu.js";
+    import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
@@ -59,14 +60,16 @@
                 }"></Menubar>
             </div>
             <RouterView v-slot="{ Component }">
-                <Suspense>
-                    <component class="max-h-full" :is="Component" />
-                    <template #fallback>
-                        <div class="flex justify-content-center align-items-center h-full">
-                            <ProgressSpinner />
-                        </div>
-                    </template>
-                </Suspense>
+                <ErrorBoundary>
+                    <Suspense>
+                        <component class="max-h-full" :is="Component" />
+                        <template #fallback>
+                            <div class="flex justify-content-center align-items-center h-full">
+                                <ProgressSpinner />
+                            </div>
+                        </template>
+                    </Suspense>
+                </ErrorBoundary>
             </RouterView>
         </div>
     </div>

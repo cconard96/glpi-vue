@@ -151,6 +151,51 @@ export function useApi() {
         });
     };
 
+    function getItemByID(component_name, id) {
+        return getComponentSchema(component_name).then(schema => {
+            if (!schema) {
+                return Promise.reject(new Error(`Component ${component_name} not found in schema`));
+            }
+            const fields_request = getCompleteFieldsRequestForSchema(schema.properties || {});
+            const query = `
+                query {
+                    ${component_name}(id: ${id}) {
+                        ${fields_request}
+                    }
+                }
+            `;
+            return doGraphQLRequest(query).then(response => {
+                if (response.data.errors) {
+                    return Promise.reject(new Error(`GraphQL errors: ${JSON.stringify(response.data.errors)}`));
+                }
+                return response.data.data[`${component_name}`][0];
+            });
+        });
+    }
+
+    function getCompleteFieldsRequestForSchema(properties, parent_property_name = null, parent_property_info = null) {
+        let fields_query_part = ''
+        // Convert OpenAPI properties to GraphQL fields request
+        for (let [property_name, property_info] of Object.entries(properties)) {
+            // fixups for known issues
+            if (parent_property_info?.['x-itemtype'] === 'User' && property_name === 'name') {
+                property_name = 'username';
+            }
+            if (property_info?.type === 'object' && property_info?.properties) {
+                // Nested object, recurse
+                fields_query_part += property_name + ' { ' + getCompleteFieldsRequestForSchema(property_info.properties, property_name, property_info) + ' } ';
+            } else if (property_info?.type === 'array' && property_info?.items?.properties) {
+                // Array of objects, recurse
+                fields_query_part += property_name + ' { ' + getCompleteFieldsRequestForSchema(property_info.items.properties, property_name, property_info) + ' } ';
+            } else {
+                // Scalar field
+                fields_query_part += property_name + ' ';
+            }
+        }
+
+        return fields_query_part;
+    }
+
     return {
         getComponentSchema,
         search,
@@ -158,5 +203,6 @@ export function useApi() {
         normalizeComponentName,
         doGraphQLRequest,
         getApiSchema,
+        getItemByID
     };
 }

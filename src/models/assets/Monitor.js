@@ -1,19 +1,19 @@
 import { AbstractModel } from "@/models/AbstractModel.js";
 
-export class Computer extends AbstractModel {
+export class Monitor extends AbstractModel {
     static getTypeModule() {
         return 'assets';
     }
 
     static getTypeName() {
-        return 'Computer';
+        return 'Monitor';
     }
 
     static getOpenAPISchemaName() {
-        return 'Computer';
+        return 'Monitor';
     }
 
     static getIcon() {
-        return 'ti ti-device-laptop';
+        return 'ti ti-device-desktop';
     }
 }
