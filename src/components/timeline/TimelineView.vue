@@ -31,13 +31,13 @@
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then((res) => {
             item.value = res.data;
             if (item.value.category === null) {
-                item.value.category = { id: 0, name: '' };
+                item.value.category = { id: null, name: '' };
             }
             if (item.value.request_type === null) {
-                item.value.request_type = { id: 0, name: '' };
+                item.value.request_type = { id: null, name: '' };
             }
             if (item.value.location === null) {
-                item.value.location = { id: 0, name: '' };
+                item.value.location = { id: null, name: '' };
             }
         }),
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}/Timeline`).then((res) => {
@@ -203,7 +203,7 @@
 </script>
 
 <template>
-    <section>
+    <section class="overflow-hidden">
         <div class="text-lg flex justify-between">
             <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}">
                 <i class="ti ti-list-search"></i>
@@ -218,7 +218,7 @@
             <div></div>
         </div>
         <div class="grid grid-cols-12 h-full">
-            <div ref="left-side" class="col-span-9 flex flex-col space-y-4 px-10">
+            <div ref="left-side" class="col-span-9 flex flex-col space-y-4 px-10 overflow-y-auto">
                 <TimelineItem key="content" :item="{
                     type: 'content',
                     item: {
@@ -243,7 +243,7 @@
                                     <Tag class="ml-2">Entity: {{ item.entity.name }}</Tag>
                                 </span>
                             </AccordionHeader>
-                            <AccordionContent>
+                            <AccordionContent class="me-2">
                                 <div class="flex flex-col space-y-4">
                                     <div>
                                         <FloatLabel variant="on">
@@ -259,6 +259,7 @@
                                             <Select inputId="item_type" name="type" v-model="item['type']"
                                                     :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"
                                                     optionValue="key" optionLabel="label"
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_type">Type</label>
                                         </FloatLabel>
@@ -267,7 +268,8 @@
                                         <FloatLabel variant="on">
                                             <Select inputId="item_category" name="category" v-model="item.category.id"
                                                     :filter="categories.length > 5" filterMode="lenient" :options="categories"
-                                                    optionValue="key" optionLabel="label"
+                                                    optionValue="key" optionLabel="label" show-clear
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_type">Category</label>
                                         </FloatLabel>
@@ -277,6 +279,7 @@
                                             <Select inputId="item_status" name="status" v-model="item.status.id"
                                                     :options="statuses"
                                                     optionValue="key" optionLabel="label"
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_status">Status</label>
                                         </FloatLabel>
@@ -286,6 +289,7 @@
                                             <Select inputId="item_request_type" name="request_type" v-model="item.request_type.id"
                                                     :filter="request_types.length > 5" filterMode="lenient" :options="request_types"
                                                     optionValue="key" optionLabel="label"
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_request_type">Request source</label>
                                         </FloatLabel>
@@ -295,6 +299,7 @@
                                             <Select inputId="item_urgency" name="urgency" v-model="item.urgency"
                                                     :options="urgency_impact_options"
                                                     optionValue="key" optionLabel="label"
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_urgency">Urgency</label>
                                         </FloatLabel>
@@ -304,6 +309,7 @@
                                             <Select inputId="item_impact" name="impact" v-model="item.impact"
                                                     :options="urgency_impact_options"
                                                     optionValue="key" optionLabel="label"
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_impact">Impact</label>
                                         </FloatLabel>
@@ -313,6 +319,7 @@
                                             <Select inputId="item_priority" name="priority" v-model="item.priority"
                                                     :options="priority_options"
                                                     optionValue="key" optionLabel="label"
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_priority">Priority</label>
                                         </FloatLabel>
@@ -321,7 +328,8 @@
                                         <FloatLabel variant="on">
                                             <Select inputId="item_location" name="location" v-model="item.location.id"
                                                     :filter="locations.length > 5" filterMode="lenient" :options="locations"
-                                                    optionValue="key" optionLabel="label"
+                                                    optionValue="key" optionLabel="label" show-clear
+                                                    class="w-full"
                                             ></Select>
                                             <label for="item_location">Location</label>
                                         </FloatLabel>

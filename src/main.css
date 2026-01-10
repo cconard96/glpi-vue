@@ -6,6 +6,9 @@
 html {
     overflow: hidden;
     font-size: var(--text-base);
+    * {
+        scrollbar-width: thin;
+    }
 }
 
 @theme {

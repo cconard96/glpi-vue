@@ -40,7 +40,7 @@
             </template>
             <template #content>
                 <div>
-                    <div v-html="item.item.content"></div>
+                    <div v-dompurify-html="item.item.content"></div>
                 </div>
             </template>
         </Card>
