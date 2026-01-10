@@ -112,6 +112,7 @@
             <Column v-for="col of columns" :field="col.field" :header="col.header">
                 <template #body="slotProps">
                     <RouterLink v-if="col.field === 'id' || col.field === 'name'" :to="`/${component_module}/${itemtype}/${slotProps.data.id}`">{{ slotProps.data[col.field] }}</RouterLink>
+                    <div v-else-if="col.type === 'string' && col.format === 'html'" v-dompurify-html="slotProps.data[col.field]"></div>
                     <span v-else>{{ slotProps.data[col.field] }}</span>
                 </template>
             </Column>
