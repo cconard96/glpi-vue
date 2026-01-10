@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
     import DataTable from 'primevue/datatable';
     import Column from 'primevue/column';
     import InputText from 'primevue/inputtext';
     import SelectButton from 'primevue/selectbutton';
-    import { useApi } from '@/composables/useApi';
-    import { ComponentSchema } from "@/api/ComponentSchema.js";
+    import { useApi, type SearchResult } from '@/composables/useApi.ts';
+    import { ComponentSchema } from "@/api/ComponentSchema";
     import {computed, ref, watch} from "vue";
 
     const { component_module, itemtype } = defineProps({
@@ -27,14 +27,24 @@
     // For recursive/nested properties, use dot notation for now
 
     const flattened_properties = schema.flattenProperties();
-    const columns = Object.keys(flattened_properties).map(key => ({
-        field: key,
-        header: key
-    }));
+    const columns = [];
+    // Object.keys(flattened_properties).map(key => ({
+    //     field: key,
+    //     header: key
+    // }));
+    for (const [key, value] of Object.entries(flattened_properties)) {
+        columns.push({
+            field: key,
+            header: key,
+            type: value.type,
+            format: value.format || value.type
+        });
+    }
+
     const filter = computed(() => {
         return `is_deleted==${is_deleted.value ? 1 : 0}`;
     });
-    watch(filter, (newVal) => {
+    watch(filter, () => {
         updateResults();
     });
 
@@ -45,13 +55,13 @@
         end: 0,
         total: 0
     });
-    const updateResults = (params) => {
+    const updateResults = (params: Record<string, any> = {}) => {
         results_loading.value = true;
         return search(component_module, itemtype, {
             start: params?.start || 0,
             limit: params?.limit || 20,
             filter: `is_deleted==${is_deleted.value ? 1 : 0}`
-        }).then(res => {
+        }).then((res: SearchResult) => {
             results.value = res;
             results.value.results = schema.formatResults(results.value.results);
             results_loading.value = false;
@@ -67,7 +77,7 @@
                 if (Array.isArray(value)) {
                     flattened[key] = value.map(v => typeof v === 'object' ? JSON.stringify(v) : v).join('\n');
                 } else if (typeof value === 'object' && value !== null) {
-                    for (const [subKey, subValue] of Object.entries(value)) {
+                    for (const [subKey, subValue] of Object.entries(value as Record<string, any>)) {
                         flattened[`${key}.${subKey}`] = typeof subValue === 'object' ? JSON.stringify(subValue) : subValue;
                     }
                 } else {

@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
     import PanelMenu from 'primevue/panelmenu';
     import {RouterLink, useRoute} from "vue-router";
-    import { useMainMenu } from '@/composables/useMainMenu.js';
+    import { useMainMenu } from '@/composables/useMainMenu.ts';
     import {ref, watch} from "vue";
     const { menu } = useMainMenu();
     const items = ref(menu);

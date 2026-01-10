@@ -9,7 +9,8 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import FocusTrap from 'primevue/focustrap';
 import {createRouter, createWebHistory} from "vue-router";
-import {useAuth} from "@/composables/useAuth.js";
+import {useAuth} from "@/composables/useAuth.ts";
+import VueDOMPurifyHTML from 'vue-dompurify-html';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -57,5 +58,6 @@ createApp(App)
             }
         }
     })
+    .use(VueDOMPurifyHTML)
     .directive('focustrap', FocusTrap)
     .mount('#app')

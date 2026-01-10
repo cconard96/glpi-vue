@@ -1,31 +1,32 @@
-import { ArrayAccessor } from "@/util/ArrayAccessor.js";
-
 export class ComponentSchema {
-    TYPE_STRING = 'string';
-    TYPE_INTEGER = 'integer';
-    TYPE_NUMBER = 'number';
-    TYPE_BOOLEAN = 'boolean';
-    TYPE_OBJECT = 'object';
-    TYPE_ARRAY = 'array';
+    public readonly TYPE_STRING = 'string';
+    public readonly TYPE_INTEGER = 'integer';
+    public readonly TYPE_NUMBER = 'number';
+    public readonly TYPE_BOOLEAN = 'boolean';
+    public readonly TYPE_OBJECT = 'object';
+    public readonly TYPE_ARRAY = 'array';
 
-    FORMAT_STRING_BYTE = 'byte';
-    FORMAT_STRING_BINARY = 'binary';
-    FORMAT_STRING_DATE = 'date';
-    FORMAT_STRING_DATE_TIME = 'date-time';
-    FORMAT_STRING_PASSWORD = 'password';
-    FORMAT_STRING_STRING = 'string';
-    FORMAT_INTEGER_INT32 = 'int32';
-    FORMAT_INTEGER_INT64 = 'int64';
-    FORMAT_NUMBER_DOUBLE = 'double';
-    FORMAT_NUMBER_FLOAT = 'float';
-    FORMAT_BOOLEAN_BOOLEAN = 'boolean';
+    public readonly FORMAT_STRING_BYTE = 'byte';
+    public readonly FORMAT_STRING_BINARY = 'binary';
+    public readonly FORMAT_STRING_DATE = 'date';
+    public readonly FORMAT_STRING_DATE_TIME = 'date-time';
+    public readonly FORMAT_STRING_PASSWORD = 'password';
+    public readonly FORMAT_STRING_STRING = 'string';
+    public readonly FORMAT_INTEGER_INT32 = 'int32';
+    public readonly FORMAT_INTEGER_INT64 = 'int64';
+    public readonly FORMAT_NUMBER_DOUBLE = 'double';
+    public readonly FORMAT_NUMBER_FLOAT = 'float';
+    public readonly FORMAT_BOOLEAN_BOOLEAN = 'boolean';
+
+    private readonly properties: any;
+    private description: string;
 
     constructor(component_schema) {
         this.description = component_schema.description || '';
         this.properties = component_schema.properties || {};
     }
 
-    flattenProperties(prefix = '', collapse_array_types = false, parent_obj = null) {
+    flattenProperties(prefix: string = '', collapse_array_types: boolean = false, parent_obj = null) {
         const flattened = {};
         const to_flatten = parent_obj?.properties || this.properties;
         for (let [name, prop] of Object.entries(to_flatten)) {
@@ -64,7 +65,7 @@ export class ComponentSchema {
                 if (prop_schema) {
                     if (prop_schema.type === this.TYPE_STRING && (prop_schema.format === this.FORMAT_STRING_DATE || prop_schema.format === this.FORMAT_STRING_DATE_TIME)) {
                         // Convert to local date string
-                        const date = new Date(value);
+                        const date = new Date(value as string);
                         if (!isNaN(date.getTime())) {
                             formatted[key] = date.toLocaleString();
                         } else {

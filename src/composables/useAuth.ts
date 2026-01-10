@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useSessionStore} from "@/composables/useSessionStore.js";
-import { useApi } from "@/composables/useApi.js";
+import { useSessionStore} from "@/composables/useSessionStore";
+import { useApi } from "@/composables/useApi";
 import { useRouter } from "vue-router";
 
 export function useAuth() {

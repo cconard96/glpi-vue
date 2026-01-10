@@ -1,8 +1,8 @@
-<script setup>
-    import { onErrorCaptured, ref } from "vue";
+<script setup lang="ts">
+    import { onErrorCaptured, ref, type Ref } from "vue";
     import { Message } from 'primevue';
 
-    const error = ref(null);
+    const error: Ref<Error | null> = ref(null);
 
     onErrorCaptured((err) => {
         error.value = err;

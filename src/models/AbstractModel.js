@@ -1,4 +1,4 @@
-import { useApi } from '../composables/useApi.js';
+import { useApi } from '../composables/useApi.ts';
 import { DatePicker, Password, InputText, InputNumber, Checkbox } from 'primevue';
 
 export class AbstractModel {

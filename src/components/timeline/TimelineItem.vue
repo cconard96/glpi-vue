@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
     import Card from 'primevue/card';
     import Avatar from 'primevue/avatar';
     import {computed} from "vue";
@@ -10,7 +10,7 @@
         }
     });
 
-    const human_readable_time = (timestamp) => {
+    const human_readable_time = (timestamp: string): string => {
         const date = new Date(timestamp);
         const now = new Date();
         const diff = Math.floor((now - date) / 1000); // difference in seconds

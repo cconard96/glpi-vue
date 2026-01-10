@@ -2,10 +2,10 @@
     import NavMenu from "@/components/NavMenu.vue";
     import {RouterView, useRouter} from "vue-router";
     import {Breadcrumb, Menubar, ProgressSpinner} from "primevue";
-    import {useSessionStore} from "@/composables/useSessionStore.js";
+    import {useSessionStore} from "@/composables/useSessionStore.ts";
     import {computed, ref} from "vue";
-    import {useAuth} from "@/composables/useAuth.js";
-    import {useMainMenu} from "@/composables/useMainMenu.js";
+    import {useAuth} from "@/composables/useAuth.ts";
+    import {useMainMenu} from "@/composables/useMainMenu.ts";
     import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
 
     const session_store = useSessionStore();

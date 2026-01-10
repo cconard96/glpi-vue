@@ -1,22 +1,12 @@
-<script setup>
+<script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import {ref, onMounted, onBeforeMount, useTemplateRef, computed} from "vue";
-    import { useApi } from "@/composables/useApi.js";
-    import Accordion from 'primevue/accordion';
-    import AccordionPanel from 'primevue/accordionpanel';
-    import AccordionHeader from 'primevue/accordionheader';
-    import AccordionContent from 'primevue/accordioncontent';
-    import Tag from 'primevue/tag';
-    import InputText from 'primevue/inputtext';
-    import DatePicker from 'primevue/datepicker';
-    import Select from 'primevue/select';
-    import MultiSelect from 'primevue/multiselect';
-    import ScrollPanel from 'primevue/scrollpanel';
-    import InputGroup from 'primevue/inputgroup';
-    import InputGroupAddon from 'primevue/inputgroupaddon';
-    import Button from 'primevue/button';
+    import {ref, onMounted, useTemplateRef, computed} from "vue";
+    import { useApi } from "@/composables/useApi.ts";
+    import {
+        Accordion, AccordionPanel, AccordionHeader, AccordionContent, Tag, InputText, DatePicker,
+        Select, MultiSelect, ScrollPanel, InputGroup, InputGroupAddon, Button, FloatLabel
+    } from 'primevue';
     import { Form } from '@primevue/forms';
-    import FloatLabel from 'primevue/floatlabel';
     import { RouterLink } from "vue-router";
     import { ITILStatus } from "@/models/assistance/ITILStatus.js";
 

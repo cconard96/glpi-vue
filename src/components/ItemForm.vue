@@ -1,7 +1,7 @@
 <script setup>
 import {RouterLink, useRoute} from 'vue-router';
-    import { useMainMenu } from "@/composables/useMainMenu.js";
-    import { useApi } from '@/composables/useApi.js';
+    import { useMainMenu } from "@/composables/useMainMenu.ts";
+    import { useApi } from '@/composables/useApi.ts';
     import { Tag, ToggleButton, Message } from "primevue";
 
     const { getItemtypeModelForRoute } = useMainMenu();

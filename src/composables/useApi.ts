@@ -7,6 +7,13 @@ let api_schema = null;
 let component_name_map = null;
 const { getAuthToken, refreshAuthToken } = useAuth();
 
+export interface SearchResult {
+    results: any[];
+    start: number | null;
+    end: number | null;
+    total: number | null;
+}
+
 export function useApi() {
     /**
      * Get headers for the session data like entity and profile
@@ -95,7 +102,7 @@ export function useApi() {
         });
     }
 
-    const search = (component_module, component_name, queryParams = {}) => {
+    const search = (component_module, component_name, queryParams = {}): Promise<SearchResult> => {
         return normalizeComponentName(component_name).then(normalized_name => {
             if (!normalized_name) {
                 return Promise.reject(new Error(`Component ${component_name} not found in schema`));
@@ -106,7 +113,7 @@ export function useApi() {
             component_module = component_module.charAt(0).toUpperCase() + component_module.slice(1).toLowerCase();
             const url = `${component_module}/${normalized_name}`;
 
-            const doSearch = (url, queryParams, is_retry = false) => {
+            const doSearch = (url, queryParams, is_retry = false): Promise<SearchResult> => {
                 return doApiRequest(url, {
                     headers: {
                         'Accept': 'application/json',
