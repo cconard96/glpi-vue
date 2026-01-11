@@ -52,7 +52,7 @@
         <NavMenu class="row-span-2"/>
         <div class="px-4 pt-2 h-screen grid grid-cols-1 grid-rows-[58px_auto]">
             <div class="mb-2 flex justify-between">
-                <Breadcrumb :home="{ icon: 'pi pi-home', url: '/' }"></Breadcrumb>
+                <Breadcrumb :home="{ icon: 'pi pi-home', url: '/' }" aria-label="Breadcrumbs"></Breadcrumb>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
                     submenu: {
                         'class': 'justify-self-end z-1000'
@@ -60,7 +60,7 @@
                 }"></Menubar>
             </div>
             <RouterView v-slot="{ Component }">
-                <ErrorBoundary class="contents">
+                <ErrorBoundary>
                     <Suspense>
                         <component class="max-h-full" :is="Component" />
                         <template #fallback>

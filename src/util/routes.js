@@ -6,6 +6,12 @@ export const routes = [
         component: () => import('../views/HomeView.vue'),
         children: [
             {
+                name: 'Central',
+                path: '/',
+                component: () => import('../components/home/CentralView.vue'),
+                props: true,
+            },
+            {
                 name: 'Search',
                 path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype',
                 component: () => import('../components/search/SearchComponent.vue'),

@@ -72262,6 +72262,1654 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/Dashboards/Dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for Dashboards */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description RSQL query string
+                     * @example null
+                     */
+                    filter?: string;
+                    /**
+                     * @description The first item to return
+                     * @example null
+                     */
+                    start?: number;
+                    /**
+                     * @description The maximum number of items to return
+                     * @example null
+                     */
+                    limit?: number;
+                    /**
+                     * @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc.
+                     *                                       If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma.
+                     * @example null
+                     */
+                    sort?: string;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Dashboard"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new Dashboard */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Dashboard"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for Dashboards */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description RSQL query string
+                     * @example null
+                     */
+                    filter?: string;
+                    /**
+                     * @description The first item to return
+                     * @example null
+                     */
+                    start?: number;
+                    /**
+                     * @description The maximum number of items to return
+                     * @example null
+                     */
+                    limit?: number;
+                    /**
+                     * @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc.
+                     *                                       If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma.
+                     * @example null
+                     */
+                    sort?: string;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Dashboard"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a Dashboard */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing Dashboard */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Dashboard"];
+                };
+            };
+            responses: {
+                /** @description The updated Dashboard */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Dashboard"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}/Item": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for DashboardItems */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description RSQL query string
+                     * @example null
+                     */
+                    filter?: string;
+                    /**
+                     * @description The first item to return
+                     * @example null
+                     */
+                    start?: number;
+                    /**
+                     * @description The maximum number of items to return
+                     * @example null
+                     */
+                    limit?: number;
+                    /**
+                     * @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc.
+                     *                                       If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma.
+                     * @example null
+                     */
+                    sort?: string;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardItem"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new DashboardItem */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DashboardItem"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}/Item/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing DashboardItem */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardItem"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a DashboardItem */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing DashboardItem */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DashboardItem"];
+                };
+            };
+            responses: {
+                /** @description The updated DashboardItem */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardItem"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}/Filter": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for DashboardFilters */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description RSQL query string
+                     * @example null
+                     */
+                    filter?: string;
+                    /**
+                     * @description The first item to return
+                     * @example null
+                     */
+                    start?: number;
+                    /**
+                     * @description The maximum number of items to return
+                     * @example null
+                     */
+                    limit?: number;
+                    /**
+                     * @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc.
+                     *                                       If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma.
+                     * @example null
+                     */
+                    sort?: string;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardFilter"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new DashboardFilter */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DashboardFilter"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}/Filter/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing DashboardFilter */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardFilter"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a DashboardFilter */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing DashboardFilter */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DashboardFilter"];
+                };
+            };
+            responses: {
+                /** @description The updated DashboardFilter */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardFilter"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}/Right": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for DashboardRights */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description RSQL query string
+                     * @example null
+                     */
+                    filter?: string;
+                    /**
+                     * @description The first item to return
+                     * @example null
+                     */
+                    start?: number;
+                    /**
+                     * @description The maximum number of items to return
+                     * @example null
+                     */
+                    limit?: number;
+                    /**
+                     * @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc.
+                     *                                       If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma.
+                     * @example null
+                     */
+                    sort?: string;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardRight"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new DashboardRight */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["DashboardRight"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Dashboards/Dashboard/{dashboard_id}/Right/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** @description Delete a DashboardRight */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    dashboard_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Dashboards/Card": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for DashboardCards */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description RSQL query string
+                     * @example null
+                     */
+                    filter?: string;
+                    /**
+                     * @description The first item to return
+                     * @example null
+                     */
+                    start?: number;
+                    /**
+                     * @description The maximum number of items to return
+                     * @example null
+                     */
+                    limit?: number;
+                    /**
+                     * @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc.
+                     *                                       If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma.
+                     * @example null
+                     */
+                    sort?: string;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardCard"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Dashboards/Card/{card}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing DashboardCard */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    card: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["DashboardCard"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/Workflows/Action": {
         parameters: {
             query?: never;
@@ -73748,6 +75396,8 @@ export interface components {
         CustomAsset_AllCapacities: {
             /** Format: int64 */
             readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
             name?: string;
             comment?: string;
             serial?: string;
@@ -73855,6 +75505,8 @@ export interface components {
         CustomAsset_Car: {
             /** Format: int64 */
             readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
             name?: string;
             comment?: string;
             serial?: string;
@@ -73964,6 +75616,8 @@ export interface components {
         CustomAsset_Issue21162: {
             /** Format: int64 */
             readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
             name?: string;
             comment?: string;
             serial?: string;
@@ -74077,6 +75731,8 @@ export interface components {
         CustomAsset_Issue21424: {
             /** Format: int64 */
             readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
             name?: string;
             comment?: string;
             serial?: string;
@@ -74184,6 +75840,8 @@ export interface components {
         CustomAsset_Issue21724: {
             /** Format: int64 */
             readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
             name?: string;
             comment?: string;
             serial?: string;
@@ -74293,6 +75951,8 @@ export interface components {
         CustomAsset_esdfdsf: {
             /** Format: int64 */
             readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
             name?: string;
             comment?: string;
             serial?: string;
@@ -74424,6 +76084,91 @@ export interface components {
             date_creation?: string;
             /** Format: date-time */
             date_mod?: string;
+        };
+        /** @description General */
+        Dashboard: {
+            readonly id?: number;
+            readonly key?: string;
+            name?: string;
+            /**
+             * @description Dashboard context which controls where it may be used
+             * @enum {string}
+             */
+            context?: "core" | "mini_core";
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+        };
+        DashboardCard: {
+            /** @description The card type key */
+            card?: string;
+            /** @description List of widget types that can be used to display this card */
+            widget?: string[];
+            /** @description The localized group name this card belongs to */
+            group?: string;
+            /** @description The itemtype this card is related to, if any */
+            itemtype?: string;
+            /** @description The localized label of the card */
+            label?: string;
+            /** @description List of filters applicable to this card */
+            filters?: ("dates" | "dates_mod" | "itilcategory" | "location" | "manufacturer" | "requesttype" | "state" | "tickettype" | "group_requester" | "group_tech" | "user_tech")[];
+        };
+        /** @description General */
+        DashboardFilter: {
+            readonly id?: number;
+            dashboard?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            /** @description JSON encoded filters */
+            filter?: string;
+        };
+        /** @description General */
+        DashboardItem: {
+            readonly id?: number;
+            dashboard?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            /** @description Unique key of the item in the dashboard */
+            unique_key?: string;
+            /** @description The card type of the dashboard item. Usually corresponds to a widget key and some extra information. For example, "bn_count_Computer" is big number widget showing the count of computers. */
+            card?: string;
+            /** @description X position of the item in the dashboard grid */
+            x?: number;
+            /** @description Y position of the item in the dashboard grid */
+            y?: number;
+            /** @description Width of the item in the dashboard grid */
+            width?: number;
+            /** @description Height of the item in the dashboard grid */
+            height?: number;
+            /** @description JSON encoded options specific to the card type */
+            card_options?: string;
+        };
+        /** @description General */
+        DashboardRight: {
+            readonly id?: number;
+            dashboard?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            /**
+             * @description Type of the item the right is granted to
+             * @enum {string}
+             */
+            itemtype?: "User" | "Group" | "Entity" | "Profile";
+            /** @description ID of the item the right is granted to */
+            items_id?: number;
         };
         /** @description Datacenter */
         DataCenter: {
@@ -78888,7 +80633,7 @@ export interface components {
              * @description Location for toast notifications
              * @enum {string}
              */
-            toast_location?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+            toast_location?: "top-lest" | "top-right" | "bottom-left" | "bottom-right";
             /**
              * @description Timeline action buttons layout
              *                             - 0: Merged

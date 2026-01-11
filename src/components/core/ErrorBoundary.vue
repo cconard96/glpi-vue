@@ -17,7 +17,7 @@
             <RouterLink to="/">Go back to home</RouterLink>
         </Message>
     </div>
-    <div v-else><slot></slot></div>
+    <div v-else class="contents"><slot></slot></div>
 </template>
 
 <style>

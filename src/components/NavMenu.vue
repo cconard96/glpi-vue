@@ -24,7 +24,7 @@
 </script>
 
 <template>
-    <div class="h-screen">
+    <nav class="h-screen" aria-label="Main Navigation">
         <RouterLink to="/" class="flex items-center justify-center h-16 bg-primary text-white text-2xl font-bold">
             GLPI
         </RouterLink>
@@ -43,7 +43,7 @@
                 </a>
             </template>
         </PanelMenu>
-    </div>
+    </nav>
 </template>
 
 <style scoped>
