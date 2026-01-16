@@ -33,6 +33,9 @@
     //     header: key
     // }));
     for (const [key, value] of Object.entries(flattened_properties)) {
+        if (key === 'content') {
+            continue; // skip content field for now
+        }
         columns.push({
             field: key,
             header: key,
@@ -84,6 +87,8 @@
                     flattened[key] = value;
                 }
             }
+            // Remove the content property for now
+            delete flattened['content'];
             return flattened;
         });
     });
