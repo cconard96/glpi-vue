@@ -218,7 +218,7 @@
             <div></div>
         </div>
         <div class="grid grid-cols-12 h-full">
-            <div ref="left-side" class="col-span-9 flex flex-col space-y-4 px-10 overflow-y-auto">
+            <div ref="left-side" class="col-span-9 flex flex-col space-y-4 px-10 overflow-y-auto pb-10">
                 <TimelineItem key="content" :item="{
                     type: 'content',
                     item: {
