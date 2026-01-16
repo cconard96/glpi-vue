@@ -63,6 +63,10 @@ export class ComponentSchema {
             for (let [key, value] of Object.entries(results)) {
                 const prop_schema = this.properties[key];
                 if (prop_schema) {
+                    if (value === null) {
+                        formatted[key] = null;
+                        continue;
+                    }
                     if (prop_schema.type === this.TYPE_STRING && (prop_schema.format === this.FORMAT_STRING_DATE || prop_schema.format === this.FORMAT_STRING_DATE_TIME)) {
                         // Convert to local date string
                         const date = new Date(value as string);
