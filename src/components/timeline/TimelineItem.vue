@@ -1,7 +1,9 @@
 <script setup lang="ts">
     import Card from 'primevue/card';
     import Avatar from 'primevue/avatar';
-    import {computed} from "vue";
+    import {computed, onMounted, shallowRef, useTemplateRef, watch} from "vue";
+    import { useApi } from '@/composables/useApi';
+    import { useIntersectionObserver } from '@vueuse/core';
 
     const { item } = defineProps({
         item: {
@@ -26,11 +28,61 @@
         return (item.item.timeline_position === 3 || item.item.timeline_position === 4) ? 'right' : 'left';
     });
 
-    //TODO src and href for images stored in GLPI need to be fixed to point to the correct URL and allow access from outside GLPI
+    const timeline_item_element = useTemplateRef('timeline_item');
+    const { doApiRequest } = useApi();
+    const item_visible = shallowRef(false);
+    const { stop: stopIntersectionObserver } = useIntersectionObserver(timeline_item_element, ([entry], observerElement) => {
+        item_visible.value = entry?.isIntersecting || false;
+    });
+    watch(item_visible, (isVisible) => {
+        if (isVisible) {
+            stopIntersectionObserver();
+            timeline_item_element.value.querySelectorAll('img[src^="/front/document.send.php"]').forEach((img: HTMLImageElement) => {
+                const url = new URL(img.src);
+                const docid = url.searchParams.get('docid');
+                // image content needs to be loaded via API and converted to base64 data url to work around authentication issues
+                img.style.display = 'none';
+                if (docid) {
+                    const onImgFailure = () => {
+                        img.alt = 'Failed to load image';
+                        img.style.display = 'block';
+                    };
+                    doApiRequest(`/Management/Document/${docid}/Download`, {
+                        method: 'GET',
+                        responseType: 'blob'
+                    }).then((response) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            img.src = reader.result as string;
+                        };
+                        reader.readAsDataURL(response.data);
+                        img.style.display = 'block';
+                    }, () => {
+                        onImgFailure();
+                    }).catch(() => {
+                        onImgFailure();
+                    });
+                }
+            });
+        }
+    });
+
+    onMounted(() => {
+        timeline_item_element.value.querySelectorAll('a[href^="/front/document.send.php"]').forEach((link: HTMLAnchorElement) => {
+            // remove the link but keep its inner html (probably an image)
+            const parent = link.parentNode;
+            if (parent) {
+                while (link.firstChild) {
+                    parent.insertBefore(link.firstChild, link);
+                }
+                parent.removeChild(link);
+            }
+        });
+    });
 </script>
 
 <template>
-    <div :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'}`">
+    <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'}`">
         <Avatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''"></Avatar>
         <Card :pt="{
             body: { class: 'p-2' }
