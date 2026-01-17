@@ -11,6 +11,7 @@ import FocusTrap from 'primevue/focustrap';
 import {createRouter, createWebHistory} from "vue-router";
 import {useAuth} from "@/composables/useAuth.ts";
 import VueDOMPurifyHTML from 'vue-dompurify-html';
+import {DialogService} from "primevue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -59,5 +60,6 @@ createApp(App)
         }
     })
     .use(VueDOMPurifyHTML)
+    .use(DialogService)
     .directive('focustrap', FocusTrap)
     .mount('#app')

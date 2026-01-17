@@ -143,5 +143,6 @@ export function useAuth() {
         isAuthenticated,
         getAuthToken,
         refreshAuthToken,
+        loadSession,
     };
 }

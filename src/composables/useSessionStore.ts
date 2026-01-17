@@ -55,6 +55,15 @@ export const useSessionStore = defineStore('session', {
             this.active_entities = [];
             this.active_profile = null;
             this.active_entity = null;
+        },
+        changeEntity(newEntity) {
+            this.active_entity = newEntity;
+        },
+        changeProfile(newProfile) {
+            this.active_profile = newProfile;
+        },
+        setDebugMode(isDebug) {
+            this.use_mode = isDebug ? 2 : 1;
         }
     },
     getters: {
