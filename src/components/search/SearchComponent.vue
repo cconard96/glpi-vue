@@ -44,8 +44,15 @@
         });
     }
 
+    const default_filters = {
+        'ticket': "status.id=out=(5,6)",
+        'change': "status.id=out=(5,6,8,13,14)",
+        'problem': "status.id=out=(5,6,9)",
+    };
+
     const filter = computed(() => {
-        return `is_deleted==${is_deleted.value ? 1 : 0}`;
+        return `is_deleted==${is_deleted.value ? 1 : 0}` +
+            (default_filters[itemtype.toLowerCase()] ? `;${default_filters[itemtype.toLowerCase()]}` : '');
     });
     watch(filter, () => {
         updateResults();
@@ -58,12 +65,13 @@
         end: 0,
         total: 0
     });
+
     const updateResults = (params: Record<string, any> = {}) => {
         results_loading.value = true;
         return search(component_module, itemtype, {
             start: params?.start || 0,
             limit: params?.limit || 20,
-            filter: `is_deleted==${is_deleted.value ? 1 : 0}`
+            filter: filter.value,
         }).then((res: SearchResult) => {
             results.value = res;
             results.value.results = schema.formatResults(results.value.results);
