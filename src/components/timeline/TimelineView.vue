@@ -4,7 +4,8 @@
     import { useApi } from "@/composables/useApi.ts";
     import {
         Accordion, AccordionPanel, AccordionHeader, AccordionContent, Tag, InputText, DatePicker,
-        Select, MultiSelect, ScrollPanel, InputGroup, InputGroupAddon, Button, FloatLabel
+        Select, MultiSelect, ScrollPanel, InputGroup, InputGroupAddon, Button, FloatLabel,
+        SplitButton, ButtonGroup
     } from 'primevue';
     import { Form } from '@primevue/forms';
     import { RouterLink } from "vue-router";
@@ -176,6 +177,25 @@
         return assigned.value.map(r => r.key);
     });
 
+    const extra_timeline_actions = [
+        {
+            label: 'Create a task',
+            icon: 'ti ti-checkbox',
+        },
+        {
+            label: 'Add a solution',
+            icon: 'ti ti-check',
+        },
+        {
+            label: 'Add a document',
+            icon: 'ti ti-files',
+        },
+        {
+            label: 'Ask for approval',
+            icon: 'ti ti-thumb-up',
+        },
+    ];
+
     onMounted(() => {
         document.title = `GLPI - ${itemtype_name} #${item.value.id} - ${item.value.name}`;
         // Get some data, some of which don't have its own endpoint yet, (plus we can get it all with a single call which is nice)
@@ -205,7 +225,7 @@
 <template>
     <section class="overflow-hidden">
         <div class="text-lg flex justify-between">
-            <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}">
+            <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
                 <i class="ti ti-list-search"></i>
             </RouterLink>
             <header>
@@ -249,7 +269,6 @@
                                         <FloatLabel variant="on">
                                             <DatePicker inputId="item_date" name="date" v-model="opening_date"
                                                         showTime showIcon
-                                                        aria-labelledby="date_label"
                                                         class="max-w-full"/>
                                             <label for="item_date">Opening date</label>
                                         </FloatLabel>
@@ -271,7 +290,7 @@
                                                     optionValue="key" optionLabel="label" show-clear
                                                     class="w-full"
                                             ></Select>
-                                            <label for="item_type">Category</label>
+                                            <label for="item_category">Category</label>
                                         </FloatLabel>
                                     </div>
                                     <div>
@@ -336,7 +355,7 @@
                                     </div>
                                     <div>
                                         <FloatLabel variant="on">
-                                            <InputText inputId="item_external_id" name="external_id" v-model="item.external_id" class="w-full"/>
+                                            <InputText id="item_external_id" name="external_id" v-model="item.external_id" class="w-full"/>
                                             <label for="item_external_id">External ID</label>
                                         </FloatLabel>
                                     </div>
@@ -400,20 +419,7 @@
                                 </span>
                             </AccordionHeader>
                             <AccordionContent>
-                                <div class="flex flex-col space-y-4">
-                                    <div>
-                                        <InputGroup>
-                                            <FloatLabel variant="in">
-                                                <DatePicker inputId="item_time_to_own" name="time_to_own" v-model="time_to_own"
-                                                            showTime showIcon
-                                                            aria-labelledby="date_label"
-                                                            class="max-w-full"/>
-                                                <label for="item_time_to_own">Opening date</label>
-                                            </FloatLabel>
-                                            <Button type="button" icon="ti ti-stopwatch" title="Assign a SLA"/>
-                                        </InputGroup>
-                                    </div>
-                                </div>
+                                Not implemented
                             </AccordionContent>
                         </AccordionPanel>
                         <AccordionPanel value="linked_assistance_objects">
@@ -428,6 +434,22 @@
                     </Accordion>
                     </ScrollPanel>
                 </Form>
+            </div>
+            <div class="relative h-20 col-span-12">
+                <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
+                    <div class="[&>*]:me-2">
+                        <SplitButton label="Answer" icon="ti ti-message-circle" :model="extra_timeline_actions" :menuButtonProps="{'aria-label': 'More Options'}"></SplitButton>
+                        <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"></Button>
+                        <Button icon="ti ti-list-check" title="View TODO list" variant="outlined"></Button>
+                    </div>
+                    <div class="">
+                        <ButtonGroup>
+                            <Button title="Put in trashbin" icon="ti ti-trash" severity="danger"></Button>
+                            <Button title="Actions" icon="ti ti-dots-vertical" variant="outlined"></Button>
+                            <Button label="Save" icon="ti ti-device-floppy" severity="info"></Button>
+                        </ButtonGroup>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
