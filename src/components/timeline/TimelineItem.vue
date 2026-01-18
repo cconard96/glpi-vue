@@ -94,7 +94,7 @@
 </script>
 
 <template>
-    <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'}`">
+    <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} max-w-200`">
         <Avatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''"></Avatar>
         <Card v-if="['Followup', 'Task', 'Solution'].includes(item.type)" :pt="{
             body: {
