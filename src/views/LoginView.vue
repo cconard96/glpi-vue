@@ -4,9 +4,10 @@
     import InputText from 'primevue/inputtext';
     import Password from 'primevue/password';
     import Button from 'primevue/button';
+    import Message from 'primevue/message';
     import { useAuth } from '@/composables/useAuth';
     import { useRouter } from "vue-router";
-    import {onMounted} from "vue";
+    import {computed, onMounted} from "vue";
 
     const { login, isAuthenticated } = useAuth();
     const router = useRouter();
@@ -32,6 +33,16 @@
     onMounted(() => {
         document.title = "GLPI - Login";
     });
+
+    const error_message = computed(() => {
+        const error_code = router.currentRoute.value.query.error;
+        if (error_code === '1') {
+            return 'Your session has expired';
+        } else if (error_code === '2') {
+            return 'An error occurred. Please login again.';
+        }
+        return null;
+    });
 </script>
 
 <template>
@@ -40,10 +51,17 @@
             <h1 class="text-center text-4xl">GLPI</h1>
         </template>
         <template #content>
+            <Message v-if="$route.query.error" class="mb-4" severity="error" variant="outlined">
+                {{ error_message }}
+            </Message>
             <Form @submit="onSubmit">
-                <div class="flex flex-col gap-1 mb-4">
-                    <InputText name="username" autocomplete="username" placeholder="Username" autofocus/>
-                    <Password name="password" autocomplete="password" placeholder="Password" :feedback="false" />
+                <div class="mb-4">
+                    <div class="max-w-64 mx-auto flex flex-col gap-3">
+                        <InputText name="username" class="max-w-64" autocomplete="username"
+                                   placeholder="Username" autofocus fluid />
+                        <Password name="password" class="max-w-64" autocomplete="current-password"
+                                  placeholder="Password" :feedback="false" fluid />
+                    </div>
                 </div>
                 <div class="flex flex-col">
                     <Button type="submit" label="Login" class="self-center"/>

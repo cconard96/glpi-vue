@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 export function useAuth() {
     const REFRESH_GRACE_PERIOD = 5 * 60 * 1000; // 5 minutes
     let refresh_timer = null;
+    const router = useRouter();
 
     const login = (username, password) => {
         const host = import.meta.env.VITE_GLPI_URL;
@@ -111,7 +112,6 @@ export function useAuth() {
                 console.error('Token refresh failed:', error);
                 // Log out if refresh fails
                 logout();
-                const router = useRouter();
                 return router.push({ name: 'Login', query: { redirect: router.currentRoute.value.fullPath } }).then(reject);
             });
         });

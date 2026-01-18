@@ -5,7 +5,6 @@ import { useSessionStore } from "./useSessionStore";
 let api_schema = null;
 // Map of lowercase component names to actual component names
 let component_name_map = null;
-const { getAuthToken, refreshAuthToken } = useAuth();
 
 export interface SearchResult {
     results: any[];
@@ -15,6 +14,8 @@ export interface SearchResult {
 }
 
 export function useApi() {
+    const { getAuthToken, refreshAuthToken } = useAuth();
+
     /**
      * Get headers for the session data like entity and profile
      */
