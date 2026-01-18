@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import {ref, onMounted, useTemplateRef, computed} from "vue";
+    import {ref, onMounted, useTemplateRef, computed, shallowRef, defineAsyncComponent} from "vue";
     import { useApi } from "@/composables/useApi.ts";
     import {
         Accordion, AccordionPanel, AccordionHeader, AccordionContent, Tag, InputText, DatePicker,
@@ -52,6 +52,7 @@
 
     const left_side = useTemplateRef('left-side');
     const right_side = useTemplateRef('right-side');
+    const current_new_itemtype = shallowRef(null);
 
     let itemtype_name, itemtype_icon;
     switch (itemtype) {
@@ -181,18 +182,30 @@
         {
             label: 'Create a task',
             icon: 'ti ti-checkbox',
+            command: () => {
+                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/TaskForm.vue'));
+            }
         },
         {
             label: 'Add a solution',
             icon: 'ti ti-check',
+            command: () => {
+                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/SolutionForm.vue'));
+            }
         },
         {
             label: 'Add a document',
             icon: 'ti ti-files',
+            command: () => {
+                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/DocumentForm.vue'));
+            }
         },
         {
             label: 'Ask for approval',
             icon: 'ti ti-thumb-up',
+            command: () => {
+                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/ApprovalForm.vue'));
+            }
         },
     ];
 
@@ -238,7 +251,9 @@
             <div></div>
         </div>
         <div class="grid grid-cols-12 h-full">
-            <div ref="left-side" class="col-span-9 flex flex-col space-y-4 px-10 overflow-y-auto pb-10">
+            <div ref="left-side" class="col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
+                <component v-if="current_new_itemtype !== null" :is="current_new_itemtype" @close="current_new_itemtype = null"></component>
+                <TimelineItem v-for="item in items.slice().reverse()" :key="`${item.type}-${item.item.id}`" :item="item" />
                 <TimelineItem key="content" :item="{
                     type: 'content',
                     item: {
@@ -249,7 +264,6 @@
                         date_creation: item.date_creation || item.date
                     }
                 }"></TimelineItem>
-                <TimelineItem v-for="item in items" :key="`${item.type}-${item.item.id}`" :item="item" />
             </div>
             <div ref="right-side" class="col-span-3 overflow-y-auto">
                 <Form v-slot="$form" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
@@ -438,7 +452,10 @@
             <div class="relative h-20 col-span-12">
                 <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
                     <div class="[&>*]:me-2">
-                        <SplitButton label="Answer" icon="ti ti-message-circle" :model="extra_timeline_actions" :menuButtonProps="{'aria-label': 'More Options'}"></SplitButton>
+                        <SplitButton v-if="current_new_itemtype === null" label="Answer" icon="ti ti-message-circle"
+                                     :model="extra_timeline_actions" :menuButtonProps="{'aria-label': 'More Options'}"
+                                     @click="current_new_itemtype = defineAsyncComponent(() => import('@/components/timeline/forms/FollowupForm.vue'));">
+                        </SplitButton>
                         <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"></Button>
                         <Button icon="ti ti-list-check" title="View TODO list" variant="outlined"></Button>
                     </div>
