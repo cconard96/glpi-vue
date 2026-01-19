@@ -30,6 +30,11 @@ router.beforeEach((to, from) => {
     }
     const requires_auth = to.meta.requiresAuth !== undefined ? to.meta.requiresAuth : true;
     if ((requires_auth ?? true) && !isAuthenticated()) {
+        const to_path = to.fullPath;
+        // if the to_path is already /login, don't add another redirect
+        if (to_path.startsWith('/login')) {
+            return;
+        }
         return {
             path: '/login',
             // save the location we were at to come back later
