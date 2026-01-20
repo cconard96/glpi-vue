@@ -5,7 +5,7 @@
     import SelectButton from 'primevue/selectbutton';
     import { useApi, type SearchResult } from '@/composables/useApi.ts';
     import { ComponentSchema } from "@/api/ComponentSchema";
-    import {computed, ref, watch} from "vue";
+    import {computed, onMounted, ref, watch} from "vue";
 
     const { component_module, itemtype } = defineProps({
         component_module: {
@@ -78,7 +78,11 @@
             results_loading.value = false;
         });
     };
-    await updateResults();
+
+    onMounted(() => {
+        updateResults();
+    });
+
     // Flatten the JSON so there is only one level of properties (dot notation) for the DataTable
     // For array properties, join them with a newline
     const flattened_results = computed(() => {
