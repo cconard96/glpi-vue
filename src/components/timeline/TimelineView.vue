@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import {ref, onMounted, useTemplateRef, shallowRef, defineAsyncComponent} from "vue";
+    import {ref, onMounted, useTemplateRef, shallowRef, defineAsyncComponent, reactive, computed} from "vue";
     import { useApi } from "@/composables/useApi.ts";
-    import { Button, SplitButton, ButtonGroup, Menu } from 'primevue';
+    import { Button, SplitButton, ButtonGroup, Menu, ToggleSwitch, Popover } from 'primevue';
     import { RouterLink } from "vue-router";
     import { ITILStatus } from "@/models/assistance/ITILStatus.js";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
@@ -96,9 +96,68 @@
         document.title = `GLPI - ${itemtype_name} #${item.value.id} - ${item.value.name}`;
     });
 
+    const filters = {
+        filter_description: {
+            label: 'Description',
+            icon: 'ti ti-alert-circle',
+            value: ref(true)
+        },
+        filter_followups: {
+            label: 'Followups',
+            icon: 'ti ti-message-circle',
+            value: ref(true)
+        },
+        filter_tasks: {
+            label: 'Tasks',
+            icon: 'ti ti-checkbox',
+            value: ref(true)
+        },
+        filter_documents: {
+            label: 'Documents',
+            icon: 'ti ti-files',
+            value: ref(true)
+        },
+        filter_approvals: {
+            label: 'Approvals',
+            icon: 'ti ti-thumb-up',
+            value: ref(true)
+        },
+        filter_solutions: {
+            label: 'Solutions',
+            icon: 'ti ti-check',
+            value: ref(true)
+        },
+    };
+    const todo_list_mode = ref(false);
+    const filtered_items = computed(() => {
+        return items.value.filter((timeline_item) => {
+            if (todo_list_mode.value) {
+                return timeline_item.type === 'Task';
+            }
+            switch (timeline_item.type) {
+                case 'Followup':
+                    return filters.filter_followups.value.value;
+                case 'Task':
+                    return filters.filter_tasks.value.value;
+                case 'Document':
+                    return filters.filter_documents.value.value;
+                case 'Approval':
+                    return filters.filter_approvals.value.value;
+                case 'Solution':
+                    return filters.filter_solutions.value.value;
+                default:
+                    return true;
+            }
+        });
+    });
+
     const actions_menu_el = useTemplateRef('actions_menu');
+    const filters_menu_el = useTemplateRef('filters_menu');
     function toggleActionsMenu(e) {
         actions_menu_el.value.toggle(e);
+    }
+    function toggleFiltersMenu(e) {
+        filters_menu_el.value.toggle(e);
     }
 </script>
 
@@ -120,8 +179,9 @@
         <div class="grid grid-cols-12 h-full">
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                 <component v-if="current_new_itemtype !== null" :is="current_new_itemtype" @close="current_new_itemtype = null"></component>
-                <TimelineItem v-for="item in items.slice().reverse()" :key="`${item.type}-${item.item.id}`" :item="item" />
-                <TimelineItem key="content" :item="{
+                <TimelineItem v-for="item in filtered_items.slice().reverse()" :key="`${item.type}-${item.item.id}`"
+                              :item="item" :todoListMode="todo_list_mode" />
+                <TimelineItem :class="(!todo_list_mode && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
                     type: 'content',
                     item: {
                         name: item.name,
@@ -142,8 +202,21 @@
                                      :model="extra_timeline_actions" :menuButtonProps="{'aria-label': 'More Options'}"
                                      @click="current_new_itemtype = defineAsyncComponent(() => import('@/components/timeline/forms/FollowupForm.vue'));">
                         </SplitButton>
-                        <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"></Button>
-                        <Button icon="ti ti-list-check" title="View TODO list" variant="outlined"></Button>
+                        <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"
+                                @click="toggleFiltersMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
+                        <Popover ref="filters_menu">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex" v-for="[filter_item_key, filter_item] in Object.entries(filters)">
+                                    <ToggleSwitch :id="filter_item_key" :model-value="filter_item.value"></ToggleSwitch>
+                                    <label :for="filter_item_key" class="ms-2">
+                                        <i :class="filter_item.icon"></i>
+                                        {{ filter_item.label }}
+                                    </label>
+                                </div>
+                            </div>
+                        </Popover>
+                        <Button icon="ti ti-list-check" title="View TODO list" variant="outlined"
+                                @click="todo_list_mode = !todo_list_mode"></Button>
                     </div>
                     <div class="">
                         <ButtonGroup>

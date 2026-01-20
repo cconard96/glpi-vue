@@ -5,12 +5,10 @@
     import { useApi } from '@/composables/useApi';
     import { useIntersectionObserver } from '@vueuse/core';
 
-    const { item } = defineProps({
-        item: {
-            type: Object,
-            required: true
-        }
-    });
+    const props = defineProps<{
+        item: any,
+        todoListMode?: boolean
+    }>();
 
     const human_readable_time = (timestamp: string): string => {
         const date = new Date(timestamp);
@@ -25,11 +23,11 @@
     };
 
     const timeline_alignment = computed(() => {
-        return (item.item.timeline_position === 3 || item.item.timeline_position === 4) ? 'right' : 'left';
+        return (props.item.item.timeline_position === 3 || props.item.item.timeline_position === 4) ? 'right' : 'left';
     });
 
     const bg_color = computed(() => {
-        switch (item.type) {
+        switch (props.item.type) {
             case 'Task':
                 return 'bg-yellow-400/50 dark:bg-yellow-500/25';
             case 'Solution':
@@ -94,15 +92,15 @@
 </script>
 
 <template>
-    <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} max-w-200`">
+    <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
         <Avatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''"></Avatar>
-        <Card v-if="['Followup', 'Task', 'Solution'].includes(item.type)" :pt="{
+        <Card v-if="['Followup', 'Task', 'Solution', 'content'].includes(item.type)" :pt="{
             body: {
                 class: `p-2 ${bg_color}`,
                 style: `background-color: ${bg_color}; border-radius: 0.5rem;`
             }
-        }">
-            <template #title>
+        }" class="w-full">
+            <template #title v-if="!todoListMode">
                 <span class="text-sm">Created {{ human_readable_time(item.item.date_creation || item.item.date) }}</span>
             </template>
             <template #content>
