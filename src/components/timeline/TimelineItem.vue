@@ -99,7 +99,7 @@
                 class: `p-2 ${bg_color}`,
                 style: `background-color: ${bg_color}; border-radius: 0.5rem;`
             }
-        }" class="w-full">
+        }" :class="todoListMode ? 'w-full' : 'max-w-200'">
             <template #title v-if="!todoListMode">
                 <span class="text-sm">Created {{ human_readable_time(item.item.date_creation || item.item.date) }}</span>
             </template>
