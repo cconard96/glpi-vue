@@ -43,6 +43,20 @@ export const routes = [
                 }
             },
             {
+                name: 'AssistanceStats',
+                path: '/assistance/statistics',
+                alias: ['/assistance/stat', '/assistance/stats'],
+                component: () => import('../components/assistance/stats/StatisticsView.vue'),
+                meta: {
+                    breadcrumbs: (route) => {
+                        return [
+                            { label: 'Assistance', disabled: true },
+                            { label: 'Statistics', url: `/assistance/statistics` },
+                        ];
+                    }
+                }
+            },
+            {
                 name: 'ItemForm',
                 path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype/:id(\\d+)',
                 component: () => import('../components/ItemForm.vue'),

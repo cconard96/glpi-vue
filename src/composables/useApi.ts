@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { useAuth } from "./useAuth";
 import { useSessionStore } from "./useSessionStore";
 
@@ -32,13 +33,7 @@ export function useApi() {
         }
     }
 
-    /**
-     *
-     * @param {string} url
-     * @param {axios.AxiosRequestConfig} config
-     * @returns {Promise<axios.AxiosResponse<any>>}
-     */
-    const doApiRequest = (url, config = {}) => {
+    const doApiRequest = (url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> => {
         const host = import.meta.env.VITE_GLPI_URL;
         // ensure the url does not start with a slash
         if (url.startsWith('/')) {
