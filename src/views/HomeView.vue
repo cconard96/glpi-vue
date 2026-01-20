@@ -3,11 +3,12 @@
     import {RouterView, useRouter} from "vue-router";
     import {Breadcrumb, Menubar, ProgressSpinner, DynamicDialog, useDialog } from "primevue";
     import {useSessionStore} from "@/composables/useSessionStore.ts";
-    import {computed, defineAsyncComponent, ref} from "vue";
+    import {computed, defineAsyncComponent, ref, useTemplateRef} from "vue";
     import {useAuth} from "@/composables/useAuth.ts";
     import {useMainMenu} from "@/composables/useMainMenu.ts";
     import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
     import DynamicBreadcrumbs from "@/components/layout/DynamicBreadcrumbs.vue";
+    import {useBreakpoints, breakpointsBootstrapV5} from "@vueuse/core";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
@@ -80,20 +81,29 @@
             ]
         }
     ]);
+    const mobile_menu_el = useTemplateRef('mobile_menu');
+
+    const breakpoints = useBreakpoints(breakpointsBootstrapV5);
+    const is_mobile = breakpoints.smaller('md');
 </script>
 
 <template>
     <div class="home-container grid grid-cols-[250px_1fr] h-screen">
         <DynamicDialog />
-        <NavMenu class="row-span-2"/>
-        <div class="px-4 pt-2 h-screen grid grid-cols-1 grid-rows-[60px_auto]">
+        <Teleport class="contents" :disabled="!is_mobile" to="#mobile_menu" defer>
+            <NavMenu :mobile="is_mobile" />
+        </Teleport>
+        <div :class="`px-4 pt-2 h-screen grid grid-cols-1 ${is_mobile ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
             <div class="mb-2 flex justify-between">
-                <DynamicBreadcrumbs></DynamicBreadcrumbs>
+                <div class="flex">
+                    <div id="mobile_menu" class="me-2"></div>
+                    <DynamicBreadcrumbs></DynamicBreadcrumbs>
+                </div>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
                     submenu: {
                         'class': 'justify-self-end z-1000'
                     }
-                }"></Menubar>
+                }" breakpoint=""></Menubar>
             </div>
             <RouterView v-slot="{ Component }">
                 <ErrorBoundary>
