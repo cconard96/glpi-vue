@@ -7,6 +7,7 @@
     import {useAuth} from "@/composables/useAuth.ts";
     import {useMainMenu} from "@/composables/useMainMenu.ts";
     import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
+    import DynamicBreadcrumbs from "@/components/layout/DynamicBreadcrumbs.vue";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
@@ -87,7 +88,7 @@
         <NavMenu class="row-span-2"/>
         <div class="px-4 pt-2 h-screen grid grid-cols-1 grid-rows-[60px_auto]">
             <div class="mb-2 flex justify-between">
-                <Breadcrumb class="p-4" :home="{ icon: 'pi pi-home', url: '/', label: 'Home', 'aria-label': 'Test' }" aria-label="Breadcrumbs"></Breadcrumb>
+                <DynamicBreadcrumbs></DynamicBreadcrumbs>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
                     submenu: {
                         'class': 'justify-self-end z-1000'
