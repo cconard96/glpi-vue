@@ -78,8 +78,8 @@ export const routes = [
             },
             {
                 name: 'Knowbase',
-                path: 'tools/knowbase/:article_id(\\d+)',
-                alias: ['tools/knowbase', '/tools/knowledgebase', '/tools/kb'],
+                path: 'tools/knowbase/:article_id(\\d+)?',
+                alias: ['tools/knowbase/:article_id(\\d+)?', '/tools/knowledgebase/:article_id(\\d+)?', '/tools/kb/:article_id(\\d+)?'],
                 component: () => import('../components/kb/KBSearchView.vue'),
                 meta: {
                     title: 'Knowledge Base',
