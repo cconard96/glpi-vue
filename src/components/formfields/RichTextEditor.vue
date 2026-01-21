@@ -8,11 +8,12 @@
             default: false
         }
     });
+    const model = defineModel();
 </script>
 
 <template>
     <div>
-        <Editor editorStyle="height: 150px"></Editor>
+        <Editor editorStyle="height: 150px" v-model="model"></Editor>
         <FileUpload v-if="enable_file_upload" :pt="{
                 root: {
                     class: 'mt-2'

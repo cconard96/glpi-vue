@@ -81,6 +81,12 @@ export const useSessionStore = defineStore('session', {
         getActiveEntities: (state) => state.active_entities,
         getActiveProfile: (state) => state.active_profile,
         getActiveEntity: (state) => state.active_entity,
+        hasRight: (state) => {
+            return (module: string, right: number) => {
+                const module_rights = state.active_profile?.rights?.[module] || 0;
+                return (module_rights & right) === right;
+            }
+        }
     },
     persist: true,
 });

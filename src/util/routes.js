@@ -76,6 +76,21 @@ export const routes = [
                 name: 'ProjectKanban',
                 path: 'tools/project/:id/kanban',
             },
+            {
+                name: 'Knowbase',
+                path: 'tools/knowbase/:article_id(\\d+)',
+                alias: ['tools/knowbase', '/tools/knowledgebase', '/tools/kb'],
+                component: () => import('../components/kb/KBSearchView.vue'),
+                meta: {
+                    title: 'Knowledge Base',
+                    breadcrumbs: (route) => {
+                        return [
+                            { label: 'Tools', disabled: true },
+                            { label: 'Knowledge Base', url: `/tools/knowbase` },
+                        ];
+                    }
+                }
+            },
             { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
         ],
     },
