@@ -12,6 +12,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import {useAuth} from "@/composables/useAuth.ts";
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 import {DialogService} from "primevue";
+import {definePreset} from "@primeuix/themes";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -48,12 +49,14 @@ router.beforeEach((to, from) => {
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
+const theme_preset = definePreset(Lara, {});
+
 createApp(App)
     .use(router)
     .use(pinia)
     .use(PrimeVue, {
         theme: {
-            preset: Lara,
+            preset: theme_preset,
             options: {
                 prefix: 'p',
                 darkModeSelector: 'system',
@@ -61,7 +64,7 @@ createApp(App)
                     name: 'primevue',
                     order: 'theme, base, primevue'
                 },
-            }
+            },
         }
     })
     .use(VueDOMPurifyHTML)

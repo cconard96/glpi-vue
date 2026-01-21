@@ -28,7 +28,7 @@
 </script>
 
 <template>
-    <nav :class="!mobile ? 'h-screen' : ''" aria-label="Main Navigation">
+    <nav class="bg-primary-700 dark:bg-inherit" :class="!mobile ? 'h-screen' : ''" aria-label="Main Navigation">
         <RouterLink v-show="!mobile" to="/" class="flex items-center justify-center h-16 bg-primary text-white text-2xl font-bold">
             GLPI
         </RouterLink>

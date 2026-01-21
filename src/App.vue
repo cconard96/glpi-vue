@@ -13,7 +13,7 @@
 </script>
 
 <template>
-    <div>
+    <div class="bg-[#f5f7fb] dark:bg-inherit">
         <Suspense>
             <RouterView :key="route.fullPath" />
         </Suspense>
