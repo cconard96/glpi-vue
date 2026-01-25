@@ -29,7 +29,7 @@
 
 <template>
     <nav class="light:bg-[#2f3f64] dark:bg-inherit" :class="!mobile ? 'h-screen' : ''" aria-label="Main Navigation">
-        <RouterLink v-show="!mobile" to="/" class="flex items-center justify-center h-16 text-white text-2xl font-bold">
+        <RouterLink v-show="!mobile" to="/" class="flex items-center justify-center h-16 text-white text-4xl font-bold">
             GLPI
         </RouterLink>
         <div>

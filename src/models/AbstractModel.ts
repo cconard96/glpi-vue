@@ -2,7 +2,7 @@ import { useApi } from '../composables/useApi.ts';
 import { DatePicker, Password, InputText, InputNumber, Checkbox } from 'primevue';
 
 export class AbstractModel {
-    static getTypeModule() {
+    static getTypeModule(): String {
         return null;
     }
 
@@ -138,5 +138,68 @@ export class AbstractModel {
             ['uuid', 'UUID'],
             ['autoupdatesystem', 'Update Source'],
         ]);
+    }
+
+    static getTabs(): Array {
+        throw new Error('getTabs() must be implemented by subclasses');
+    }
+
+    /**
+     * Return a string of all GraphQL fields recursively for this model based on the OpenAPI schema
+     * @protected
+     */
+    static async getFullGraphQLFields(): Promise<String> {
+        const schema = await this.getOpenAPISchema();
+        const buildFields = (properties, parent_key: String) => {
+            let fields = '';
+            for (const [key, prop] of Object.entries(properties)) {
+                let field_name = key;
+                if (field_name === 'name' && ['user', 'user_tech'].includes(parent_key)) {
+                    // Fix for GLPI bug
+                    field_name = 'name: username';
+                }
+                if (prop.type === 'object' && prop.properties) {
+                    fields += `${field_name} { ${buildFields(prop.properties, field_name)} } `;
+                } else if (prop.type === 'array' && prop.items && prop.items.type === 'object' && prop.items.properties) {
+                    fields += `${field_name} { ${buildFields(prop.items.properties, field_name)} } `;
+                } else {
+                    fields += `${field_name} `;
+                }
+            }
+            return fields;
+        };
+        return buildFields(schema.properties, null);
+    }
+
+    /**
+     * Load an item by ID with specified fields. If no fields are specified, load all immediate fields.
+     * @param id
+     * @param fields
+     */
+    static loadItem(id: number, fields: string[] = []): Promise<any> {
+        const { doGraphQLRequest } = useApi();
+        const fields_to_query = fields.length > 0 ? Promise.resolve(fields.join(' ')) : this.getFullGraphQLFields();
+        return fields_to_query.then((fields) => {
+            return doGraphQLRequest(`
+                query {
+                    ${this.getOpenAPISchemaName()}(id: ${id}) {
+                        ${fields}
+                    }
+                }
+            `).then((response) => {
+                const data = response.data.data[this.getOpenAPISchemaName()][0];
+                // flatten objects that have an 'id' field for easier use with forms
+                for (const [key, value] of Object.entries(data)) {
+                    if (value && typeof value === 'object' && 'id' in value) {
+                        data[key] = value.id;
+                        data[`_${key}`] = value; // keep the full object as well. could be useful to be able to immediately show the selection in a dropdown
+                    } else if (value && Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' && 'id' in value[0]) {
+                        data[key] = value.map(item => item.id);
+                        data[`_${key}`] = value; // keep the full objects as well
+                    }
+                }
+                return data;
+            });
+        });
     }
 }

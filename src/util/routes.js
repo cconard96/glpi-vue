@@ -59,8 +59,17 @@ export const routes = [
             {
                 name: 'ItemForm',
                 path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype/:id(\\d+)',
-                component: () => import('../components/ItemForm.vue'),
-                props: true,
+                component: () => import('../components/TabbedForm.vue'),
+                props: async (router) => {
+                    const itemtype_model = (await import(`@/models/${router.params.component_module}/${router.params.itemtype.charAt(0).toUpperCase() + router.params.itemtype.slice(1)}.ts`)).default;
+                    return {
+                        component_module: router.params.component_module,
+                        itemtype: router.params.itemtype,
+                        id: parseInt(router.params.id),
+                        itemtype_model: itemtype_model,
+                        tabs: itemtype_model.getTabs()
+                    };
+                },
                 meta: {
                     breadcrumbs: (route) => {
                         return [

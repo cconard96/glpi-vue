@@ -1,6 +1,7 @@
-import { AbstractModel } from "@/models/AbstractModel.js";
+import { AbstractModel } from "@/models/AbstractModel.ts";
+import {defineAsyncComponent} from "vue";
 
-export class Computer extends AbstractModel {
+export default class Computer extends AbstractModel {
     static getTypeModule() {
         return 'assets';
     }
@@ -15,5 +16,36 @@ export class Computer extends AbstractModel {
 
     static getIcon() {
         return 'ti ti-device-laptop';
+    }
+
+    static getTabs() {
+        return [
+            { key: 'main', label: this.getTypeName(), icon: this.getIcon(), component: defineAsyncComponent(() => import('@/components/assets/ComputerForm.vue')) },
+            { key: 'impact', label: 'Impact Analysis', icon: '' },
+            { key: 'osinstall', label: 'Operating Systems', icon: 'ti ti-device-desktop-cog', component: defineAsyncComponent(() => import('@/components/assets/tabs/OSInstallTab.vue')) },
+            { key: 'component', label: 'Components', icon: '' },
+            { key: 'lines', label: 'Phone Lines', icon: '' },
+            { key: 'volume', label: 'Volumes', icon: '' },
+            { key: 'software', label: 'Software', icon: '' },
+            { key: 'connection', label: 'Connections', icon: '' },
+            { key: 'networkport', label: 'Network Ports', icon: '' },
+            { key: 'sockets', label: 'Sockets', icon: '' },
+            { key: 'remotemanagement', label: 'Remote Management', icon: '' },
+            { key: 'infocom', label: 'Management', icon: '' },
+            { key: 'contract', label: 'Contracts', icon: '' },
+            { key: 'document', label: 'Documents', icon: '' },
+            { key: 'virtualization', label: 'Virtualization', icon: '' },
+            { key: 'antivirus', label: 'Antiviruses', icon: '' },
+            { key: 'kb', label: 'Knowledge base', icon: '' },
+            { key: 'assistance', label: 'Assistance', icon: '' },
+            { key: 'project', label: 'Projects', icon: '' },
+            { key: 'link', label: 'Links', icon: '' },
+            { key: 'certificate', label: 'Certificates', icon: '' },
+            { key: 'note', label: 'Notes', icon: '' },
+            { key: 'reservation', label: 'Reservations', icon: '' },
+            { key: 'domain', label: 'Domains', icon: '' },
+            { key: 'appliance', label: 'Appliances', icon: '' },
+            { key: 'database', label: 'Databases', icon: '' },
+        ];
     }
 }

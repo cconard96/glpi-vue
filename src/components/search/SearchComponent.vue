@@ -1,8 +1,5 @@
 <script setup lang="ts">
-    import DataTable from 'primevue/datatable';
-    import Column from 'primevue/column';
-    import InputText from 'primevue/inputtext';
-    import SelectButton from 'primevue/selectbutton';
+    import {DataTable, Column, InputText, SelectButton, Message} from 'primevue';
     import { useApi, type SearchResult } from '@/composables/useApi.ts';
     import { ComponentSchema } from "@/api/ComponentSchema";
     import {computed, onMounted, ref, watch} from "vue";
@@ -114,7 +111,7 @@
             :loading="results_loading"
             :value="flattened_results" scrollable scrollHeight="flex"
             paginator :first="results.start" :rows="20" :totalRecords="results.total"
-            :rowsPerPageOptions="[5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
+            :rowsPerPageOptions="[5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 500, 1000]"
             @page="updateResults({
                 limit: $event.rows,
                 start: $event.first
@@ -125,6 +122,9 @@
                 <div>
                     <SelectButton v-model="is_deleted" size="small" :options="[{label: 'Active', value: 0}, {label: 'Deleted', value: 1}]" optionLabel="label" optionValue="value"/>
                 </div>
+            </template>
+            <template #empty>
+                <Message severity="info">No results found.</Message>
             </template>
             <Column v-for="col of columns" :field="col.field" :header="col.header">
                 <template #body="slotProps">

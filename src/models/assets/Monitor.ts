@@ -1,6 +1,6 @@
-import { AbstractModel } from "@/models/AbstractModel.js";
+import { AbstractModel } from "@/models/AbstractModel.ts";
 
-export class Monitor extends AbstractModel {
+export default class Monitor extends AbstractModel {
     static getTypeModule() {
         return 'assets';
     }
