@@ -8,6 +8,9 @@
         "noEmit": true,
         "allowUmdGlobalAccess": true,
         "rootDir": "src",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        },
     },
 }

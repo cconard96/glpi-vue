@@ -2,7 +2,7 @@
     import { Card, ProgressSpinner, Button, Popover, Divider, Menu, InputText, Tree } from 'primevue';
     import { useApi } from '@/composables/useApi.ts';
     import {computed, ref, useTemplateRef, watch} from "vue";
-    import RichTextEditor from "@/components/formfields/RichTextEditor.vue";
+    import RichTextEditor from "@/components/forms/RichTextEditor.vue";
     import {useSessionStore} from "@/composables/useSessionStore";
     import {useRouter} from "vue-router";
 

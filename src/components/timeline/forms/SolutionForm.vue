@@ -2,7 +2,7 @@
     import {Avatar, Card, Button, Select, FloatLabel, ToggleSwitch} from "primevue";
     import {useSessionStore} from "@/composables/useSessionStore";
     import {useTemplateRef} from "vue";
-    import RichTextEditor from "@/components/formfields/RichTextEditor.vue";
+    import RichTextEditor from "@/components/forms/RichTextEditor.vue";
 
     const { getFriendlyName } = useSessionStore();
     defineEmits(['close', 'add']);

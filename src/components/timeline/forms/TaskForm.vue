@@ -4,7 +4,7 @@
     } from "primevue";
     import {useSessionStore} from "@/composables/useSessionStore";
     import {ref, useTemplateRef} from "vue";
-    import RichTextEditor from "@/components/formfields/RichTextEditor.vue";
+    import RichTextEditor from "@/components/forms/RichTextEditor.vue";
 
     const { getFriendlyName } = useSessionStore();
     defineEmits(['close', 'add']);

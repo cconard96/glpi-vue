@@ -28,20 +28,25 @@
 </script>
 
 <template>
-    <nav class="bg-primary-700 dark:bg-inherit" :class="!mobile ? 'h-screen' : ''" aria-label="Main Navigation">
-        <RouterLink v-show="!mobile" to="/" class="flex items-center justify-center h-16 bg-primary text-white text-2xl font-bold">
+    <nav class="light:bg-[#2f3f64] dark:bg-inherit" :class="!mobile ? 'h-screen' : ''" aria-label="Main Navigation">
+        <RouterLink v-show="!mobile" to="/" class="flex items-center justify-center h-16 text-white text-2xl font-bold">
             GLPI
         </RouterLink>
         <div>
-            <PanelMenu v-if="!mobile" :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full overflow-y-auto">
+            <PanelMenu v-if="!mobile" :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full overflow-y-auto"
+                       :pt="{
+                            panel: { class: 'bg-inherit border-0' },
+                            headerContent: { class: 'light:text-surface-100 hover:bg-[#212c46]' },
+                            itemContent: { class: 'light:text-surface-100 hover:bg-[#212c46]' }
+                       }">
                 <template #item="{ item }" :key="item.key ?? item.label.toLowerCase()">
                     <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom class="w-full">
-                        <a class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2" :href="href" @click="navigate">
+                        <a class="flex items-center cursor-pointer px-4 py-2" :href="href" @click="navigate">
                             <span :class="item.icon" />
                             <span class="ml-2">{{ item.label }}</span>
                         </a>
                     </RouterLink>
-                    <a v-else class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2" :href="item.url" :target="item.target">
+                    <a v-else class="flex items-center cursor-pointer px-4 py-2" :href="item.url" :target="item.target">
                         <span :class="item.icon" />
                         <span class="ml-2">{{ item.label }}</span>
                         <span v-if="item.items" class="pi pi-angle-down text-primary ml-auto" />

@@ -14,3 +14,4 @@ html {
 @theme {
     --text-base: 14px;
 }
+@custom-variant light (@media (prefers-color-scheme: light));
