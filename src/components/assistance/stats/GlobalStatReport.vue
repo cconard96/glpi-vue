@@ -1,9 +1,14 @@
 <script setup lang="ts">
-    import * as echarts from 'echarts';
-    import { LinesChart } from 'echarts/charts';
+    import { use as echarts_use } from 'echarts/core';
+    import { SVGRenderer } from 'echarts/renderers';
+    import { LineChart, LinesChart } from 'echarts/charts';
+    import {
+        TooltipComponent, GridComponent, ToolboxComponent, LegendComponent, TitleComponent,
+    } from 'echarts/components';
     import VChart from 'vue-echarts';
     import {onMounted, ref} from "vue";
     import { FloatLabel, DatePicker } from 'primevue';
+    import {LegacyGridContainLabel} from "echarts/features";
 
     const {selected_report, report_data} = defineProps<{
         selected_report: any,
@@ -15,7 +20,10 @@
         required: true
     });
 
-    echarts.use([LinesChart]);
+    echarts_use([
+        SVGRenderer, LinesChart, LineChart, TooltipComponent, GridComponent, ToolboxComponent, LegendComponent,
+        TitleComponent, LegacyGridContainLabel
+    ]);
 
     const state_count_option = ref(null);
     const time_avg_option = ref(null);

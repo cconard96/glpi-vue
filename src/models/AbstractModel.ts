@@ -63,6 +63,9 @@ export class AbstractModel {
         return this.getSchemaPropertiesForFields().then(props => {
             const fields_data = {};
             for (const [key, prop] of Object.entries(props)) {
+                if (['id', 'entity', 'is_recursive', 'is_deleted', 'date_creation', 'date_mod'].includes(key)) {
+                    continue;
+                }
                 const field = {
                     name: key,
                 };
@@ -85,6 +88,9 @@ export class AbstractModel {
                     case 'boolean':
                         field.component = Checkbox;
                         break;
+                    case 'object':
+                        console.log(prop);
+                        continue;
                     default:
                         continue;
                 }
@@ -105,5 +111,32 @@ export class AbstractModel {
         return this.getFormFields().then(fields => {
             return Object.keys(fields);
         });
+    }
+
+    static getFormFieldLabels() {
+        return new Map([
+            ['id', 'ID'],
+            ['name', 'Name'],
+            ['comment', 'Comments'],
+            ['date_creation', 'Creation Date'],
+            ['date_mod', 'Modification Date'],
+            ['status', 'Status'],
+            ['location', 'Location'],
+            ['entity', 'Entity'],
+            ['type', 'Type'],
+            ['manufacturer', 'Manufacturer'],
+            ['model', 'Model'],
+            ['user', 'User'],
+            ['user_tech', 'Technician in Charge'],
+            ['group', 'Group'],
+            ['group_tech', 'Group in Charge'],
+            ['contact', 'Alternate Username'],
+            ['contact_num', 'Alternate Username Number'],
+            ['serial', 'Serial Number'],
+            ['otherserial', 'Inventory Number'],
+            ['network', 'Network'],
+            ['uuid', 'UUID'],
+            ['autoupdatesystem', 'Update Source'],
+        ]);
     }
 }
