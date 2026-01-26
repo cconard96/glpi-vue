@@ -7,15 +7,11 @@
     const component_module = route.params.component_module as string;
     const itemtype = route.params.itemtype as string;
     const items_id = parseInt(route.params.id as string);
-    const itemtype_model = (await import(`@/models/${component_module}/${itemtype?.charAt(0).toUpperCase() + itemtype?.slice(1)}.ts`)).default;
+    const {default: itemtype_model} = await import(`@/models/${component_module}/${itemtype?.charAt(0).toUpperCase() + itemtype?.slice(1)}.ts`);
 
     const tabs = itemtype_model.getTabs();
     const main_item = await itemtype_model.loadItem(items_id);
 
-    // const tabs = [
-    //     { key: 'main', label: itemtype.charAt(0).toUpperCase() + itemtype.slice(1), component: defineAsyncComponent(() => import(`@/components/assets/MainAssetForm.vue`)) },
-    //     { key: 'osinstall', label: 'Operating system' },
-    // ];
     function onKeyDown(e: KeyboardEvent) {
         if (e.key === 'ArrowUp') {
             e.preventDefault();
@@ -52,13 +48,13 @@
 <template>
     <div>
         <ItemFormHeader :item="main_item"></ItemFormHeader>
-        <Tabs value="main" class="grid grid-cols-[200px_1fr] h-full" orientation="vertical">
+        <Tabs value="main" class="grid grid-cols-[200px_1fr] h-full" orientation="vertical" lazy>
             <TabList :pt="{ tabList: {class: 'flex-col', 'aria-orientation': 'vertical'} }">
-                <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0" @keydown="onKeyDown">{{ tab.label }}</Tab>
+                <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">{{ tab.label }}</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel v-for="tab in tabs" :key="tab.key" :value="tab.key" class="p-4 h-full overflow-auto">
-                    <component v-if="tab.component" :is="tab.component" :itemtype="itemtype" :items_id="items_id" :main_item="main_item" />
+                    <component v-if="tab.component" :is="tab.component" :itemtype="itemtype" :items_id="items_id" :main_item="main_item" :main_itemtype_model="itemtype_model"/>
                     <div v-else>
                         <Message severity="error">There doesn't seem to be anything here</Message>
                     </div>

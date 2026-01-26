@@ -189,17 +189,22 @@ export class AbstractModel {
             `).then((response) => {
                 const data = response.data.data[this.getOpenAPISchemaName()][0];
                 // flatten objects that have an 'id' field for easier use with forms
-                for (const [key, value] of Object.entries(data)) {
-                    if (value && typeof value === 'object' && 'id' in value) {
-                        data[key] = value.id;
-                        data[`_${key}`] = value; // keep the full object as well. could be useful to be able to immediately show the selection in a dropdown
-                    } else if (value && Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' && 'id' in value[0]) {
-                        data[key] = value.map(item => item.id);
-                        data[`_${key}`] = value; // keep the full objects as well
-                    }
-                }
-                return data;
+                return this.formatFieldsForForm(data);
             });
         });
+    }
+
+    static formatFieldsForForm(data: any): any {
+        const formatted_data = { ...data };
+        for (const [key, value] of Object.entries(formatted_data)) {
+            if (value && typeof value === 'object' && 'id' in value) {
+                formatted_data[key] = value.id;
+                formatted_data[`_${key}`] = value; // keep the full object as well. could be useful to be able to immediately show the selection in a dropdown
+            } else if (value && Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' && 'id' in value[0]) {
+                formatted_data[key] = value.map(item => item.id);
+                formatted_data[`_${key}`] = value; // keep the full objects as well
+            }
+        }
+        return formatted_data;
     }
 }

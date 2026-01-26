@@ -5,6 +5,7 @@
     import { useApi } from "@/composables/useApi";
     import {onMounted, ref} from "vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
+    import FormFields from "@/components/forms/FormFields.vue";
 
     const props = defineProps({
         itemtype: {
@@ -34,51 +35,12 @@
     const group_tech_options = ref([]);
     const network_options = ref([]);
     const autoupdatesystem_options = ref([]);
-
-    // onMounted(async () => {
-    //     await doGraphQLRequest(`
-    //         query {
-    //             Computer(id: ${props.items_id}) {
-    //                 id
-    //                 name
-    //                 comment
-    //                 date_creation
-    //                 date_mod
-    //                 status { id name }
-    //                 location { id name }
-    //                 entity { id name }
-    //                 is_recursive
-    //                 type { id name }
-    //                 manufacturer { id name }
-    //                 model { id name }
-    //                 user { id name: username }
-    //                 user_tech { id name: username }
-    //                 group { id name }
-    //                 group_tech { id name }
-    //                 contact
-    //                 contact_num
-    //                 serial
-    //                 otherserial
-    //                 network { id name }
-    //                 uuid
-    //                 autoupdatesystem { id name }
-    //                 is_deleted
-    //             }
-    //         }
-    //     `).then((res) => {
-    //         const result = res.data.data;
-    //         if (!result || !result['Computer'] || result['Computer'].length === 0) {
-    //             throw new Error('Item not found');
-    //         }
-    //         item.value = res.data.data['Computer'][0];
-    //     });
-    // });
 </script>
 
 <template>
     <section>
         <Form v-slot="$form" :initialValues="main_item" class="flex flex-col gap-4 w-full sm-w-56 px-4">
-            <div class="gap-y-4 flex flex-wrap [&>div]:w-1/2 [&>div>label]:flex [&>div>label]:items-baseline [&>div>label>span]:w-1/3 [&>div>label>span]:text-end [&>div>label>span]:me-4 [&>div>label>:not(span)]:w-2/3">
+            <FormFields>
                 <FormField name="name">
                     <label>
                         <span>Name</span>
@@ -154,7 +116,7 @@
                 <FormField name="autoupdatesystem" v-slot="$slot">
                     <FieldSelect label="Update source"></FieldSelect>
                 </FormField>
-            </div>
+            </FormFields>
             <div class="flex flex-row-reverse gap-x-2">
                 <Button label="Save" icon="ti ti-device-floppy" class="me-2"></Button>
                 <Button severity="warn" variant="outlined" label="Put in trashbin" icon="ti ti-trash"></Button>
