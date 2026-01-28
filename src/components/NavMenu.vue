@@ -32,7 +32,7 @@
         <RouterLink v-show="!mobile" to="/" class="flex items-center justify-center h-16 text-white text-4xl font-bold">
             GLPI
         </RouterLink>
-        <div>
+        <div style="height: calc(100% - var(--spacing) * 16)">
             <PanelMenu v-if="!mobile" :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full overflow-y-auto"
                        :pt="{
                             panel: { class: 'bg-inherit border-0' },
