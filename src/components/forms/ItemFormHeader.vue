@@ -20,7 +20,7 @@
 </script>
 
 <template>
-    <div class="text-lg flex justify-between p-2">
+    <div class="text-lg flex justify-between p-2 w-full">
         <RouterLink :to="{ name: 'Search', params: $route.params}">
             <i class="ti ti-list-search"></i>
         </RouterLink>

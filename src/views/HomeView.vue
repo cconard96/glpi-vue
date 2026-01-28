@@ -96,7 +96,7 @@
         <div :class="`px-4 pt-2 h-screen grid grid-cols-1 ${is_mobile ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
             <div class="mb-2 flex justify-between">
                 <div class="flex">
-                    <div v-if="is_mobile" id="mobile_menu" class="me-2"></div>
+                    <div id="mobile_menu" class="me-2"></div>
                     <DynamicBreadcrumbs></DynamicBreadcrumbs>
                 </div>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
@@ -109,9 +109,9 @@
                 <KeepAlive>
                     <ErrorBoundary>
                         <Suspense>
-                            <component class="max-h-full" :is="Component" />
+                            <component class="max-h-full w-full" :is="Component" />
                             <template #fallback>
-                                <div class="flex justify-content-center align-items-center h-full">
+                                <div class="flex justify-content-center align-items-center h-full w-full">
                                     <ProgressSpinner />
                                 </div>
                             </template>

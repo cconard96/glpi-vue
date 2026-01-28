@@ -1,11 +1,11 @@
 <script setup lang="ts">
     import { Form, FormField } from '@primevue/forms';
     import { Button, InputText, Textarea } from "primevue";
-    import ItemFormHeader from "@/components/forms/ItemFormHeader.vue";
     import { useApi } from "@/composables/useApi";
     import {onMounted, ref} from "vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import FormFields from "@/components/forms/FormFields.vue";
+    import {AbstractModel} from "@/models/AbstractModel";
 
     const props = defineProps({
         itemtype: {
@@ -19,7 +19,11 @@
         main_item: {
             type: Object,
             required: true
-        }
+        },
+        main_itemtype_model: {
+            type: Function as typeof AbstractModel,
+            required: true
+        },
     });
 
     const { doGraphQLRequest } = useApi();
@@ -38,7 +42,7 @@
 </script>
 
 <template>
-    <section>
+    <section class="h-full overflow-y-auto">
         <Form v-slot="$form" :initialValues="main_item" class="flex flex-col gap-4 w-full sm-w-56 px-4">
             <FormFields>
                 <FormField name="name">
@@ -123,8 +127,10 @@
             </div>
         </Form>
         <footer class="flex">
-            <span v-if="main_item.date_creation" class="me-4 text-sm text-surface-500">Created on {{ new Date(main_item.date_creation).toLocaleString() }}</span>
-            <span v-if="main_item.date_mod" class="text-sm text-surface-500">Last modified on {{ new Date(main_item.date_mod).toLocaleString() }}</span>
+            <div class="flex flex-col">
+                <span v-if="main_item.date_creation" class="me-4 text-sm text-surface-500">Created on {{ new Date(main_item.date_creation).toLocaleString() }}</span>
+                <span v-if="main_item.date_mod" class="text-sm text-surface-500">Last modified on {{ new Date(main_item.date_mod).toLocaleString() }}</span>
+            </div>
         </footer>
     </section>
 </template>

@@ -23,7 +23,7 @@ export default class Computer extends AbstractModel {
             { key: 'main', label: this.getTypeName(), icon: this.getIcon(), component: defineAsyncComponent(() => import('@/components/assets/ComputerForm.vue')) },
             { key: 'impact', label: 'Impact Analysis', icon: '' },
             { key: 'osinstall', label: 'Operating Systems', icon: 'ti ti-device-desktop-cog', component: defineAsyncComponent(() => import('@/components/assets/tabs/OSInstallTab.vue')) },
-            { key: 'component', label: 'Components', icon: '' },
+            { key: 'component', label: 'Components', icon: 'ti ti-components', component: defineAsyncComponent(() => import('@/components/assets/tabs/ComponentsTab.vue')) },
             { key: 'lines', label: 'Phone Lines', icon: '' },
             { key: 'volume', label: 'Volumes', icon: '' },
             { key: 'software', label: 'Software', icon: '' },

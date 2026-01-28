@@ -163,7 +163,7 @@
 
 <template>
     <section class="overflow-hidden">
-        <div class="text-lg flex justify-between">
+        <div class="text-lg flex justify-between p-2">
             <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
                 <i class="ti ti-list-search"></i>
             </RouterLink>

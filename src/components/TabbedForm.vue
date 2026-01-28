@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Tabs, TabList, Tab, TabPanels, TabPanel, Message } from 'primevue';
+    import { Tabs, TabList, Tab, TabPanels, TabPanel, Message, ProgressSpinner } from 'primevue';
     import { useRoute } from 'vue-router';
     import ItemFormHeader from "@/components/forms/ItemFormHeader.vue";
 
@@ -52,12 +52,21 @@
             <TabList :pt="{ tabList: {class: 'flex-col', 'aria-orientation': 'vertical'} }">
                 <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">{{ tab.label }}</Tab>
             </TabList>
-            <TabPanels>
-                <TabPanel v-for="tab in tabs" :key="tab.key" :value="tab.key" class="p-4 h-full overflow-auto">
-                    <component v-if="tab.component" :is="tab.component" :itemtype="itemtype" :items_id="items_id" :main_item="main_item" :main_itemtype_model="itemtype_model"/>
-                    <div v-else>
-                        <Message severity="error">There doesn't seem to be anything here</Message>
-                    </div>
+            <TabPanels class="overflow-auto">
+                <TabPanel v-for="tab in tabs" :key="tab.key" :value="tab.key" class="p-4 w-full">
+                    <KeepAlive>
+                        <Suspense v-if="tab.component">
+                            <component :is="tab.component" :itemtype="itemtype" :items_id="items_id" :main_item="main_item" :main_itemtype_model="itemtype_model"/>
+                            <template #fallback>
+                                <div class="flex justify-content-center align-items-center h-full w-full">
+                                    <ProgressSpinner />
+                                </div>
+                            </template>
+                        </Suspense>
+                        <div v-else>
+                            <Message severity="error">There doesn't seem to be anything here</Message>
+                        </div>
+                    </KeepAlive>
                 </TabPanel>
             </TabPanels>
         </Tabs>

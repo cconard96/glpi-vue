@@ -26,7 +26,7 @@
             <RouterLink to="/">Go back to home</RouterLink>
         </Message>
     </div>
-    <div v-else class="contents"><slot></slot></div>
+    <div v-else class="flex overflow-hidden"><slot></slot></div>
 </template>
 
 <style>
