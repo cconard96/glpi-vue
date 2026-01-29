@@ -4,6 +4,7 @@
     import {computed, onMounted, shallowRef, useTemplateRef, watch} from "vue";
     import { useApi } from '@/composables/useApi';
     import { useIntersectionObserver } from '@vueuse/core';
+    import ActorAvatar from "@/components/actor/ActorAvatar.vue";
 
     const props = defineProps<{
         item: any,
@@ -93,7 +94,7 @@
 
 <template>
     <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
-        <Avatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''"></Avatar>
+        <ActorAvatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
         <Card v-if="['Followup', 'Task', 'Solution', 'content'].includes(item.type)" :pt="{
             body: {
                 class: `p-2 ${bg_color}`,
