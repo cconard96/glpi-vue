@@ -21,12 +21,10 @@ export default class Computer extends AbstractModel {
     static getTabs() {
         return [
             { key: 'main', label: this.getTypeName(), icon: this.getIcon(), component: defineAsyncComponent(() => import('@/components/assets/ComputerForm.vue')) },
+            { key: 'hardware', label: 'Hardware', icon: 'ti ti-components', component: defineAsyncComponent(() => import('@/components/assets/tabs/HardwareTab.vue')) },
+            { key: 'ossoftwareinstall', label: 'OS / Software', icon: 'ti ti-device-desktop-cog', component: defineAsyncComponent(() => import('@/components/assets/tabs/OSSoftwareTab.vue')) },
             { key: 'impact', label: 'Impact Analysis', icon: '' },
-            { key: 'osinstall', label: 'Operating Systems', icon: 'ti ti-device-desktop-cog', component: defineAsyncComponent(() => import('@/components/assets/tabs/OSInstallTab.vue')) },
-            { key: 'component', label: 'Components', icon: 'ti ti-components', component: defineAsyncComponent(() => import('@/components/assets/tabs/ComponentsTab.vue')) },
             { key: 'lines', label: 'Phone Lines', icon: '' },
-            { key: 'volume', label: 'Volumes', icon: '' },
-            { key: 'software', label: 'Software', icon: '' },
             { key: 'connection', label: 'Connections', icon: '' },
             { key: 'networkport', label: 'Network Ports', icon: '' },
             { key: 'sockets', label: 'Sockets', icon: '' },

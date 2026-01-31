@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Message, TreeSelect, Button } from 'primevue';
+    import { Message, TreeSelect, Button, Tree } from 'primevue';
     import {computed, onMounted, ref, shallowRef, watch} from "vue";
     import { useApi } from "@/composables/useApi";
     import { useAuth } from "@/composables/useAuth";
@@ -87,9 +87,9 @@
 
 <template>
     <div>
-        <TreeSelect :options="entity_tree" @nodeSelect="doChangeEntity($event)" @nodeUnselect="doChangeEntity($event)" filter
+        <Tree :value="entity_tree" @nodeSelect="doChangeEntity($event)" @nodeUnselect="doChangeEntity($event)" filter
                     selectionMode="single" fluid>
-            <template #option="{ node }">
+            <template #default="{ node }">
                 <div>
                     {{ node.label }}
                     <Button v-if="node.children.length" size="small" variant="outlined" class="ms-2"
@@ -98,7 +98,7 @@
                     </Button>
                 </div>
             </template>
-        </TreeSelect>
+        </Tree>
 <!--        <template v-if="selected_entity !== null && !is_profile_valid_for_entity">-->
 <!--            <Message severity="warn" class="mt-2">-->
 <!--                The current profile "{{ getActiveProfile.name }}" is not valid for the selected entity.-->

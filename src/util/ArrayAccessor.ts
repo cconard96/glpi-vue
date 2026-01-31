@@ -1,8 +1,8 @@
 export class ArrayAccessor {
-    getByPath(obj, path) {
+    getByPath(obj: Object, path: string): any {
         return path.split('.').reduce((o, p) => (o ? o[p] : undefined), obj);
     }
-    setByPath(obj, path, value) {
+    setByPath(obj: Object, path: string, value: any): void {
         const keys = path.split('.');
         const lastKey = keys.pop();
         const lastObj = keys.reduce((o, p) => {
@@ -11,7 +11,7 @@ export class ArrayAccessor {
         }, obj);
         if (lastKey) lastObj[lastKey] = value;
     }
-    hasPath(obj, path) {
+    hasPath(obj: Object, path: string): boolean {
         return this.getByPath(obj, path) !== undefined;
     }
 }

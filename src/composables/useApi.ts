@@ -141,10 +141,10 @@ export function useApi() {
         });
     };
 
-    const doGraphQLRequest = (query) => {
+    const doGraphQLRequest = (query, variables = {}) => {
         const host = import.meta.env.VITE_GLPI_URL;
         return refreshAuthToken().then(() => {
-            return axios.post(`${host}/api.php/GraphQL`, { query }, {
+            return axios.post(`${host}/api.php/GraphQL`, { query: query, variables: variables }, {
                 headers: {
                     'Authorization': `Bearer ${getAuthToken()}`,
                     'Content-Type': 'application/json',
