@@ -5,7 +5,7 @@
     import {Form, FormField} from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import {InputText, DatePicker} from "primevue";
+    import {InputText, DataTable, Column} from "primevue";
 
     const props = defineProps({
         main_itemtype_model: {
@@ -20,6 +20,14 @@
 
     const { doGraphQLRequest } = useApi();
     const os_info = ref(null);
+    const software_info = ref(null);
+    const software_columns = [
+        { field: 'softwareversion.software.name', header: 'Software Name' },
+        { field: 'softwareversion.name', header: 'Version' },
+        { field: 'softwareversion.arch', header: 'Architecture' },
+        { field: 'softwareversion.software.manufacturer.name', header: 'Publisher' },
+        { field: 'softwareversion.software.category.name', header: 'Category' },
+    ];
 
     onMounted(async () => {
         await doGraphQLRequest(`query {
@@ -41,7 +49,28 @@
         }`).then((res) => {
             os_info.value = AbstractModel.formatFieldsForForm(res.data.data.OSInstallation[0] || {});
         });
+        doGraphQLRequest(`
+            query {
+                SoftwareInstallation(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                    id itemtype items_id
+                    softwareversion {
+                        id name arch
+                        software {
+                            id name
+                            category { id name }
+                            manufacturer { id name }
+                        }
+                    }
+                }
+            }
+        `).then((res) => {
+            software_info.value = res.data.data.SoftwareInstallation || [];
+        });
     });
+
+    function getObjectProp(obj: Object, path: string): any {
+        return path.split('.').reduce((o, p) => (o ? o[p] : null), obj);
+    }
 </script>
 
 <template>
@@ -104,6 +133,18 @@
                 </FormField>
             </FormFields>
         </Form>
+        <DataTable v-if="software_info !== null" :value="software_info" class="mt-6" :rows="software_info.length"
+                   sortMode="multiple" removableSort>
+            <template #header>
+                <h3 class="text-lg font-semibold">Installed Software</h3>
+            </template>
+            <Column v-for="(col, index) of software_columns" :key="index" :field="col.field" :header="col.header"
+                    :sortable="true">
+                <template #body="slotProps">
+                    <span>{{ getObjectProp(slotProps.data, col.field) }}</span>
+                </template>
+            </Column>
+        </DataTable>
     </section>
 </template>
 

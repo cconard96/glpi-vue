@@ -57,10 +57,10 @@
 </script>
 
 <template>
-    <div>
+    <div class="grid grid-rows-[auto_1fr] h-full overflow-hidden">
         <ItemFormHeader :item="main_item"></ItemFormHeader>
-        <Tabs value="main" class="grid grid-cols-[200px_1fr] h-full" orientation="vertical" lazy>
-            <TabList :pt="{ tabList: {class: 'flex-col', 'aria-orientation': 'vertical'} }">
+        <Tabs value="main" class="grid grid-cols-[200px_1fr] overflow-hidden" orientation="vertical" lazy>
+            <TabList :pt="{ tabList: {class: 'flex-col overflow-y-auto', 'aria-orientation': 'vertical'} }">
                 <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">
                     <i v-if="tab.icon" :class="`${tab.icon} me-2`"></i>
                     {{ tab.label }}
@@ -82,9 +82,6 @@
                 </LazyTabPanel>
             </TabPanels>
         </Tabs>
-        <div>
-
-        </div>
     </div>
 </template>
 
