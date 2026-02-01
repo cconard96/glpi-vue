@@ -5,7 +5,7 @@
     import {Form, FormField} from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import {InputText, DataTable, Column} from "primevue";
+    import {InputText, DataTable, Column, Tag} from "primevue";
     import {useDataHelper} from "@/composables/useDataHelper";
 
     const props = defineProps({
@@ -23,6 +23,7 @@
     const { getObjectProp } = useDataHelper();
     const os_info = ref(null);
     const software_info = ref(null);
+    const antivirus_info = ref(null);
     const software_columns = [
         { field: 'softwareversion.software.name', header: 'Software Name' },
         { field: 'softwareversion.name', header: 'Version' },
@@ -48,8 +49,13 @@
                 hostid
                 date_install
             }
+            Antivirus(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                id itemtype items_id name manufacturer { id name } antivirus_version signature_version
+                is_active is_up_to_date date_expiration
+            }
         }`).then((res) => {
             os_info.value = AbstractModel.formatFieldsForForm(res.data.data.OSInstallation[0] || {});
+            antivirus_info.value = res.data.data.Antivirus || [];
         });
         doGraphQLRequest(`
             query {
@@ -131,6 +137,56 @@
                 </FormField>
             </FormFields>
         </Form>
+        <DataTable v-if="antivirus_info !== null" :value="antivirus_info" class="mt-6" :rows="antivirus_info.length"
+                   sortMode="multiple" removableSort>
+            <template #header>
+                <h3 class="text-lg font-semibold">Installed Antivirus</h3>
+            </template>
+            <Column field="name" header="Antivirus Name" :sortable="true">
+                <template #body="slotProps">
+                    <span>{{ getObjectProp(slotProps.data, 'name') }}</span>
+                </template>
+            </Column>
+            <Column field="manufacturer.name" header="Manufacturer" :sortable="true">
+                <template #body="slotProps">
+                    <span>{{ getObjectProp(slotProps.data, 'manufacturer.name') }}</span>
+                </template>
+            </Column>
+            <Column field="antivirus_version" header="Antivirus Version" :sortable="true">
+                <template #body="slotProps">
+                    <span>{{ getObjectProp(slotProps.data, 'antivirus_version') }}</span>
+                </template>
+            </Column>
+            <Column field="signature_version" header="Signature Version" :sortable="true">
+                <template #body="slotProps">
+                    <span>{{ getObjectProp(slotProps.data, 'signature_version') }}</span>
+                </template>
+            </Column>
+            <Column field="is_active" header="Active" :sortable="true">
+                <template #body="slotProps">
+                    <Tag :severity="slotProps.data.is_active ? 'success' : 'danger'">
+                        {{ slotProps.data.is_active ? 'Yes' : 'No' }}
+                    </Tag>
+                </template>
+            </Column>
+            <Column field="is_up_to_date" header="Up to date" :sortable="true">
+                <template #body="slotProps">
+                    <Tag :severity="slotProps.data.is_up_to_date ? 'success' : 'danger'">
+                        {{ slotProps.data.is_up_to_date ? 'Yes' : 'No' }}
+                    </Tag>
+                </template>
+            </Column>
+            <Column field="date_expiration" header="Expiration Date" :sortable="true">
+                <template #body="slotProps">
+                    <span v-if="slotProps.data.date_expiration">
+                        {{ new Date(slotProps.data.date_expiration).toLocaleDateString() }}
+                    </span>
+                    <span v-else>
+                        N/A
+                    </span>
+                </template>
+            </Column>
+        </DataTable>
         <DataTable v-if="software_info !== null" :value="software_info" class="mt-6" :rows="software_info.length"
                    sortMode="multiple" removableSort>
             <template #header>
