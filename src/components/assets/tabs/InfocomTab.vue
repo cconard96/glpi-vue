@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import FormFields from "@/components/forms/FormFields.vue";
-    import {InputText, DatePicker, Fieldset, InputNumber, Textarea} from "primevue";
+    import {InputText, DatePicker, Fieldset, InputNumber, Textarea, Message} from "primevue";
     import {Form, FormField} from "@primevue/forms";
     import {AbstractModel} from "@/models/AbstractModel";
     import {useApi} from "@/composables/useApi";
@@ -35,7 +35,7 @@
         }`).then((res) => {
             infocom_info.value = AbstractModel.formatFieldsForForm(res.data.data.Infocom[0] || {});
         });
-    })
+    });
 </script>
 
 <template>
@@ -82,6 +82,7 @@
                 </FormFields>
             </Fieldset>
             <Fieldset legend="Financial and Administrative Information">
+                <Message severity="info" class="mb-3">Some fields are not yet implemented</Message>
                 <FormFields>
                     <FormField name="supplier" v-slot="$slot">
                         <FieldSelect label="Supplier"></FieldSelect>
@@ -116,13 +117,13 @@
                     <FormField name="value">
                         <label>
                             <span>Purchase Value</span>
-                            <InputNumber mode="decimal" minFractionDigits="2"></InputNumber>
+                            <InputNumber mode="decimal" :minFractionDigits="2"></InputNumber>
                         </label>
                     </FormField>
                     <FormField name="warranty_value">
                         <label>
                             <span>Warranty Value</span>
-                            <InputNumber mode="decimal" minFractionDigits="2"></InputNumber>
+                            <InputNumber mode="decimal" :minFractionDigits="2"></InputNumber>
                         </label>
                     </FormField>
                     <FormField name="business_criticity" v-slot="$slot">
@@ -137,6 +138,7 @@
                 </FormFields>
             </Fieldset>
             <Fieldset legend="Warranty Information">
+                <Message severity="info" class="mb-3">The alarm field is not yet implemented</Message>
                 <FormFields>
                     <FormField name="date_warranty" v-slot="$slot">
                         <label>

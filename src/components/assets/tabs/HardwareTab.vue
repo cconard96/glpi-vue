@@ -5,7 +5,8 @@
     } from 'primevue';
     import {AbstractModel} from "@/models/AbstractModel";
     import {useApi} from "@/composables/useApi";
-    import {computed, onMounted, ref, watch} from "vue";
+    import {onMounted, ref, watch} from "vue";
+    import {useDataHelper} from "@/composables/useDataHelper";
 
     const props = defineProps({
         main_itemtype_model: {
@@ -19,11 +20,12 @@
     });
 
     const { doGraphQLRequest } = useApi();
+    const { formatMemorySize, getObjectProp, getUsedPercentage } = useDataHelper();
     const components_info = ref(null);
     const component_counts = ref({});
     const loaded_components = ref(false);
     const active_accordion = ref<string|null>(null);
-    const component_columns = {
+    const component_columns: Record<string, Array<{field: string, header: string}>> = {
         'BatteryItem': [
             { field: 'battery.designation', header: 'Designation' },
             { field: 'battery.manufacturer.name', header: 'Manufacturer' },
@@ -278,31 +280,6 @@
         });
     }
 
-    /**
-     * Format memory size to a more readable format in MB, GB, TB, etc.
-     */
-    function formatMemorySize(size: number, base_unit: string): string {
-        const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        let index = units.indexOf(base_unit);
-        let formatted_size = size;
-        while (formatted_size >= 1024 && index < units.length - 1) {
-            formatted_size /= 1024;
-            index++;
-        }
-        return `${formatted_size.toFixed(2)} ${units[index]}`;
-    }
-
-    function getObjectProp(obj: Object, path: string): any {
-        return path.split('.').reduce((o, p) => (o ? o[p] : null), obj);
-    }
-
-    function getUsedPercentage(total: number, free: number): string {
-        if (total === 0) {
-            return '0%';
-        }
-        return (((total - free) / total) * 100).toFixed(0);
-    }
-
     watch(() => active_accordion.value, (newVal) => {
         if (newVal.includes('components')) {
             loadExtraComponentsInfo();
@@ -395,7 +372,7 @@
                             <template #header>
                                 <div class="font-bold text-lg">{{ component_type.replace('Item', '').replace(/([A-Z])/g, ' $1').trim() }} ({{ items.length }})</div>
                             </template>
-                            <Column v-for="(col, index) of component_columns[component_type]" :field="col.field" :header="col.header">
+                            <Column v-for="col in component_columns[component_type]" :field="col.field" :header="col.header">
                                 <template #body="slotProps">
                             <span>{{
                                     col.field.endsWith('capacity') || col.field.endsWith('size') ?

@@ -32,7 +32,7 @@ export default class Computer extends AbstractModel {
             { key: 'infocom', label: 'Management', icon: 'ti ti-wallet', component: defineAsyncComponent(() => import('@/components/assets/tabs/InfocomTab.vue')) },
             { key: 'contract', label: 'Contracts', icon: '' },
             { key: 'document', label: 'Documents', icon: '' },
-            { key: 'virtualization', label: 'Virtualization', icon: '' },
+            { key: 'virtualization', label: 'Virtualization', icon: 'ti ti-brand-docker', component: defineAsyncComponent(() => import('@/components/assets/tabs/VMTab.vue')) },
             { key: 'antivirus', label: 'Antiviruses', icon: '' },
             { key: 'kb', label: 'Knowledge base', icon: '' },
             { key: 'assistance', label: 'Assistance', icon: '' },

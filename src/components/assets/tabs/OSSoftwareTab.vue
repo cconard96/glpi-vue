@@ -6,6 +6,7 @@
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import {InputText, DataTable, Column} from "primevue";
+    import {useDataHelper} from "@/composables/useDataHelper";
 
     const props = defineProps({
         main_itemtype_model: {
@@ -19,6 +20,7 @@
     });
 
     const { doGraphQLRequest } = useApi();
+    const { getObjectProp } = useDataHelper();
     const os_info = ref(null);
     const software_info = ref(null);
     const software_columns = [
@@ -67,10 +69,6 @@
             software_info.value = res.data.data.SoftwareInstallation || [];
         });
     });
-
-    function getObjectProp(obj: Object, path: string): any {
-        return path.split('.').reduce((o, p) => (o ? o[p] : null), obj);
-    }
 </script>
 
 <template>

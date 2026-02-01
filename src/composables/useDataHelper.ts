@@ -1,0 +1,32 @@
+export function useDataHelper() {
+    /**
+     * Format memory size to a more readable format in MB, GB, TB, etc.
+     */
+    function formatMemorySize(size: number, base_unit: string): string {
+        const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        let index = units.indexOf(base_unit);
+        let formatted_size = size;
+        while (formatted_size >= 1024 && index < units.length - 1) {
+            formatted_size /= 1024;
+            index++;
+        }
+        return `${formatted_size.toFixed(2)} ${units[index]}`;
+    }
+
+    function getObjectProp(obj: Object, path: string): any {
+        return path.split('.').reduce((o, p) => (o ? o[p] : null), obj);
+    }
+
+    function getUsedPercentage(total: number, free: number): string {
+        if (total === 0) {
+            return '0%';
+        }
+        return (((total - free) / total) * 100).toFixed(0);
+    }
+
+    return {
+        formatMemorySize,
+        getObjectProp,
+        getUsedPercentage,
+    }
+}
