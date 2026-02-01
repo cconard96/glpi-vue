@@ -39,7 +39,7 @@ export default class Computer extends AbstractModel {
             { key: 'project', label: 'Projects', icon: '' },
             { key: 'link', label: 'Links', icon: '' },
             { key: 'certificate', label: 'Certificates', icon: '' },
-            { key: 'note', label: 'Notes', icon: '' },
+            { key: 'note', label: 'Notes', icon: 'ti ti-notes', component: defineAsyncComponent(() => import('@/components/assets/tabs/NoteTab.vue')) },
             { key: 'reservation', label: 'Reservations', icon: '' },
             { key: 'domain', label: 'Domains', icon: '' },
             { key: 'appliance', label: 'Appliances', icon: '' },

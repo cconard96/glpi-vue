@@ -35,10 +35,23 @@ export function useDataHelper() {
         return (((total - free) / total) * 100).toFixed(0);
     }
 
+    function formatUsername(user) {
+        if (user.firstname && user.realname) {
+            return `${user.firstname} ${user.realname}`;
+        } else if (user.firstname) {
+            return user.firstname;
+        } else if (user.realname) {
+            return user.realname;
+        } else {
+            return user.username;
+        }
+    }
+
     return {
         formatDataSize,
         getObjectProp,
         getUsedPercentage,
         formatDataSpeed,
+        formatUsername,
     }
 }

@@ -5,6 +5,7 @@
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
     import {useSessionStore} from "@/composables/useSessionStore";
     import {useRouter} from "vue-router";
+    import {useDataHelper} from "@/composables/useDataHelper";
 
     const props = defineProps({
         article_id: {
@@ -16,6 +17,7 @@
     const { replace: replaceRoute } = useRouter();
     const { hasRight } = useSessionStore();
     const { doGraphQLRequest } = useApi();
+    const { formatUsername } = useDataHelper();
     const loading = ref(false);
     const article = ref(null);
     const edit_mode = ref(false);
@@ -49,17 +51,6 @@
     });
     await loadArticle(props.article_id);
 
-    const user_display_name = computed(() => {
-        if (article.value.user.firstname && article.value.user.realname) {
-            return `${article.value.user.firstname} ${article.value.user.realname}`;
-        } else if (article.value.user.firstname) {
-            return article.value.user.firstname;
-        } else if (article.value.user.realname) {
-            return article.value.user.realname;
-        } else {
-            return article.value.user.username;
-        }
-    });
     const is_edited = computed(() => {
         if (!article.value) {
             return false;
@@ -120,18 +111,6 @@
             });
         }
     });
-
-    function formatUsername(user) {
-        if (user.firstname && user.realname) {
-            return `${user.firstname} ${user.realname}`;
-        } else if (user.firstname) {
-            return user.firstname;
-        } else if (user.realname) {
-            return user.realname;
-        } else {
-            return user.username;
-        }
-    }
 </script>
 
 <template>
@@ -160,7 +139,7 @@
                 <address class="text-sm text-muted-foreground">
                     <span v-if="!is_edited">Written By: </span>
                     <span v-else>Edited By: </span>
-                    <span v-if="article.user" v-text="user_display_name"></span>
+                    <span v-if="article.user" v-text="formatUsername(article.user)"></span>
                     <span v-else>
                         Unknown Author
                     </span>
