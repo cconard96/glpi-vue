@@ -29,7 +29,7 @@ export default class Computer extends AbstractModel {
             { key: 'networkport', label: 'Network Ports', icon: '' },
             { key: 'sockets', label: 'Sockets', icon: '' },
             { key: 'remotemanagement', label: 'Remote Management', icon: '' },
-            { key: 'infocom', label: 'Management', icon: '' },
+            { key: 'infocom', label: 'Management', icon: 'ti ti-wallet', component: defineAsyncComponent(() => import('@/components/assets/tabs/InfocomTab.vue')) },
             { key: 'contract', label: 'Contracts', icon: '' },
             { key: 'document', label: 'Documents', icon: '' },
             { key: 'virtualization', label: 'Virtualization', icon: '' },
