@@ -2,12 +2,23 @@ export function useDataHelper() {
     /**
      * Format memory size to a more readable format in MB, GB, TB, etc.
      */
-    function formatMemorySize(size: number, base_unit: string): string {
+    function formatDataSize(size: number, base_unit: string): string {
         const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
         let index = units.indexOf(base_unit);
         let formatted_size = size;
         while (formatted_size >= 1024 && index < units.length - 1) {
             formatted_size /= 1024;
+            index++;
+        }
+        return `${formatted_size.toFixed(2)} ${units[index]}`;
+    }
+
+    function formatDataSpeed(size: number, base_unit: string): string {
+        const units = ['bps', 'Kbps', 'Mbps', 'Gbps', 'Tbps', 'Pbps'];
+        let index = units.indexOf(base_unit);
+        let formatted_size = size;
+        while (formatted_size >= 1000 && index < units.length - 1) {
+            formatted_size /= 1000;
             index++;
         }
         return `${formatted_size.toFixed(2)} ${units[index]}`;
@@ -25,8 +36,9 @@ export function useDataHelper() {
     }
 
     return {
-        formatMemorySize,
+        formatDataSize,
         getObjectProp,
         getUsedPercentage,
+        formatDataSpeed,
     }
 }

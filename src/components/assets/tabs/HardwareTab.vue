@@ -20,7 +20,7 @@
     });
 
     const { doGraphQLRequest } = useApi();
-    const { formatMemorySize, getObjectProp, getUsedPercentage } = useDataHelper();
+    const { formatDataSize, getObjectProp, getUsedPercentage } = useDataHelper();
     const components_info = ref(null);
     const component_counts = ref({});
     const loaded_components = ref(false);
@@ -311,7 +311,7 @@
                 </template>
                 <template #content>
                     <div><span class="text-lg me-2">Total Drives:</span>{{ components_info.HardDriveItem.length }}</div>
-                    <div><span class="text-lg me-2">Total Storage:</span>{{ components_info.HardDriveItem.length > 0 ? formatMemorySize(components_info.HardDriveItem.reduce((acc, drive) => acc + (drive.capacity || 0), 0), 'MB') : '0 B' }}</div>
+                    <div><span class="text-lg me-2">Total Storage:</span>{{ components_info.HardDriveItem.length > 0 ? formatDataSize(components_info.HardDriveItem.reduce((acc, drive) => acc + (drive.capacity || 0), 0), 'MB') : '0 B' }}</div>
                 </template>
             </Card>
             <Card v-if="components_info.MemoryItem" class="flex flex-row items-center" :pt="{body: { class: 'p-2'} }">
@@ -321,7 +321,7 @@
                 </template>
                 <template #content>
                     <div><span class="text-lg me-2">Total Modules:</span>{{ components_info.MemoryItem.length }}</div>
-                    <div><span class="text-lg me-2">Total Memory:</span>{{ components_info.MemoryItem.length > 0 ? formatMemorySize(components_info.MemoryItem.reduce((acc, mem) => acc + (mem.size || 0), 0), 'MB') : '0 B' }}</div>
+                    <div><span class="text-lg me-2">Total Memory:</span>{{ components_info.MemoryItem.length > 0 ? formatDataSize(components_info.MemoryItem.reduce((acc, mem) => acc + (mem.size || 0), 0), 'MB') : '0 B' }}</div>
                 </template>
             </Card>
         </div>
@@ -354,7 +354,7 @@
                                     <template #content>
                                         <ProgressBar :value="item.total_size > 0 ? ((item.total_size - item.free_size) / item.total_size) * 100 : 0" :showValue="true" :style="{height: '20px'}">
                                             <template #default>
-                                                <span>{{ formatMemorySize(item.total_size - item.free_size, 'MB') }} used of {{ formatMemorySize(item.total_size, 'MB') }} ({{ getUsedPercentage(item.total_size, item.free_size) }}%)</span>
+                                                <span>{{ formatDataSize(item.total_size - item.free_size, 'MB') }} used of {{ formatDataSize(item.total_size, 'MB') }} ({{ getUsedPercentage(item.total_size, item.free_size) }}%)</span>
                                             </template>
                                         </ProgressBar>
                                     </template>
@@ -376,7 +376,7 @@
                                 <template #body="slotProps">
                             <span>{{
                                     col.field.endsWith('capacity') || col.field.endsWith('size') ?
-                                        formatMemorySize(getObjectProp(slotProps.data, col.field), 'MB') :
+                                        formatDataSize(getObjectProp(slotProps.data, col.field), 'MB') :
                                         getObjectProp(slotProps.data, col.field)
                                 }}</span>
                                 </template>

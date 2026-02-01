@@ -17,7 +17,7 @@
     });
 
     const { doGraphQLRequest } = useApi();
-    const { formatMemorySize } = useDataHelper();
+    const { formatDataSize } = useDataHelper();
     const vm_info = ref(null);
 
     function getStatusSeverity(state_name: string) {
@@ -72,7 +72,7 @@
             </Column>
             <Column key="ram" field="ram" header="RAM">
                 <template #body="slotProps">
-                    <span v-if="slotProps.data.ram">{{ formatMemorySize(slotProps.data.ram, 'MB') }}</span>
+                    <span v-if="slotProps.data.ram">{{ formatDataSize(slotProps.data.ram, 'MB') }}</span>
                 </template>
             </Column>
         </DataTable>

@@ -39,7 +39,7 @@ export class ITILStatus {
         7: {
             key: 'accepted',
             label: 'Accepted',
-            icon: 'ti ti-check-circle-filled',
+            icon: 'ti ti-circle-check-filled',
             color: '#00ff00',
         },
         8: {
