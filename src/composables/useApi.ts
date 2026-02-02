@@ -226,6 +226,17 @@ export function useApi() {
         return fields_query_part;
     }
 
+    function getSchemaNameForGLPIItemtype(itemtype: string): Promise<String | null> {
+        return getApiSchema().then((api_schema) => {
+            for (let [schema_name, schema_info] of Object.entries(api_schema.components.schemas)) {
+                if (schema_info['x-itemtype'] === itemtype) {
+                    return schema_name;
+                }
+            }
+            return null;
+        });
+    }
+
     return {
         getComponentSchema,
         search,
@@ -233,6 +244,8 @@ export function useApi() {
         normalizeComponentName,
         doGraphQLRequest,
         getApiSchema,
-        getItemByID
+        getItemByID,
+        getSchemaNameForGLPIItemtype,
+        apollo_client
     };
 }

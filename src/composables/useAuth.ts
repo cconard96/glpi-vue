@@ -39,8 +39,8 @@ export function useAuth() {
             });
 
             // Immediately load the API schema, session info, and locales
-            const { getApiSchema } = useApi();
-            console.log('Loading initial data post-login');
+            const { getApiSchema, apollo_client } = useApi();
+            apollo_client.resetStore();
             return Promise.all([
                 getApiSchema(),
                 loadSession(),

@@ -194,7 +194,7 @@
                                 <FloatLabel variant="on">
                                     <DatePicker inputId="item_date" name="date" v-model="opening_date"
                                                 showTime showIcon
-                                                class="max-w-full"/>
+                                                class="max-w-full" fluid/>
                                     <label for="item_date">Opening date</label>
                                 </FloatLabel>
                             </div>
@@ -300,7 +300,7 @@
                                 <FloatLabel variant="on">
                                     <MultiSelect inputId="item_requester" name="requester" v-model="selected_requesters"
                                                  :filter="requesters.length > 5" filterMode="lenient" :options="requesters"
-                                                 optionValue="key" optionLabel="label" disabled
+                                                 optionValue="key" optionLabel="label" disabled fluid
                                     ></MultiSelect>
                                     <label for="item_requester">Requester</label>
                                 </FloatLabel>
@@ -309,7 +309,7 @@
                                 <FloatLabel variant="on">
                                     <MultiSelect inputId="item_observer" name="observer" v-model="selected_observers"
                                                  :filter="observers.length > 5" filterMode="lenient" :options="observers"
-                                                 optionValue="key" optionLabel="label" disabled
+                                                 optionValue="key" optionLabel="label" disabled fluid
                                     ></MultiSelect>
                                     <label for="item_observer">Observer</label>
                                 </FloatLabel>
@@ -318,7 +318,7 @@
                                 <FloatLabel variant="on">
                                     <MultiSelect inputId="item_assigned" name="assigned" v-model="selected_assigned"
                                                  :filter="assigned.length > 5" filterMode="lenient" :options="assigned"
-                                                 optionValue="key" optionLabel="label" disabled
+                                                 optionValue="key" optionLabel="label" disabled fluid
                                                  dataKey="key"
                                     ></MultiSelect>
                                     <label for="item_assigned">Assigned to</label>

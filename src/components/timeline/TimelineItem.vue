@@ -94,13 +94,13 @@
 
 <template>
     <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
-        <ActorAvatar v-if="item.item.user" icon="ti ti-user" class="mr-2" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
+        <ActorAvatar v-if="item.item.user" icon="ti ti-user" class="mr-2 shrink-0" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
         <Card v-if="['Followup', 'Task', 'Solution', 'content'].includes(item.type)" :pt="{
             body: {
                 class: `p-2 ${bg_color}`,
                 style: `background-color: ${bg_color}; border-radius: 0.5rem;`
             }
-        }" :class="todoListMode ? 'w-full' : 'max-w-200'">
+        }" :class="`${todoListMode ? 'w-full' : 'max-w-200'}`">
             <template #title v-if="!todoListMode">
                 <span class="text-sm">Created {{ human_readable_time(item.item.date_creation || item.item.date) }}</span>
             </template>

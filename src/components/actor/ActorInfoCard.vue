@@ -28,13 +28,17 @@
 
     onBeforeMount(() => {
         if (props.actor_type === 'User') {
-            doGraphQLRequest(`
-                query {
-                    User (filter: "id==${props.actor_data.id}") {
-                        id username realname firstname title { id name } category { id name } phone phone2 mobile emails { id email is_default } picture
+            doGraphQLRequest(
+                `
+                    query {
+                        User (filter: "id==${props.actor_data.id}") {
+                            id username realname firstname title { id name } category { id name } phone phone2 mobile emails { id email is_default } picture
+                        }
                     }
-                }
-            `).then((res) => {
+                `,
+                {},
+                'cache-first'
+            ).then((res) => {
                 const user_data = res.data.User[0];
                 Object.assign(actor_data, user_data);
                 actor_data.category = user_data.category?.name || '';

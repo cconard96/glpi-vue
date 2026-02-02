@@ -23,6 +23,12 @@ export class AbstractModel {
         throw new Error('getOpenAPISchemaName() must be implemented by subclasses');
     }
 
+    static getGLPIItemtype(): Promise<String> {
+        return this.getOpenAPISchema().then(schema => {
+            return schema['x-itemtype'] || this.getOpenAPISchemaName();
+        });
+    }
+
     static getIcon() {
         return 'ti ti-package';
     }

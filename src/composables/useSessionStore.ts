@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia'
+import { useApi } from "@/composables/useApi";
+
+const { apollo_client } = useApi();
 
 export const useSessionStore = defineStore('session', {
     state: () => ({
@@ -41,6 +44,8 @@ export const useSessionStore = defineStore('session', {
             this.active_entities = sessionData.active_entities || [];
             this.active_profile = sessionData.active_profile || null;
             this.active_entity = sessionData.active_entity || null;
+
+            apollo_client.resetStore();
         },
         clearSession() {
             this.current_time = null;
@@ -55,12 +60,16 @@ export const useSessionStore = defineStore('session', {
             this.active_entities = [];
             this.active_profile = null;
             this.active_entity = null;
+
+            apollo_client.resetStore();
         },
         changeEntity(newEntity) {
             this.active_entity = newEntity;
+            apollo_client.resetStore();
         },
         changeProfile(newProfile) {
             this.active_profile = newProfile;
+            apollo_client.resetStore();
         },
         setDebugMode(isDebug) {
             this.use_mode = isDebug ? 2 : 1;

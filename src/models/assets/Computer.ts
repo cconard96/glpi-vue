@@ -25,7 +25,6 @@ export default class Computer extends AbstractModel {
             { key: 'ossoftwareinstall', label: 'OS / Software', icon: 'ti ti-device-desktop-cog', component: defineAsyncComponent(() => import('@/components/assets/tabs/OSSoftwareTab.vue')) },
             { key: 'impact', label: 'Impact Analysis', icon: '' },
             { key: 'lines', label: 'Phone Lines', icon: '' },
-            { key: 'connection', label: 'Connections', icon: '' },
             { key: 'networkport', label: 'Network Ports', icon: 'ti ti-network', component: defineAsyncComponent(() => import('@/components/assets/tabs/NetworkPortTab.vue')) },
             { key: 'sockets', label: 'Sockets', icon: '' },
             { key: 'remotemanagement', label: 'Remote Management', icon: 'ti ti-screen-share', component: defineAsyncComponent(() => import('@/components/assets/tabs/RemoteManagementTab.vue')) },

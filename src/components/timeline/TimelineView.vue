@@ -162,7 +162,7 @@
 </script>
 
 <template>
-    <section class="overflow-hidden">
+    <section class="grid grid-rows-[auto_1fr] h-full overflow-hidden">
         <div class="text-lg flex justify-between p-2">
             <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
                 <i class="ti ti-list-search"></i>
@@ -176,7 +176,7 @@
             </header>
             <div></div>
         </div>
-        <div class="grid grid-cols-12 h-full">
+        <div class="grid grid-cols-12 overflow-y-hidden">
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                 <component v-if="current_new_itemtype !== null" :is="current_new_itemtype" @close="current_new_itemtype = null"></component>
                 <TimelineItem v-for="item in filtered_items.slice().reverse()" :key="`${item.type}-${item.item.id}`"

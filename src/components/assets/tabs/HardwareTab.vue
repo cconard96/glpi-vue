@@ -177,6 +177,8 @@
         1: 'Encrypted',
         2: 'Partially Encrypted',
     };
+    const connections_info = ref(null);
+    const loaded_connections = ref(false);
 
     onMounted(async () => {
         // Load data for summary
@@ -280,11 +282,31 @@
         });
     }
 
+    function loadConnectionsInfo() {
+        if (loaded_connections.value) {
+            return;
+        }
+        props.main_itemtype_model.getGLPIItemtype().then(itemtype => {
+            doGraphQLRequest(`
+                query {
+                    PeripheralConnection(filter: "(itemtype_asset==${itemtype};items_id_asset==${props.items_id}),(itemtype_peripheral==${itemtype};items_id_peripheral==${props.items_id})") {
+                        id itemtype_asset items_id_asset itemtype_peripheral items_id_peripheral is_dynamic
+                    }
+                }
+            `).then((res) => {
+                connections_info.value = res.data.PeripheralConnection;
+                loaded_connections.value = true;
+            });
+        });
+    }
+
     watch(() => active_accordion.value, (newVal) => {
         if (newVal.includes('components')) {
             loadExtraComponentsInfo();
         } else if (newVal.includes('volumes')) {
             loadVolumesInfo();
+        } else if (newVal.includes('connections')) {
+            loadConnectionsInfo();
         }
     });
 </script>
@@ -361,6 +383,41 @@
                                 </Card>
                             </template>
                         </DataView>
+                    </div>
+                </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="connections">
+                <AccordionHeader>Peripheral Connections</AccordionHeader>
+                <AccordionContent>
+                    <Message severity="info">Implementation is not finished</Message>
+                    <div v-if="connections_info !== null && connections_info.length > 0">
+                        <DataTable :value="connections_info" :rows="connections_info.length">
+                            <Column field="itemtype_asset" header="Asset Itemtype">
+                                <template #body="slotProps">
+                                    <span>{{ slotProps.data.itemtype_asset }}</span>
+                                </template>
+                            </Column>
+                            <Column field="items_id_asset" header="Asset ID">
+                                <template #body="slotProps">
+                                    <span>{{ slotProps.data.items_id_asset }}</span>
+                                </template>
+                            </Column>
+                            <Column field="itemtype_peripheral" header="Peripheral Itemtype">
+                                <template #body="slotProps">
+                                    <span>{{ slotProps.data.itemtype_peripheral }}</span>
+                                </template>
+                            </Column>
+                            <Column field="items_id_peripheral" header="Peripheral ID">
+                                <template #body="slotProps">
+                                    <span>{{ slotProps.data.items_id_peripheral }}</span>
+                                </template>
+                            </Column>
+                            <Column field="is_dynamic" header="Is Dynamic">
+                                <template #body="slotProps">
+                                    <span>{{ slotProps.data.is_dynamic ? 'Yes' : 'No' }}</span>
+                                </template>
+                            </Column>
+                        </DataTable>
                     </div>
                 </AccordionContent>
             </AccordionPanel>
