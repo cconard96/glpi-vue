@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { DataView, SelectButton, Button } from "primevue";
+    import { DataView, SelectButton, Button, Message } from "primevue";
     import {AbstractModel} from "@/models/AbstractModel";
     import {useApi} from "@/composables/useApi";
     import {onMounted, ref} from "vue";
@@ -31,7 +31,7 @@
                 }
             }
         `).then((res) => {
-            notes_info.value = res.data.data.Note;
+            notes_info.value = res.data.Note;
         });
     });
 </script>
@@ -74,6 +74,9 @@
                         <div class="whitespace-pre-line" v-dompurify-html="note.content"></div>
                     </div>
                 </div>
+            </template>
+            <template #empty>
+                <Message severity="info">No notes available for this asset.</Message>
             </template>
         </DataView>
     </section>

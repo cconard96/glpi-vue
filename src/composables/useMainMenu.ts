@@ -370,12 +370,10 @@ export const useMainMenu = () => {
     ];
 
     function getItemtypeModelForRoute(route_path) {
-        console.log(`Getting itemtype model for route: ${route_path}`);
         // remove query parameters
         const path_without_query = route_path.split('?')[0];
         // if the given route has an id part at the end, remove it
         const clean_route = path_without_query.replace(/\/\d+$/, '');
-        console.log('clean_route:', clean_route);
         for (const section of menu) {
             for (const item of section.items) {
                 if (item.route === clean_route && item.itemtype_model) {

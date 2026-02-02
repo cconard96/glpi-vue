@@ -33,7 +33,7 @@
                 supplier { id name }
             }
         }`).then((res) => {
-            infocom_info.value = AbstractModel.formatFieldsForForm(res.data.data.Infocom[0] || {});
+            infocom_info.value = AbstractModel.formatFieldsForForm(res.data.Infocom[0] || {});
         });
     });
 </script>

@@ -34,7 +34,7 @@
                 }
             }
         `).then((res) => {
-            const article_data = res.data.data.KBArticle[0];
+            const article_data = res.data.KBArticle[0];
             article.value = article_data;
             article.value.name = ref(article_data.name);
             article.value.content = ref(article_data.content);
@@ -88,7 +88,7 @@
                     }
                 }
             `).then((res) => {
-                const comments_data = res.data.data.KBArticleComment;
+                const comments_data = res.data.KBArticleComment;
                 // build comment tree
                 const comment_map: Record<string, any> = {};
                 comments_data.forEach((comment: any) => {

@@ -194,7 +194,7 @@
             if (components_info.value === null) {
                 components_info.value = {};
             }
-            for (const [key, items] of Object.entries(res.data.data)) {
+            for (const [key, items] of Object.entries(res.data)) {
                 if (['ProcessorItem', 'HardDriveItem', 'MemoryItem'].includes(key)) {
                     components_info.value[key] = items;
                 }
@@ -256,7 +256,7 @@
             if (components_info.value === null) {
                 components_info.value = {};
             }
-            for (const [key, items] of Object.entries(res.data.data)) {
+            for (const [key, items] of Object.entries(res.data)) {
                 components_info.value[key] = items;
                 component_counts.value[key] = items.length;
                 loaded_components.value = true;
@@ -275,7 +275,7 @@
                 }
             }
         `).then((res) => {
-            volumes_info.value = res.data.data.Volume;
+            volumes_info.value = res.data.Volume;
             loaded_volumes.value = true;
         });
     }

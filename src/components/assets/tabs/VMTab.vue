@@ -41,7 +41,7 @@
                 }
             }
         `).then((res) => {
-            vm_info.value = res.data.data.VirtualMachine;
+            vm_info.value = res.data.VirtualMachine;
         });
     });
 </script>

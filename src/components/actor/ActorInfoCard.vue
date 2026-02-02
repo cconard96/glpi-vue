@@ -35,7 +35,7 @@
                     }
                 }
             `).then((res) => {
-                const user_data = res.data.data.User[0];
+                const user_data = res.data.User[0];
                 Object.assign(actor_data, user_data);
                 actor_data.category = user_data.category?.name || '';
                 actor_data.title = user_data.title?.name || '';

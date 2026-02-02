@@ -1,11 +1,42 @@
 import axios from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
+import {ApolloClient, HttpLink, InMemoryCache, ApolloLink, type FetchPolicy, type ErrorPolicy} from "@apollo/client/core";
+import { RetryLink } from "@apollo/client/link/retry"
+import { SetContextLink } from "@apollo/client/link/context";
+import { gql } from "graphql-tag";
 import { useAuth } from "./useAuth";
 import { useSessionStore } from "./useSessionStore";
 
 let api_schema = null;
 // Map of lowercase component names to actual component names
 let component_name_map = null;
+
+const graphql_cache = new InMemoryCache();
+// @ts-ignore
+const oauth_link = new SetContextLink(async (_, { headers }) => {
+    const { getAuthToken, refreshAuthToken } = useAuth();
+    await refreshAuthToken();
+    return {
+        headers: {
+            ...headers,
+            Authorization: `Bearer ${getAuthToken()}`,
+        }
+    };
+});
+// create apollo link chain
+const link = ApolloLink.from([
+    oauth_link,
+    new RetryLink(),
+    new HttpLink({
+        uri: `${import.meta.env.VITE_GLPI_URL}/api.php/GraphQL`,
+    })
+]);
+
+
+const apollo_client = new ApolloClient({
+    link: link,
+    cache: graphql_cache,
+});
 
 export interface SearchResult {
     results: any[];
@@ -141,16 +172,12 @@ export function useApi() {
         });
     };
 
-    const doGraphQLRequest = (query, variables = {}) => {
-        const host = import.meta.env.VITE_GLPI_URL;
-        return refreshAuthToken().then(() => {
-            return axios.post(`${host}/api.php/GraphQL`, { query: query, variables: variables }, {
-                headers: {
-                    'Authorization': `Bearer ${getAuthToken()}`,
-                    'Content-Type': 'application/json',
-                    ...getSessionHeaders()
-                },
-            });
+    const doGraphQLRequest = (query, variables = {}, fetchPolicy: FetchPolicy = 'no-cache', errorPolicy: ErrorPolicy = null) => {
+        return apollo_client.query({
+            variables: variables as intrinsic,
+            query: gql`${query}`,
+            fetchPolicy: fetchPolicy,
+            errorPolicy: errorPolicy,
         });
     };
 
@@ -171,7 +198,7 @@ export function useApi() {
                 if (response.data.errors) {
                     return Promise.reject(new Error(`GraphQL errors: ${JSON.stringify(response.data.errors)}`));
                 }
-                return response.data.data[`${component_name}`][0];
+                return response.data[`${component_name}`][0];
             });
         });
     }

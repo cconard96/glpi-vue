@@ -187,7 +187,7 @@ export class AbstractModel {
                     }
                 }
             `).then((response) => {
-                const data = response.data.data[this.getOpenAPISchemaName()][0];
+                const data = response.data[this.getOpenAPISchemaName()][0];
                 // flatten objects that have an 'id' field for easier use with forms
                 return this.formatFieldsForForm(data);
             });

@@ -54,8 +54,8 @@
                 is_active is_up_to_date date_expiration
             }
         }`).then((res) => {
-            os_info.value = AbstractModel.formatFieldsForForm(res.data.data.OSInstallation[0] || {});
-            antivirus_info.value = res.data.data.Antivirus || [];
+            os_info.value = AbstractModel.formatFieldsForForm(res.data.OSInstallation[0] || {});
+            antivirus_info.value = res.data.Antivirus || [];
         });
         doGraphQLRequest(`
             query {
@@ -72,7 +72,7 @@
                 }
             }
         `).then((res) => {
-            software_info.value = res.data.data.SoftwareInstallation || [];
+            software_info.value = res.data.SoftwareInstallation || [];
         });
     });
 </script>

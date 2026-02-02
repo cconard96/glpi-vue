@@ -55,7 +55,7 @@
                 }
             }
         `).then((response) => {
-            const dashboard_items = response.data.data.DashboardItem;
+            const dashboard_items = response.data.DashboardItem;
             // json decode all 'card_options' fields in dashboard items
             for (let i = 0; i < dashboard_items.length; i++) {
                 if (dashboard_items[i].card_options) {
@@ -66,7 +66,7 @@
             }
 
             items.value = dashboard_items;
-            const dashboard_filters = response.data.data.DashboardFilter;
+            const dashboard_filters = response.data.DashboardFilter;
             if (dashboard_filters.length > 0) {
                 filters.value = JSON.parse(dashboard_filters[0].filter);
             } else {

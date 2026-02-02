@@ -169,9 +169,9 @@
                 }
             }
         `).then((res) => {
-            categories.value = res.data.data.ITILCategory;
-            request_types.value = res.data.data.RequestType;
-            locations.value = res.data.data.Location;
+            categories.value = res.data.ITILCategory;
+            request_types.value = res.data.RequestType;
+            locations.value = res.data.Location;
         });
     });
 </script>

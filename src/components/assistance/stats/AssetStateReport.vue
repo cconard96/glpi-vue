@@ -42,7 +42,7 @@
         }
     `).then((res) => {
         const entity_map = {};
-        for (const entity of res.data.data.Entity) {
+        for (const entity of res.data.Entity) {
             entity_map[entity.id] = entity.completename;
         }
         for (const item of items.value) {

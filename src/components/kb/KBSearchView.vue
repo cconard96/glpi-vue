@@ -15,8 +15,8 @@ import {ProgressSpinner, Tree} from 'primevue';
     const selected_article = ref<TreeNode | null>(null);
 
     await doGraphQLRequest(`query { KBCategory { id name parent { id name } } KBArticle { id name categories { id } } }`).then((res) => {
-        const categories = res.data.data.KBCategory;
-        const articles = res.data.data.KBArticle;
+        const categories = res.data.KBCategory;
+        const articles = res.data.KBArticle;
         // Build category tree
         const category_map: Record<string, TreeNode> = {};
         categories.forEach((cat: any) => {

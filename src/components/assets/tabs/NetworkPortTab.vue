@@ -43,7 +43,7 @@
                     if_status if_description if_alias port_duplex trunk
                 }
             }`).then((res) => {
-            port_info.value = res.data.data.NetworkPort;
+            port_info.value = res.data.NetworkPort;
         });
     });
 </script>
