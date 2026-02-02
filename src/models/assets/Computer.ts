@@ -28,7 +28,7 @@ export default class Computer extends AbstractModel {
             { key: 'connection', label: 'Connections', icon: '' },
             { key: 'networkport', label: 'Network Ports', icon: 'ti ti-network', component: defineAsyncComponent(() => import('@/components/assets/tabs/NetworkPortTab.vue')) },
             { key: 'sockets', label: 'Sockets', icon: '' },
-            { key: 'remotemanagement', label: 'Remote Management', icon: '' },
+            { key: 'remotemanagement', label: 'Remote Management', icon: 'ti ti-screen-share', component: defineAsyncComponent(() => import('@/components/assets/tabs/RemoteManagementTab.vue')) },
             { key: 'infocom', label: 'Management', icon: 'ti ti-wallet', component: defineAsyncComponent(() => import('@/components/assets/tabs/InfocomTab.vue')) },
             { key: 'contract', label: 'Contracts', icon: '' },
             { key: 'document', label: 'Documents', icon: '' },
