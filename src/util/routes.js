@@ -23,7 +23,7 @@ export const routes = [
                             ...route.params.component_module ? [
                                 { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
                             ] : [],
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), url: `/${route.params.component_module}/${route.params.itemtype}` }
+                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` }
                         ];
                     }
                 }
@@ -37,7 +37,7 @@ export const routes = [
                     breadcrumbs: (route) => {
                         return [
                             { label: 'Assistance', disabled: true },
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), url: `/assistance/${route.params.itemtype}` },
+                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/assistance/${route.params.itemtype}` },
                         ];
                     }
                 }
@@ -51,7 +51,7 @@ export const routes = [
                     breadcrumbs: (route) => {
                         return [
                             { label: 'Assistance', disabled: true },
-                            { label: 'Statistics', url: `/assistance/statistics` },
+                            { label: 'Statistics', route: `/assistance/statistics` },
                         ];
                     }
                 }
@@ -76,7 +76,7 @@ export const routes = [
                             ...route.params.component_module ? [
                                 { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
                             ] : [],
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), url: `/${route.params.component_module}/${route.params.itemtype}` },
+                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` },
                         ];
                     }
                 }
@@ -95,7 +95,7 @@ export const routes = [
                     breadcrumbs: (route) => {
                         return [
                             { label: 'Tools', disabled: true },
-                            { label: 'Knowledge Base', url: `/tools/knowbase` },
+                            { label: 'Knowledge Base', route: `/tools/knowbase` },
                         ];
                     }
                 }
