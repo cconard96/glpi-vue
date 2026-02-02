@@ -1,11 +1,11 @@
 <script setup lang="ts">
-    import {onMounted, ref} from "vue";
+import {defineAsyncComponent, onMounted, ref} from "vue";
     import {useApi} from "@/composables/useApi";
     import {AbstractModel} from "@/models/AbstractModel";
     import {Form, FormField} from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import {InputText, DataTable, Column, Tag} from "primevue";
+    import {InputText, DataTable, Column, Tag, useDialog, Button} from "primevue";
     import {useDataHelper} from "@/composables/useDataHelper";
 
     const props = defineProps({
@@ -21,6 +21,7 @@
 
     const { doGraphQLRequest } = useApi();
     const { getObjectProp } = useDataHelper();
+    const dialog = useDialog();
     const os_info = ref(null);
     const software_info = ref(null);
     const antivirus_info = ref(null);
@@ -75,6 +76,25 @@
             software_info.value = res.data.SoftwareInstallation || [];
         });
     });
+
+    function showSoftwareInstallDialog() {
+        dialog.open(defineAsyncComponent(() => import('@/components/assets/dialogs/InstallSoftware.vue')), {
+            props: {
+                header: 'Install Software',
+                pt: {
+                    root: {
+                        class: 'w-5/10 h-8/10'
+                    }
+                },
+                modal: true,
+                draggable: false,
+            },
+            data: {
+                main_itemtype_model: props.main_itemtype_model,
+                items_id: props.items_id
+            }
+        });
+    }
 </script>
 
 <template>
@@ -190,7 +210,10 @@
         <DataTable v-if="software_info !== null" :value="software_info" class="mt-6" :rows="software_info.length"
                    sortMode="multiple" removableSort>
             <template #header>
-                <h3 class="text-lg font-semibold">Installed Software</h3>
+                <div class="flex items-center gap-4">
+                    <h3 class="text-lg font-semibold">Installed Software</h3>
+                    <Button icon="ti ti-plus" label="Add Software" @click="showSoftwareInstallDialog" size="small"></Button>
+                </div>
             </template>
             <Column v-for="(col, index) of software_columns" :key="index" :field="col.field" :header="col.header"
                     :sortable="true">
