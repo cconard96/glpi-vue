@@ -12,9 +12,15 @@ export default defineConfig({
             instances: [
                 { browser: 'chromium' },
             ],
-            //headless: true,
+            headless: true,
         },
+        globals: true,
         hookTimeout: 10000,
+        snapshotSerializers: ['./node_modules/vue3-snapshot-serializer/index.js'],
+        screenshotDirectory: 'tests/__screenshots__',
+        resolveSnapshotPath: (testPath, snapExtension) => {
+            return testPath.replace('/src/', '/tests/__snapshots__/') + snapExtension;
+        }
     },
     optimizeDeps: {
         include: ['primevue/config', '@primeuix/themes/lara', 'pinia-plugin-persistedstate', 'primevue/focustrap'],

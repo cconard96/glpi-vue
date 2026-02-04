@@ -1,0 +1,161 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`LoginView renders correctly 1`] = `
+<div
+  class="
+    mt-10
+    mx-auto
+    p-card
+    p-component
+    w-fit
+  "
+  data-pc-name="card"
+  data-pc-section="root"
+  pc0=""
+>
+  <!---->
+  <div
+    class="p-card-body"
+    data-pc-section="body"
+  >
+    <div
+      class="p-card-caption"
+      data-pc-section="caption"
+    >
+      <div
+        class="p-card-title"
+        data-pc-section="title"
+      >
+        <h1 class="
+          text-4xl
+          text-center
+        ">
+          GLPI
+        </h1>
+      </div>
+      <!---->
+    </div>
+    <div
+      class="p-card-content"
+      data-pc-section="content"
+    >
+      <!-- v-if -->
+      <form
+        class="
+          p-component
+          p-form
+        "
+        data-pc-name="form"
+        data-pc-section="root"
+        pc1=""
+      >
+        <div class="mb-4">
+          <div class="
+            flex
+            flex-col
+            gap-3
+            max-w-64
+            mx-auto
+          ">
+            <input
+              autocomplete="username"
+              autofocus=""
+              class="
+                max-w-64
+                p-component
+                p-inputtext
+                p-inputtext-fluid
+              "
+              data-p="fluid"
+              data-pc-name="inputtext"
+              data-pc-section="root"
+              name="username"
+              pc2=""
+              placeholder="Username"
+              type="text"
+            />
+            <div
+              autocomplete="current-password"
+              class="
+                max-w-64
+                p-component
+                p-inputwrapper
+                p-password
+                p-password-fluid
+              "
+              data-p="fluid"
+              data-pc-name="password"
+              data-pc-section="root"
+              pc3=""
+            >
+              <input
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="
+                  p-component
+                  p-inputtext
+                  p-inputtext-fluid
+                  p-password-input
+                "
+                data-p="fluid"
+                data-p-has-e-icon="false"
+                data-pc-extend="inputtext"
+                data-pc-name="pcinputtext"
+                data-pc-section="root"
+                id="pv_id_4"
+                name="password"
+                pc4=""
+                placeholder="Password"
+                type="password"
+              />
+              <!---->
+              <!---->
+              <!---->
+              <span
+                aria-live="polite"
+                class="p-hidden-accessible"
+                data-p-hidden-accessible="true"
+                data-pc-section="hiddenaccesible"
+              >
+                Enter a password
+              </span>
+              <!-- teleport start -->
+              <!-- teleport end -->
+            </div>
+          </div>
+        </div>
+        <div class="
+          flex
+          flex-col
+        ">
+          <button
+            aria-label="Login"
+            class="
+              p-button
+              p-component
+              self-center
+            "
+            data-p=""
+            data-p-disabled="false"
+            data-pc-name="button"
+            data-pc-section="root"
+            pc5=""
+            type="submit"
+          >
+            <!---->
+            <span
+              class="p-button-label"
+              data-p=""
+              data-pc-section="label"
+            >
+              Login
+            </span>
+            <!---->
+          </button>
+        </div>
+      </form>
+    </div>
+    <!---->
+  </div>
+</div>
+`;
