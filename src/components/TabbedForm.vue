@@ -77,7 +77,7 @@
                         </template>
                     </Suspense>
                     <div v-else>
-                        <Message severity="info">There doesn't seem to be anything here</Message>
+                        <Message severity="info">This doesn't seem to be implemented yet</Message>
                     </div>
                 </LazyTabPanel>
             </TabPanels>

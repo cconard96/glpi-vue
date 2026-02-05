@@ -54,6 +54,7 @@ export function useDataHelper() {
             3: 'Medium',
             4: 'High',
             5: 'Very High',
+            6: 'Major',
         };
         return labels[value] || 'Unknown';
     }

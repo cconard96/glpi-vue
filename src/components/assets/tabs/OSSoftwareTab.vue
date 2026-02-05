@@ -5,7 +5,7 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
     import {Form, FormField} from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import {InputText, DataTable, Column, Tag, useDialog, Button} from "primevue";
+    import {InputText, DataTable, Column, Tag, useDialog, Button, Message} from "primevue";
     import {useDataHelper} from "@/composables/useDataHelper";
 
     const props = defineProps({
@@ -143,7 +143,7 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
                         <InputText type="text"></InputText>
                     </label>
                 </FormField>
-                <FormField name="date_install">
+                <FormField v-if="os_info.date_install" name="date_install">
                     <div class="flex items-baseline">
                         <span class="w-1/3 text-end me-4">Installation date</span>
                         <time class="w-2/3" :datetime="os_info.date_install" v-text="new Date(os_info.date_install).toLocaleDateString()"></time>
@@ -157,8 +157,10 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
                 </FormField>
             </FormFields>
         </Form>
-        <DataTable v-if="antivirus_info !== null" :value="antivirus_info" class="mt-6" :rows="antivirus_info.length"
-                   sortMode="multiple" removableSort>
+        <DataTable v-if="antivirus_info !== null" :value="antivirus_info" class="mt-6" :rows="antivirus_info.length" sortMode="multiple" removableSort>
+            <template #empty>
+                <Message severity="info">No results found.</Message>
+            </template>
             <template #header>
                 <h3 class="text-lg font-semibold">Installed Antivirus</h3>
             </template>
@@ -207,8 +209,10 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
                 </template>
             </Column>
         </DataTable>
-        <DataTable v-if="software_info !== null" :value="software_info" class="mt-6" :rows="software_info.length"
-                   sortMode="multiple" removableSort>
+        <DataTable v-if="software_info !== null" :value="software_info" class="mt-6" :rows="software_info.length" sortMode="multiple" removableSort>
+            <template #empty>
+                <Message severity="info">No results found.</Message>
+            </template>
             <template #header>
                 <div class="flex items-center gap-4">
                     <h3 class="text-lg font-semibold">Installed Software</h3>
