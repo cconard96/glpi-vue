@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import FileUpload from "primevue/fileupload";
+    import FileUpload from "./FileUpload.vue";
     import Editor from "primevue/editor";
 
     defineProps({
@@ -14,21 +14,7 @@
 <template>
     <div>
         <Editor editorStyle="height: 150px" v-model="model"></Editor>
-        <FileUpload v-if="enable_file_upload" :pt="{
-                root: {
-                    class: 'mt-2'
-                },
-                header: {
-                    class: 'p-2',
-                },
-            }">
-            <template #empty>
-                <div class="text-center text-gray-500">
-                    <i class="ti ti-upload text-4xl mb-2"></i>
-                    <div>Drag and drop files here to attach</div>
-                </div>
-            </template>
-        </FileUpload>
+        <FileUpload v-if="enable_file_upload"></FileUpload>
     </div>
 </template>
 

@@ -47,11 +47,23 @@ export function useDataHelper() {
         }
     }
 
+    function getUrgencyImpactPriorityLabel(value: number): string {
+        const labels = {
+            1: 'Very Low',
+            2: 'Low',
+            3: 'Medium',
+            4: 'High',
+            5: 'Very High',
+        };
+        return labels[value] || 'Unknown';
+    }
+
     return {
         formatDataSize,
         getObjectProp,
         getUsedPercentage,
         formatDataSpeed,
         formatUsername,
+        getUrgencyImpactPriorityLabel,
     }
 }

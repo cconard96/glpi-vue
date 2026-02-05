@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useSessionStore} from "@/composables/useSessionStore";
+import { usePreferencesStore } from "@/composables/usePreferencesStore";
 import { useApi } from "@/composables/useApi";
 import { useRouter } from "vue-router";
 
@@ -45,6 +46,7 @@ export function useAuth() {
                 getApiSchema(),
                 loadSession(),
                 //loadLocales(),
+                //loadPreferences(),
             ]);
         }).catch(error => {
             console.error('Login failed:', error);
@@ -67,6 +69,14 @@ export function useAuth() {
         return doApiRequest('locales').then(response => {
             localStorage.setItem('locales', JSON.stringify(response.data));
             console.log('Localization data loaded');
+        });
+    }
+
+    const loadPreferences = () => {
+        const { doApiRequest } = useApi();
+        return doApiRequest('Administration/User/Me/Preference').then(response => {
+            const store = usePreferencesStore();
+            store.loadPreferences(response.data);
         });
     }
 
