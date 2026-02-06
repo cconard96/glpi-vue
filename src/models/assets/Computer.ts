@@ -2,6 +2,8 @@ import { AbstractModel } from "@/models/AbstractModel.ts";
 import {defineAsyncComponent} from "vue";
 
 export default class Computer extends AbstractModel {
+    static readonly rightname = 'computer';
+
     static getTypeModule() {
         return 'assets';
     }
@@ -42,5 +44,9 @@ export default class Computer extends AbstractModel {
             { key: 'appliance', label: 'Appliances', icon: 'ti ti-versions', component: defineAsyncComponent(() => import('@/components/assets/tabs/ApplianceTab.vue')) },
             { key: 'database', label: 'Databases', icon: 'ti ti-database', component: defineAsyncComponent(() => import('@/components/assets/tabs/DatabaseTab.vue')) },
         ];
+    }
+
+    static getRESTEndpoint(): String {
+        return 'Assets/Computer';
     }
 }

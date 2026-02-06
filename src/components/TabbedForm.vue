@@ -3,17 +3,23 @@
     import { useRoute } from 'vue-router';
     import ItemFormHeader from "@/components/forms/ItemFormHeader.vue";
     import LazyTabPanel from "@/components/core/LazyTabPanel.vue";
-    import {ref, useTemplateRef} from "vue";
+    import {computed, ref, useTemplateRef} from "vue";
+
+    const props = defineProps<{
+        component_module: string;
+        itemtype: string;
+        id?: number | string;
+    }>();
 
     const route = useRoute();
-    const component_module = route.params.component_module as string;
-    const itemtype = route.params.itemtype as string;
-    const items_id = parseInt(route.params.id as string);
-    const {default: itemtype_model} = await import(`@/models/${component_module}/${itemtype?.charAt(0).toUpperCase() + itemtype?.slice(1)}.ts`);
+    const {default: itemtype_model} = await import(`@/models/${props.component_module}/${props.itemtype?.charAt(0).toUpperCase() + props.itemtype?.slice(1)}.ts`);
     const tab_panel_refs = useTemplateRef('tabPanelRefs');
 
     const tabs = itemtype_model.getTabs();
-    const main_item = await itemtype_model.loadItem(items_id);
+    const is_new_item = props.id === undefined || props.id === null || props.id <= 0;
+    const main_item = is_new_item ? await itemtype_model.loadNewItem() : await itemtype_model.loadItem(props.id);
+    /** The tab with key 'main' */
+    const main_tab = tabs.find(tab => tab.key === 'main');
 
     function onKeyDown(e: KeyboardEvent) {
         if (e.key === 'ArrowUp') {
@@ -58,8 +64,8 @@
 
 <template>
     <div class="grid grid-rows-[auto_1fr] h-full overflow-hidden">
-        <ItemFormHeader :item="main_item"></ItemFormHeader>
-        <Tabs value="main" class="grid grid-cols-[200px_1fr] overflow-hidden" orientation="vertical" lazy>
+        <ItemFormHeader :item="main_item" :itemtype_model="itemtype_model"></ItemFormHeader>
+        <Tabs v-if="!is_new_item" value="main" class="grid grid-cols-[200px_1fr] overflow-hidden" orientation="vertical" lazy>
             <TabList :pt="{ tabList: {class: 'flex-col overflow-y-auto', 'aria-orientation': 'vertical'} }">
                 <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">
                     <i v-if="tab.icon" :class="`${tab.icon} me-2`"></i>
@@ -69,7 +75,7 @@
             <TabPanels class="overflow-auto">
                 <LazyTabPanel v-for="tab in tabs" :key="tab.key" :value="tab.key" class="p-4 w-full" ref="tabPanelRefs">
                     <Suspense v-if="tab.component">
-                        <component :is="tab.component" :itemtype="itemtype" :items_id="items_id" :main_item="main_item" :main_itemtype_model="itemtype_model"/>
+                        <component :is="tab.component" :itemtype="itemtype" :items_id="id" :main_item="main_item" :main_itemtype_model="itemtype_model"/>
                         <template #fallback>
                             <div class="flex justify-content-center align-items-center h-full w-full">
                                 <ProgressSpinner />
@@ -82,6 +88,7 @@
                 </LazyTabPanel>
             </TabPanels>
         </Tabs>
+        <component v-else :is="main_tab?.component" :itemtype="itemtype" :items_id="id" :main_item="main_item" :main_itemtype_model="itemtype_model"/>
     </div>
 </template>
 

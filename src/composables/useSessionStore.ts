@@ -3,6 +3,15 @@ import { useApi } from "@/composables/useApi";
 
 const { apollo_client } = useApi();
 
+// declare ts constants for rights
+export const BaseRights = {
+    READ: 1,
+    UPDATE: 2,
+    CREATE: 4,
+    DELETE: 8,
+    PURGE: 16,
+}
+
 export const useSessionStore = defineStore('session', {
     state: () => ({
         /** @type {string|null} */

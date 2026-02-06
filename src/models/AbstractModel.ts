@@ -1,7 +1,16 @@
-import { useApi } from '../composables/useApi.ts';
+import { useApi } from '@/composables/useApi';
 import { DatePicker, Password, InputText, InputNumber, Checkbox } from 'primevue';
+import {useSessionStore, BaseRights} from "@/composables/useSessionStore";
 
+interface TabDefinition {
+    key: string;
+    label: string;
+    icon: string;
+    component?: any;
+}
 export class AbstractModel {
+    static readonly rightname = 'general';
+
     static getTypeModule(): String {
         return null;
     }
@@ -146,7 +155,7 @@ export class AbstractModel {
         ]);
     }
 
-    static getTabs(): Array {
+    static getTabs(): Array<TabDefinition> {
         throw new Error('getTabs() must be implemented by subclasses');
     }
 
@@ -212,5 +221,64 @@ export class AbstractModel {
             }
         }
         return formatted_data;
+    }
+
+    /**
+     * Get the default fields for a new item.
+     * By default, all fields are null/empty.
+     * If a field has a 'default' value in the OpenAPI schema, it will use that.
+     */
+    static loadNewItem() {
+        return this.getSchemaPropertiesForFields().then(props => {
+            const new_item = {};
+            for (const [key, prop] of Object.entries(props)) {
+                if (prop.hasOwnProperty('default')) {
+                    new_item[key] = prop.default;
+                } else {
+                    new_item[key] = null;
+                }
+            }
+            return new_item;
+        });
+    }
+
+    static getRESTEndpoint(): String {
+        throw new Error('getRESTEndpoint() must be implemented by subclasses');
+    }
+
+    static createItem(fields: any): Promise<any> {
+        const { doApiRequest } = useApi();
+        return doApiRequest(this.getRESTEndpoint(), {
+            method: 'POST',
+            data: fields,
+        });
+    }
+
+    /**
+     * Check if the user has the global right to read an item of this type
+     */
+    static canView() {
+        return useSessionStore().hasRight(this.rightname, BaseRights.READ);
+    }
+
+    /**
+     * Check if the user has the global right to create an item of this type
+     */
+    static canCreate() {
+        return useSessionStore().hasRight(this.rightname, BaseRights.CREATE);
+    }
+
+    /**
+    * Check if the user has the global right to update an item of this type
+    */
+    static canUpdate() {
+        return useSessionStore().hasRight(this.rightname, BaseRights.UPDATE);
+    }
+
+    /**
+    * Check if the user has the global right to delete an item of this type
+    */
+    static canDelete() {
+        return useSessionStore().hasRight(this.rightname, BaseRights.DELETE);
     }
 }

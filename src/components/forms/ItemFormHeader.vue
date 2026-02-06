@@ -10,7 +10,7 @@
             required: true
         },
         itemtype_model: {
-            type: Object as () => AbstractModel,
+            type: Function as typeof AbstractModel,
         }
     });
 
@@ -27,7 +27,8 @@
         <header>
             <h1>
                 <i :class="`${itemtype_model.getIcon()} mr-2`"></i>
-                {{ item.name }}
+                <span v-if="item.id">{{ item.name }}</span>
+                <span v-else class="italic">New {{ itemtype_model.getTypeName() }}</span>
             </h1>
         </header>
         <div v-if="item._entity !== undefined">

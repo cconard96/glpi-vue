@@ -1,7 +1,7 @@
 <script setup>
     import NavMenu from "@/components/NavMenu.vue";
     import {RouterView, useRouter} from "vue-router";
-    import {Breadcrumb, Menubar, ProgressSpinner, DynamicDialog, useDialog } from "primevue";
+    import {Breadcrumb, Menubar, ProgressSpinner, DynamicDialog, useDialog, Toast } from "primevue";
     import {useSessionStore} from "@/composables/useSessionStore.ts";
     import {computed, defineAsyncComponent, ref, useTemplateRef} from "vue";
     import {useAuth} from "@/composables/useAuth.ts";
@@ -90,6 +90,7 @@
 <template>
     <div class="home-container grid grid-cols-[250px_1fr] h-screen">
         <DynamicDialog />
+        <Toast />
         <Teleport class="contents" :disabled="!is_mobile" to="#mobile_menu" defer>
             <NavMenu :mobile="is_mobile" />
         </Teleport>
