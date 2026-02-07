@@ -11,7 +11,15 @@
     const component_module = currentRoute.params.component_module as string;
     const itemtype = currentRoute.params.itemtype as string;
     const items_id = parseInt(currentRoute.params.id as string);
-    const itemtype_model = itemtype ? (await import(`@/models/${component_module}/${itemtype?.charAt(0).toUpperCase() + itemtype?.slice(1)}.ts`)).default : null;
+
+    let itemtype_model = null;
+    if (itemtype) {
+        try {
+            itemtype_model = (await import(`@/models/${component_module}/${itemtype?.charAt(0).toUpperCase() + itemtype?.slice(1)}.ts`)).default;
+        } catch (error) {
+            itemtype_model = null;
+        }
+    }
 </script>
 
 <template>
