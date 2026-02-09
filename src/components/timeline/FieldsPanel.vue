@@ -9,7 +9,7 @@
         ScrollPanel,
         Select, Tag
     } from "primevue";
-    import { Form } from "@primevue/forms";
+    import { Form, FormField } from "@primevue/forms";
     import {computed, onMounted, ref} from "vue";
     import {useApi} from "@/composables/useApi";
     import { ITILStatus } from "@/models/assistance/ITILStatus.js";
@@ -182,23 +182,23 @@
             <Accordion :value="['main', 'actors']" multiple>
                 <AccordionPanel value="main">
                     <AccordionHeader>
-                        <span>
-                            <i :class="`${itemtype_icon} mr-2`"></i>
+                        <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">
+                            <i :class="`${itemtype_icon} me-2`"></i>
                             {{ itemtype_name }}
-                            <Tag class="ml-2">Entity: {{ item.entity.name }}</Tag>
+                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item.entity.name }}</span></Tag>
                         </span>
                     </AccordionHeader>
                     <AccordionContent>
                         <div class="flex flex-col space-y-4">
-                            <div>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <DatePicker inputId="item_date" name="date" v-model="opening_date"
                                                 showTime showIcon
                                                 class="max-w-full" fluid/>
                                     <label for="item_date">Opening date</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_type" name="type" v-model="item['type']"
                                             :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"
@@ -207,8 +207,8 @@
                                     ></Select>
                                     <label for="item_type">Type</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_category" name="category" v-model="item.category.id"
                                             :filter="categories.length > 5" filterMode="lenient" :options="categories"
@@ -217,8 +217,8 @@
                                     ></Select>
                                     <label for="item_category">Category</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_status" name="status" v-model="item.status.id"
                                             :options="statuses"
@@ -227,8 +227,8 @@
                                     ></Select>
                                     <label for="item_status">Status</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_request_type" name="request_type" v-model="item.request_type.id"
                                             :filter="request_types.length > 5" filterMode="lenient" :options="request_types"
@@ -237,8 +237,8 @@
                                     ></Select>
                                     <label for="item_request_type">Request source</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_urgency" name="urgency" v-model="item.urgency"
                                             :options="urgency_impact_options"
@@ -247,8 +247,8 @@
                                     ></Select>
                                     <label for="item_urgency">Urgency</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_impact" name="impact" v-model="item.impact"
                                             :options="urgency_impact_options"
@@ -257,8 +257,8 @@
                                     ></Select>
                                     <label for="item_impact">Impact</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_priority" name="priority" v-model="item.priority"
                                             :options="priority_options"
@@ -267,8 +267,8 @@
                                     ></Select>
                                     <label for="item_priority">Priority</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <Select inputId="item_location" name="location" v-model="item.location.id"
                                             :filter="locations.length > 5" filterMode="lenient" :options="locations"
@@ -277,20 +277,20 @@
                                     ></Select>
                                     <label for="item_location">Location</label>
                                 </FloatLabel>
-                            </div>
-                            <div>
+                            </FormField>
+                            <FormField>
                                 <FloatLabel variant="on">
                                     <InputText id="item_external_id" name="external_id" v-model="item.external_id" class="w-full"/>
                                     <label for="item_external_id">External ID</label>
                                 </FloatLabel>
-                            </div>
+                            </FormField>
                         </div>
                     </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="actors">
                     <AccordionHeader>
                                 <span>
-                                    <i class="ti ti-users mr-2"></i>
+                                    <i class="ti ti-users me-2"></i>
                                     Actors
                                 </span>
                     </AccordionHeader>
@@ -330,7 +330,7 @@
                 <AccordionPanel value="items">
                     <AccordionHeader>
                                 <span>
-                                    <i class="ti ti-package mr-2"></i>
+                                    <i class="ti ti-package me-2"></i>
                                     Items
                                 </span>
                     </AccordionHeader>
@@ -338,10 +338,10 @@
                 </AccordionPanel>
                 <AccordionPanel value="service_levels">
                     <AccordionHeader>
-                                <span>
-                                    <i class="ti ti-clock mr-2"></i>
-                                    Service levels
-                                </span>
+                        <span>
+                            <i class="ti ti-clock me-2"></i>
+                            Service levels
+                        </span>
                     </AccordionHeader>
                     <AccordionContent>
                         Not implemented
@@ -349,10 +349,28 @@
                 </AccordionPanel>
                 <AccordionPanel value="linked_assistance_objects">
                     <AccordionHeader>
-                                <span>
-                                    <i class="ti ti-link mr-2"></i>
-                                    Linked assistance objects
-                                </span>
+                        <span>
+                            <i class="ti ti-link me-2"></i>
+                            Linked assistance objects
+                        </span>
+                    </AccordionHeader>
+                    <AccordionContent>Not implemented</AccordionContent>
+                </AccordionPanel>
+                <AccordionPanel value="linked_projects">
+                    <AccordionHeader>
+                        <span>
+                            <i class="ti ti-layout-kanban me-2"></i>
+                            Linked Projects
+                        </span>
+                    </AccordionHeader>
+                    <AccordionContent>Not implemented</AccordionContent>
+                </AccordionPanel>
+                <AccordionPanel value="kbarticles">
+                    <AccordionHeader>
+                        <span>
+                            <i class="ti ti-lifebuoy me-2"></i>
+                            KB Articles
+                        </span>
                     </AccordionHeader>
                     <AccordionContent>Not implemented</AccordionContent>
                 </AccordionPanel>

@@ -20,7 +20,7 @@
         if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
         if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
         if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
-        return date.toLocaleDateString();
+        return date.toLocaleString();
     };
 
     const timeline_alignment = computed(() => {
@@ -94,8 +94,8 @@
 
 <template>
     <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
-        <ActorAvatar v-if="item.item.user" icon="ti ti-user" class="mr-2 shrink-0" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
-        <Card v-if="['Followup', 'Task', 'Solution', 'content'].includes(item.type)" :pt="{
+        <ActorAvatar v-if="item.item.user" icon="ti ti-user" class="me-2 shrink-0" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
+        <Card v-if="['Followup', 'Task', 'Solution', 'content', 'Cost'].includes(item.type)" :pt="{
             body: {
                 class: `p-2 ${bg_color}`,
                 style: `background-color: ${bg_color}; border-radius: 0.5rem;`

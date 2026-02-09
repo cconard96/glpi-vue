@@ -1,11 +1,13 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import {ref, onMounted, useTemplateRef, shallowRef, defineAsyncComponent, reactive, computed} from "vue";
+    import {ref, onMounted, useTemplateRef, shallowRef, defineAsyncComponent, reactive, computed, type Ref} from "vue";
     import { useApi } from "@/composables/useApi.ts";
-    import { Button, SplitButton, ButtonGroup, Menu, ToggleSwitch, Popover } from 'primevue';
+    import { Button, SplitButton, ButtonGroup, Menu, ToggleSwitch, Popover, SelectButton, Timeline } from 'primevue';
     import { RouterLink } from "vue-router";
     import { ITILStatus } from "@/models/assistance/ITILStatus.js";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
+    import {type components} from "../../../data/hlapiv2_schema";
+    import {useAssistanceItem} from "@/composables/useAssistanceItem";
 
     const { itemtype, id } = defineProps({
         itemtype: {
@@ -20,8 +22,9 @@
 
     const { doApiRequest, normalizeComponentName } = useApi();
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
-    const item = ref(null);
+    const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
     const items = ref(null);
+    const { mainTimelineAction, extraTimelineActions } = useAssistanceItem(normalized_itemtype.value, item);
 
     const extra_data_promises = [
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then((res) => {
@@ -61,37 +64,6 @@
             itemtype_name = itemtype;
     }
 
-    const extra_timeline_actions = [
-        {
-            label: 'Create a task',
-            icon: 'ti ti-checkbox',
-            command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/TaskForm.vue'));
-            }
-        },
-        {
-            label: 'Add a solution',
-            icon: 'ti ti-check',
-            command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/SolutionForm.vue'));
-            }
-        },
-        {
-            label: 'Add a document',
-            icon: 'ti ti-files',
-            command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/DocumentForm.vue'));
-            }
-        },
-        {
-            label: 'Ask for approval',
-            icon: 'ti ti-thumb-up',
-            command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/ApprovalForm.vue'));
-            }
-        },
-    ];
-
     onMounted(() => {
         document.title = `GLPI - ${itemtype_name} #${item.value.id} - ${item.value.name}`;
     });
@@ -127,11 +99,16 @@
             icon: 'ti ti-check',
             value: ref(true)
         },
+        filter_costs: {
+            label: 'Costs',
+            icon: 'ti ti-wallet',
+            value: ref(true)
+        },
     };
-    const todo_list_mode = ref(false);
+    const view_mode = ref('default');
     const filtered_items = computed(() => {
         return items.value.filter((timeline_item) => {
-            if (todo_list_mode.value) {
+            if (view_mode.value === 'todo') {
                 return timeline_item.type === 'Task';
             }
             switch (timeline_item.type) {
@@ -145,6 +122,8 @@
                     return filters.filter_approvals.value.value;
                 case 'Solution':
                     return filters.filter_solutions.value.value;
+                case 'Cost':
+                    return filters.filter_costs.value.value;
                 default:
                     return true;
             }
@@ -159,6 +138,40 @@
     function toggleFiltersMenu(e) {
         filters_menu_el.value.toggle(e);
     }
+
+    const milestones = computed(() => {
+        const milestone_items = [
+            { status: 'Opening Date', date: new Date(item.value.date || item.value.date_creation).toLocaleString() }
+        ];
+
+        if ('take_into_account_date' in item.value) {
+            // old tickets (<10.0.4 won't have the take_into_account_date field set. use date_creation + take_into_account_duration instead
+            if (item.value.take_into_account_date) {
+                milestone_items.push({status: 'Take into account', date: new Date(item.value.take_into_account_date).toLocaleString()});
+            } else if (item.value.take_into_account_duration) {
+                milestone_items.push({
+                    status: 'Take into account',
+                    date: new Date(new Date(item.value.date_creation).getTime() + item.value.take_into_account_duration * 1000).toLocaleString()
+                });
+            }
+        }
+
+        //TODO Finish
+
+        // show resolution date if solved/closed type of status
+        // if ([5, 6, 8, 13, 14].includes(item.value.status.id)) {
+        //     if (item.value.resolution_date) {
+        //         milestone_items.push({status: 'Resolution', date: new Date(item.value.resolution_date).toLocaleString()});
+        //     } else if (item.value.resolution_duration) {
+        //         milestone_items.push({
+        //             status: 'Resolution',
+        //             date: new Date(new Date(item.value.date_creation).getTime() + item.value.resolution_duration * 1000).toLocaleString()
+        //         });
+        //     }
+        // }
+
+        return milestone_items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    });
 </script>
 
 <template>
@@ -178,19 +191,31 @@
         </div>
         <div class="grid grid-cols-12 overflow-y-hidden">
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
-                <component v-if="current_new_itemtype !== null" :is="current_new_itemtype" @close="current_new_itemtype = null"></component>
-                <TimelineItem v-for="item in filtered_items.slice().reverse()" :key="`${item.type}-${item.item.id}`"
-                              :item="item" :todoListMode="todo_list_mode" />
-                <TimelineItem :class="(!todo_list_mode && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
-                    type: 'content',
-                    item: {
-                        name: item.name,
-                        content: item.content,
-                        user: item.user,
-                        user_editor: item.user_editor,
-                        date_creation: item.date_creation || item.date
-                    }
-                }"></TimelineItem>
+                <template v-if="view_mode !== 'milestones'">
+                    <component v-if="current_new_itemtype !== null" :is="current_new_itemtype" @close="current_new_itemtype = null"></component>
+                    <TimelineItem v-for="item in filtered_items.slice().reverse()" :key="`${item.type}-${item.item.id}`"
+                                  :item="item" :todoListMode="view_mode === 'todo'" />
+                    <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
+                        type: 'content',
+                        item: {
+                            name: item.name,
+                            content: item.content,
+                            user: item.user,
+                            user_editor: item.user_editor,
+                            date_creation: item.date_creation || item.date
+                        }
+                    }"></TimelineItem>
+                </template>
+                <template v-else>
+                    <Timeline :value="milestones">
+                        <template #opposite="slotProps">
+                            {{ slotProps.item.date }}
+                        </template>
+                        <template #content="slotProps">
+                            {{ slotProps.item.status }}
+                        </template>
+                    </Timeline>
+                </template>
             </div>
             <div ref="right-side" class="col-span-4 2xl:col-span-3 overflow-y-auto">
                 <FieldsPanel :itemtype="itemtype" :item="item"></FieldsPanel>
@@ -198,9 +223,9 @@
             <div class="relative h-22 col-span-12">
                 <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
                     <div class="[&>*]:me-2">
-                        <SplitButton v-if="current_new_itemtype === null" label="Answer" icon="ti ti-message-circle"
-                                     :model="extra_timeline_actions" :menuButtonProps="{'aria-label': 'More Options'}"
-                                     @click="current_new_itemtype = defineAsyncComponent(() => import('@/components/timeline/forms/FollowupForm.vue'));">
+                        <SplitButton v-if="current_new_itemtype === null && mainTimelineAction" :label="mainTimelineAction.label" :icon="mainTimelineAction.icon"
+                                     :model="extraTimelineActions" :menuButtonProps="{'aria-label': 'More Options'}"
+                                     @click="mainTimelineAction.command">
                         </SplitButton>
                         <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"
                                 @click="toggleFiltersMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
@@ -215,8 +240,21 @@
                                 </div>
                             </div>
                         </Popover>
-                        <Button icon="ti ti-list-check" title="View TODO list" variant="outlined"
-                                @click="todo_list_mode = !todo_list_mode"></Button>
+                        <SelectButton :pt="{ pcToggleButton: {root: { class: 'inline-flex px-(--p-button-padding-x) py-(--p-button-padding-y)' } } }"
+                                      :options="[
+                            { key: 'default', label: 'Default View', icon: 'ti ti-messages' },
+                            { key: 'todo', label: 'TODO List View', icon: 'ti ti-list-check' },
+                            { key: 'milestones', label: 'Milestones View', icon: 'ti ti-flag' },
+                        ]" v-model="view_mode" optionValue="key" optionLabel="label">
+                            <template #option="slotProps">
+                                <i
+                                    :title="slotProps.option.label"
+                                    :aria-label="slotProps.option.label"
+                                    :class="slotProps.option.icon"
+                                    class="text-base!"
+                                ></i>
+                            </template>
+                        </SelectButton>
                     </div>
                     <div class="">
                         <ButtonGroup>
@@ -228,11 +266,9 @@
                                 { key: 'transfer', label: 'Add to transfer list', icon: 'ti ti-corner-right-up' },
                                 { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge' },
                                 { key: 'link_project_task', label: 'Link project task', icon: 'ti ti-link' },
-                                { key: 'add_contract', label: 'Add contract', icon: 'ti ti-writing-sign' },
                                 { key: 'link_kb_article', label: 'Link KB article', icon: 'ti ti-lifebuoy' },
-                                { key: 'add_document', label: 'Add document', icon: 'ti ti-file-plus' },
                             ]"></Menu>
-                            <Button label="Save" icon="ti ti-device-floppy" severity="info"></Button>
+                            <Button label="Save" icon="ti ti-device-floppy" severity="primary"></Button>
                         </ButtonGroup>
                     </div>
                 </div>

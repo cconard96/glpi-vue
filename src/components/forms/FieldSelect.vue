@@ -23,6 +23,13 @@
             type: String,
             default: ''
         },
+        label_type: {
+            type: String,
+            validator(value: unknown): boolean {
+                return ['inline', 'on'].includes(value as string);
+            },
+            default: 'inline'
+        },
         type: {
             type: String,
             default: null
@@ -77,9 +84,9 @@
 </script>
 
 <template>
-    <div class="flex items-baseline">
-        <label class="w-1/3 text-end me-4" v-if="label" :for="input_id">{{ label }}</label>
-        <Select v-if="!multiple" v-bind="form_field.field.props" :id="input_id" class="w-2/3"
+    <div class="flex items-baseline" :class="label_type === 'on' ? 'p-floatlabel p-floatlabel-on' : ''">
+        <label v-if="label && label_type === 'inline'" class="w-1/3 text-end me-4" :for="input_id">{{ label }}</label>
+        <Select v-if="!multiple" v-bind="form_field.field.props" :id="input_id" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"
                 :optionValue="optionValue" :optionLabel="optionLabel" v-model="model" :options="options"
                 :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus show-clear>
             <template #value="slotProps">
@@ -91,8 +98,8 @@
                 </div>
             </template>
         </Select>
-        <MultiSelect v-else v-bind="form_field.field.props" :id="input_id" class="w-2/3" :dataKey="optionValue"
-                     :optionValue="optionValue" :optionLabel="optionLabel" v-model="model" :options="options"
+        <MultiSelect v-else v-bind="form_field.field.props" :id="input_id" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"
+                     :dataKey="optionValue" :optionValue="optionValue" :optionLabel="optionLabel" v-model="model" :options="options"
                      :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus display="chip" show-clear>
             <template #chip="slotProps">
                 <Chip :label="options.find(opt => opt[optionValue] === slotProps.value)?.[optionLabel] || slotProps.value"
@@ -100,6 +107,7 @@
                 />
             </template>
         </MultiSelect>
+        <label v-if="label && label_type !== 'inline'" :for="input_id">{{ label }}</label>
     </div>
 </template>
 

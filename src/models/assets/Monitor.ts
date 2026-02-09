@@ -5,7 +5,7 @@ export default class Monitor extends AbstractModel {
         return 'assets';
     }
 
-    static getTypeName() {
+    static getTypeName(count: number = 1) {
         return 'Monitor';
     }
 

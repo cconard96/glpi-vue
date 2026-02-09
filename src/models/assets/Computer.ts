@@ -8,7 +8,7 @@ export default class Computer extends AbstractModel {
         return 'assets';
     }
 
-    static getTypeName() {
+    static getTypeName(count: number = 1) {
         return 'Computer';
     }
 

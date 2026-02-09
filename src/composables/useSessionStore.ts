@@ -1,16 +1,8 @@
 import { defineStore } from 'pinia'
 import { useApi } from "@/composables/useApi";
+import {components} from "../../data/hlapiv2_schema";
 
 const { apollo_client } = useApi();
-
-// declare ts constants for rights
-export const BaseRights = {
-    READ: 1,
-    UPDATE: 2,
-    CREATE: 4,
-    DELETE: 8,
-    PURGE: 16,
-}
 
 export const useSessionStore = defineStore('session', {
     state: () => ({
@@ -38,9 +30,11 @@ export const useSessionStore = defineStore('session', {
         active_profile: null,
         /** @type {id: number, short_name: string, complete_name: string, recursive: number} */
         active_entity: null,
+        /** @type {number[]} */
+        groups: [],
     }),
     actions: {
-        loadSession(sessionData) {
+        loadSession(sessionData: components['schemas']['Session']) {
             this.current_time = sessionData.current_time || null;
             this.user_id = sessionData.user_id || null;
             this.use_mode = sessionData.use_mode || 0;
@@ -53,6 +47,7 @@ export const useSessionStore = defineStore('session', {
             this.active_entities = sessionData.active_entities || [];
             this.active_profile = sessionData.active_profile || null;
             this.active_entity = sessionData.active_entity || null;
+            this.groups = sessionData.groups || [];
 
             apollo_client.resetStore();
         },
@@ -69,6 +64,7 @@ export const useSessionStore = defineStore('session', {
             this.active_entities = [];
             this.active_profile = null;
             this.active_entity = null;
+            this.groups = [];
 
             apollo_client.resetStore();
         },
@@ -96,6 +92,7 @@ export const useSessionStore = defineStore('session', {
         getFirstName: (state) => state.first_name,
         getDefaultEntity: (state) => state.default_entity,
         getProfiles: (state) => state.profiles,
+        getGroups: (state) => state.groups,
         getActiveEntities: (state) => state.active_entities,
         getActiveProfile: (state) => state.active_profile,
         getActiveEntity: (state) => state.active_entity,
@@ -104,7 +101,64 @@ export const useSessionStore = defineStore('session', {
                 const module_rights = state.active_profile?.rights?.[module] || 0;
                 return (module_rights & right) === right;
             }
-        }
+        },
+        hasAnyRight: (state) => {
+            return (module: string, rights: number[]) => {
+                const module_rights = state.active_profile?.rights?.[module] || 0;
+                return rights.some(right => (module_rights & right) === right);
+            };
+        },
+        hasAllRights: (state) => {
+            return (module: string, rights: number[]) => {
+                const module_rights = state.active_profile?.rights?.[module] || 0;
+                return rights.every(right => (module_rights & right) === right);
+            };
+        },
     },
     persist: true,
 });
+
+// declare ts constants for rights
+export const BaseRights = {
+    READ: 1,
+    UPDATE: 2,
+    CREATE: 4,
+    DELETE: 8,
+    PURGE: 16,
+}
+
+export const ITILSubItemRights = {
+    SEEPUBLIC: 1,
+    UPDATEMY: 2,
+    ADDMY: 4,
+    DELETE: 8,
+    PURGE: 16,
+    UPDATEALL: 1024,
+    ADD_AS_GROUP: 2048,
+    ADDALLITEM: 4096,
+    SEEPRIVATE: 8192,
+    ADD_AS_OBSERVER: 16384,
+    ADD_AS_TECHNICIAN: 32768,
+    SEEPRIVATEGROUPS: 65536,
+}
+
+export const ApprovalRights = {
+    /** Can create approval requests for "Request" type of tickets */
+    CREATEREQUEST: 1024,
+    /** Can create approval requests for "Incident" type of tickets */
+    CREATEINCIDENT: 2048,
+    /** Can validate approval requests for "Request" type of tickets */
+    VALIDATEREQUEST: 4096,
+    /** Can validate approval requests for "Incident" type of tickets */
+    VALIDATEINCIDENT: 8192,
+}
+
+export const TicketRights = {
+    READGROUP: 2048,
+    READASSIGN: 4096,
+    ASSIGN: 8192,
+    STEAL: 16384,
+    OWN: 32768,
+    CHANGEPRIORITY: 65536,
+    READNEWTICKET: 262144,
+}

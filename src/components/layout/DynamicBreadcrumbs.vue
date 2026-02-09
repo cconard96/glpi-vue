@@ -42,7 +42,7 @@
                 </span>
             </template>
         </Breadcrumb>
-        <div v-if="itemtype_model !== null" class="content-center">
+        <div v-if="itemtype_model" class="content-center">
             <Button v-if="itemtype_model.canCreate()" label="Add" size="small" v-slot="slotProps">
                 <RouterLink :class="slotProps.class" :to="{ name: 'NewItemForm', params: { component_module: component_module, itemtype: itemtype } }">
                     <i class="ti ti-plus"></i>

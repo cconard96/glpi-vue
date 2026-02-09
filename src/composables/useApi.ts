@@ -71,6 +71,7 @@ export function useApi() {
             url = url.substring(1);
         }
         return refreshAuthToken().then(() => {
+            console.log('Making API request to', url);
             return axios.request({
                 ...config,
                 url: `${host}/api.php/${url}`,
