@@ -1,20 +1,25 @@
 <script setup lang="ts">
     import {Avatar, Card, Button, Select, FloatLabel} from "primevue";
-    import {Form, FormField} from '@primevue/forms';
+    import {Form, FormField, FormSubmitEvent} from '@primevue/forms';
     import {useSessionStore} from "@/composables/useSessionStore";
-    import {useTemplateRef} from "vue";
+    import {useOpenAPIForm} from "@/composables/useOpenAPIForm";
+    import {useApi} from "@/composables/useApi";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
 
     const { getFriendlyName } = useSessionStore();
+    const { getComponentSchema } = useApi();
+    const { resolveFields } = useOpenAPIForm(getComponentSchema('Followup'));
     defineEmits(['close', 'add']);
-    const new_timeline_item_el = useTemplateRef('new_timeline_item');
 
+    function onSubmit(event: FormSubmitEvent) {
+        console.log(event);
+    }
 </script>
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
         <Avatar icon="ti ti-user" class="mr-2" :title="getFriendlyName"></Avatar>
-        <Form>
+        <Form :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
                     class: `p-4 bg-gray-200/50 dark:bg-gray-800/50`,

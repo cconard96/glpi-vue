@@ -209,7 +209,7 @@ export class AbstractModel {
         });
     }
 
-    static formatFieldsForForm(data: any): any {
+    static formatFieldsForForm(data: any, schema?: any): any {
         const formatted_data = { ...data };
         for (const [key, value] of Object.entries(formatted_data)) {
             if (value && typeof value === 'object' && 'id' in value) {
@@ -218,6 +218,13 @@ export class AbstractModel {
             } else if (value && Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' && 'id' in value[0]) {
                 formatted_data[key] = value.map(item => item.id);
                 formatted_data[`_${key}`] = value; // keep the full objects as well
+            } else {
+                if (schema) {
+                    if (schema.properties && schema.properties[key] && schema.properties[key].type === 'string' && (schema.properties[key].format === 'date' || schema.properties[key].format === 'date-time')) {
+                        // Convert date-time strings to Date objects for easier use with date pickers
+                        formatted_data[key] = value ? new Date(value as string) : null;
+                    }
+                }
             }
         }
         return formatted_data;

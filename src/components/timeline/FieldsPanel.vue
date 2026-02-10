@@ -1,19 +1,16 @@
 <script setup lang="ts">
     import {
-        Accordion,
-        AccordionContent,
-        AccordionHeader,
-        AccordionPanel, DatePicker, FloatLabel,
-        InputText,
-        MultiSelect,
-        ScrollPanel,
-        Select, Tag
+        Accordion, AccordionContent, AccordionHeader, AccordionPanel,
+        DatePicker, FloatLabel, InputText, MultiSelect, ScrollPanel,
+        Message, Tag, SelectButton, Fluid, Button
     } from "primevue";
     import { Form, FormField } from "@primevue/forms";
     import {computed, onMounted, ref} from "vue";
     import {useApi} from "@/composables/useApi";
     import { ITILStatus } from "@/models/assistance/ITILStatus.js";
     import type { components } from 'data/hlapiv2_schema';
+    import FieldSelect from "@/components/forms/FieldSelect.vue";
+    import { RouterLink } from "vue-router";
 
     type ITILObject = components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem'];
 
@@ -23,9 +20,6 @@
     }>();
 
     const { doApiRequest, normalizeComponentName, doGraphQLRequest } = useApi();
-    const categories = ref([]);
-    const request_types = ref([]);
-    const locations = ref([]);
     const statuses = ITILStatus.getForSelect(itemtype);
     const urgency_impact_options = [
         {
@@ -101,11 +95,7 @@
             errors: {}
         };
     };
-    const getInitialFormValues = () => {
-        return {
-            // For now, just return an empty object.
-        };
-    };
+
     const onFormSubmit = (data) => {
         console.log('Form submitted:', data);
         // Handle form submission, e.g., send data to the API.
@@ -130,169 +120,121 @@
             itemtype_name = itemtype;
     }
 
-    const opening_date = computed({
-        get() {
-            return item.date ? new Date(item.date) : null;
-        },
-        set(value) {
-            item.date = value ? value.toISOString() : null;
-        }
-    });
-    const time_to_own = computed({
-        get() {
-            return item.time_to_own ? new Date(item.time_to_own) : null;
-        },
-        set(value) {
-            item.time_to_own = value ? value.toISOString() : null;
-        }
-    });
-
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
+    const kbitems = ref([]);
 
     onMounted(() => {
         doApiRequest(`Assistance/${normalized_itemtype.value}/${item.id}/TeamMember`).then((res) => {
             team.value = res.data;
-        })
+        });
         doGraphQLRequest(`
             query {
-                RequestType {
-                    key: id
-                    label: name
-                }
-                ITILCategory {
-                    key: id
-                    label: completename
-                }
-                Location {
-                    key: id
-                    label: completename
+                KBArticle_Item(filter: "itemtype==${normalized_itemtype.value};items_id==${item.id}") {
+                    id itemtype items_id kbarticle { id name }
                 }
             }
         `).then((res) => {
-            categories.value = res.data.ITILCategory;
-            request_types.value = res.data.RequestType;
-            locations.value = res.data.Location;
+            kbitems.value = res.data.KBArticle_Item;
         });
+    });
+
+    const global_validation_icon = computed(() => {
+        if (!('global_validation' in item) || !item.global_validation) {
+            return null;
+        }
+        switch (item.global_validation) {
+            case 2:
+                return 'ti ti-clock text-amber-500';
+            case 3:
+                return 'ti ti-check text-green-700';
+            case 4:
+                return 'ti ti-x text-red-700';
+        }
+        return null;
+    });
+    const global_validation_label = computed(() => {
+        if (!('global_validation' in item) || !item.global_validation) {
+            return null;
+        }
+        switch (item.global_validation) {
+            case 2:
+                return 'Pending';
+            case 3:
+                return 'Accepted';
+            case 4:
+                return 'Refused';
+        }
+        return null;
     });
 </script>
 
 <template>
-    <Form v-slot="$form" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
+    <Form v-slot="$form" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
         <ScrollPanel>
             <Accordion :value="['main', 'actors']" multiple>
                 <AccordionPanel value="main">
-                    <AccordionHeader>
+                    <AccordionHeader class="p-3">
                         <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">
                             <i :class="`${itemtype_icon} me-2`"></i>
                             {{ itemtype_name }}
-                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item.entity.name }}</span></Tag>
+                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item._entity.name }}</span></Tag>
                         </span>
                     </AccordionHeader>
                     <AccordionContent>
-                        <div class="flex flex-col space-y-4">
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <DatePicker inputId="item_date" name="date" v-model="opening_date"
-                                                showTime showIcon
-                                                class="max-w-full" fluid/>
-                                    <label for="item_date">Opening date</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_type" name="type" v-model="item['type']"
-                                            :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"
-                                            optionValue="key" optionLabel="label"
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_type">Type</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_category" name="category" v-model="item.category.id"
-                                            :filter="categories.length > 5" filterMode="lenient" :options="categories"
-                                            optionValue="key" optionLabel="label" show-clear
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_category">Category</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_status" name="status" v-model="item.status.id"
-                                            :options="statuses"
-                                            optionValue="key" optionLabel="label"
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_status">Status</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_request_type" name="request_type" v-model="item.request_type.id"
-                                            :filter="request_types.length > 5" filterMode="lenient" :options="request_types"
-                                            optionValue="key" optionLabel="label"
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_request_type">Request source</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_urgency" name="urgency" v-model="item.urgency"
-                                            :options="urgency_impact_options"
-                                            optionValue="key" optionLabel="label"
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_urgency">Urgency</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_impact" name="impact" v-model="item.impact"
-                                            :options="urgency_impact_options"
-                                            optionValue="key" optionLabel="label"
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_impact">Impact</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_priority" name="priority" v-model="item.priority"
-                                            :options="priority_options"
-                                            optionValue="key" optionLabel="label"
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_priority">Priority</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <Select inputId="item_location" name="location" v-model="item.location.id"
-                                            :filter="locations.length > 5" filterMode="lenient" :options="locations"
-                                            optionValue="key" optionLabel="label" show-clear
-                                            class="w-full"
-                                    ></Select>
-                                    <label for="item_location">Location</label>
-                                </FloatLabel>
-                            </FormField>
-                            <FormField>
-                                <FloatLabel variant="on">
-                                    <InputText id="item_external_id" name="external_id" v-model="item.external_id" class="w-full"/>
-                                    <label for="item_external_id">External ID</label>
-                                </FloatLabel>
-                            </FormField>
-                        </div>
+                        <Fluid>
+                            <div class="flex flex-col space-y-4">
+                                <FormField name="date">
+                                    <FloatLabel variant="on">
+                                        <DatePicker inputId="item_date" showTime showIcon />
+                                        <label for="item_date">Opening date</label>
+                                    </FloatLabel>
+                                </FormField>
+                                <FormField name="type">
+                                    <SelectButton :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"
+                                                  optionValue="key" optionLabel="label" size="small"></SelectButton>
+                                </FormField>
+                                <FormField name="category">
+                                    <!-- TODO Make a tree select -->
+                                    <FieldSelect label="Category" type="ITILCategory" label_type="on"></FieldSelect>
+                                </FormField>
+                                <FormField name="location">
+                                    <FieldSelect label="Location" type="Location" label_type="on"></FieldSelect>
+                                </FormField>
+                                <FormField name="status">
+                                    <FieldSelect label="Status" :options="statuses" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                </FormField>
+                                <div v-if="('global_validation' in item && item.global_validation) > 1">
+                                    <i class="me-2" :class="global_validation_icon"></i>
+                                    <span>Approval Status: {{ global_validation_label }}</span>
+                                </div>
+                                <FormField name="request_type">
+                                    <FieldSelect label="Request source" type="RequestType" label_type="on"></FieldSelect>
+                                </FormField>
+                                <FormField name="urgency">
+                                    <FieldSelect label="Urgency" :options="urgency_impact_options" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                </FormField>
+                                <FormField name="impact">
+                                    <FieldSelect label="Impact" :options="urgency_impact_options" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                </FormField>
+                                <FormField name="priority">
+                                    <FieldSelect label="Priority" :options="priority_options" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                </FormField>
+                                <FormField name="external_id">
+                                    <FloatLabel variant="on">
+                                        <InputText id="item_external_id"/>
+                                        <label for="item_external_id">External ID</label>
+                                    </FloatLabel>
+                                </FormField>
+                            </div>
+                        </Fluid>
                     </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="actors">
-                    <AccordionHeader>
-                                <span>
-                                    <i class="ti ti-users me-2"></i>
-                                    Actors
-                                </span>
+                    <AccordionHeader class="p-3">
+                        <span>
+                            <i class="ti ti-users me-2"></i>
+                            Actors
+                        </span>
                     </AccordionHeader>
                     <AccordionContent>
                         <div class="flex flex-col space-y-4">
@@ -328,16 +270,16 @@
                     </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="items">
-                    <AccordionHeader>
-                                <span>
-                                    <i class="ti ti-package me-2"></i>
-                                    Items
-                                </span>
+                    <AccordionHeader class="p-3">
+                        <span>
+                            <i class="ti ti-package me-2"></i>
+                            Items
+                        </span>
                     </AccordionHeader>
                     <AccordionContent>Not implemented</AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="service_levels">
-                    <AccordionHeader>
+                    <AccordionHeader class="p-3">
                         <span>
                             <i class="ti ti-clock me-2"></i>
                             Service levels
@@ -348,7 +290,7 @@
                     </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="linked_assistance_objects">
-                    <AccordionHeader>
+                    <AccordionHeader class="p-3">
                         <span>
                             <i class="ti ti-link me-2"></i>
                             Linked assistance objects
@@ -357,7 +299,7 @@
                     <AccordionContent>Not implemented</AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="linked_projects">
-                    <AccordionHeader>
+                    <AccordionHeader class="p-3">
                         <span>
                             <i class="ti ti-layout-kanban me-2"></i>
                             Linked Projects
@@ -366,13 +308,26 @@
                     <AccordionContent>Not implemented</AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="kbarticles">
-                    <AccordionHeader>
+                    <AccordionHeader class="p-3">
                         <span>
                             <i class="ti ti-lifebuoy me-2"></i>
                             KB Articles
+                            <Tag v-if="kbitems.length > 0" severity="secondary" :value="kbitems.length"></Tag>
                         </span>
+                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto"></Button>
                     </AccordionHeader>
-                    <AccordionContent>Not implemented</AccordionContent>
+                    <AccordionContent>
+                        <div v-if="kbitems.length === 0">
+                            <Message severity="info">No linked KB articles.</Message>
+                        </div>
+                        <div v-else class="flex flex-col space-y-2">
+                            <div v-for="kbitem in kbitems" :key="kbitem.id" class="hover:bg-gray-800 p-2">
+                                <RouterLink :to="{ name: 'Knowbase', params: { article_id: kbitem.kbarticle.id } }">
+                                    {{ kbitem.kbarticle.name }}
+                                </RouterLink>
+                            </div>
+                        </div>
+                    </AccordionContent>
                 </AccordionPanel>
             </Accordion>
         </ScrollPanel>

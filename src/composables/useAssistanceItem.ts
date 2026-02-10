@@ -4,15 +4,12 @@ import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketR
 
 export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: Ref<components['schemas'][typeof itemtype]>) {
     const session = useSessionStore();
-    const requesters = computed(() => {
-        return item.value.team.filter(team => team.role === 'requester');
-    });
-    const observers = computed(() => {
-        return item.value.team.filter(team => team.role === 'observer');
-    });
-    const assigned = computed(() => {
-        return item.value.team.filter(team => team.role === 'assigned');
-    });
+    const current_new_itemtype: ShallowRef<Component> = shallowRef(null);
+
+    const requesters = computed(() => item.value.team.filter(team => team.role === 'requester'));
+    const observers = computed(() => item.value.team.filter(team => team.role === 'observer'));
+    const assigned = computed(() => item.value.team.filter(team => team.role === 'assigned'));
+
     const isMyItem = computed(() => {
         return item.value.user_recipient.id === session.user_id || requesters.value.some(team => team.id === session.user_id && team.type === 'User');
     });
@@ -30,8 +27,6 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
     const isUserAssigned = computed(() => {
         return assigned.value.some(team => (team.type === 'User' && team.id === session.user_id) || (team.type === 'Group' && session.groups.includes(team.id)));
     });
-
-    const current_new_itemtype: ShallowRef<Component> = shallowRef(null);
 
     const canAddFollowups = computed(() => {
         if (isItemSolvedOrClosed.value) {
@@ -209,16 +204,10 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
      * The timeline action that shows as the main button in the SplitButton.
      * This is the first allowed action in the list, or null if there are no allowed actions.
      */
-    const mainTimelineAction = computed(() => {
-        return allowed_timeline_actions.value.length > 0 ? allowed_timeline_actions.value[0] : null;
-    });
+    const mainTimelineAction = computed(() => allowed_timeline_actions.value.length > 0 ? allowed_timeline_actions.value[0] : null);
 
-    /**
-     * The allowed timeline actions minus the main timeline action, which show as the options in the SplitButton dropdown.
-     */
-    const extraTimelineActions = computed(() => {
-        return allowed_timeline_actions.value.length > 1 ? allowed_timeline_actions.value.slice(1) : [];
-    });
+    /** The allowed timeline actions minus the main timeline action, which show as the options in the SplitButton dropdown. */
+    const extraTimelineActions = computed(() => allowed_timeline_actions.value.length > 1 ? allowed_timeline_actions.value.slice(1) : []);
 
     return {
         all_timeline_actions,
@@ -226,5 +215,8 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         current_new_itemtype,
         mainTimelineAction,
         extraTimelineActions,
+        requesters,
+        observers,
+        assigned,
     }
 }

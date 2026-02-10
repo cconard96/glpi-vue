@@ -59,6 +59,57 @@ export function useDataHelper() {
         return labels[value] || 'Unknown';
     }
 
+    /**
+     * Format duration to a more readable format in seconds, minutes, hours, etc.
+     * @param value The raw value
+     * @param unit The base unit (ms, s, m, h, d)
+     * @param format The format to use with Intl.DurationFormat. narrow: "1h 30m", short: "1 hr 30 min", long: "1 hour 30 minutes"
+     */
+    function formatDuration(value: number, unit: string, format: 'narrow'|'short'|'long' = 'long'): string {
+        // create a duration object based on the given value and unit. The value needs broken out to the correct units (for example 65 minutes should be 1 hour and 5 minutes)
+        const duration = {
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+            milliseconds: 0,
+        };
+
+        // Convert the value to milliseconds based on the unit
+        let milliseconds = value;
+        switch (unit) {
+            case 'd':
+                milliseconds *= 24 * 60 * 60 * 1000;
+                break;
+            case 'h':
+                milliseconds *= 60 * 60 * 1000;
+                break;
+            case 'm':
+                milliseconds *= 60 * 1000;
+                break;
+            case 's':
+                milliseconds *= 1000;
+                break;
+        }
+
+        // break down the milliseconds into the correct units
+        duration.days = Math.floor(milliseconds / (24 * 60 * 60 * 1000));
+        milliseconds %= 24 * 60 * 60 * 1000;
+        duration.hours = Math.floor(milliseconds / (60 * 60 * 1000));
+        milliseconds %= 60 * 60 * 1000;
+        duration.minutes = Math.floor(milliseconds / (60 * 1000));
+        milliseconds %= 60 * 1000;
+        duration.seconds = Math.floor(milliseconds / 1000);
+        milliseconds %= 1000;
+        duration.milliseconds = milliseconds;
+
+        // Use Intl.DurationFormat to format the duration
+        const formatter = new Intl.DurationFormat(navigator.language, {
+            style: format,
+        });
+        return formatter.format(duration);
+    }
+
     return {
         formatDataSize,
         getObjectProp,
@@ -66,5 +117,6 @@ export function useDataHelper() {
         formatDataSpeed,
         formatUsername,
         getUrgencyImpactPriorityLabel,
+        formatDuration,
     }
 }

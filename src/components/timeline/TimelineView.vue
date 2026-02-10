@@ -1,13 +1,15 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import {ref, onMounted, useTemplateRef, shallowRef, defineAsyncComponent, reactive, computed, type Ref} from "vue";
+    import { computed, onMounted, ref, type Ref, shallowRef, useTemplateRef } from "vue";
     import { useApi } from "@/composables/useApi.ts";
-    import { Button, SplitButton, ButtonGroup, Menu, ToggleSwitch, Popover, SelectButton, Timeline } from 'primevue';
+    import { Button, ButtonGroup, Menu, Popover, SelectButton, SplitButton, Timeline, ToggleSwitch, ProgressBar } from 'primevue';
     import { RouterLink } from "vue-router";
     import { ITILStatus } from "@/models/assistance/ITILStatus.js";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
-    import {type components} from "../../../data/hlapiv2_schema";
-    import {useAssistanceItem} from "@/composables/useAssistanceItem";
+    import { type components } from "../../../data/hlapiv2_schema";
+    import { useAssistanceItem } from "@/composables/useAssistanceItem";
+    import { AbstractModel } from "@/models/AbstractModel";
+    import { useDataHelper } from "@/composables/useDataHelper";
 
     const { itemtype, id } = defineProps({
         itemtype: {
@@ -20,24 +22,16 @@
         }
     });
 
-    const { doApiRequest, normalizeComponentName } = useApi();
+    const { doApiRequest, normalizeComponentName, getComponentSchema } = useApi();
+    const { formatDuration } = useDataHelper();
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
     const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
     const items = ref(null);
-    const { mainTimelineAction, extraTimelineActions } = useAssistanceItem(normalized_itemtype.value, item);
+    const { mainTimelineAction, extraTimelineActions, current_new_itemtype } = useAssistanceItem(normalized_itemtype.value, item);
 
     const extra_data_promises = [
-        doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then((res) => {
-            item.value = res.data;
-            if (item.value.category === null) {
-                item.value.category = { id: null, name: '' };
-            }
-            if (item.value.request_type === null) {
-                item.value.request_type = { id: null, name: '' };
-            }
-            if (item.value.location === null) {
-                item.value.location = { id: null, name: '' };
-            }
+        doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
+            item.value = AbstractModel.formatFieldsForForm(res.data, await getComponentSchema(normalized_itemtype.value));
         }),
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}/Timeline`).then((res) => {
             items.value = res.data;
@@ -47,7 +41,6 @@
 
     const left_side = useTemplateRef('left-side');
     const right_side = useTemplateRef('right-side');
-    const current_new_itemtype = shallowRef(null);
 
     let itemtype_name;
     switch (itemtype) {
@@ -172,6 +165,40 @@
 
         return milestone_items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     });
+
+    const total_task_duration = computed(() => {
+        if (!items.value) {
+            return 0;
+        }
+        return items.value.reduce((total, timeline_item) => {
+            if (timeline_item.type === 'Task' && timeline_item.item.duration) {
+                return total + timeline_item.item.duration;
+            }
+            return total;
+        }, 0);
+    });
+
+    /**
+     * Percent of tasks in DONE state among all TO-DO/DONE tasks (informational task ignored)
+     */
+    const task_percent_done = computed(() => {
+        if (!items.value) {
+            return 0;
+        }
+        let done_count = 0;
+        let todo_done_count = 0;
+        items.value.forEach((timeline_item) => {
+            if (timeline_item.type === 'Task') {
+                if (timeline_item.item.status && timeline_item.item.status === 2) {
+                    done_count++;
+                }
+                if (timeline_item.item.status && [1, 2].includes(timeline_item.item.status.name)) {
+                    todo_done_count++;
+                }
+            }
+        });
+        return todo_done_count > 0 ? Math.round((done_count / todo_done_count) * 100) : 0;
+    });
 </script>
 
 <template>
@@ -205,6 +232,18 @@
                             date_creation: item.date_creation || item.date
                         }
                     }"></TimelineItem>
+                    <div v-if="view_mode === 'todo'">
+                        <div class="flex flex-col gap-4 mb-8">
+                            <div class="me-6">
+                                <i class="ti ti-clock text-2xl me-2"></i>
+                                Total Task Duration: {{ formatDuration(total_task_duration, 's') }}
+                            </div>
+                            <div class="flex">
+                                <i class="ti ti-check text-2xl me-2"></i>
+                                <ProgressBar class="w-64" :value="task_percent_done" :showValue="false"></ProgressBar>
+                            </div>
+                        </div>
+                    </div>
                 </template>
                 <template v-else>
                     <Timeline :value="milestones">

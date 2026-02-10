@@ -1,0 +1,19 @@
+diff --git a/node_modules/primevue/datepicker/index.mjs b/node_modules/primevue/datepicker/index.mjs
+index 5c727f4..4befaf5 100644
+--- a/node_modules/primevue/datepicker/index.mjs
++++ b/node_modules/primevue/datepicker/index.mjs
+@@ -393,7 +393,13 @@ var script = {
+       }
+     } else {
+       var _this$$refs$clearIcon2;
+-      this.input.value = this.inputFieldValue;
++      // Handle d_value from forms if it differs from modelValue
++      if (this.d_value !== undefined && this.d_value !== this.modelValue) {
++        this.rawValue = typeof this.d_value === 'string' ? this.parseValue(this.d_value) : this.d_value;
++        this.input.value = this.formatValue(this.rawValue);
++      } else {
++        this.input.value = this.inputFieldValue;
++      }
+       if ((_this$$refs$clearIcon2 = this.$refs.clearIcon) !== null && _this$$refs$clearIcon2 !== void 0 && (_this$$refs$clearIcon2 = _this$$refs$clearIcon2.$el) !== null && _this$$refs$clearIcon2 !== void 0 && _this$$refs$clearIcon2.style) {
+         this.$refs.clearIcon.$el.style.display = !this.$filled ? 'none' : 'block';
+       }
