@@ -238,6 +238,26 @@ export function useApi() {
         });
     }
 
+    /**
+     * Takes an array of GLPI internal class names (itemtypes) and returns an array of valid schema component names.
+     * @param itemtypes
+     */
+    function getValidSchemaTypesFromItemtypes(itemtypes: Array<String>): Promise<Array<String>> {
+        return Promise.all(itemtypes.map(itemtype => {
+            return getSchemaNameForGLPIItemtype(itemtype).then(schema_name => {
+                if (schema_name) {
+                    return schema_name;
+                } else {
+                    console.warn(`No schema component found for itemtype ${itemtype}`);
+                    return null;
+                }
+            });
+        })).then(schema_names => {
+            // Filter out null values
+            return schema_names.filter(name => name !== null);
+        });
+    }
+
     return {
         getComponentSchema,
         search,
@@ -247,6 +267,7 @@ export function useApi() {
         getApiSchema,
         getItemByID,
         getSchemaNameForGLPIItemtype,
-        apollo_client
+        apollo_client,
+        getValidSchemaTypesFromItemtypes
     };
 }

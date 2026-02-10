@@ -94,7 +94,7 @@
 
 <template>
     <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
-        <ActorAvatar v-if="item.item.user" icon="ti ti-user" class="me-2 shrink-0" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
+        <ActorAvatar v-if="item.item.user" class="me-2 shrink-0" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
         <Card v-if="['Followup', 'Task', 'Solution', 'content', 'Cost'].includes(item.type)" :pt="{
             body: {
                 class: `p-2 ${bg_color}`,

@@ -302,10 +302,8 @@
                                     @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                             <Menu ref="actions_menu" :popup="true" :model="[
                                 { key: 'clone', label: 'Clone', icon: 'ti ti-copy' },
-                                { key: 'transfer', label: 'Add to transfer list', icon: 'ti ti-corner-right-up' },
+                                { key: 'transfer', label: 'Transfer to another entity', icon: 'ti ti-corner-right-up' },
                                 { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge' },
-                                { key: 'link_project_task', label: 'Link project task', icon: 'ti ti-link' },
-                                { key: 'link_kb_article', label: 'Link KB article', icon: 'ti ti-lifebuoy' },
                             ]"></Menu>
                             <Button label="Save" icon="ti ti-device-floppy" severity="primary"></Button>
                         </ButtonGroup>
