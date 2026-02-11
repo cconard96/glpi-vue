@@ -5,10 +5,96 @@ import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketR
 export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: Ref<components['schemas'][typeof itemtype]>) {
     const session = useSessionStore();
     const current_new_itemtype: ShallowRef<Component> = shallowRef(null);
+    const statuses = {
+        1: {
+            key: 'new',
+            label: 'New',
+            icon: 'ti ti-circle-filled',
+            color: '#49bf4d',
+        },
+        2: {
+            key: 'assigned',
+            label: 'Processing (Assigned)',
+            icon: 'ti ti-circle',
+            color: '#49bf4d',
+        },
+        3: {
+            key: 'planned',
+            label: 'Processing (Planned)',
+            icon: 'ti ti-calendar',
+            color: '#1b2f62',
+        },
+        4: {
+            key: 'waiting',
+            label: 'Pending',
+            icon: 'ti ti-circle-filled',
+            color: '#ffa500',
+        },
+        5: {
+            key: 'solved',
+            label: 'Solved',
+            icon: 'ti ti-circle',
+            color: '#000000',
+        },
+        6: {
+            key: 'closed',
+            label: 'Closed',
+            icon: 'ti ti-circle-filled',
+            color: '#000000',
+        },
+        7: {
+            key: 'accepted',
+            label: 'Accepted',
+            icon: 'ti ti-circle-check-filled',
+            color: '#00ff00',
+        },
+        8: {
+            key: 'observe',
+            label: 'Review',
+            icon: 'ti ti-eye',
+            color: '#000000',
+        },
+        9: {
+            key: 'eval',
+            label: 'Evaluation',
+            icon: 'ti ti-circle',
+            color: '#add8e6',
+        },
+        10: {
+            key: 'approval',
+            label: 'Approval',
+            icon: 'ti ti-help',
+            color: '#8cabdb',
+        },
+        11: {
+            key: 'test',
+            label: 'Testing',
+            icon: 'ti ti-help',
+            color: '#ffa500',
+        },
+        12: {
+            key: 'qualif',
+            label: 'Qualification',
+            icon: 'ti ti-circle',
+            color: '#ffa500',
+        },
+        13: {
+            key: 'refused',
+            label: 'Refused',
+            icon: 'ti ti-circle-x',
+            color: '#a72f00',
+        },
+        14: {
+            key: 'canceled',
+            label: 'Canceled',
+            icon: 'ti ti-ban',
+            color: '#000000',
+        }
+    };
 
-    const requesters = computed(() => item.value.team.filter(team => team.role === 'requester'));
-    const observers = computed(() => item.value.team.filter(team => team.role === 'observer'));
-    const assigned = computed(() => item.value.team.filter(team => team.role === 'assigned'));
+    const requesters = computed(() => item.value._team.filter(team => team.role === 'requester'));
+    const observers = computed(() => item.value._team.filter(team => team.role === 'observer'));
+    const assigned = computed(() => item.value._team.filter(team => team.role === 'assigned'));
 
     const isMyItem = computed(() => {
         return item.value.user_recipient.id === session.user_id || requesters.value.some(team => team.id === session.user_id && team.type === 'User');
@@ -209,6 +295,70 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
     /** The allowed timeline actions minus the main timeline action, which show as the options in the SplitButton dropdown. */
     const extraTimelineActions = computed(() => allowed_timeline_actions.value.length > 1 ? allowed_timeline_actions.value.slice(1) : []);
 
+    const statusIcon = computed(() => statuses[item.value.status] ? statuses[item.value.status].icon : '');
+    const statusColor = computed(() => statuses[item.value.status] ? statuses[item.value.status].color : '#000000');
+    const statusOptions = computed(() => {
+        const statusesByItemtype = {
+            'Ticket': [1, 10, 2, 3, 4, 5, 6],
+            'Change': [1, 9, 10, 7, 4, 11, 12, 5, 8, 6, 14, 13],
+            'Problem': [1, 7, 2, 3, 4, 5, 8, 6],
+        };
+        return Object.entries(statuses).filter(([id, status]) => {
+            return statusesByItemtype[itemtype].includes(parseInt(id));
+        }).map(([id, status]) => {
+            return {
+                key: parseInt(id),
+                label: status.label,
+            }
+        });
+    });
+
+    const itemtypeIcon = computed(() => {
+        switch (itemtype) {
+            case 'Ticket':
+                return 'ti ti-alert-circle';
+            case 'Change':
+                return 'ti ti-clipboard-check';
+            case 'Problem':
+                return 'ti ti-alert-triangle';
+            default:
+                return 'ti ti-alert-circle';
+        }
+    });
+
+    const urgencyImpactOptions = [
+        {key: 5, label: 'Very high'},
+        {key: 4, label: 'High'},
+        {key: 3, label: 'Medium'},
+        {key: 2, label: 'Low'},
+        {key: 1, label: 'Very low'},
+    ];
+    const priorityOptions = [
+        {key: 6, label: 'Major'},
+        ...urgencyImpactOptions
+    ];
+
+    //TODO proper translations/pluralization
+    const getTypeName = (count: number) => {
+        switch (itemtype) {
+            case 'Ticket':
+                return count === 1 ? 'Ticket' : 'Tickets';
+            case 'Change':
+                return count === 1 ? 'Change' : 'Changes';
+            case 'Problem':
+                return count === 1 ? 'Problem' : 'Problems';
+            default:
+                return itemtype;
+        }
+    }
+
+    const assistanceLinkTypeLabels = {
+        1: 'Linked to',
+        2: 'Duplicate of',
+        3: 'Child of',
+        4: 'Parent of',
+    };
+
     return {
         all_timeline_actions,
         allowed_timeline_actions,
@@ -218,5 +368,13 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         requesters,
         observers,
         assigned,
+        statusIcon,
+        statusColor,
+        statusOptions,
+        itemtypeIcon,
+        urgencyImpactOptions,
+        priorityOptions,
+        getTypeName,
+        assistanceLinkTypeLabels,
     }
 }

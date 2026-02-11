@@ -4,7 +4,6 @@
     import { useApi } from "@/composables/useApi.ts";
     import { Button, ButtonGroup, Menu, Popover, SelectButton, SplitButton, Timeline, ToggleSwitch, ProgressBar } from 'primevue';
     import { RouterLink } from "vue-router";
-    import { ITILStatus } from "@/models/assistance/ITILStatus.js";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
     import { type components } from "../../../data/hlapiv2_schema";
     import { useAssistanceItem } from "@/composables/useAssistanceItem";
@@ -27,7 +26,7 @@
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
     const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
     const items = ref(null);
-    const { mainTimelineAction, extraTimelineActions, current_new_itemtype } = useAssistanceItem(normalized_itemtype.value, item);
+    const { mainTimelineAction, extraTimelineActions, current_new_itemtype, statusIcon, statusColor } = useAssistanceItem(normalized_itemtype.value, item);
 
     const extra_data_promises = [
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
@@ -58,7 +57,7 @@
     }
 
     onMounted(() => {
-        document.title = `GLPI - ${itemtype_name} #${item.value.id} - ${item.value.name}`;
+        document.title = `${itemtype_name} #${item.value.id} - ${item.value.name}`;
     });
 
     const filters = {
@@ -209,8 +208,7 @@
             </RouterLink>
             <header>
                 <h1>
-                    <i :class="`${ITILStatus.getIcon(item.status.id)} mr-2`"
-                       :style="`color: ${ITILStatus.getColor(item.status.id)}`"></i>
+                    <i :class="`${statusIcon} mr-2`" :style="`color: ${statusColor}`"></i>
                     {{ item.name }}
                 </h1>
             </header>
@@ -257,7 +255,7 @@
                 </template>
             </div>
             <div ref="right-side" class="col-span-4 2xl:col-span-3 overflow-y-auto">
-                <FieldsPanel :itemtype="itemtype" :item="item"></FieldsPanel>
+                <FieldsPanel :itemtype="normalized_itemtype" :item="item"></FieldsPanel>
             </div>
             <div class="relative h-22 col-span-12">
                 <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">

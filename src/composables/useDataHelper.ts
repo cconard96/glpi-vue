@@ -43,7 +43,7 @@ export function useDataHelper() {
         } else if (user.realname) {
             return user.realname;
         } else {
-            return user.username;
+            return user.username || user.name || 'Unknown User';
         }
     }
 
@@ -60,12 +60,15 @@ export function useDataHelper() {
     }
 
     /**
-     * Format duration to a more readable format in seconds, minutes, hours, etc.
+     * Format duration to a more readable format in seconds, minutes, hours, etc. If the value is 0, return 'N/A'.
      * @param value The raw value
      * @param unit The base unit (ms, s, m, h, d)
      * @param format The format to use with Intl.DurationFormat. narrow: "1h 30m", short: "1 hr 30 min", long: "1 hour 30 minutes"
      */
     function formatDuration(value: number, unit: string, format: 'narrow'|'short'|'long' = 'long'): string {
+        if (value === 0) {
+            return 'N/A';
+        }
         // create a duration object based on the given value and unit. The value needs broken out to the correct units (for example 65 minutes should be 1 hour and 5 minutes)
         const duration = {
             days: 0,

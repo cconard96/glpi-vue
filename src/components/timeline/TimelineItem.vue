@@ -97,7 +97,7 @@
         <ActorAvatar v-if="item.item.user" class="me-2 shrink-0" :title="item.item.user?.name || ''" actor_type="User" :actor_data="item.item.user"></ActorAvatar>
         <Card v-if="['Followup', 'Task', 'Solution', 'content', 'Cost'].includes(item.type)" :pt="{
             body: {
-                class: `p-2 ${bg_color}`,
+                class: `p-2 ${bg_color} ${todoListMode ? 'max-h-32 overflow-auto' : ''}`,
                 style: `background-color: ${bg_color}; border-radius: 0.5rem;`
             }
         }" :class="`${todoListMode ? 'w-full' : 'max-w-200'}`">

@@ -107,7 +107,7 @@
                      :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus display="chip" show-clear>
             <template #chip="slotProps">
                 <Chip :label="options.find(opt => opt[optionValue] === slotProps.value)?.[optionLabel] || slotProps.value"
-                      removable @remove="slotProps.removeCallback" remove-icon="ti ti-circle-x"
+                      removable @remove="slotProps.removeCallback" removeTokenIcon="ti ti-circle-x"
                 />
             </template>
         </MultiSelect>

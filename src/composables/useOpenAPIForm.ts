@@ -1,8 +1,11 @@
-import {FormResolverOptions} from "@primevue/forms";
+import { FormResolverOptions, FormSubmitEvent } from "@primevue/forms";
+import { AbstractModel } from "@/models/AbstractModel";
+import { ref } from "vue";
 
 export function useOpenAPIForm(schema: Record<string, any>) {
     const error_required_message = 'This field is required.';
     const error_range_message = 'The value must be between {min} and {max}.';
+    const isSubmitting = ref(false);
 
     function resolveFields(opts: FormResolverOptions): Promise<Record<string, any>> | Record<string, any> | undefined {
         const required_fields = schema.required || [];
@@ -43,7 +46,17 @@ export function useOpenAPIForm(schema: Record<string, any>) {
         }
     }
 
+    function submitFields(event: FormSubmitEvent, itemtypeModel: AbstractModel) {
+        if (!event.valid) {
+            return;
+        }
+        isSubmitting.value = true;
+        itemtypeModel.createItem();
+    }
+
     return {
         resolveFields,
+        submitFields,
+        isSubmitting
     }
 }

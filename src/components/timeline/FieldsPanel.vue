@@ -1,92 +1,28 @@
 <script setup lang="ts">
     import {
         Accordion, AccordionContent, AccordionHeader, AccordionPanel,
-        DatePicker, FloatLabel, InputText, MultiSelect, ScrollPanel,
+        DatePicker, FloatLabel, InputText, ScrollPanel,
         Message, Tag, SelectButton, Fluid, Button
     } from "primevue";
     import { Form, FormField } from "@primevue/forms";
-    import {computed, onMounted, ref} from "vue";
+    import { computed, onMounted, ref, toRef } from "vue";
     import {useApi} from "@/composables/useApi";
-    import { ITILStatus } from "@/models/assistance/ITILStatus.js";
     import type { components } from 'data/hlapiv2_schema';
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { RouterLink } from "vue-router";
+    import { useAssistanceItem } from "@/composables/useAssistanceItem";
+    import ActorFields from "@/components/timeline/ActorFields.vue";
 
-    type ITILObject = components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem'];
-
-    const { itemtype, item } = defineProps<{
-        itemtype: string,
-        item: ITILObject
+    const props = defineProps<{
+        itemtype: 'Ticket' | 'Change' | 'Problem',
+        item: components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']
     }>();
 
-    const { doApiRequest, normalizeComponentName, doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
-    const statuses = ITILStatus.getForSelect(itemtype);
-    const urgency_impact_options = [
-        {
-            key: 5,
-            label: 'Very high'
-        },
-        {
-            key: 4,
-            label: 'High'
-        },
-        {
-            key: 3,
-            label: 'Medium'
-        },
-        {
-            key: 2,
-            label: 'Low'
-        },
-        {
-            key: 1,
-            label: 'Very low'
-        }
-    ];
-    const priority_options = [
-        {
-            key: 6,
-            label: 'Major'
-        },
-        ...urgency_impact_options
-    ];
-    const team = ref<components['schemas']['TeamMember'][]>([]);
-    const requesters = computed(() => {
-        if (!team.value) return [];
-        return team.value
-            .filter(member => member.role === 'requester')
-            .map(member => ({
-                key: member.name,
-                label: member.display_name
-            }));
-    });
-    const selected_requesters = computed(() => {
-        return requesters.value.map(r => r.key);
-    });
-    const observers = computed(() => {
-        if (!team.value) return [];
-        return team.value
-            .filter(member => member.role === 'observer')
-            .map(member => ({
-                key: member.name,
-                label: member.display_name
-            }));
-    });
-    const selected_observers = computed(() => {
-        return observers.value.map(r => r.key);
-    });
-    const assigned = computed(() => {
-        if (!team.value) return [];
-        return team.value
-            .filter(member => member.role === 'assigned')
-            .map(member => ({
-                key: member.name,
-                label: member.display_name
-            }));
-    });
-    const selected_assigned = computed(() => {
-        return assigned.value.map(r => r.key);
-    });
+    const { doApiRequest, doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
+    const {
+        statusOptions, getTypeName, urgencyImpactOptions, priorityOptions, itemtypeIcon, assistanceLinkTypeLabels,
+        requesters, observers, assigned
+    } = useAssistanceItem(props.itemtype, toRef(props.item));
 
     const form_resolver = async (data) => {
         // For now, just return the data as is.
@@ -101,26 +37,6 @@
         // Handle form submission, e.g., send data to the API.
     };
 
-    let itemtype_name, itemtype_icon;
-    switch (itemtype) {
-        case 'ticket':
-            itemtype_icon = 'ti ti-alert-circle';
-            itemtype_name = 'Ticket';
-            break;
-        case 'change':
-            itemtype_icon = 'ti ti-clipboard-check';
-            itemtype_name = 'Change';
-            break;
-        case 'problem':
-            itemtype_icon = 'ti ti-alert-triangle';
-            itemtype_name = 'Problem';
-            break;
-        default:
-            itemtype_icon = 'ti ti-alert-circle';
-            itemtype_name = itemtype;
-    }
-
-    const normalized_itemtype = ref(await normalizeComponentName(itemtype));
     const assistance_link_types = [
         {link_type: 'Ticket_Ticket', itemtypes: ['Ticket']},
         {link_type: 'Problem_Ticket', itemtypes: ['Ticket', 'Problem']},
@@ -131,19 +47,19 @@
     ];
     let assistance_link_queries = '';
     for (const link_type of assistance_link_types) {
-        if (link_type.itemtypes.includes(normalized_itemtype.value)) {
+        if (link_type.itemtypes.includes(props.itemtype)) {
             if (link_type.itemtypes.length === 1) {
-                const prop = normalized_itemtype.value.toLowerCase();
+                const prop = props.itemtype.toLowerCase();
                 assistance_link_queries += `
-                    ${link_type.link_type}(filter: "${prop}_1.id==${item.id},${prop}_2.id==${item.id}") {
+                    ${link_type.link_type}(filter: "${prop}_1.id==${props.item.id},${prop}_2.id==${props.item.id}") {
                         id link ${prop}_1 { id name status { id } } ${prop}_2 { id name status { id } }
                     }
                 `;
             } else {
-                const prop = normalized_itemtype.value.toLowerCase();
+                const prop = props.itemtype.toLowerCase();
 
                 assistance_link_queries += `
-                    ${link_type.link_type}(filter: "${prop}.id==${item.id}") {
+                    ${link_type.link_type}(filter: "${prop}.id==${props.item.id}") {
                         id link ${link_type.itemtypes.map(it => `${it.toLowerCase()} { id name status { id } }`).join(' ')}
                     }
                 `;
@@ -151,26 +67,17 @@
         }
     }
     const assistance_links = ref([]);
-    const assistance_linktype_labels = {
-        1: 'Linked to',
-        2: 'Duplicate of',
-        3: 'Child of',
-        4: 'Parent of',
-    };
     const kbitems = ref([]);
     const item_links = ref([]);
 
     onMounted(() => {
-        doApiRequest(`Assistance/${normalized_itemtype.value}/${item.id}/TeamMember`).then((res) => {
-            team.value = res.data;
-        });
         doGraphQLRequest(`
             query {
-                KBArticle_Item(filter: "itemtype==${normalized_itemtype.value};items_id==${item.id}") {
+                KBArticle_Item(filter: "itemtype==${props.itemtype};items_id==${props.item.id}") {
                     id itemtype items_id kbarticle { id name }
                 }
                 ${assistance_link_queries}
-                ${normalized_itemtype.value}_Item(filter: "${normalized_itemtype.value.toLowerCase()}.id==${item.id}") {
+                ${props.itemtype}_Item(filter: "${props.itemtype.toLowerCase()}.id==${props.item.id}") {
                     id itemtype items_id
                 }
             }
@@ -178,7 +85,7 @@
             kbitems.value = res.data.KBArticle_Item;
             const links = [];
             for (const link_type of assistance_link_types) {
-                if (link_type.itemtypes.includes(normalized_itemtype.value)) {
+                if (link_type.itemtypes.includes(props.itemtype)) {
                     // get the id and name for the other side of the link
                     const link_data = res.data[link_type.link_type];
                     if (!link_data) {
@@ -189,15 +96,15 @@
                         let linked_item = null;
                         // if this is a link between the same itemtype, find the other side of the link by ID. Otherwise look for the other itemtype.
                         if (link_type.itemtypes.length === 1) {
-                            const prop = normalized_itemtype.value.toLowerCase();
-                            if (link[`${prop}_1`].id === item.id) {
+                            const prop = props.itemtype.toLowerCase();
+                            if (link[`${prop}_1`].id === props.item.id) {
                                 linked_item = link[`${prop}_2`];
                             } else {
                                 linked_item = link[`${prop}_1`];
                             }
                         } else {
                             for (const it of link_type.itemtypes) {
-                                if (it.toLowerCase() !== normalized_itemtype.value.toLowerCase()) {
+                                if (it.toLowerCase() !== props.itemtype.toLowerCase()) {
                                     linked_item = link[it.toLowerCase()];
                                     break;
                                 }
@@ -216,7 +123,7 @@
             assistance_links.value = links;
 
             // handle fetching extra data about the assets for this assistance item
-            const linked_assets_data = res.data[`${normalized_itemtype.value}_Item`];
+            const linked_assets_data = res.data[`${props.itemtype}_Item`];
             getValidSchemaTypesFromItemtypes(linked_assets_data.map(i => i.itemtype)).then((valid_types) => {
                 if (valid_types.length === 0) {
                     return;
@@ -250,10 +157,10 @@
     });
 
     const global_validation_icon = computed(() => {
-        if (!('global_validation' in item) || !item.global_validation) {
+        if (!('global_validation' in props.item) || !props.item.global_validation) {
             return null;
         }
-        switch (item.global_validation) {
+        switch (props.item.global_validation) {
             case 2:
                 return 'ti ti-clock text-amber-500';
             case 3:
@@ -264,10 +171,10 @@
         return null;
     });
     const global_validation_label = computed(() => {
-        if (!('global_validation' in item) || !item.global_validation) {
+        if (!('global_validation' in props.item) || !props.item.global_validation) {
             return null;
         }
-        switch (item.global_validation) {
+        switch (props.item.global_validation) {
             case 2:
                 return 'Pending';
             case 3:
@@ -286,8 +193,8 @@
                 <AccordionPanel value="main">
                     <AccordionHeader class="p-3" as="div">
                         <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">
-                            <i :class="`${itemtype_icon} me-2`"></i>
-                            {{ itemtype_name }}
+                            <i :class="`${itemtypeIcon} me-2`"></i>
+                            {{ getTypeName(1) }}
                             <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item._entity.name }}</span></Tag>
                         </span>
                     </AccordionHeader>
@@ -312,7 +219,7 @@
                                     <FieldSelect label="Location" type="Location" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="status">
-                                    <FieldSelect label="Status" :options="statuses" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Status" :options="statusOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
                                 </FormField>
                                 <div v-if="('global_validation' in item && item.global_validation) > 1">
                                     <i class="me-2" :class="global_validation_icon"></i>
@@ -322,13 +229,13 @@
                                     <FieldSelect label="Request source" type="RequestType" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="urgency">
-                                    <FieldSelect label="Urgency" :options="urgency_impact_options" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Urgency" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="impact">
-                                    <FieldSelect label="Impact" :options="urgency_impact_options" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Impact" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="priority">
-                                    <FieldSelect label="Priority" :options="priority_options" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Priority" :options="priorityOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="external_id">
                                     <FloatLabel variant="on">
@@ -348,36 +255,7 @@
                         </span>
                     </AccordionHeader>
                     <AccordionContent>
-                        <div class="flex flex-col space-y-4">
-                            <div>
-                                <FloatLabel variant="on">
-                                    <MultiSelect inputId="item_requester" name="requester" v-model="selected_requesters"
-                                                 :filter="requesters.length > 5" filterMode="lenient" :options="requesters"
-                                                 optionValue="key" optionLabel="label" disabled fluid
-                                    ></MultiSelect>
-                                    <label for="item_requester">Requester</label>
-                                </FloatLabel>
-                            </div>
-                            <div>
-                                <FloatLabel variant="on">
-                                    <MultiSelect inputId="item_observer" name="observer" v-model="selected_observers"
-                                                 :filter="observers.length > 5" filterMode="lenient" :options="observers"
-                                                 optionValue="key" optionLabel="label" disabled fluid
-                                    ></MultiSelect>
-                                    <label for="item_observer">Observer</label>
-                                </FloatLabel>
-                            </div>
-                            <div>
-                                <FloatLabel variant="on">
-                                    <MultiSelect inputId="item_assigned" name="assigned" v-model="selected_assigned"
-                                                 :filter="assigned.length > 5" filterMode="lenient" :options="assigned"
-                                                 optionValue="key" optionLabel="label" disabled fluid
-                                                 dataKey="key"
-                                    ></MultiSelect>
-                                    <label for="item_assigned">Assigned to</label>
-                                </FloatLabel>
-                            </div>
-                        </div>
+                        <ActorFields :requesters="requesters" :observers="observers" :assigned="assigned"></ActorFields>
                     </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="items">
@@ -430,7 +308,7 @@
                         <div v-else class="flex flex-col">
                             <div v-for="link in assistance_links" :key="link.link_type + '_' + link.linked_item.id" class="hover:bg-gray-800 p-2">
                                 <RouterLink :to="{ name: 'ITILTimeline', params: { itemtype: link.linked_item.__typename, id: link.linked_item.id } }">
-                                    {{ assistance_linktype_labels[link.link] ?? 'Linked to' }} {{ link.linked_item.__typename }}: {{ link.linked_item.name }}
+                                    {{ assistanceLinkTypeLabels[link.link] ?? 'Linked to' }} {{ link.linked_item.__typename }}: {{ link.linked_item.name }}
                                 </RouterLink>
                             </div>
                         </div>
