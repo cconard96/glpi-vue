@@ -1,12 +1,12 @@
 <script setup lang="ts">
-    import {Avatar, Card, Button, Select, FloatLabel} from "primevue";
+    import { Avatar, Card, Button, Select, FloatLabel, ToggleSwitch } from "primevue";
     import {Form, FormField, FormSubmitEvent} from '@primevue/forms';
-    import {useSessionStore} from "@/composables/useSessionStore";
+    import {useSessionStore, ITILSubItemRights} from "@/composables/useSessionStore";
     import {useOpenAPIForm} from "@/composables/useOpenAPIForm";
     import {useApi} from "@/composables/useApi";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
 
-    const { getFriendlyName } = useSessionStore();
+    const { getFriendlyName, hasRight } = useSessionStore();
     const { getComponentSchema } = useApi();
     const { resolveFields } = useOpenAPIForm(getComponentSchema('Followup'));
     defineEmits(['close', 'add']);
@@ -18,7 +18,7 @@
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Avatar icon="ti ti-user" class="mr-2" :title="getFriendlyName"></Avatar>
+        <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
         <Form :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
@@ -57,6 +57,15 @@
                                 ></Select>
                                 <label for="request_source">Request source</label>
                             </FloatLabel>
+                            <div v-if="hasRight('followup', ITILSubItemRights.SEEPRIVATE)" class="flex items-center mt-2">
+                                <label for="is_private" class="ml-2">Private</label>
+                                <ToggleSwitch inputId="is_private" class="ms-2">
+                                    <template #handle="slotProps">
+                                        <span v-if="slotProps.checked" class="ti ti-lock"></span>
+                                        <span v-else class="ti ti-lock-open"></span>
+                                    </template>
+                                </ToggleSwitch>
+                            </div>
                         </div>
                     </div>
                 </template>

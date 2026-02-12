@@ -1,13 +1,14 @@
 <script setup lang="ts">
+    import {Avatar, Button, Card, FloatLabel, Select} from "primevue";
+    import FileUpload from "primevue/fileupload";
+    import { useSessionStore } from "@/composables/useSessionStore";
 
-import {Avatar, Button, Card, FloatLabel, Select} from "primevue";
-import FileUpload from "primevue/fileupload";
-import Editor from "primevue/editor";
+    const { getFriendlyName } = useSessionStore();
 </script>
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Avatar icon="ti ti-user" class="mr-2" :title="getFriendlyName"></Avatar>
+        <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
         <Card :pt="{
             body: {
                 class: `p-4 bg-gray-200/50 dark:bg-gray-800/50`,

@@ -4,7 +4,10 @@ import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketR
 
 export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: Ref<components['schemas'][typeof itemtype]>) {
     const session = useSessionStore();
-    const current_new_itemtype: ShallowRef<Component> = shallowRef(null);
+    const current_new_item: ShallowRef<{
+        component: Component,
+        props?: Record<string, any>
+    }> = shallowRef(null);
     const statuses = {
         1: {
             key: 'new',
@@ -234,7 +237,9 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             label: 'Answer',
             icon: 'ti ti-message-circle',
             command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/FollowupForm.vue'));
+                current_new_item.value = {
+                    component: defineAsyncComponent(() => import('@/components/timeline/forms/FollowupForm.vue'))
+                };
             },
             isAllowedAction: canAddFollowups
         },
@@ -242,7 +247,9 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             label: 'Create a task',
             icon: 'ti ti-checkbox',
             command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/TaskForm.vue'));
+                current_new_item.value = {
+                    component: defineAsyncComponent(() => import('@/components/timeline/forms/TaskForm.vue'))
+                };
             },
             isAllowedAction: canAddTasks
         },
@@ -250,7 +257,9 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             label: 'Add a solution',
             icon: 'ti ti-check',
             command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/SolutionForm.vue'));
+                current_new_item.value = {
+                    component: defineAsyncComponent(() => import('@/components/timeline/forms/SolutionForm.vue'))
+                };
             },
             isAllowedAction: canSolve
         },
@@ -258,7 +267,9 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             label: 'Add a document',
             icon: 'ti ti-files',
             command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/DocumentForm.vue'));
+                current_new_item.value = {
+                    component: defineAsyncComponent(() => import('@/components/timeline/forms/DocumentForm.vue'))
+                };
             },
             isAllowedAction: canAddFollowups
         },
@@ -266,7 +277,9 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             label: 'Ask for approval',
             icon: 'ti ti-thumb-up',
             command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/ApprovalForm.vue'));
+                current_new_item.value = {
+                    component: defineAsyncComponent(() => import('@/components/timeline/forms/ApprovalForm.vue'))
+                };
             },
             isAllowedAction: canAddApproval
         },
@@ -274,7 +287,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             label: 'Add a cost',
             icon: 'ti ti-wallet',
             command: () => {
-                current_new_itemtype.value = defineAsyncComponent(() => import('@/components/timeline/forms/CostForm.vue'));
+                current_new_item.value = {component: defineAsyncComponent(() => import('@/components/timeline/forms/CostForm.vue'))};
             },
             isAllowedAction: canUpdateItem
         },
@@ -359,10 +372,41 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         4: 'Parent of',
     };
 
+    const globalApprovalIcon = computed(() => {
+        if (!('global_validation' in item) || !item.global_validation) {
+            return null;
+        }
+        switch (item.global_validation) {
+            case 2:
+                return 'ti ti-clock text-amber-500';
+            case 3:
+                return 'ti ti-check text-green-700';
+            case 4:
+                return 'ti ti-x text-red-700';
+        }
+        return null;
+    });
+
+    const globalApprovalLabel = computed(() => {
+        if (!('global_validation' in item) || !item.global_validation) {
+            return null;
+        }
+        switch (item.global_validation) {
+            case 2:
+                return 'Pending';
+            case 3:
+                return 'Accepted';
+            case 4:
+                return 'Refused';
+        }
+        return null;
+    });
+
     return {
+        itemtype,
         all_timeline_actions,
         allowed_timeline_actions,
-        current_new_itemtype,
+        current_new_item,
         mainTimelineAction,
         extraTimelineActions,
         requesters,
@@ -376,5 +420,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         priorityOptions,
         getTypeName,
         assistanceLinkTypeLabels,
+        globalApprovalIcon,
+        globalApprovalLabel,
     }
 }

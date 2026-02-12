@@ -5,24 +5,25 @@
         Message, Tag, SelectButton, Fluid, Button
     } from "primevue";
     import { Form, FormField } from "@primevue/forms";
-    import { computed, onMounted, ref, toRef } from "vue";
+    import { computed, defineAsyncComponent, inject, onMounted, ref, toRef } from "vue";
     import {useApi} from "@/composables/useApi";
     import type { components } from 'data/hlapiv2_schema';
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { RouterLink } from "vue-router";
-    import { useAssistanceItem } from "@/composables/useAssistanceItem";
     import ActorFields from "@/components/timeline/ActorFields.vue";
+    import { useDialog } from "primevue";
 
     const props = defineProps<{
         itemtype: 'Ticket' | 'Change' | 'Problem',
         item: components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']
     }>();
 
+    const dialog = useDialog();
     const { doApiRequest, doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
     const {
         statusOptions, getTypeName, urgencyImpactOptions, priorityOptions, itemtypeIcon, assistanceLinkTypeLabels,
-        requesters, observers, assigned
-    } = useAssistanceItem(props.itemtype, toRef(props.item));
+        requesters, observers, assigned, globalApprovalIcon, globalApprovalLabel, current_new_item
+    } = inject('assistanceItemInstance');
 
     const form_resolver = async (data) => {
         // For now, just return the data as is.
@@ -156,34 +157,42 @@
         });
     });
 
-    const global_validation_icon = computed(() => {
-        if (!('global_validation' in props.item) || !props.item.global_validation) {
-            return null;
-        }
-        switch (props.item.global_validation) {
-            case 2:
-                return 'ti ti-clock text-amber-500';
-            case 3:
-                return 'ti ti-check text-green-700';
-            case 4:
-                return 'ti ti-x text-red-700';
-        }
-        return null;
-    });
-    const global_validation_label = computed(() => {
-        if (!('global_validation' in props.item) || !props.item.global_validation) {
-            return null;
-        }
-        switch (props.item.global_validation) {
-            case 2:
-                return 'Pending';
-            case 3:
-                return 'Accepted';
-            case 4:
-                return 'Refused';
-        }
-        return null;
-    });
+    function showKBSearch() {
+        const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/components/kb/QuickSearchKB.vue')), {
+            props: {
+                header: 'Search KB Articles',
+                pt: {
+                    root: {
+                        class: 'w-5/10 h-8/10'
+                    }
+                },
+                modal: true,
+                draggable: false,
+            },
+            data: {
+                actions: {
+                    link: {label: 'Link to ' + getTypeName(1)},
+                    use_as_solution: {label: 'Use as solution'},
+                }
+            },
+            emits: {
+                onClickAction: ({ action, article }) => {
+                    if (action === 'link') {
+                        // TODO Link the article to the assistance item
+                    } else if (action === 'use_as_solution') {
+                        console.log('article content', article.content);
+                        current_new_item.value = {
+                            component: defineAsyncComponent(() => import('@/components/timeline/forms/SolutionForm.vue')),
+                            props: {
+                                initialContent: article.content,
+                            }
+                        };
+                        dialogInstance.close();
+                    }
+                }
+            }
+        });
+    }
 </script>
 
 <template>
@@ -222,8 +231,8 @@
                                     <FieldSelect label="Status" :options="statusOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
                                 </FormField>
                                 <div v-if="('global_validation' in item && item.global_validation) > 1">
-                                    <i class="me-2" :class="global_validation_icon"></i>
-                                    <span>Approval Status: {{ global_validation_label }}</span>
+                                    <i class="me-2" :class="globalApprovalIcon"></i>
+                                    <span>Approval Status: {{ globalApprovalLabel }}</span>
                                 </div>
                                 <FormField name="request_type">
                                     <FieldSelect label="Request source" type="RequestType" label_type="on"></FieldSelect>
@@ -330,7 +339,7 @@
                             KB Articles
                             <Tag v-if="kbitems.length > 0" severity="secondary" :value="kbitems.length"></Tag>
                         </span>
-                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto"></Button>
+                        <Button icon="ti ti-plus" label="Search/Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showKBSearch()"></Button>
                     </AccordionHeader>
                     <AccordionContent>
                         <div v-if="kbitems.length === 0">

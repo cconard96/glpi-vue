@@ -2,11 +2,11 @@
     import {
         Avatar, Card, Button, Select, FloatLabel, DatePicker, ToggleSwitch, InputMask
     } from "primevue";
-    import {useSessionStore} from "@/composables/useSessionStore";
-    import {ref, useTemplateRef} from "vue";
+    import {useSessionStore, ITILSubItemRights} from "@/composables/useSessionStore";
+    import { ref, useTemplateRef } from "vue";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
 
-    const { getFriendlyName } = useSessionStore();
+    const { getFriendlyName, hasRight } = useSessionStore();
     defineEmits(['close', 'add']);
     const new_timeline_item_el = useTemplateRef('new_timeline_item')
     const selected_state = ref(1);
@@ -14,7 +14,7 @@
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Avatar icon="ti ti-user" class="mr-2" :title="getFriendlyName"></Avatar>
+        <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
         <Card :pt="{
             body: {
                 class: `bg-yellow-400/50 dark:bg-yellow-500/10`,
@@ -77,7 +77,7 @@
                             ></Select>
                             <label for="task_category">Category</label>
                         </FloatLabel>
-                        <div class="flex items-center mt-2">
+                        <div v-if="hasRight('task', ITILSubItemRights.SEEPRIVATE)" class="flex items-center mt-2">
                             <label for="is_private" class="ml-2">Private</label>
                             <ToggleSwitch inputId="is_private" class="ms-2">
                                 <template #handle="slotProps">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import { computed, onMounted, ref, type Ref, shallowRef, useTemplateRef } from "vue";
+    import { computed, onMounted, provide, ref, type Ref, shallowRef, useTemplateRef } from "vue";
     import { useApi } from "@/composables/useApi.ts";
     import { Button, ButtonGroup, Menu, Popover, SelectButton, SplitButton, Timeline, ToggleSwitch, ProgressBar } from 'primevue';
     import { RouterLink } from "vue-router";
@@ -26,7 +26,9 @@
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
     const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
     const items = ref(null);
-    const { mainTimelineAction, extraTimelineActions, current_new_itemtype, statusIcon, statusColor } = useAssistanceItem(normalized_itemtype.value, item);
+    const assistanceItemInstance = useAssistanceItem(normalized_itemtype.value, item);
+    provide('assistanceItemInstance', assistanceItemInstance);
+    const { mainTimelineAction, extraTimelineActions, current_new_item, statusIcon, statusColor } = assistanceItemInstance;
 
     const extra_data_promises = [
         doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
@@ -217,7 +219,7 @@
         <div class="grid grid-cols-12 overflow-y-hidden">
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                 <template v-if="view_mode !== 'milestones'">
-                    <component v-if="current_new_itemtype !== null" :is="current_new_itemtype" @close="current_new_itemtype = null"></component>
+                    <component v-if="current_new_item !== null" :is="current_new_item.component" v-bind="current_new_item.props" @close="current_new_item = null"></component>
                     <TimelineItem v-for="item in filtered_items.slice().reverse()" :key="`${item.type}-${item.item.id}`"
                                   :item="item" :todoListMode="view_mode === 'todo'" />
                     <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
@@ -260,7 +262,7 @@
             <div class="relative h-22 col-span-12">
                 <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
                     <div class="[&>*]:me-2">
-                        <SplitButton v-if="current_new_itemtype === null && mainTimelineAction" :label="mainTimelineAction.label" :icon="mainTimelineAction.icon"
+                        <SplitButton v-if="current_new_item === null && mainTimelineAction" :label="mainTimelineAction.label" :icon="mainTimelineAction.icon"
                                      :model="extraTimelineActions" :menuButtonProps="{'aria-label': 'More Options'}"
                                      @click="mainTimelineAction.command">
                         </SplitButton>
