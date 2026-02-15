@@ -2,7 +2,7 @@
     import {Form, FormField, FormSubmitEvent} from '@primevue/forms';
     import { Button, InputText, Textarea, Message, useToast } from "primevue";
     import { useApi } from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
+    import {ref} from "vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import FormFields from "@/components/forms/FormFields.vue";
     import {AbstractModel} from "@/models/AbstractModel";
@@ -35,7 +35,6 @@
     const is_submitting = ref(false);
     const toast = useToast();
     const router = useRouter();
-    console.log(router);
 
     function onFormSubmit(event: FormSubmitEvent) {
         if (!event.valid) {
@@ -56,7 +55,6 @@
                 }
             });
         }).catch((err) => {
-            console.log(err);
             if (err.response && err.response.data && err.response.data.message) {
                 toast.add({severity: 'error', summary: 'Error', detail: err.response.data.message, life: 5000});
             } else {

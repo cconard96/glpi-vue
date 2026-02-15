@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { components } from "../../../data/hlapiv2_schema";
     import { MultiSelect, SelectButton, FloatLabel, InputText } from "primevue";
-    import { shallowRef, ref } from "vue";
+    import { shallowRef, ref, useTemplateRef } from "vue";
     import { useDataHelper } from "@/composables/useDataHelper";
     import { useApi } from "@/composables/useApi";
     import { useDebounceFn } from "@vueuse/core";
@@ -133,6 +133,10 @@
             isLoading.value = false;
         });
     }, 250, { maxWait: 500 });
+
+    const requesterSearchEl = useTemplateRef('requester-search');
+    const observerSearchEl = useTemplateRef('observer-search');
+    const assignedSearchEl = useTemplateRef('assigned-search');
 </script>
 
 <template>
@@ -140,11 +144,11 @@
         <FloatLabel variant="on">
             <MultiSelect display="chip" removeTokenIcon="ti ti-circle-x" :showToggleAll="false" fluid optionValue="key" :optionLabel="option => formatUsername(option.member)"
                          :options="requester_options"
-                         v-model="selected_requesters"
+                         v-model="selected_requesters" @show="requesterSearchEl.$el.focus()"
             >
                 <template #header>
                     <SelectButton :options="allowed_actor_itemtypes['requesters']" v-model="requester_type_filter" multiple></SelectButton>
-                    <InputText placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="requester_filter" @input="updateActorOptions('requesters')"></InputText>
+                    <InputText ref="requester-search" placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="requester_filter" @input="updateActorOptions('requesters')"></InputText>
                 </template>
             </MultiSelect>
             <label>{{ actor_type_labels['requesters'] }}</label>
@@ -152,22 +156,23 @@
         <FloatLabel variant="on">
             <MultiSelect display="chip" removeTokenIcon="ti ti-circle-x" :showToggleAll="false" fluid optionValue="key" :optionLabel="option => formatUsername(option.member)"
                          :options="observer_options"
-                         v-model="selected_observers"
+                         v-model="selected_observers" @show="observerSearchEl.$el.focus()"
             >
                 <template #header>
                     <SelectButton :options="allowed_actor_itemtypes['observers']" v-model="observer_type_filter" multiple></SelectButton>
-                    <InputText placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="observer_filter" @input="updateActorOptions('observers')"></InputText>
+                    <InputText ref="observer-search" placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="observer_filter" @input="updateActorOptions('observers')"></InputText>
                 </template>
             </MultiSelect>
             <label>{{ actor_type_labels['observers'] }}</label>
         </FloatLabel>
         <FloatLabel variant="on">
             <MultiSelect display="chip" removeTokenIcon="ti ti-circle-x" :showToggleAll="false" fluid optionValue="key" :optionLabel="option => formatUsername(option.member)"
-                         :options="assigned_options" v-model="selected_assigned"
+                         :options="assigned_options"
+                         v-model="selected_assigned" @show="assignedSearchEl.$el.focus()"
             >
                 <template #header>
                     <SelectButton :options="allowed_actor_itemtypes['assigned']" v-model="assigned_type_filter" multiple></SelectButton>
-                    <InputText placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="assigned_filter" @input="updateActorOptions('assigned')"></InputText>
+                    <InputText ref="assigned-search" placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="assigned_filter" @input="updateActorOptions('assigned')"></InputText>
                 </template>
             </MultiSelect>
             <label>{{ actor_type_labels['assigned'] }}</label>

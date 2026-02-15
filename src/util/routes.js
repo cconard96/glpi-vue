@@ -30,9 +30,15 @@ export const routes = [
             },
             {
                 name: 'ITILTimeline',
-                path: 'assistance/:itemtype(ticket|change|problem)/:id',
+                path: 'assistance/:itemtype(ticket|change|problem)/:id(\\d+)',
                 component: () => import('../components/timeline/TimelineView.vue'),
-                props: true,
+                props: (route) => {
+                    const id = parseInt(route.params.id);
+                    return {
+                        itemtype: route.params.itemtype,
+                        id: isNaN(id) ? null : id,
+                    };
+                },
                 meta: {
                     breadcrumbs: (route) => {
                         return [
@@ -60,7 +66,14 @@ export const routes = [
                 name: 'ItemForm',
                 path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype/:id(\\d+)',
                 component: () => import('../components/TabbedForm.vue'),
-                props: true,
+                props: (route) => {
+                    const id = parseInt(route.params.id);
+                    return {
+                        component_module: route.params.component_module,
+                        itemtype: route.params.itemtype,
+                        id: isNaN(id) ? null : id,
+                    };
+                },
                 meta: {
                     breadcrumbs: (route) => {
                         return [

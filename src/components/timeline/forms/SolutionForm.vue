@@ -17,7 +17,7 @@
     defineEmits(['close', 'add']);
     const new_timeline_item_el = useTemplateRef('new_timeline_item')
     const dialog = useDialog();
-    const software_form = useTemplateRef<FormInstance>('solution_form');
+    const solution_form = useTemplateRef<FormInstance>('solution_form');
 
     const solution = ref({
         content: props.initialContent || ''
@@ -43,7 +43,7 @@
             emits: {
                 onClickAction: ({ action, article }) => {
                     if (action === 'use_as_solution') {
-                        software_form.value.setFieldValue('content', article.content);
+                        solution_form.value.setFieldValue('content', article.content);
                     }
                     dialogInstance.close();
                 }

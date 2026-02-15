@@ -20,12 +20,6 @@ const user_lang = navigator.language || 'en';
 // try to load locale by the full language code, fallback to the first part of the language code, fallback to english
 const locale = all[user_lang] || all[user_lang.split('-')[0]] || all['en'];
 
-console.log({
-    user_lang,
-    locale,
-    all
-});
-
 const router = createRouter({
     history: createWebHistory(),
     routes,

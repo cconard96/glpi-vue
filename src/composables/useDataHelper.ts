@@ -63,7 +63,7 @@ export function useDataHelper() {
      * Format duration to a more readable format in seconds, minutes, hours, etc. If the value is 0, return 'N/A'.
      * @param value The raw value
      * @param unit The base unit (ms, s, m, h, d)
-     * @param format The format to use with Intl.DurationFormat. narrow: "1h 30m", short: "1 hr 30 min", long: "1 hour 30 minutes"
+     * @param format The format to use with Intl.DurationFormat. narrow: "1h 30m", short: "1 hr 30 min", long: "1 hour, 30 minutes"
      */
     function formatDuration(value: number, unit: string, format: 'narrow'|'short'|'long' = 'long'): string {
         if (value === 0) {
@@ -113,6 +113,57 @@ export function useDataHelper() {
         return formatter.format(duration);
     }
 
+    /**
+     * Format a timestamp to a relative time (e.g. "5 minutes ago") if the difference between the current time and the timestamp is less than the given cutoff, otherwise return the absolute time (e.g. "2024-01-01 12:00:00").
+     * @param timestamp The timestamp to format, in a format that can be parsed by the JavaScript Date object (e.g. "2024-01-01T12:00:00Z").
+     * @param relativeCutoff The cutoff in seconds for when to switch from relative time (e.g. "5 minutes ago") to absolute time (e.g. "2024-01-01 12:00:00").
+     * If the difference between the current time and the timestamp is greater than this cutoff, the function will return the absolute time instead of the relative time.
+     * Defaults to 24 hours.
+     */
+    function formatRelativeTime(timestamp: string|Date, relativeCutoff: Number = 24 * 60 * 60): string {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = Math.floor((now - date) / 1000); // difference in seconds
+
+        if (relativeCutoff !== undefined && diff > relativeCutoff) {
+            return date.toLocaleString();
+        }
+
+        if (diff < 15) {
+            return 'Just now';
+        }
+
+        if (diff < 60) return `${diff} seconds ago`;
+        if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+        if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+        if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
+        return date.toLocaleString();
+    }
+
+    function formatDate(timestamp: string): string {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString();
+    }
+
+    function formatTime(timestamp: string): string {
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString();
+    }
+
+    function formatDateTime(timestamp: string): string {
+        const date = new Date(timestamp);
+        return date.toLocaleString();
+    }
+
+    function formatCost(cost: number, currency: string = undefined): string {
+        if (currency === undefined) {
+            // just format the number to always include 2 decimal places and use the user's locale for formatting
+            // maybe GLPI will support currency units at some point
+            return cost.toLocaleString(navigator.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        return new Intl.NumberFormat(navigator.language, { style: 'currency', currency }).format(cost);
+    }
+
     return {
         formatDataSize,
         getObjectProp,
@@ -121,5 +172,10 @@ export function useDataHelper() {
         formatUsername,
         getUrgencyImpactPriorityLabel,
         formatDuration,
+        formatRelativeTime,
+        formatDate,
+        formatTime,
+        formatDateTime,
+        formatCost,
     }
 }

@@ -5,6 +5,7 @@
     import { GridStack } from 'gridstack';
     import 'gridstack/dist/gridstack.min.css';
     import DashboardItem from "@/components/dashboard/DashboardItem.vue";
+    import { useSessionStore } from "@/composables/useSessionStore";
 
     const props = defineProps({
         current: {
@@ -31,6 +32,7 @@
 
     const CELL_MARGIN = 3;
     const { doGraphQLRequest } = useApi();
+    const { getUserID } = useSessionStore();
     const items = ref([]);
     const filters = ref({});
     /** Cell height calculated as the px value of the cell width which is calculated by % */
@@ -39,37 +41,44 @@
         return `calc(${cell_width_percent}% - ${CELL_MARGIN}px)`;
     });
     const grid_el = useTemplateRef('ref_dashboardgrid');
+    const edit_mode = ref(false);
 
     async function refreshData() {
         return doGraphQLRequest(`
             query {
-                Dashboard(filter: "key==${props.current}") {
+                Dashboard(filter: "key==${props.current}", limit: 1) {
                     id key name context
                     user { id }
-                }
-                DashboardItem(filter: "dashboard.key==${props.current}") {
-                    id dashboard { key } card x y width height card_options
-                }
-                DashboardFilter(filter: "dashboard.key==${props.current}") {
-                    id dashboard { key } user { id } filter
-                }
-            }
-        `).then((response) => {
-            const dashboard_items = response.data.DashboardItem;
-            // json decode all 'card_options' fields in dashboard items
-            for (let i = 0; i < dashboard_items.length; i++) {
-                if (dashboard_items[i].card_options) {
-                    dashboard_items[i].card_options = JSON.parse(dashboard_items[i].card_options);
-                } else {
-                    dashboard_items[i].card_options = {};
+                    filters {
+                        id
+                        user { id }
+                        filter
+                    }
+                    items {
+                        id card x y width height card_options
+                    }
                 }
             }
+        `, {}, 'cache-first').then((response) => {
+            items.value = [];
+            response.data.Dashboard[0].items.forEach((item) => {
+                const dashboard_item = {
+                    id: item.id,
+                    card: item.card,
+                    x: item.x,
+                    y: item.y,
+                    width: item.width,
+                    height: item.height,
+                    card_options: item.card_options ? JSON.parse(item.card_options) : {},
+                };
+                items.value.push(dashboard_item);
+            });
 
-            items.value = dashboard_items;
-            const dashboard_filters = response.data.DashboardFilter;
-            if (dashboard_filters.length > 0) {
-                filters.value = JSON.parse(dashboard_filters[0].filter);
-            } else {
+            // set filters to the filter matching the current user ID or an empty object
+            const user_filter = response.data.Dashboard[0].filters.find((f) => f.user.id === getUserID);
+            try {
+                filters.value = user_filter ? JSON.parse(user_filter.filter) : {};
+            } catch {
                 filters.value = {};
             }
         });
@@ -100,7 +109,7 @@
         <Message severity="warn">Card rendering not implemented. Only skeleton loaders will be shown.</Message>
         <div :class="`grid-stack grid-stack-${cols} w-full`" :gs-column="cols" :gs-min-row="rows">
             <DashboardItem v-for="item in items" :key="item.id" :gridstack_id="item.card" :x="item.x" :y="item.y" :width="item.width" :height="item.height" :card_options="item.card_options"></DashboardItem>
-            <div class="grid-guide">
+            <div :class="`grid-guide ${edit_mode ? '' : 'hidden'}`">
                 <template v-for="n in cols" :key="`col-${n}`">
                     <template v-for="m in rows" :key="`col-${n}-row-${m}`">
                         <div class="cell-add" :data-x="n" :data-y="m">&nbsp</div>

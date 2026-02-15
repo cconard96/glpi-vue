@@ -16,7 +16,7 @@
     const dialog = useDialog();
     const top_right_menu = ref([
         {
-            label: session_store.getFriendlyName,
+            label: `${session_store.getActiveProfile.name}\n${session_store.getActiveEntity.short_name}`,
             icon: 'ti ti-user',
             items: [
                 {
@@ -101,12 +101,21 @@
                     <DynamicBreadcrumbs></DynamicBreadcrumbs>
                 </div>
                 <Menubar class="p-2" :model="top_right_menu" :pt="{
+                    rootList: {
+                        'class': 'whitespace-pre-wrap max-w-96',
+                    },
+                    itemLabel: ({ props }) => {
+                        if (props.root) {
+                            return { 'class': 'text-sm' };
+                        }
+                    },
                     submenu: {
                         'class': 'justify-self-end z-1000'
                     }
-                }" breakpoint=""></Menubar>
+                }" breakpoint="">
+                </Menubar>
             </div>
-            <RouterView v-slot="{ Component }">
+            <RouterView :key="$route.fullPath" v-slot="{ Component }">
                 <KeepAlive>
                     <ErrorBoundary>
                         <Suspense>

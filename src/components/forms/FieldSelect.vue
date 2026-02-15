@@ -49,8 +49,14 @@
         options: {
             type: Array<{id: Number|String, name: String}>,
             default: null
+        },
+        showClear: {
+            type: Boolean,
+            default: true
         }
     });
+
+    defineEmits(['change']);
 
     const input_id = useId();
     const model = defineModel<string | number | null | undefined>();
@@ -92,14 +98,22 @@
         <label v-if="label && label_type === 'inline'" class="w-1/3 text-end me-4" :for="input_id">{{ label }}</label>
         <Select v-if="!multiple" v-bind="form_field.field.props" :id="input_id" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"
                 :optionValue="optionValue" :optionLabel="optionLabel" v-model="model" :options="options"
-                :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus show-clear>
+                :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus :showClear="showClear"
+                @change="$emit('change', $event)"
+        >
             <template #value="slotProps">
-                <div v-if="slotProps.value" class="flex align-items-center">
+                <div v-if="$slots.value" class="flex align-items-center">
+                    <slot name="value" v-bind="slotProps"></slot>
+                </div>
+                <div v-else-if="slotProps.value" class="flex align-items-center">
                     <div>{{ options.find(opt => opt[optionValue] === slotProps.value)?.[optionLabel] || slotProps.value }}</div>
                 </div>
                 <div v-else class="flex align-items-center">
                     <div>{{ slotProps.placeholder || '&nbsp;' }}</div>
                 </div>
+            </template>
+            <template v-if="$slots.option" #option="slotProps">
+                <slot name="option" v-bind="slotProps"></slot>
             </template>
         </Select>
         <MultiSelect v-else v-bind="form_field.field.props" :id="input_id" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"

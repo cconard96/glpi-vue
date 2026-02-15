@@ -48,11 +48,11 @@
 
 <template>
     <Avatar
-        v-bind="$attrs"
+        v-bind="$attrs" class="select-none"
         :image="actor_data.picture ? (actor_data.picture.endsWith('picture.png') ? null : actor_data.picture) : null"
         :label="(!actor_data.picture || actor_data.picture.endsWith('picture.png')) ? initials : null"
         shape="square" size="large" @mouseover="actor_card_el?.show" @mouseleave="actor_card_el?.hide"
-        @touchstart="actor_card_el?.show" @touchend="actor_card_el?.hide"
+        @touchstart.passive="actor_card_el?.show" @touchend.passive="actor_card_el?.hide"
     ></Avatar>
     <Popover ref="actor_card" :key="actor_type + '_' + actor_data.id">
         <ActorInfoCard :actor_type="actor_type" :actor_data="actor_data"></ActorInfoCard>

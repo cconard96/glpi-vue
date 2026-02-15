@@ -4,8 +4,8 @@
 </script>
 
 <template>
-    <div class="flex flex-col w-full">
-        <Tabs value="dashboard" class="overflow-hidden h-full">
+    <div class="flex flex-col w-full h-full overflow-hidden">
+        <Tabs value="dashboard" class="overflow-hidden grid grid-rows-[4rem_1fr]">
             <TabList>
                 <Tab value="dashboard">Dashboard</Tab>
                 <Tab value="personal">Personal</Tab>
@@ -13,7 +13,7 @@
                 <Tab value="global">Global</Tab>
                 <Tab value="rss">RSS feeds</Tab>
             </TabList>
-            <TabPanels class="grow shrink-0 basis-auto">
+            <TabPanels class="grow shrink-0 basis-auto overflow-y-auto">
                 <TabPanel value="dashboard">
                     <DashboardView current="central"></DashboardView>
                 </TabPanel>

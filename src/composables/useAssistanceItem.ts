@@ -1,9 +1,14 @@
 import {type Component, computed, type ComputedRef, defineAsyncComponent, ref, type Ref, type ShallowRef, shallowRef} from "vue";
 import {type components} from "../../data/hlapiv2_schema";
 import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketRights } from "@/composables/useSessionStore";
+import { useApi } from "@/composables/useApi";
+
+type TimelineItem = components['schemas']['Followup'] | components['schemas']['Task'] | components['schemas']['Solution'] | components['schemas']['Document'] | components['schemas']['Approval'];
 
 export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: Ref<components['schemas'][typeof itemtype]>) {
     const session = useSessionStore();
+    const { doApiRequest } = useApi();
+
     const current_new_item: ShallowRef<{
         component: Component,
         props?: Record<string, any>
@@ -197,18 +202,18 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         if (itemtype !== 'Ticket' && !session.hasRight(itemtype.toLowerCase(), BaseRights.UPDATE)) {
             return false;
         }
-        if (
-            !(
-                session.getActiveProfile.interface !== 'central'
-                && session.hasRight(itemtype.toLowerCase(), BaseRights.CREATE)
-            )
-            || !session.hasAnyRight(
-                itemtype.toLowerCase(),
-                [BaseRights.CREATE, BaseRights.UPDATE, TicketRights.ASSIGN, TicketRights.STEAL, TicketRights.OWN, TicketRights.CHANGEPRIORITY]
-            )
-        ) {
-            return false;
-        }
+        // if (
+        //     !(
+        //         session.getActiveProfile.interface !== 'central'
+        //         && session.hasRight(itemtype.toLowerCase(), BaseRights.CREATE)
+        //     )
+        //     || !session.hasAnyRight(
+        //         itemtype.toLowerCase(),
+        //         [BaseRights.CREATE, BaseRights.UPDATE, TicketRights.ASSIGN, TicketRights.STEAL, TicketRights.OWN, TicketRights.CHANGEPRIORITY]
+        //     )
+        // ) {
+        //     return false;
+        // }
 
         //TODO Requesters can make some updates to their tickets before they are taken into account by a technician
 
@@ -340,14 +345,14 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
     });
 
     const urgencyImpactOptions = [
-        {key: 5, label: 'Very high'},
-        {key: 4, label: 'High'},
-        {key: 3, label: 'Medium'},
-        {key: 2, label: 'Low'},
-        {key: 1, label: 'Very low'},
+        {key: 5, label: 'Very high', color: '#ffadad'},
+        {key: 4, label: 'High', color: '#ffbfbf'},
+        {key: 3, label: 'Medium', color: '#ffcece'},
+        {key: 2, label: 'Low', color: '#ffe0e0'},
+        {key: 1, label: 'Very low', color: '#fff2f2'},
     ];
     const priorityOptions = [
-        {key: 6, label: 'Major'},
+        {key: 6, label: 'Major', color: '#ff5555'},
         ...urgencyImpactOptions
     ];
 
@@ -373,10 +378,10 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
     };
 
     const globalApprovalIcon = computed(() => {
-        if (!('global_validation' in item) || !item.global_validation) {
+        if (!('global_validation' in item.value) || !item.value.global_validation) {
             return null;
         }
-        switch (item.global_validation) {
+        switch (item.value.global_validation) {
             case 2:
                 return 'ti ti-clock text-amber-500';
             case 3:
@@ -388,10 +393,10 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
     });
 
     const globalApprovalLabel = computed(() => {
-        if (!('global_validation' in item) || !item.global_validation) {
+        if (!('global_validation' in item.value) || !item.value.global_validation) {
             return null;
         }
-        switch (item.global_validation) {
+        switch (item.value.global_validation) {
             case 2:
                 return 'Pending';
             case 3:
@@ -402,8 +407,81 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         return null;
     });
 
+    const timelineItems: Ref<Array<TimelineItem>> = ref(null);
+
+    function loadTimelineItems() {
+        return doApiRequest(`Assistance/${itemtype}/${item.value.id}/Timeline`).then((res) => {
+            return res.data;
+        }).then((updated_items) => {
+            // load costs as timeline items as they are not considered part of the timeline in GLPI
+            return doApiRequest(`Assistance/${itemtype}/${item.value.id}/Cost`).then((res) => {
+                const costs = res.data.map(cost => {
+                    cost.date = cost.end_date || cost.begin_date || new Date().toISOString();
+                    return {
+                        type: 'Cost',
+                        item: cost,
+                    }
+                });
+                const newTimelineItems = [...updated_items, ...costs];
+
+                (updated_items as Array<{type: String, item: Object}>).forEach(timeline_item => {
+                    if (timeline_item.type === 'Validation' && timeline_item.item.status >= 3) {
+                        newTimelineItems.push({
+                            type: 'ValidationAnswer',
+                            item: {
+                                approval_id: timeline_item.item.id,
+                                date: timeline_item.item.approval_date,
+                                comment: timeline_item.item.approval_comment,
+                                status: timeline_item.item.status,
+                                user: timeline_item.item.approver
+                            }
+                        });
+                    }
+                });
+                timelineItems.value = newTimelineItems;
+            });
+        });
+    }
+
+    const milestones = computed(() => {
+        const milestone_items = [
+            { status: 'Opening Date', date: new Date(item.value.date || item.value.date_creation).toLocaleString() }
+        ];
+
+        if ('take_into_account_date' in item.value) {
+            // old tickets (<10.0.4 won't have the take_into_account_date field set. use date_creation + take_into_account_duration instead
+            if (item.value.take_into_account_date) {
+                milestone_items.push({status: 'Take into account', date: new Date(item.value.take_into_account_date).toLocaleString()});
+            } else if (item.value.take_into_account_duration) {
+                milestone_items.push({
+                    status: 'Take into account',
+                    date: new Date(new Date(item.value.date_creation).getTime() + item.value.take_into_account_duration * 1000).toLocaleString()
+                });
+            }
+        }
+
+        if ([5, 6, 8, 13, 14].includes(item.value.status)) {
+            if (item.value.date_solve) {
+                milestone_items.push({status: 'Resolution', date: new Date(item.value.date_solve).toLocaleString()});
+            }
+        }
+
+        if ([6, 13, 14].includes(item.value.status)) {
+            if (item.value.date_close) {
+                milestone_items.push({status: 'Closure', date: new Date(item.value.date_close).toLocaleString()});
+            }
+        }
+
+        // TODO Finish
+
+        return milestone_items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    });
+
     return {
         itemtype,
+        item,
+        timelineItems,
+        loadTimelineItems,
         all_timeline_actions,
         allowed_timeline_actions,
         current_new_item,
@@ -422,5 +500,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         assistanceLinkTypeLabels,
         globalApprovalIcon,
         globalApprovalLabel,
+        canUpdateItem,
+        milestones,
     }
 }

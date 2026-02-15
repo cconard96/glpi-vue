@@ -1,14 +1,15 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import { computed, onMounted, provide, ref, type Ref, shallowRef, useTemplateRef } from "vue";
+    import { computed, onMounted, provide, ref, type Ref, shallowRef, useTemplateRef, watch } from "vue";
     import { useApi } from "@/composables/useApi.ts";
-    import { Button, ButtonGroup, Menu, Popover, SelectButton, SplitButton, Timeline, ToggleSwitch, ProgressBar } from 'primevue';
+    import { Button, ButtonGroup, Menu, Popover, SelectButton, SplitButton, Timeline, ToggleSwitch, ProgressBar, useToast } from 'primevue';
     import { RouterLink } from "vue-router";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
     import { type components } from "../../../data/hlapiv2_schema";
     import { useAssistanceItem } from "@/composables/useAssistanceItem";
     import { AbstractModel } from "@/models/AbstractModel";
     import { useDataHelper } from "@/composables/useDataHelper";
+    import { useInterval } from "@/composables/useInterval";
 
     const { itemtype, id } = defineProps({
         itemtype: {
@@ -16,29 +17,27 @@
             required: true
         },
         id: {
-            type: [String, Number],
+            type: Number,
             required: true
         }
     });
 
+    const toast = useToast();
     const { doApiRequest, normalizeComponentName, getComponentSchema } = useApi();
     const { formatDuration } = useDataHelper();
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
     const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
-    const items = ref(null);
     const assistanceItemInstance = useAssistanceItem(normalized_itemtype.value, item);
     provide('assistanceItemInstance', assistanceItemInstance);
-    const { mainTimelineAction, extraTimelineActions, current_new_item, statusIcon, statusColor } = assistanceItemInstance;
+    const {
+        mainTimelineAction, extraTimelineActions, current_new_item, statusIcon, statusColor,
+        loadTimelineItems, timelineItems, canUpdateItem, milestones
+    } = assistanceItemInstance;
 
-    const extra_data_promises = [
-        doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
-            item.value = AbstractModel.formatFieldsForForm(res.data, await getComponentSchema(normalized_itemtype.value));
-        }),
-        doApiRequest(`Assistance/${normalized_itemtype.value}/${id}/Timeline`).then((res) => {
-            items.value = res.data;
-        }),
-    ];
-    await Promise.all(extra_data_promises);
+    await doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
+        item.value = AbstractModel.formatFieldsForForm(res.data, await getComponentSchema(normalized_itemtype.value));
+    });
+    await loadTimelineItems();
 
     const left_side = useTemplateRef('left-side');
     const right_side = useTemplateRef('right-side');
@@ -60,6 +59,9 @@
 
     onMounted(() => {
         document.title = `${itemtype_name} #${item.value.id} - ${item.value.name}`;
+
+        //fetch timeline items every 1 minute to keep it updated without the user having to reload, but back off to 5 minutes when idle
+        useInterval(loadTimelineItems, 60 * 1000, 5 * 60 * 1000);
     });
 
     const filters = {
@@ -101,7 +103,7 @@
     };
     const view_mode = ref('default');
     const filtered_items = computed(() => {
-        return items.value.filter((timeline_item) => {
+        const filtered = timelineItems.value.filter((timeline_item) => {
             if (view_mode.value === 'todo') {
                 return timeline_item.type === 'Task';
             }
@@ -122,10 +124,16 @@
                     return true;
             }
         });
+        return filtered.sort((a, b) => {
+            const dateA = new Date(a.item.date_creation || a.item.date || a.item.submission_date);
+            const dateB = new Date(b.item.date_creation || b.item.date || b.item.submission_date);
+            return dateA.getTime() - dateB.getTime();
+        }).slice().reverse();
     });
 
     const actions_menu_el = useTemplateRef('actions_menu');
     const filters_menu_el = useTemplateRef('filters_menu');
+    const pdf_root = useTemplateRef('pdf_root');
     function toggleActionsMenu(e) {
         actions_menu_el.value.toggle(e);
     }
@@ -133,45 +141,11 @@
         filters_menu_el.value.toggle(e);
     }
 
-    const milestones = computed(() => {
-        const milestone_items = [
-            { status: 'Opening Date', date: new Date(item.value.date || item.value.date_creation).toLocaleString() }
-        ];
-
-        if ('take_into_account_date' in item.value) {
-            // old tickets (<10.0.4 won't have the take_into_account_date field set. use date_creation + take_into_account_duration instead
-            if (item.value.take_into_account_date) {
-                milestone_items.push({status: 'Take into account', date: new Date(item.value.take_into_account_date).toLocaleString()});
-            } else if (item.value.take_into_account_duration) {
-                milestone_items.push({
-                    status: 'Take into account',
-                    date: new Date(new Date(item.value.date_creation).getTime() + item.value.take_into_account_duration * 1000).toLocaleString()
-                });
-            }
-        }
-
-        //TODO Finish
-
-        // show resolution date if solved/closed type of status
-        // if ([5, 6, 8, 13, 14].includes(item.value.status.id)) {
-        //     if (item.value.resolution_date) {
-        //         milestone_items.push({status: 'Resolution', date: new Date(item.value.resolution_date).toLocaleString()});
-        //     } else if (item.value.resolution_duration) {
-        //         milestone_items.push({
-        //             status: 'Resolution',
-        //             date: new Date(new Date(item.value.date_creation).getTime() + item.value.resolution_duration * 1000).toLocaleString()
-        //         });
-        //     }
-        // }
-
-        return milestone_items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    });
-
     const total_task_duration = computed(() => {
-        if (!items.value) {
+        if (!timelineItems.value) {
             return 0;
         }
-        return items.value.reduce((total, timeline_item) => {
+        return timelineItems.value.reduce((total, timeline_item) => {
             if (timeline_item.type === 'Task' && timeline_item.item.duration) {
                 return total + timeline_item.item.duration;
             }
@@ -183,27 +157,64 @@
      * Percent of tasks in DONE state among all TO-DO/DONE tasks (informational task ignored)
      */
     const task_percent_done = computed(() => {
-        if (!items.value) {
+        if (!timelineItems.value) {
             return 0;
         }
         let done_count = 0;
         let todo_done_count = 0;
-        items.value.forEach((timeline_item) => {
+        timelineItems.value.forEach((timeline_item) => {
             if (timeline_item.type === 'Task') {
-                if (timeline_item.item.status && timeline_item.item.status === 2) {
+                if (timeline_item.item.state && timeline_item.item.state === 2) {
                     done_count++;
                 }
-                if (timeline_item.item.status && [1, 2].includes(timeline_item.item.status.name)) {
+                if (timeline_item.item.state && [1, 2].includes(timeline_item.item.state)) {
                     todo_done_count++;
                 }
             }
         });
         return todo_done_count > 0 ? Math.round((done_count / todo_done_count) * 100) : 0;
     });
+
+    function exportPDF() {
+        view_mode.value = 'default';
+        import('html2pdf.js').then((m) => {
+            const html2pdf = m.default;
+            html2pdf().from(pdf_root.value).set({
+                filename: `${itemtype_name}_${item.value.id}.pdf`,
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            }).save();
+        });
+    }
+
+    watch(current_new_item, (newValue, oldValue) => {
+        if (oldValue === null) {
+            view_mode.value = 'default';
+            // scroll component into view
+            setTimeout(() => {
+                const component_el = document.getElementById('timeline-new-item-form');
+                if (component_el) {
+                    component_el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // focus the component
+                    component_el.focus();
+                }
+            }, 100);
+        }
+    });
+
+    function showNotImplementedToast() {
+        toast.add({
+            severity: 'info',
+            summary: 'Not implemented',
+            detail: 'This action is not implemented yet',
+            life: 5000,
+        });
+    }
 </script>
 
 <template>
-    <section class="grid grid-rows-[auto_1fr] h-full overflow-hidden">
+    <section ref="pdf_root" class="grid grid-rows-[auto_1fr] h-full overflow-hidden">
         <div class="text-lg flex justify-between p-2">
             <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
                 <i class="ti ti-list-search"></i>
@@ -219,8 +230,8 @@
         <div class="grid grid-cols-12 overflow-y-hidden">
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                 <template v-if="view_mode !== 'milestones'">
-                    <component v-if="current_new_item !== null" :is="current_new_item.component" v-bind="current_new_item.props" @close="current_new_item = null"></component>
-                    <TimelineItem v-for="item in filtered_items.slice().reverse()" :key="`${item.type}-${item.item.id}`"
+                    <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" v-bind="current_new_item.props" @close="current_new_item = null"></component>
+                    <TimelineItem v-for="item in filtered_items" :key="`${item.type}-${item.item.id}`"
                                   :item="item" :todoListMode="view_mode === 'todo'" />
                     <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
                         type: 'content',
@@ -240,7 +251,7 @@
                             </div>
                             <div class="flex">
                                 <i class="ti ti-check text-2xl me-2"></i>
-                                <ProgressBar class="w-64" :value="task_percent_done" :showValue="false"></ProgressBar>
+                                <ProgressBar class="w-64" :value="task_percent_done" :showValue="true"></ProgressBar>
                             </div>
                         </div>
                     </div>
@@ -297,13 +308,14 @@
                     </div>
                     <div class="">
                         <ButtonGroup>
-                            <Button title="Put in trashbin" icon="ti ti-trash" severity="danger"></Button>
+                            <Button title="Put in trashbin" icon="ti ti-trash" severity="danger" variant="outlined"></Button>
                             <Button title="Actions" icon="ti ti-dots-vertical" variant="outlined"
                                     @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                             <Menu ref="actions_menu" :popup="true" :model="[
-                                { key: 'clone', label: 'Clone', icon: 'ti ti-copy' },
-                                { key: 'transfer', label: 'Transfer to another entity', icon: 'ti ti-corner-right-up' },
-                                { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge' },
+                                { key: 'clone', label: 'Clone', icon: 'ti ti-copy', command: showNotImplementedToast },
+                                { key: 'transfer', label: 'Transfer to another entity', icon: 'ti ti-corner-right-up', command: showNotImplementedToast },
+                                { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge', command: showNotImplementedToast },
+                                { key: 'save_as_pdf', label: 'Save as PDF', icon: 'ti ti-file-type-pdf', command: exportPDF },
                             ]"></Menu>
                             <Button label="Save" icon="ti ti-device-floppy" severity="primary"></Button>
                         </ButtonGroup>

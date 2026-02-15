@@ -13,8 +13,8 @@
     }">
         <template #empty>
             <div class="text-center text-gray-500">
-                <i class="ti ti-upload text-4xl mb-2"></i>
-                <div>Drag and drop files here to attach</div>
+                <i class="ti ti-upload text-3xl mb-2 me-2"></i>
+                <span>Drag and drop files here to attach</span>
             </div>
         </template>
     </FileUpload>

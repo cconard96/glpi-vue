@@ -2,7 +2,7 @@
     import {
         Accordion, AccordionContent, AccordionHeader, AccordionPanel,
         DatePicker, FloatLabel, InputText, ScrollPanel,
-        Message, Tag, SelectButton, Fluid, Button
+        Message, Tag, SelectButton, Fluid, Button, InputGroup, InputGroupAddon, useToast
     } from "primevue";
     import { Form, FormField } from "@primevue/forms";
     import { computed, defineAsyncComponent, inject, onMounted, ref, toRef } from "vue";
@@ -18,6 +18,7 @@
         item: components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']
     }>();
 
+    const toast = useToast();
     const dialog = useDialog();
     const { doApiRequest, doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
     const {
@@ -70,6 +71,7 @@
     const assistance_links = ref([]);
     const kbitems = ref([]);
     const item_links = ref([]);
+    const project_links = ref([]);
 
     onMounted(() => {
         doGraphQLRequest(`
@@ -81,9 +83,13 @@
                 ${props.itemtype}_Item(filter: "${props.itemtype.toLowerCase()}.id==${props.item.id}") {
                     id itemtype items_id
                 }
+                ITIL_Project(filter: "itemtype==${props.itemtype};items_id==${props.item.id}") {
+                    id itemtype items_id project { id name }
+                }
             }
         `, {}, 'no-cache', 'all').then((res) => {
             kbitems.value = res.data.KBArticle_Item;
+            project_links.value = res.data.ITIL_Project.map(ip => ip.project);
             const links = [];
             for (const link_type of assistance_link_types) {
                 if (link_type.itemtypes.includes(props.itemtype)) {
@@ -193,6 +199,15 @@
             }
         });
     }
+
+    function showNotImplementedToast() {
+        toast.add({
+            severity: 'info',
+            summary: 'Not implemented',
+            detail: 'This action is not implemented yet',
+            life: 5000,
+        });
+    }
 </script>
 
 <template>
@@ -216,7 +231,7 @@
                                         <label for="item_date">Opening date</label>
                                     </FloatLabel>
                                 </FormField>
-                                <FormField name="type">
+                                <FormField v-if="'type' in item" name="type">
                                     <SelectButton :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"
                                                   optionValue="key" optionLabel="label" size="small"></SelectButton>
                                 </FormField>
@@ -228,7 +243,7 @@
                                     <FieldSelect label="Location" type="Location" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="status">
-                                    <FieldSelect label="Status" :options="statusOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Status" :options="statusOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false"></FieldSelect>
                                 </FormField>
                                 <div v-if="('global_validation' in item && item.global_validation) > 1">
                                     <i class="me-2" :class="globalApprovalIcon"></i>
@@ -238,13 +253,52 @@
                                     <FieldSelect label="Request source" type="RequestType" label_type="on"></FieldSelect>
                                 </FormField>
                                 <FormField name="urgency">
-                                    <FieldSelect label="Urgency" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Urgency" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
+                                        <template #value="slotProps">
+                                            <div class="flex items-baseline">
+                                                <i class="pi pi-circle-fill me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
+                                                <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
+                                            </div>
+                                        </template>
+                                        <template #option="slotProps">
+                                            <div class="flex items-baseline">
+                                                <i class="pi pi-circle-fill me-2" :style="`color: ${slotProps.option['color']}`"></i>
+                                                <div>{{ slotProps.option['label'] }}</div>
+                                            </div>
+                                        </template>
+                                    </FieldSelect>
                                 </FormField>
                                 <FormField name="impact">
-                                    <FieldSelect label="Impact" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Impact" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
+                                        <template #value="slotProps">
+                                            <div class="flex items-baseline">
+                                                <i class="pi pi-circle-fill me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
+                                                <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
+                                            </div>
+                                        </template>
+                                        <template #option="slotProps">
+                                            <div class="flex items-baseline">
+                                                <i class="pi pi-circle-fill me-2" :style="`color: ${slotProps.option['color']}`"></i>
+                                                <div>{{ slotProps.option['label'] }}</div>
+                                            </div>
+                                        </template>
+                                    </FieldSelect>
                                 </FormField>
                                 <FormField name="priority">
-                                    <FieldSelect label="Priority" :options="priorityOptions" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Priority" :options="priorityOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
+                                        <template #value="slotProps">
+                                            <div class="flex items-baseline">
+                                                <i class="pi pi-circle-fill me-2" :style="`color: ${priorityOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
+                                                <div>{{ priorityOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
+                                            </div>
+                                        </template>
+                                        <template #option="slotProps">
+                                            <div class="flex items-baseline">
+                                                <i class="pi pi-circle-fill me-2" :style="`color: ${slotProps.option['color']}`"></i>
+                                                <div>{{ slotProps.option['label'] }}</div>
+                                            </div>
+                                        </template>
+                                    </FieldSelect>
                                 </FormField>
                                 <FormField name="external_id">
                                     <FloatLabel variant="on">
@@ -261,6 +315,7 @@
                         <span>
                             <i class="ti ti-users me-2"></i>
                             Actors
+                            <Tag v-if="requesters.length + observers.length + assigned.length > 0" class="align-middle" severity="secondary" :value="requesters.length + observers.length + assigned.length"></Tag>
                         </span>
                     </AccordionHeader>
                     <AccordionContent>
@@ -272,9 +327,9 @@
                         <span>
                             <i class="ti ti-package me-2"></i>
                             Items
-                            <Tag v-if="item_links.length > 0" severity="secondary" :value="item_links.length"></Tag>
+                            <Tag v-if="item_links.length > 0" class="align-middle" severity="secondary" :value="item_links.length"></Tag>
                         </span>
-                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto"></Button>
+                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>
                     </AccordionHeader>
                     <AccordionContent>
                         <div v-if="item_links.length === 0">
@@ -290,7 +345,7 @@
                         </div>
                     </AccordionContent>
                 </AccordionPanel>
-                <AccordionPanel value="service_levels">
+                <AccordionPanel v-if="itemtype === 'Ticket'" value="service_levels">
                     <AccordionHeader class="p-3" as="div">
                         <span>
                             <i class="ti ti-clock me-2"></i>
@@ -298,7 +353,54 @@
                         </span>
                     </AccordionHeader>
                     <AccordionContent>
-                        Not implemented
+                        <Fluid>
+                            <div class="flex flex-col space-y-4">
+                                <FormField name="own_date">
+                                    <FloatLabel variant="on">
+                                        <InputGroup>
+                                            <DatePicker inputId="own_date" show-time showIcon showButtonBar></DatePicker>
+                                            <InputGroupAddon>
+                                                <Button icon="ti ti-stopwatch" title="Assign SLA" aria-label="Assign SLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                        <label for="own_date">Time to Own</label>
+                                    </FloatLabel>
+                                </FormField>
+                                <FormField name="resolution_date">
+                                    <FloatLabel variant="on">
+                                        <InputGroup>
+                                        <DatePicker inputId="resolution_date" showTime showIcon showButtonBar></DatePicker>
+                                            <InputGroupAddon>
+                                                <Button icon="ti ti-stopwatch" title="Assign SLA" aria-label="Assign SLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                        <label for="resolution_date">Time to Resolve</label>
+                                    </FloatLabel>
+                                </FormField>
+                                <FormField name="internal_take_into_account_date">
+                                    <FloatLabel variant="on">
+                                        <InputGroup>
+                                        <DatePicker inputId="internal_take_into_account_date" showTime showIcon showButtonBar></DatePicker>
+                                            <InputGroupAddon>
+                                                <Button icon="ti ti-stopwatch" title="Assign OLA" aria-label="Assign OLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                        <label for="internal_take_into_account_date">Internal Time to Own</label>
+                                    </FloatLabel>
+                                </FormField>
+                                <FormField name="internal_resolution_date">
+                                    <FloatLabel variant="on">
+                                        <InputGroup>
+                                        <DatePicker inputId="internal_resolution_date" showTime showIcon showButtonBar></DatePicker>
+                                            <InputGroupAddon>
+                                                <Button icon="ti ti-stopwatch" title="Assign OLA" aria-label="Assign OLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                        <label for="internal_resolution_date">Internal Time to Resolve</label>
+                                    </FloatLabel>
+                                </FormField>
+                            </div>
+                        </Fluid>
                     </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="linked_assistance_objects">
@@ -306,9 +408,9 @@
                         <span>
                             <i class="ti ti-link me-2"></i>
                             Linked assistance objects
-                            <Tag v-if="assistance_links.length > 0" severity="secondary" :value="assistance_links.length"></Tag>
+                            <Tag v-if="assistance_links.length > 0" class="align-middle" severity="secondary" :value="assistance_links.length"></Tag>
                         </span>
-                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto"></Button>
+                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>
                     </AccordionHeader>
                     <AccordionContent>
                         <div v-if="assistance_links.length === 0">
@@ -328,16 +430,29 @@
                         <span>
                             <i class="ti ti-layout-kanban me-2"></i>
                             Linked Projects
+                            <Tag v-if="project_links.length > 0" class="align-middle" severity="secondary" :value="project_links.length"></Tag>
                         </span>
+                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>
                     </AccordionHeader>
-                    <AccordionContent>Not implemented</AccordionContent>
+                    <AccordionContent>
+                        <div v-if="project_links.length === 0">
+                            <Message severity="info">No linked projects.</Message>
+                        </div>
+                        <div v-else class="flex flex-col space-y-2">
+                            <div v-for="project in project_links" :key="project.id" class="hover:bg-gray-800 p-2">
+<!--                                <RouterLink :to="{ name: 'Project', params: { id: project.id } }">-->
+                                    {{ project.name }}
+<!--                                </RouterLink>-->
+                            </div>
+                        </div>
+                    </AccordionContent>
                 </AccordionPanel>
                 <AccordionPanel value="kbarticles">
                     <AccordionHeader class="p-3" as="div">
                         <span>
                             <i class="ti ti-lifebuoy me-2"></i>
                             KB Articles
-                            <Tag v-if="kbitems.length > 0" severity="secondary" :value="kbitems.length"></Tag>
+                            <Tag v-if="kbitems.length > 0" class="align-middle" severity="secondary" :value="kbitems.length"></Tag>
                         </span>
                         <Button icon="ti ti-plus" label="Search/Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showKBSearch()"></Button>
                     </AccordionHeader>
