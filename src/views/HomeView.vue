@@ -115,7 +115,7 @@
                 }" breakpoint="">
                 </Menubar>
             </div>
-            <RouterView :key="$route.fullPath" v-slot="{ Component }">
+            <RouterView v-slot="{ Component }">
                 <ErrorBoundary>
                     <Suspense>
                         <component class="max-h-full w-full" :is="Component" />
