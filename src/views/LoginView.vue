@@ -1,19 +1,18 @@
 <script setup>
     import { Form } from '@primevue/forms';
-    import Card from 'primevue/card';
-    import InputText from 'primevue/inputtext';
-    import Password from 'primevue/password';
-    import Button from 'primevue/button';
-    import Message from 'primevue/message';
+    import { Card, InputText, Password, Button, Message } from 'primevue';
     import { useAuth } from '@/composables/useAuth';
     import { useRouter } from "vue-router";
-    import {computed, onMounted} from "vue";
+    import { computed, onMounted, ref } from "vue";
 
     const { login, isAuthenticated } = useAuth();
     const router = useRouter();
+    const loading = ref(false);
 
     const onSubmit = (data) => {
+        loading.value = true;
         login(data.values.username, data.values.password).then(() => {
+            loading.value = false;
             console.log('Login attempt finished');
             if (isAuthenticated()) {
                 // goto the path specified in the query parameter 'redirect' or to the home page
@@ -59,12 +58,12 @@
                     <div class="max-w-64 mx-auto flex flex-col gap-3">
                         <InputText name="username" class="max-w-64" autocomplete="username"
                                    placeholder="Username" autofocus fluid />
-                        <Password name="password" class="max-w-64" autocomplete="current-password"
+                        <Password name="password" class="max-w-64" :inputProps="{ autocomplete: 'current-password' }"
                                   placeholder="Password" :feedback="false" fluid />
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <Button type="submit" label="Login" class="self-center"/>
+                    <Button :loading="loading" type="submit" label="Login" class="self-center"/>
                 </div>
             </Form>
         </template>
