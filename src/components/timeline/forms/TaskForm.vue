@@ -1,31 +1,43 @@
 <script setup lang="ts">
-    import { Avatar, Button, Card, DatePicker, FloatLabel, Fluid, InputMask, ToggleSwitch, useToast } from "primevue";
+    import { Button, Card, DatePicker, FloatLabel, Fluid, InputMask, ToggleSwitch } from "primevue";
     import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/composables/useSessionStore";
-    import { inject, ref, useTemplateRef } from "vue";
+    import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
     import { useApi } from "@/composables/useApi";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { useDataHelper } from "@/composables/useDataHelper";
+    import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
+    import { useAssistanceItem } from "@/composables/useAssistanceItem";
 
     const { getFriendlyName, hasRight, getUserID } = useSessionStore();
+    const { getDurationFromMaskedInput, getMaskedInputFromDuration } = useDataHelper();
+    const assistanceItemInstance = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance', null);
     const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
-    const { resolveFields } = useOpenAPIForm(getComponentSchema('Task'));
+    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(await getComponentSchema(`${assistanceItemInstance.itemtype}Task`));
     const { formatUsername } = useDataHelper();
     const emits = defineEmits(['close', 'add']);
-    const assistanceItemInstance = inject('assistanceItemInstance');
-    const toast = useToast();
-
+    const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Task', ref({
+        state: 1,
+    })));
     const task = ref({
-        state: 1
+        ...formatFieldsForForm(assistanceTimelineItemInstance?.item.value),
+        duration: assistanceTimelineItemInstance?.item.value.duration ? getMaskedInputFromDuration(assistanceTimelineItemInstance.item.value.duration * 60) : '00:00'
     });
+    const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
+
     const task_form = useTemplateRef('task_form');
     const task_state_options = [
         { key: 0, label: 'Information', icon: 'ti ti-info-circle' },
         { key: 1, label: 'To do', icon: 'ti ti-list-details' },
         { key: 2, label: 'Done', icon: 'ti ti-list-check' },
     ];
+
+    onMounted(() => {
+        newTimelineItem.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        newTimelineItem.value.focus();
+    });
 
     function applySelectedTemplate() {
         const template_id = task_form.value.getFieldState('task_template').value;
@@ -56,53 +68,43 @@
     }
 
     function onFormSubmit(event: FormSubmitEvent) {
-        //Optimistic UI
-        const duration_mins = (event.values.duration ? parseInt(event.values.duration.split(':')[0]) * 60 + parseInt(event.values.duration.split(':')[1]) : 0) * 60;
-        assistanceItemInstance.timelineItems.value.push({
-            type: 'Task',
-            item: {
-                content: event.values.content,
-                date: event.values.date || new Date(),
-                duration: duration_mins,
-                state: event.values.state,
-                category: event.values.category ? { id: event.values.category } : null,
-                is_private: event.values.is_private,
-                user_tech: event.values.user_tech ? { id: event.values.user_tech } : null,
-                group_tech: event.values.group_tech ? { id: event.values.group_tech } : null,
-            }
-        });
+        const duration_mins = getDurationFromMaskedInput(event.values.duration) / 60;
+        emits('close');
+
+        const optimisticItemData = {
+            content: event.values.content,
+            date: event.values.date || new Date(),
+            duration: duration_mins,
+            state: event.values.state,
+            category: event.values.category ? { id: event.values.category } : null,
+            is_private: event.values.is_private,
+            user_tech: event.values.user_tech ? { id: event.values.user_tech } : null,
+            group_tech: event.values.group_tech ? { id: event.values.group_tech } : null,
+        };
 
         const values = {
             ...event.values,
             duration: duration_mins
         }
 
-        doApiRequest(`Assistance/${assistanceItemInstance.itemtype}/${assistanceItemInstance.item.value.id}/Timeline/Task`, {
-            method: 'POST',
-            data: values
-        }).then(() => {
-            emits('add');
-        }).catch(() => {
-            toast.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Failed to add task. Please try again.',
-                life: 5000,
+        if (task.value.id) {
+            assistanceTimelineItemInstance.updateItem(values, optimisticItemData).then(() => {
+                //emits('add');
             });
-        }).finally(() => {
-            assistanceItemInstance.loadTimelineItems();
-            emits('close');
-        });
+        } else {
+            assistanceTimelineItemInstance.addItem(values, optimisticItemData).then(() => {
+                emits('add');
+            });
+        }
     }
 </script>
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
         <Form ref="task_form" :initial-values="task" :resolver="resolveFields" @submit="onFormSubmit">
             <Card :pt="{
                 body: {
-                    class: `bg-yellow-400/50 dark:bg-yellow-500/10`,
+                    class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor.value}`,
                     style: 'border-radius: 0.5rem;'
                 }
             }">
@@ -185,7 +187,7 @@
                     </div>
                 </template>
                 <template #footer>
-                    <Button type="submit" icon="ti ti-plus" label="Add"></Button>
+                    <Button type="submit" :icon="task.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="task.id ? 'Save' : 'Add'"></Button>
                 </template>
             </Card>
         </Form>

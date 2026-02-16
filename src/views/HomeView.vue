@@ -1,14 +1,13 @@
 <script setup>
     import NavMenu from "@/components/NavMenu.vue";
-    import {RouterView, useRouter} from "vue-router";
-    import {Breadcrumb, Menubar, ProgressSpinner, DynamicDialog, useDialog, Toast } from "primevue";
-    import {useSessionStore} from "@/composables/useSessionStore.ts";
-    import {computed, defineAsyncComponent, ref, useTemplateRef} from "vue";
-    import {useAuth} from "@/composables/useAuth.ts";
-    import {useMainMenu} from "@/composables/useMainMenu.ts";
+    import { RouterView, useRouter } from "vue-router";
+    import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog } from "primevue";
+    import { useSessionStore } from "@/composables/useSessionStore.ts";
+    import { defineAsyncComponent, ref, useTemplateRef } from "vue";
+    import { useAuth } from "@/composables/useAuth.ts";
     import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
     import DynamicBreadcrumbs from "@/components/layout/DynamicBreadcrumbs.vue";
-    import {useBreakpoints, breakpointsBootstrapV5} from "@vueuse/core";
+    import { breakpointsBootstrapV5, useBreakpoints } from "@vueuse/core";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
@@ -91,6 +90,7 @@
     <div class="home-container grid grid-cols-[250px_1fr] h-screen">
         <DynamicDialog />
         <Toast />
+        <ConfirmDialog />
         <Teleport class="contents" :disabled="!is_mobile" to="#mobile_menu" defer>
             <NavMenu :mobile="is_mobile" />
         </Teleport>

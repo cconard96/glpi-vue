@@ -164,6 +164,25 @@ export function useDataHelper() {
         return new Intl.NumberFormat(navigator.language, { style: 'currency', currency }).format(cost);
     }
 
+    /**
+     * @param maskedInput A string in the format "HH:MM" representing a duration
+     * @return The duration in seconds
+     */
+    function getDurationFromMaskedInput(maskedInput: string): number {
+        const [hours, minutes] = maskedInput.split(':').map(part => parseInt(part));
+        return (hours * 60 + minutes) * 60;
+    }
+
+    /**
+     * Convert a duration in seconds to a masked input string in the format "HH:MM"
+     * @param duration The duration in seconds
+     */
+    function getMaskedInputFromDuration(duration: number): string {
+        const hours = Math.floor(duration / 3600);
+        const minutes = Math.floor((duration % 3600) / 60);
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+
     return {
         formatDataSize,
         getObjectProp,
@@ -177,5 +196,7 @@ export function useDataHelper() {
         formatTime,
         formatDateTime,
         formatCost,
+        getDurationFromMaskedInput,
+        getMaskedInputFromDuration,
     }
 }

@@ -1,50 +1,48 @@
 <script setup lang="ts">
-    import {
-        Avatar,
-        Card,
-        Button,
-        FloatLabel,
-        InputText,
-        DatePicker,
-        Fluid,
-        InputMask,
-        InputNumber,
-        Textarea,
-        useToast
-    } from "primevue";
+    import { Avatar, Card, Button, FloatLabel, InputText, DatePicker, Fluid, InputMask, InputNumber, Textarea, } from "primevue";
     import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
     import {useSessionStore} from "@/composables/useSessionStore";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import { inject, ref, useTemplateRef } from "vue";
+    import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import { useApi } from "@/composables/useApi";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
+    import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
+    import { useDataHelper } from "@/composables/useDataHelper";
 
     const { getFriendlyName } = useSessionStore();
+    const { getDurationFromMaskedInput, getMaskedInputFromDuration } = useDataHelper();
     const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
     const emits = defineEmits(['close', 'add']);
+    const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
+    const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Cost', ref({})));
     const assistanceItemInstance = inject('assistanceItemInstance');
-    const { resolveFields } = useOpenAPIForm(getComponentSchema(assistanceItemInstance.itemtype + 'Cost'));
-    const toast = useToast();
+    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(await getComponentSchema(assistanceItemInstance.itemtype + 'Cost'));
 
-    const cost = ref({});
+    const cost = ref({
+        ...formatFieldsForForm(assistanceTimelineItemInstance?.item.value),
+        duration: assistanceTimelineItemInstance?.item.value.duration ? getMaskedInputFromDuration(assistanceTimelineItemInstance.item.value.duration) : '00:00'
+    });
     const cost_form = useTemplateRef('cost_form');
 
-    function onSubmit(event: FormSubmitEvent) {
-        //TODO Optimistic UI
-        const duration_mins = (event.values.duration ? parseInt(event.values.duration.split(':')[0]) * 60 + parseInt(event.values.duration.split(':')[1]) : 0) * 60;
-        const values = event.values;
-        values.duration = duration_mins;
+    onMounted(() => {
+        newTimelineItem.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        newTimelineItem.value.focus();
+    });
 
-        doApiRequest(`Assistance/${assistanceItemInstance.itemtype}/${assistanceItemInstance.item.value.id}/Cost`, {
-            method: 'POST',
-            data: values
-        }).then(response => {
-            toast.add({ severity: 'success', summary: 'Success', detail: 'Cost added successfully' });
-            emits('add', response);
-            emits('close');
-        }).catch(error => {
-            toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to add cost' });
-        });
+    function onSubmit(event: FormSubmitEvent) {
+        const values = event.values;
+        values.duration = getDurationFromMaskedInput(event.values.duration);
+        emits('close');
+
+        if (cost.value.id) {
+            assistanceTimelineItemInstance.updateItem(values, values).then(() => {
+                //emits('add');
+            });
+        } else {
+            assistanceTimelineItemInstance.addItem(values, values).then(() => {
+                emits('add');
+            });
+        }
     }
 </script>
 
@@ -54,7 +52,7 @@
         <Form ref="cost_form" :initialValues="cost" :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
-                    class: `p-4 bg-gray-200/50 dark:bg-gray-800/50`,
+                    class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor}`,
                     style: 'border-radius: 0.5rem;'
                 }
             }">
@@ -131,7 +129,7 @@
                     </Fluid>
                 </template>
                 <template #footer>
-                    <Button type="submit" icon="ti ti-plus" label="Add"></Button>
+                    <Button type="submit" :icon="cost.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="cost.id ? 'Save' : 'Add'"></Button>
                 </template>
             </Card>
         </Form>

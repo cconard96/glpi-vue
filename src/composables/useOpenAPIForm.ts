@@ -54,9 +54,33 @@ export function useOpenAPIForm(schema: Record<string, any>) {
         itemtypeModel.createItem();
     }
 
+    /**
+     *
+     * @todo Find a way to remove this
+     */
+    function formatFieldsForForm(data: any): any {
+        const formatted_data = { ...data };
+        for (const [key, value] of Object.entries(formatted_data)) {
+            if (value && typeof value === 'object' && 'id' in value) {
+                formatted_data[key] = value.id;
+                formatted_data[`_${key}`] = value; // keep the full object as well. could be useful to be able to immediately show the selection in a dropdown
+            } else if (value && Array.isArray(value) && value.length > 0 && typeof value[0] === 'object' && 'id' in value[0]) {
+                formatted_data[key] = value.map(item => item.id);
+                formatted_data[`_${key}`] = value; // keep the full objects as well
+            } else {
+                if (schema.properties && schema.properties[key] && schema.properties[key].type === 'string' && (schema.properties[key].format === 'date' || schema.properties[key].format === 'date-time')) {
+                    // Convert date-time strings to Date objects for easier use with date pickers
+                    formatted_data[key] = value ? new Date(value as string) : null;
+                }
+            }
+        }
+        return formatted_data;
+    }
+
     return {
         resolveFields,
         submitFields,
-        isSubmitting
+        isSubmitting,
+        formatFieldsForForm,
     }
 }

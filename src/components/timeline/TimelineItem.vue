@@ -4,8 +4,8 @@
         defineAsyncComponent,
         inject,
         onMounted,
-        onUpdated,
-        shallowRef,
+        onUpdated, provide,
+        shallowRef, toRef,
         useTemplateRef,
         watch,
         type WatchHandle
@@ -14,20 +14,15 @@
     import { useIntersectionObserver } from '@vueuse/core';
     import ActorAvatar from "@/components/actor/ActorAvatar.vue";
     import { useDataHelper } from "@/composables/useDataHelper";
-    import FollowupItem from "@/components/timeline/items/FollowupItem.vue";
-    import TaskItem from "@/components/timeline/items/TaskItem.vue";
-    import SolutionItem from "@/components/timeline/items/SolutionItem.vue";
-    import ContentItem from "@/components/timeline/items/ContentItem.vue";
-    import DocumentItem from "@/components/timeline/items/DocumentItem.vue";
-    import CostItem from "@/components/timeline/items/CostItem.vue";
-    import ApprovalItem from "@/components/timeline/items/ApprovalItem.vue";
-    import ApprovalAnswerItem from "@/components/timeline/items/ApprovalAnswerItem.vue";
+    import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
 
     const props = defineProps<{
         item: any,
         todoListMode?: boolean
     }>();
 
+    const assistanceTimelineItemInstance = useAssistanceTimelineItem(props.item.type, toRef(props.item.item));
+    provide('assistanceTimelineItemInstance', assistanceTimelineItemInstance);
     const assistanceItemInstance = inject('assistanceItemInstance');
     const { formatUsername } = useDataHelper();
 
@@ -98,7 +93,6 @@
 
 
     onMounted(() => {
-        console.log('Mounted timeline item ' + props.item.type + '-' + props.item.item.id);
         const { stop: stopIntersectionObserver } = useIntersectionObserver(timeline_item_element, ([entry], observerElement) => {
             item_visible.value = entry?.isIntersecting || false;
         });
@@ -115,24 +109,11 @@
 </script>
 
 <template>
-    <div ref="timeline_item" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
+    <div ref="timeline_item" :id="`${item.type}-${item.item.id}`" :class="`flex mb-4 ${timeline_alignment === 'right' ? 'flex-row-reverse' : 'flex-row'} ${todoListMode ? 'w-full' : 'max-w-200'}`">
         <ActorAvatar v-if="user" class="me-2 shrink-0" :title="formatUsername(user)" actor_type="User" :actor_data="user"></ActorAvatar>
-        <component v-if="item.type === 'content'" :is="ContentItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'Followup'" :is="FollowupItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'Task'" :is="TaskItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'Solution'" :is="SolutionItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'Document'" :is="DocumentItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'Cost'" :is="CostItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'Validation'" :is="ApprovalItem"
-                   :item="item.item"></component>
-        <component v-if="item.type === 'ValidationAnswer'" :is="ApprovalAnswerItem"
-                   :item="item.item"></component>
+        <!-- TODO remove item prop as it is available in provided assistanceTimelineItemInstance -->
+        <component v-if="!assistanceTimelineItemInstance.editMode.value" :is="assistanceTimelineItemInstance.viewItemComponent.value" :item="item.item"></component>
+        <component v-else :is="assistanceTimelineItemInstance.editFormComponent.value" :item="item.item" @close="assistanceTimelineItemInstance.editMode.value = false"></component>
     </div>
 </template>
 

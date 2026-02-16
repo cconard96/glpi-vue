@@ -1,22 +1,32 @@
 <script setup lang="ts">
-    import { Avatar, Card, Button, Select, FloatLabel, useToast, useDialog } from "primevue";
+    import { Avatar, Card, Button, Select, FloatLabel, useToast, Fluid, Message } from "primevue";
     import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
     import {useSessionStore} from "@/composables/useSessionStore";
-    import { inject, ref, useTemplateRef } from "vue";
+    import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
     import { useApi } from "@/composables/useApi";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
+    import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
 
-    const { getFriendlyName, hasRight, getUserID } = useSessionStore();
+    const { getFriendlyName, getUserID } = useSessionStore();
     const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
-    const { resolveFields } = useOpenAPIForm(getComponentSchema('Approval'));
+    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(getComponentSchema('Approval'));
     const emits = defineEmits(['close', 'add']);
+    const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
     const assistanceItemInstance = inject('assistanceItemInstance');
+    const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Validation', ref({
+        requester: getUserID
+    })));
+    const approval = ref(formatFieldsForForm(assistanceTimelineItemInstance?.item.value));
     const toast = useToast();
 
-    const approval = ref({});
     const approval_form = useTemplateRef('approval_form');
+
+    onMounted(() => {
+        newTimelineItem.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        newTimelineItem.value.focus();
+    });
 
     function applySelectedTemplate() {
         const template_id = approval_form.value.getFieldState('approval_template').value;
@@ -50,6 +60,7 @@
                 request_type: {id: event.values.request_type}
             }
         });
+        emits('close');
 
         doApiRequest(`Assistance/${assistanceItemInstance.itemtype}/${assistanceItemInstance.item.value.id}/Timeline/Approval`, {
             method: 'POST',
@@ -65,7 +76,6 @@
             });
         }).finally(() => {
             assistanceItemInstance.loadTimelineItems();
-            emits('close');
         });
     }
 </script>
@@ -76,7 +86,7 @@
         <Form ref="approval_form" :initialValues="approval" :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
-                    class: `bg-gray-200/50 dark:bg-gray-800/50`,
+                    class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor.value}`,
                     style: 'border-radius: 0.5rem;'
                 }
             }">
@@ -86,37 +96,18 @@
                     </div>
                 </template>
                 <template #content>
+                    <Message>Not implemented yet</Message>
                     <div class="flex flex-col mb-2 -mt-2">
-                        <div class="grid grid-cols-2 gap-2 mb-2">
+                        <Fluid class="grid grid-cols-2 gap-2 mb-2">
                             <FormField name="approval_template">
                                 <FieldSelect label="Template" type="ApprovalTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
                             </FormField>
-                            <FloatLabel variant="on">
-                                <Select inputId="approval_template" name="approval_template"
-                                        filterMode="lenient" :options="[]"
-                                        optionValue="key" optionLabel="label"
-                                        fluid
-                                ></Select>
-                                <label for="approval_template">Template</label>
-                            </FloatLabel>
-                            <FloatLabel variant="on">
-                                <Select inputId="approval_step" name="approval_step"
-                                        filterMode="lenient" :options="[]"
-                                        optionValue="key" optionLabel="label"
-                                        fluid
-                                ></Select>
-                                <label for="approval_step">Approval step</label>
-                            </FloatLabel>
-                            <FloatLabel variant="on">
-                                <Select inputId="requester" name="requester"
-                                        filterMode="lenient" :options="[
-                                            { key: getName, label: getFriendlyName }
-                                        ]"
-                                        optionValue="key" optionLabel="label"
-                                        fluid v-model="selected_requester"
-                                ></Select>
-                                <label for="requester">Requester</label>
-                            </FloatLabel>
+                            <FormField name="approval_step">
+                                <FieldSelect label="Approval step" type="ApprovalStep" label_type="on"></FieldSelect>
+                            </FormField>
+                            <FormField name="requester">
+                                <FieldSelect label="Requester" :options="[{ key: getUserID, label: getFriendlyName }]" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
+                            </FormField>
                             <FloatLabel variant="on">
                                 <Select inputId="approver" name="approver"
                                         filterMode="lenient" :options="[]"
@@ -125,7 +116,7 @@
                                 ></Select>
                                 <label for="approver">Approver</label>
                             </FloatLabel>
-                        </div>
+                        </Fluid>
                         <RichTextEditor :enable_file_upload="true"></RichTextEditor>
                     </div>
                 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Button, Card, Tag } from "primevue";
+    import { Card, Button } from "primevue";
     import { useDataHelper } from "@/composables/useDataHelper";
 
     const props = defineProps<{
@@ -16,6 +16,18 @@
     }>();
 
     const { formatRelativeTime } = useDataHelper();
+
+    function scrollToOriginalRequest() {
+        const originalRequestElement = document.getElementById(`Validation-${props.item.approval_id}`);
+        if (originalRequestElement) {
+            originalRequestElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            originalRequestElement.focus();
+            originalRequestElement.classList.add('animate-[pulse_0.5s_linear_infinite]');
+            setTimeout(() => {
+                originalRequestElement.classList.remove('animate-[pulse_0.5s_linear_infinite]');
+            }, 1000);
+        }
+    }
 </script>
 
 <template>
@@ -28,19 +40,14 @@
         <template #title>
             <div class="justify-between flex items-center">
                 <div class="text-sm">Created {{ formatRelativeTime(item.date) }}</div>
-                <div class="ms-4 flex items-center">
-                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" title="Actions" aria-label="Actions"></Button>
-                </div>
             </div>
         </template>
         <template #content>
             <div>
+                <Button variant="link" size="small" class="p-0 text-inherit font-bold" @click="scrollToOriginalRequest">Original request</Button>
                 <div :class="item.status === 3 ? 'text-green-700' : 'text-red-700'">Approval request answer: {{ item.status === 3 ? 'Approved' : 'Refused' }}</div>
                 <div v-dompurify-html="item.comment"></div>
             </div>
-        </template>
-        <template #footer class="text-sm select-none">
-
         </template>
     </Card>
 </template>

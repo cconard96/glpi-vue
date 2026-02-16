@@ -11,7 +11,7 @@ import FocusTrap from 'primevue/focustrap';
 import {createRouter, createWebHistory} from "vue-router";
 import {useAuth} from "@/composables/useAuth.ts";
 import VueDOMPurifyHTML from 'vue-dompurify-html';
-import {DialogService, ToastService} from "primevue";
+import { ConfirmationService, DialogService, ToastService } from "primevue";
 import {definePreset} from "@primeuix/themes";
 import { all } from 'primelocale';
 
@@ -77,5 +77,6 @@ createApp(App)
     .use(VueDOMPurifyHTML)
     .use(DialogService)
     .use(ToastService)
+    .use(ConfirmationService)
     .directive('focustrap', FocusTrap)
     .mount('#app')

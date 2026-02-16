@@ -192,14 +192,14 @@
         if (oldValue === null) {
             view_mode.value = 'default';
             // scroll component into view
-            setTimeout(() => {
-                const component_el = document.getElementById('timeline-new-item-form');
-                if (component_el) {
-                    component_el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // focus the component
-                    component_el.focus();
-                }
-            }, 100);
+            // setTimeout(() => {
+            //     const component_el = document.getElementById('timeline-new-item-form');
+            //     if (component_el) {
+            //         component_el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            //         // focus the component
+            //         component_el.focus();
+            //     }
+            // }, 100);
         }
     });
 
@@ -230,7 +230,7 @@
         <div class="grid grid-cols-12 overflow-y-hidden">
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                 <template v-if="view_mode !== 'milestones'">
-                    <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" v-bind="current_new_item.props" @close="current_new_item = null"></component>
+                    <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" @close="current_new_item = null"></component>
                     <TimelineItem v-for="item in filtered_items" :key="`${item.type}-${item.item.id}`"
                                   :item="item" :todoListMode="view_mode === 'todo'" />
                     <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
@@ -238,8 +238,8 @@
                         item: {
                             name: item.name,
                             content: item.content,
-                            user: item.user,
-                            user_editor: item.user_editor,
+                            user: item._user_recipient,
+                            user_editor: item._user_editor,
                             date_creation: item.date_creation || item.date
                         }
                     }"></TimelineItem>

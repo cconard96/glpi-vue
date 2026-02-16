@@ -1,23 +1,29 @@
 <script setup lang="ts">
-    import { Avatar, Button, Card, Fluid, ToggleSwitch, useDialog, useToast } from "primevue";
+    import { Avatar, Button, Card, Fluid, ToggleSwitch, useDialog } from "primevue";
     import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/composables/useSessionStore";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import { useApi } from "@/composables/useApi";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import { defineAsyncComponent, inject, ref, useTemplateRef } from "vue";
+    import { defineAsyncComponent, inject, onMounted, TemplateRef, ref, useTemplateRef } from "vue";
+    import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
 
     const { getFriendlyName, hasRight, getUserID } = useSessionStore();
     const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
-    const { resolveFields } = useOpenAPIForm(getComponentSchema('Followup'));
+    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(await getComponentSchema('Followup'));
     const emits = defineEmits(['close', 'add']);
-    const assistanceItemInstance = inject('assistanceItemInstance');
-    const toast = useToast();
+    const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
+    const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Followup', ref({})));
+    const followup = ref(formatFieldsForForm(assistanceTimelineItemInstance?.item.value));
 
     const dialog = useDialog();
-    const followup = ref({});
     const followup_form = useTemplateRef('followup_form');
+
+    onMounted(() => {
+        newTimelineItem.value.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        newTimelineItem.value.focus();
+    });
 
     function showKBSearch() {
         const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/components/kb/QuickSearchKB.vue')), {
@@ -68,46 +74,36 @@
     }
 
     function onSubmit(event: FormSubmitEvent) {
-        // optimistically add the followup to the timeline
         const now = new Date();
-        assistanceItemInstance.timelineItems.value.push({
-            type: 'Followup',
-            item: {
-                date_creation: now,
-                date: now,
-                content: event.values.content,
-                is_private: event.values.is_private,
-                user: {id: getUserID, name: getFriendlyName},
-                request_type: {id: event.values.request_type}
-            }
-        });
+        emits('close');
 
-        doApiRequest(`Assistance/${assistanceItemInstance.itemtype}/${assistanceItemInstance.item.value.id}/Timeline/Followup`, {
-            method: 'POST',
-            data: event.values
-        }).then(() => {
-            emits('add');
-        }).catch(() => {
-            toast.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Failed to add followup. Please try again.',
-                life: 5000,
+        const optimisticItemData = {
+            date_creation: now,
+            date: now,
+            content: event.values.content,
+            is_private: event.values.is_private,
+            user: {id: getUserID, name: getFriendlyName},
+            request_type: {id: event.values.request_type}
+        }
+
+        if (followup.value.id) {
+            assistanceTimelineItemInstance.updateItem(event.values, optimisticItemData).then(() => {
+                //emits('add');
             });
-        }).finally(() => {
-            assistanceItemInstance.loadTimelineItems();
-            emits('close');
-        });
+        } else {
+            assistanceTimelineItemInstance.addItem(event.values, optimisticItemData).then(() => {
+                emits('add');
+            });
+        }
     }
 </script>
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
         <Form ref="followup_form" :initialValues="followup" :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
-                    class: `p-4 bg-gray-200/50 dark:bg-gray-800/50`,
+                    class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor.value}`,
                     style: 'border-radius: 0.5rem;'
                 }
             }">
@@ -150,7 +146,7 @@
                     </div>
                 </template>
                 <template #footer>
-                    <Button type="submit" icon="ti ti-plus" label="Add"></Button>
+                    <Button type="submit" :icon="followup.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="followup.id ? 'Save' : 'Add'"></Button>
                 </template>
             </Card>
         </Form>
