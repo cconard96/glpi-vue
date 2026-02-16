@@ -116,18 +116,16 @@
                 </Menubar>
             </div>
             <RouterView :key="$route.fullPath" v-slot="{ Component }">
-                <KeepAlive>
-                    <ErrorBoundary>
-                        <Suspense>
-                            <component class="max-h-full w-full" :is="Component" />
-                            <template #fallback>
-                                <div class="flex justify-content-center align-items-center h-full w-full">
-                                    <ProgressSpinner />
-                                </div>
-                            </template>
-                        </Suspense>
-                    </ErrorBoundary>
-                </KeepAlive>
+                <ErrorBoundary>
+                    <Suspense>
+                        <component class="max-h-full w-full" :is="Component" />
+                        <template #fallback>
+                            <div class="flex justify-content-center align-items-center h-full w-full">
+                                <ProgressSpinner />
+                            </div>
+                        </template>
+                    </Suspense>
+                </ErrorBoundary>
             </RouterView>
         </div>
     </div>
