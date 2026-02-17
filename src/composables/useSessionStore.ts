@@ -2,6 +2,14 @@ import { defineStore } from 'pinia'
 import { useApi } from "@/composables/useApi";
 import {components} from "../../data/hlapiv2_schema";
 
+interface EntityTreeNode {
+    key: number,
+    label: string,
+    children: EntityTreeNode[],
+    expanded: boolean,
+    selected: boolean,
+}
+
 const { apollo_client } = useApi();
 
 export const useSessionStore = defineStore('session', {
@@ -22,8 +30,8 @@ export const useSessionStore = defineStore('session', {
         first_name: null,
         /** @type {integer|null} */
         default_entity: null,
-        /** @type {number[]} */
-        profiles: [],
+        /** @type {Record<number, {name: string, entities: {id: number, is_recursive: 0 | 1, name: string}[]}>} */
+        profiles: {},
         /** @type {number[]} */
         active_entities: [],
         /** @type {id: number, name: string, interface: string} */
@@ -32,6 +40,8 @@ export const useSessionStore = defineStore('session', {
         active_entity: null,
         /** @type {number[]} */
         groups: [],
+        /** @type {EntityTreeNode[]} */
+        entityTreeData: null,
     }),
     actions: {
         loadSession(sessionData: components['schemas']['Session']) {
@@ -50,6 +60,9 @@ export const useSessionStore = defineStore('session', {
             this.groups = sessionData.groups || [];
 
             apollo_client.resetStore();
+        },
+        loadEntityTreeData(treeData) {
+            this.entityTreeData = treeData;
         },
         clearSession() {
             this.current_time = null;
@@ -78,6 +91,63 @@ export const useSessionStore = defineStore('session', {
         },
         setDebugMode(isDebug) {
             this.use_mode = isDebug ? 2 : 1;
+        },
+        getParentEntities(entityId: number) {
+            // traverse the entity tree data to find all parent entities of the given entity id
+            const parents = [];
+            function traverse(nodes, parentId = null) {
+                for (const node of nodes) {
+                    if (node.key === entityId) {
+                        if (parentId !== null) {
+                            parents.push(parentId);
+                        }
+                        return true; // stop traversal once the entity is found
+                    }
+                    if (traverse(node.children, node.key)) {
+                        if (parentId !== null) {
+                            parents.push(parentId);
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+            if (this.entityTreeData) {
+                traverse(this.entityTreeData);
+            }
+            return parents;
+        },
+        getValidProfilesForEntity(entityId: number) {
+            // for a profile to be valid, it must be directly assigned to the entity or, to a parent of the entity AND recursive.
+            // entity parent info can be gathered from the entity tree data
+            // the entities applicable for profiles are found in `profiles[].entities` in the session data.
+            const validProfiles = [];
+            for (const [profile_id, profile] of Object.entries(this.profiles)) {
+                const applicableEntities = Object.values(profile.entities).map(e => e.id);
+                if (applicableEntities.includes(entityId)) {
+                    validProfiles.push({
+                        ...profile,
+                        id: parseInt(profile_id)
+                    });
+                    continue;
+                }
+                const parentEntities = this.getParentEntities(entityId);
+
+                // check if profile assigned to a parent of the entity AND recursive.
+                if (parentEntities.some(parentId => applicableEntities.includes(parentId) && profile.entities[parentId].is_recursive)) {
+                    validProfiles.push({
+                        ...profile,
+                        id: parseInt(profile_id)
+                    });
+                    continue;
+                }
+
+                // if (parentEntities.some(parentId => applicableEntities.includes(parentId))) {
+                //     validProfiles.push(profile);
+                //     continue;
+                // }
+            }
+            return validProfiles;
         }
     },
     getters: {
@@ -96,6 +166,7 @@ export const useSessionStore = defineStore('session', {
         getActiveEntities: (state) => state.active_entities,
         getActiveProfile: (state) => state.active_profile,
         getActiveEntity: (state) => state.active_entity,
+        getEntityTreeData: (state) => state.entityTreeData,
         hasRight: (state) => {
             return (module: string, right: number) => {
                 const module_rights = state.active_profile?.rights?.[module] || 0;

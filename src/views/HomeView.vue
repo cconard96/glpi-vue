@@ -22,7 +22,6 @@
                     label: session_store.getActiveProfile.name,
                     icon: 'ti ti-user-check',
                     command: () => {
-                        return;
                         dialog.open(
                             defineAsyncComponent(() => import('@/components/usermenu/ProfileSelector.vue')),
                             {

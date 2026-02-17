@@ -44,6 +44,7 @@ export function useAuth() {
             return Promise.all([
                 getApiSchema(),
                 loadSession(),
+                loadEntityTree(),
                 //loadLocales(),
                 //loadPreferences(),
             ]);
@@ -54,11 +55,17 @@ export function useAuth() {
 
     const loadSession = () => {
         const { doApiRequest } = useApi();
-        console.log('Loading session information');
         return doApiRequest('Session').then(response => {
             const store = useSessionStore();
             store.loadSession(response.data);
-            console.log('Session information loaded');
+        });
+    }
+
+    const loadEntityTree = () => {
+        const { doApiRequest } = useApi();
+        return doApiRequest('/Session/EntityTree').then((res) => {
+            const store = useSessionStore();
+            store.loadEntityTreeData(res.data);
         });
     }
 
