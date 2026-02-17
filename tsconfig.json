@@ -11,6 +11,6 @@
         "allowSyntheticDefaultImports": true,
         "paths": {
             "@/*": ["./src/*"]
-        },
-    },
+        }
+    }
 }

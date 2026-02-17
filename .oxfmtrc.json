@@ -1,0 +1,10 @@
+{
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "ignorePatterns": ["data/**"],
+    "tabWidth": 4,
+    "singleQuote": true,
+    "proseWrap": "never",
+    "vueIndentScriptAndStyle": true,
+    "singleAttributePerLine": false,
+    "printWidth": 200
+}

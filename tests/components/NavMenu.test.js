@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-vue';
 import NavMenu from '@/components/NavMenu.vue';
-import {createRouter, createWebHistory} from 'vue-router';
-import {routes} from '@/util/routes.js';
+import { createRouter, createWebHistory } from 'vue-router';
+import { routes } from '@/util/routes.js';
 
 test('renders NavMenu component', async () => {
     const router = createRouter({
