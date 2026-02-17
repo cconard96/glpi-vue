@@ -1,13 +1,12 @@
-import {useApi} from "@/composables/useApi";
-import {VirtualScrollerLazyEvent} from "primevue";
-import {ref, type Ref} from "vue";
+import { useApi } from "@/composables/useApi";
+import { ref, type Ref } from "vue";
 
 const { doGraphQLRequest } = useApi();
 
 interface DropdownFetchOptions {
     condition?: string;
     fields: string[];
-    name_field: string | ((item: any) => String);
+    name_field: string | ((item: any) => string);
 }
 
 /**
@@ -16,7 +15,7 @@ interface DropdownFetchOptions {
  */
 export function useDropdown(
     schema_name: string,
-    items: Ref<Array<Object>>,
+    items: Ref<Array<object>>,
     filter: Ref<string>,
     fetch_options = {fields: ['id', 'name'], name_field: 'name'} as DropdownFetchOptions
 ) {

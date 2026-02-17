@@ -321,7 +321,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             'Change': [1, 9, 10, 7, 4, 11, 12, 5, 8, 6, 14, 13],
             'Problem': [1, 7, 2, 3, 4, 5, 8, 6],
         };
-        return Object.entries(statuses).filter(([id, status]) => {
+        return Object.entries(statuses).filter(([id, _status]) => {
             return statusesByItemtype[itemtype].includes(parseInt(id));
         }).map(([id, status]) => {
             return {
@@ -424,7 +424,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
                 });
                 const newTimelineItems = [...updated_items, ...costs];
 
-                (updated_items as Array<{type: String, item: Object}>).forEach(timeline_item => {
+                (updated_items as Array<{type: string, item: object}>).forEach(timeline_item => {
                     if (timeline_item.type === 'Validation' && timeline_item.item.status >= 3) {
                         newTimelineItems.push({
                             type: 'ValidationAnswer',

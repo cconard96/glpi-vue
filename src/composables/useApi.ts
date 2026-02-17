@@ -227,7 +227,7 @@ export function useApi() {
         return fields_query_part;
     }
 
-    function getSchemaNameForGLPIItemtype(itemtype: string): Promise<String | null> {
+    function getSchemaNameForGLPIItemtype(itemtype: string): Promise<string | null> {
         return getApiSchema().then((api_schema) => {
             for (let [schema_name, schema_info] of Object.entries(api_schema.components.schemas)) {
                 if (schema_info['x-itemtype'] === itemtype) {
@@ -242,7 +242,7 @@ export function useApi() {
      * Takes an array of GLPI internal class names (itemtypes) and returns an array of valid schema component names.
      * @param itemtypes
      */
-    function getValidSchemaTypesFromItemtypes(itemtypes: Array<String>): Promise<Array<String>> {
+    function getValidSchemaTypesFromItemtypes(itemtypes: Array<string>): Promise<Array<string>> {
         return Promise.all(itemtypes.map(itemtype => {
             return getSchemaNameForGLPIItemtype(itemtype).then(schema_name => {
                 if (schema_name) {

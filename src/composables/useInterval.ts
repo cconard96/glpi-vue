@@ -5,7 +5,7 @@ import { onUnmounted, watch } from "vue";
 const { idle } = useIdle(5 * 60 * 1000);
 
 /** A composable version of setInterval that can change its interval dynamically and supports a different interval if the user is idle (useIdle from VueUse) */
-export function useInterval(handler: TimerHandler, timeout: Number, idleTimeout: Number = null) {
+export function useInterval(handler: TimerHandler, timeout: number, idleTimeout: number = null) {
     let intervalId = null;
 
     const startInterval = () => {

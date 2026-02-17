@@ -8,7 +8,7 @@
     import { useApi } from "@/composables/useApi";
 
     const props = defineProps<{
-        initialContent?: String
+        initialContent?: string
     }>();
 
     const { getFriendlyName } = useSessionStore();

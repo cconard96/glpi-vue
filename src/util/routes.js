@@ -54,7 +54,7 @@ export const routes = [
                 alias: ['/assistance/stat', '/assistance/stats'],
                 component: () => import('../components/assistance/stats/StatisticsView.vue'),
                 meta: {
-                    breadcrumbs: (route) => {
+                    breadcrumbs: () => {
                         return [
                             { label: 'Assistance', disabled: true },
                             { label: 'Statistics', route: `/assistance/statistics` },
@@ -112,7 +112,7 @@ export const routes = [
                 component: () => import('../components/kb/KBSearchView.vue'),
                 meta: {
                     title: 'Knowledge Base',
-                    breadcrumbs: (route) => {
+                    breadcrumbs: () => {
                         return [
                             { label: 'Tools', disabled: true },
                             { label: 'Knowledge Base', route: `/tools/knowbase` },

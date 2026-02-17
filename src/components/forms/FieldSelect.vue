@@ -39,7 +39,7 @@
             default: ''
         },
         fields: {
-            type: Array<String>,
+            type: Array<string>,
             default: ['id', 'name']
         },
         name_field: {
@@ -47,7 +47,7 @@
             default: 'name'
         },
         options: {
-            type: Array<{id: Number|String, name: String}>,
+            type: Array<{id: number|string, name: string}>,
             default: null
         },
         showClear: {
@@ -62,7 +62,7 @@
     const model = defineModel<string | number | null | undefined>();
     const form_field = inject('$pcFormField') as any;
     const initial_value = form_field.$pcForm.initialValues[`_${form_field.name}`];
-    const options: Ref<Array<{id: Number|String, name: String}>> = ref(props.options ?? (initial_value ? (props.multiple ? initial_value : [initial_value]) : []));
+    const options: Ref<Array<{id: number|string, name: string}>> = ref(props.options ?? (initial_value ? (props.multiple ? initial_value : [initial_value]) : []));
     const { getDropdownOptions, loading } = useDropdown(
         props.type,
         options,

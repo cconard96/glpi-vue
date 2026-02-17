@@ -1,4 +1,3 @@
-import { AbstractModel } from "@/models/AbstractModel.js";
 import { Computer, Monitor } from "@/models/assets";
 
 export const useMainMenu = () => {

@@ -9,7 +9,7 @@ export default class Computer extends AbstractModel {
     }
 
     static getTypeName(count: number = 1) {
-        return 'Computer';
+        return count === 1 ? 'Computer' : 'Computers';
     }
 
     static getOpenAPISchemaName() {
@@ -46,7 +46,7 @@ export default class Computer extends AbstractModel {
         ];
     }
 
-    static getRESTEndpoint(): String {
+    static getRESTEndpoint(): string {
         return 'Assets/Computer';
     }
 }

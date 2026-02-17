@@ -11,7 +11,7 @@ interface TabDefinition {
 export class AbstractModel {
     static readonly rightname = 'general';
 
-    static getTypeModule(): String {
+    static getTypeModule(): string {
         return null;
     }
 
@@ -32,7 +32,7 @@ export class AbstractModel {
         throw new Error('getOpenAPISchemaName() must be implemented by subclasses');
     }
 
-    static getGLPIItemtype(): Promise<String> {
+    static getGLPIItemtype(): Promise<string> {
         return this.getOpenAPISchema().then(schema => {
             return schema['x-itemtype'] || this.getOpenAPISchemaName();
         });
@@ -67,14 +67,13 @@ export class AbstractModel {
     }
 
     /**
-     * @param mode
      * @returns {Promise<Record<string, {
      *     name: string,
      *     component: any,
      *     options: {}
      * }>>}
      */
-    static getFormFields(mode = 'read') {
+    static getFormFields() {
         return this.getSchemaPropertiesForFields().then(props => {
             const fields_data = {};
             for (const [key, prop] of Object.entries(props)) {
@@ -163,9 +162,9 @@ export class AbstractModel {
      * Return a string of all GraphQL fields recursively for this model based on the OpenAPI schema
      * @protected
      */
-    static async getFullGraphQLFields(): Promise<String> {
+    static async getFullGraphQLFields(): Promise<string> {
         const schema = await this.getOpenAPISchema();
-        const buildFields = (properties, parent_key: String) => {
+        const buildFields = (properties, parent_key: string) => {
             let fields = '';
             for (const [key, prop] of Object.entries(properties)) {
                 let field_name = key;
@@ -249,7 +248,7 @@ export class AbstractModel {
         });
     }
 
-    static getRESTEndpoint(): String {
+    static getRESTEndpoint(): string {
         throw new Error('getRESTEndpoint() must be implemented by subclasses');
     }
 

@@ -24,7 +24,7 @@ export function useDataHelper() {
         return `${formatted_size.toFixed(2)} ${units[index]}`;
     }
 
-    function getObjectProp(obj: Object, path: string): any {
+    function getObjectProp(obj: object, path: string): any {
         return path.split('.').reduce((o, p) => (o ? o[p] : null), obj);
     }
 
@@ -120,7 +120,7 @@ export function useDataHelper() {
      * If the difference between the current time and the timestamp is greater than this cutoff, the function will return the absolute time instead of the relative time.
      * Defaults to 24 hours.
      */
-    function formatRelativeTime(timestamp: string|Date, relativeCutoff: Number = 24 * 60 * 60): string {
+    function formatRelativeTime(timestamp: string|Date, relativeCutoff: number = 24 * 60 * 60): string {
         const date = new Date(timestamp);
         const now = new Date();
         const diff = Math.floor((now - date) / 1000); // difference in seconds
@@ -166,7 +166,7 @@ export function useDataHelper() {
 
     /**
      * @param maskedInput A string in the format "HH:MM" representing a duration
-     * @return The duration in seconds
+     * @returns The duration in seconds
      */
     function getDurationFromMaskedInput(maskedInput: string): number {
         const [hours, minutes] = maskedInput.split(':').map(part => parseInt(part));

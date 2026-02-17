@@ -33,7 +33,7 @@
             const manual_links = res.data.ManualLink ? res.data.ManualLink.map(ml => ({...ml, url: ml.url, type: 'Manual'})) : [];
             // if any link is missing a protocol, add // by default to prevent it from being treated as relative link
             external_links.forEach(el => {
-                if (!/^https?:\/\//i.test(el.url) && !/^\/\//.test(el.url)) {
+                if (!/^https?:\/\//i.test(el.url) && !el.url.startsWith('//')) {
                     el.url = '//' + el.url;
                 }
             });

@@ -1,4 +1,4 @@
-import { expect, test, vi, beforeAll } from 'vitest';
+import { expect, test } from 'vitest';
 import { render } from 'vitest-browser-vue';
 import NavMenu from '@/components/NavMenu.vue';
 import {createRouter, createWebHistory} from 'vue-router';
@@ -9,7 +9,7 @@ test('renders NavMenu component', async () => {
         history: createWebHistory(),
         routes: routes,
     });
-    const { getByText, getByRole } = render(NavMenu, {
+    const { getByRole } = render(NavMenu, {
         global: {
             plugins: [router],
         },

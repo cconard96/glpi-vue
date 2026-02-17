@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useSessionStore} from "@/composables/useSessionStore";
-import { usePreferencesStore } from "@/composables/usePreferencesStore";
+// import { usePreferencesStore } from "@/composables/usePreferencesStore";
 import { useApi } from "@/composables/useApi";
 import { useRouter } from "vue-router";
 
@@ -62,22 +62,22 @@ export function useAuth() {
         });
     }
 
-    const loadLocales = () => {
-        const { doApiRequest } = useApi();
-        console.log('Loading localization data');
-        return doApiRequest('locales').then(response => {
-            localStorage.setItem('locales', JSON.stringify(response.data));
-            console.log('Localization data loaded');
-        });
-    }
-
-    const loadPreferences = () => {
-        const { doApiRequest } = useApi();
-        return doApiRequest('Administration/User/Me/Preference').then(response => {
-            const store = usePreferencesStore();
-            store.loadPreferences(response.data);
-        });
-    }
+    // const loadLocales = () => {
+    //     const { doApiRequest } = useApi();
+    //     console.log('Loading localization data');
+    //     return doApiRequest('locales').then(response => {
+    //         localStorage.setItem('locales', JSON.stringify(response.data));
+    //         console.log('Localization data loaded');
+    //     });
+    // }
+    //
+    // const loadPreferences = () => {
+    //     const { doApiRequest } = useApi();
+    //     return doApiRequest('Administration/User/Me/Preference').then(response => {
+    //         const store = usePreferencesStore();
+    //         store.loadPreferences(response.data);
+    //     });
+    // }
 
     /**
      * Refresh the authentication token using the refresh token if needed.

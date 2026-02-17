@@ -7,7 +7,7 @@ export default class Monitor extends AbstractModel {
     }
 
     static getTypeName(count: number = 1) {
-        return 'Monitor';
+        return count === 1 ? 'Monitor' : 'Monitors';
     }
 
     static getOpenAPISchemaName() {
@@ -40,7 +40,7 @@ export default class Monitor extends AbstractModel {
         ];
     }
 
-    static getRESTEndpoint(): String {
+    static getRESTEndpoint(): string {
         return 'Assets/Monitor';
     }
 }
