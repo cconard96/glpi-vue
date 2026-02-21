@@ -1,17 +1,20 @@
 <script setup lang="ts">
     import { defineAsyncComponent, inject, onMounted, ref } from "vue";
-    import {useApi} from "@/composables/useApi";
-    import {Form, FormField} from '@primevue/forms';
+    import { useApi } from "@/composables/useApi";
+    import { Form, FormField } from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
-    import {InputText, DataTable, Column, Tag, useDialog, Button, Message} from "primevue";
-    import {useDataHelper} from "@/composables/useDataHelper";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import { Button, Column, DataTable, InputText, Message, Tag, useDialog } from "primevue";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import { AssetCapabilities, useAssets } from "@/composables/assets/useAssets";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
 
     const { doGraphQLRequest, getComponentSchema } = useApi();
     const { getObjectProp, formatDate } = useDataHelper();
     const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const hasSoftwareCapability = mainItem.hasCapability(AssetCapabilities.HasSoftware);
+    const hasOSCapability = mainItem.hasCapability(AssetCapabilities.HasOS);
+    const hasAntivirusCapability = mainItem.hasCapability(AssetCapabilities.HasAntiviruses);
     const dialog = useDialog();
     const os_info = ref(null);
     const software_info = ref(null);
@@ -25,50 +28,59 @@
     ];
 
     onMounted(async () => {
-        await doGraphQLRequest(`query {
-            OSInstallation(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                id itemtype items_id
-                operatingsystem { id name }
-                version { id name }
-                edition { id name }
-                servicepack { id name }
-                architecture { id name }
-                kernel_version { id name kernel { id name } }
-                license_number
-                licenseid
-                company
-                owner
-                hostid
-                date_install
-            }
-            Antivirus(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                id itemtype items_id name manufacturer { id name } antivirus_version signature_version
-                is_active is_up_to_date date_expiration
-            }
-        }`).then((res) => {
-            getComponentSchema('OSInstallation').then(osinstallSchema => {
-                const { formatFieldsForForm } = useOpenAPIForm(osinstallSchema);
-                os_info.value = formatFieldsForForm(res.data.OSInstallation[0] || {});
-            });
-            antivirus_info.value = res.data.Antivirus || [];
-        });
-        doGraphQLRequest(`
-            query {
-                SoftwareInstallation(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+        if (hasOSCapability) {
+            doGraphQLRequest(`query {
+                OSInstallation(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id
-                    softwareversion {
-                        id name arch
-                        software {
-                            id name
-                            category { id name }
-                            manufacturer { id name }
+                    operatingsystem { id name }
+                    version { id name }
+                    edition { id name }
+                    servicepack { id name }
+                    architecture { id name }
+                    kernel_version { id name kernel { id name } }
+                    license_number
+                    licenseid
+                    company
+                    owner
+                    hostid
+                    date_install
+                }
+            }`).then((res) => {
+                getComponentSchema('OSInstallation').then(osinstallSchema => {
+                    const {formatFieldsForForm} = useOpenAPIForm(osinstallSchema);
+                    os_info.value = formatFieldsForForm(res.data.OSInstallation[0] || {});
+                });
+            });
+        }
+        if (hasAntivirusCapability) {
+            doGraphQLRequest(`query {
+                Antivirus(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id itemtype items_id name manufacturer { id name } antivirus_version signature_version
+                    is_active is_up_to_date date_expiration
+                }
+            }`).then((res) => {
+                antivirus_info.value = res.data.Antivirus || [];
+            });
+        }
+        if (hasSoftwareCapability) {
+            doGraphQLRequest(`
+                query {
+                    SoftwareInstallation(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                        id itemtype items_id
+                        softwareversion {
+                            id name arch
+                            software {
+                                id name
+                                category { id name }
+                                manufacturer { id name }
+                            }
                         }
                     }
                 }
-            }
-        `).then((res) => {
-            software_info.value = res.data.SoftwareInstallation || [];
-        });
+            `).then((res) => {
+                software_info.value = res.data.SoftwareInstallation || [];
+            });
+        }
     });
 
     function showSoftwareInstallDialog() {

@@ -5,7 +5,7 @@ import { type AxiosResponse } from "axios";
 import { BaseItemDefinition, TabDefinition, useBaseItem } from "@/types";
 import { components } from "../../../data/hlapiv2_schema";
 
-enum AssetCapabilities {
+export enum AssetCapabilities {
     HasType = 'hasType',
     HasModel = 'hasModel',
     HasAntiviruses = 'hasAntivirus',
@@ -38,7 +38,7 @@ enum AssetCapabilities {
     HasVolumes = 'hasVolumes',
 }
 
-const AssetCapabilitySets = {
+export const AssetCapabilitySets = {
     CommonSet: [
         AssetCapabilities.HasAppliances, AssetCapabilities.HasCertificates, AssetCapabilities.HasContracts,
         AssetCapabilities.HasDocuments, AssetCapabilities.HasInfocom, AssetCapabilities.HasGlobalSearch,
