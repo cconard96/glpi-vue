@@ -22,7 +22,7 @@ const locale = all[user_lang] || all[user_lang.split('-')[0]] || all['en'];
 
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: routes,
 });
 
 const { isAuthenticated } = useAuth();

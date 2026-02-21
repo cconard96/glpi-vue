@@ -14,9 +14,6 @@ dist-ssr
 coverage
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -30,3 +27,5 @@ coverage
 *.tsbuildinfo
 
 .env
+# Ignore any __screenshots__ directories
+**/__screenshots__/

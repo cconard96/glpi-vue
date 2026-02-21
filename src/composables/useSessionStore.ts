@@ -10,8 +10,6 @@ interface EntityTreeNode {
     selected: boolean,
 }
 
-const { apollo_client } = useApi();
-
 export const useSessionStore = defineStore('session', {
     state: () => ({
         /** @type {string|null} */
@@ -59,6 +57,7 @@ export const useSessionStore = defineStore('session', {
             this.active_entity = sessionData.active_entity || null;
             this.groups = sessionData.groups || [];
 
+            const { apollo_client } = useApi();
             apollo_client.resetStore();
         },
         loadEntityTreeData(treeData) {
@@ -79,14 +78,17 @@ export const useSessionStore = defineStore('session', {
             this.active_entity = null;
             this.groups = [];
 
+            const { apollo_client } = useApi();
             apollo_client.resetStore();
         },
         changeEntity(newEntity) {
             this.active_entity = newEntity;
+            const { apollo_client } = useApi();
             apollo_client.resetStore();
         },
         changeProfile(newProfile) {
             this.active_profile = newProfile;
+            const { apollo_client } = useApi();
             apollo_client.resetStore();
         },
         setDebugMode(isDebug) {

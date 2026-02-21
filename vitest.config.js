@@ -9,7 +9,16 @@ export default defineConfig({
         browser: {
             enabled: true,
             provider: playwright(),
-            instances: [{ browser: 'chromium' }],
+            instances: [
+                {
+                    browser: 'chromium',
+                    viewport: { width: 1920, height: 1080 },
+                },
+                {
+                    browser: 'firefox',
+                    viewport: { width: 1920, height: 1080 },
+                }
+            ],
             headless: true,
         },
         globals: true,
@@ -19,6 +28,7 @@ export default defineConfig({
         resolveSnapshotPath: (testPath, snapExtension) => {
             return testPath.replace('/src/', '/tests/__snapshots__/') + snapExtension;
         },
+        setupFiles: ['./tests/browser-setup.ts'],
     },
     optimizeDeps: {
         include: ['primevue/config', '@primeuix/themes/lara', 'pinia-plugin-persistedstate', 'primevue/focustrap'],

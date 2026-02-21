@@ -13,20 +13,17 @@
         loading.value = true;
         login(data.values.username, data.values.password).then(() => {
             loading.value = false;
-            console.log('Login attempt finished');
             if (isAuthenticated()) {
                 // goto the path specified in the query parameter 'redirect' or to the home page
                 const redirectPath = router.currentRoute.value.query.redirect || '/';
-                router.push(redirectPath).then(() => {
-                    console.log('Navigation to', redirectPath, 'successful');
-                }).catch((err) => {
-                    console.error('Navigation error:', err);
-                });
-                console.log('Current route:', router.currentRoute.value);
+                router.push(redirectPath);
             } else {
                 alert('Login failed. Please check your credentials and try again.');
             }
-        })
+        }).catch((err) => {
+            loading.value = false;
+            alert('An error occurred during login. Please try again later.');
+        });
     };
 
     onMounted(() => {
