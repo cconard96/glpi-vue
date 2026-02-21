@@ -1,7 +1,7 @@
 <script setup lang="ts">
-    import {useRoute, RouterLink} from "vue-router";
-    import {Breadcrumb, Button} from "primevue";
-    import {computed, ref, watch} from "vue";
+    import { RouterLink, useRoute } from "vue-router";
+    import { Breadcrumb } from "primevue";
+    import { computed } from "vue";
 
     const currentRoute = useRoute();
     const breadcrumbs = computed(() => {
@@ -11,15 +11,6 @@
     const component_module = currentRoute.params.component_module as string;
     const itemtype = currentRoute.params.itemtype as string;
     const items_id = parseInt(currentRoute.params.id as string);
-
-    let itemtype_model = null;
-    if (itemtype) {
-        try {
-            itemtype_model = (await import(`@/models/${component_module}/${itemtype?.charAt(0).toUpperCase() + itemtype?.slice(1)}.ts`)).default;
-        } catch (error) {
-            itemtype_model = null;
-        }
-    }
 </script>
 
 <template>
@@ -42,14 +33,14 @@
                 </span>
             </template>
         </Breadcrumb>
-        <div v-if="itemtype_model" class="content-center">
-            <Button v-if="itemtype_model.canCreate()" label="Add" size="small" v-slot="slotProps">
-                <RouterLink :class="slotProps.class" :to="{ name: 'NewItemForm', params: { component_module: component_module, itemtype: itemtype } }">
-                    <i class="ti ti-plus"></i>
-                    <span class="p-button-label">Add</span>
-                </RouterLink>
-            </Button>
-        </div>
+<!--        <div v-if="itemtype_model" class="content-center">-->
+<!--            <Button v-if="itemtype_model.canCreate()" label="Add" size="small" v-slot="slotProps">-->
+<!--                <RouterLink :class="slotProps.class" :to="{ name: 'NewItemForm', params: { component_module: component_module, itemtype: itemtype } }">-->
+<!--                    <i class="ti ti-plus"></i>-->
+<!--                    <span class="p-button-label">Add</span>-->
+<!--                </RouterLink>-->
+<!--            </Button>-->
+<!--        </div>-->
     </div>
 </template>
 

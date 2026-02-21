@@ -1,3 +1,5 @@
+import { useAssets } from "@/composables/assets/useAssets";
+
 export const routes = [
     { name: 'Login', path: '/login', component: () => import('../views/LoginView.vue'), meta: {requiresAuth: false} },
     {
@@ -63,8 +65,30 @@ export const routes = [
                 }
             },
             {
+                name: 'AssetItemForm',
+                path: ':component_module(assets)/:itemtype/:id(\\d+)',
+                component: () => import('../components/assets/AssetItemView.vue'),
+                props: (route) => {
+                    return {
+                        component_module: 'assets',
+                        itemtype: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1),
+                        id: parseInt(route.params.id),
+                    };
+                },
+                meta: {
+                    breadcrumbs: (route) => {
+                        return [
+                            ...route.params.component_module ? [
+                                { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
+                            ] : [],
+                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` },
+                        ];
+                    },
+                }
+            },
+            {
                 name: 'ItemForm',
-                path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype/:id(\\d+)',
+                path: ':component_module(assistance|management|tools|administration|setup)/:itemtype/:id(\\d+)',
                 component: () => import('../components/TabbedForm.vue'),
                 props: (route) => {
                     const id = parseInt(route.params.id);
@@ -119,6 +143,11 @@ export const routes = [
                         ];
                     }
                 }
+            },
+            {
+                name: 'Planning',
+                path: 'assistance/planning',
+                component: () => import('../components/assistance/planning/PlanningView.vue'),
             },
             { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
         ],

@@ -1,23 +1,13 @@
 <script setup lang="ts">
-    import {DataTable, Column, Tag} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-    import {useDataHelper} from "@/composables/useDataHelper";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Column, DataTable, Tag } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
     const { formatDataSize } = useDataHelper();
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const vm_info = ref(null);
 
     function getStatusSeverity(state_name: string) {
@@ -34,7 +24,7 @@
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                VirtualMachine(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                VirtualMachine(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id name
                     state { id name } system { id name } type { id name }
                     uuid vcpu ram

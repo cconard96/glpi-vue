@@ -1,5 +1,4 @@
-import { FormResolverOptions, FormSubmitEvent } from "@primevue/forms";
-import { AbstractModel } from "@/models/AbstractModel";
+import { FormResolverOptions } from "@primevue/forms";
 import { ref } from "vue";
 
 export function useOpenAPIForm(schema: Record<string, any>) {
@@ -46,14 +45,6 @@ export function useOpenAPIForm(schema: Record<string, any>) {
         }
     }
 
-    function submitFields(event: FormSubmitEvent, itemtypeModel: AbstractModel) {
-        if (!event.valid) {
-            return;
-        }
-        isSubmitting.value = true;
-        itemtypeModel.createItem();
-    }
-
     /**
      *
      * @todo Find a way to remove this
@@ -79,7 +70,6 @@ export function useOpenAPIForm(schema: Record<string, any>) {
 
     return {
         resolveFields,
-        submitFields,
         isSubmitting,
         formatFieldsForForm,
     }

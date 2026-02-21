@@ -2,12 +2,14 @@ import {type Component, computed, type ComputedRef, defineAsyncComponent, ref, t
 import {type components} from "../../data/hlapiv2_schema";
 import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketRights } from "@/composables/useSessionStore";
 import { useApi } from "@/composables/useApi";
+import { useDataHelper } from "@/composables/useDataHelper";
 
 type TimelineItem = components['schemas']['Followup'] | components['schemas']['Task'] | components['schemas']['Solution'] | components['schemas']['Document'] | components['schemas']['Approval'];
 
 export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: Ref<components['schemas'][typeof itemtype]>) {
     const session = useSessionStore();
     const { doApiRequest } = useApi();
+    const { formatDateTime } = useDataHelper();
 
     const current_new_item: ShallowRef<{
         component: Component,
@@ -445,30 +447,30 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
 
     const milestones = computed(() => {
         const milestone_items = [
-            { status: 'Opening Date', date: new Date(item.value.date || item.value.date_creation).toLocaleString() }
+            { status: 'Opening Date', date: formatDateTime(item.value.date || item.value.date_creation) }
         ];
 
         if ('take_into_account_date' in item.value) {
             // old tickets (<10.0.4 won't have the take_into_account_date field set. use date_creation + take_into_account_duration instead
             if (item.value.take_into_account_date) {
-                milestone_items.push({status: 'Take into account', date: new Date(item.value.take_into_account_date).toLocaleString()});
+                milestone_items.push({status: 'Take into account', date: formatDateTime(item.value.take_into_account_date)});
             } else if (item.value.take_into_account_duration) {
                 milestone_items.push({
                     status: 'Take into account',
-                    date: new Date(new Date(item.value.date_creation).getTime() + item.value.take_into_account_duration * 1000).toLocaleString()
+                    date: formatDateTime(new Date(item.value.date_creation).getTime() + item.value.take_into_account_duration * 1000)
                 });
             }
         }
 
         if ([5, 6, 8, 13, 14].includes(item.value.status)) {
             if (item.value.date_solve) {
-                milestone_items.push({status: 'Resolution', date: new Date(item.value.date_solve).toLocaleString()});
+                milestone_items.push({status: 'Resolution', date: formatDateTime(item.value.date_solve)});
             }
         }
 
         if ([6, 13, 14].includes(item.value.status)) {
             if (item.value.date_close) {
-                milestone_items.push({status: 'Closure', date: new Date(item.value.date_close).toLocaleString()});
+                milestone_items.push({status: 'Closure', date: formatDateTime(item.value.date_close)});
             }
         }
 

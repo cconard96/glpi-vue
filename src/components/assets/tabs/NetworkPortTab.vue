@@ -1,23 +1,13 @@
 <script setup lang="ts">
-    import { DataTable, Column, Message} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-    import {useDataHelper} from "@/composables/useDataHelper";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Column, DataTable, Message } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
     const { formatDataSpeed, formatDataSize } = useDataHelper();
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const port_info = ref(null);
     const port_statuses = {
         1: {
@@ -36,13 +26,13 @@
 
     onMounted(() => {
         doGraphQLRequest(`query {
-                NetworkPort(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
-                    id itemtype items_id instantiation_type name logical_number mac
-                    if_mtu if_speed if_internal_status if_connection_status if_last_change
-                    if_in_bytes if_out_bytes if_in_errors if_out_errors
-                    if_status if_description if_alias port_duplex trunk
-                }
-            }`).then((res) => {
+            NetworkPort(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                id itemtype items_id instantiation_type name logical_number mac
+                if_mtu if_speed if_internal_status if_connection_status if_last_change
+                if_in_bytes if_out_bytes if_in_errors if_out_errors
+                if_status if_description if_alias port_duplex trunk
+            }
+        }`).then((res) => {
             port_info.value = res.data.NetworkPort;
         });
     });

@@ -91,6 +91,14 @@
         loading: loading.value,
         itemSize: 38
     };
+
+    function getOptionLabelByValue(value: number | string): string {
+        const option = options.value.find(opt => opt[props.optionValue] === value);
+        if (option) {
+            return typeof props.name_field === 'function' ? props.name_field(option) : option[props.optionLabel];
+        }
+        return String(value);
+    }
 </script>
 
 <template>
@@ -106,7 +114,7 @@
                     <slot name="value" v-bind="slotProps"></slot>
                 </div>
                 <div v-else-if="slotProps.value" class="flex align-items-center">
-                    <div>{{ options.find(opt => opt[optionValue] === slotProps.value)?.[optionLabel] || slotProps.value }}</div>
+                    <div>{{ getOptionLabelByValue(slotProps.value) }}</div>
                 </div>
                 <div v-else class="flex align-items-center">
                     <div>{{ slotProps.placeholder || '&nbsp;' }}</div>
@@ -121,7 +129,7 @@
                      :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus display="chip" show-clear>
             <template #chip="slotProps">
                 <Chip :label="options.find(opt => opt[optionValue] === slotProps.value)?.[optionLabel] || slotProps.value"
-                      removable @remove="slotProps.removeCallback" removeTokenIcon="ti ti-circle-x"
+                      removable @remove="slotProps.removeCallback" removeIcon="ti ti-circle-x"
                 />
             </template>
         </MultiSelect>

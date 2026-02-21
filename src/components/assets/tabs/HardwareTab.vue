@@ -1,23 +1,13 @@
 <script setup lang="ts">
     import {
-        DataTable, Card, Column, Message, DataView, ProgressBar,
-        Accordion, AccordionPanel, AccordionHeader, AccordionContent
+        Accordion, AccordionContent, AccordionHeader, AccordionPanel,
+        Card, Column, DataTable, DataView, Message, ProgressBar
     } from 'primevue';
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref, watch} from "vue";
-    import {useDataHelper} from "@/composables/useDataHelper";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref, watch } from "vue";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
 
     const { doGraphQLRequest } = useApi();
     const { formatDataSize, getObjectProp, getUsedPercentage } = useDataHelper();
@@ -179,17 +169,18 @@
     };
     const connections_info = ref(null);
     const loaded_connections = ref(false);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(async () => {
         // Load data for summary
         await doGraphQLRequest(`query {
-            ProcessorItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+            ProcessorItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                 id itemtype items_id processor { designation manufacturer { id name } model { id name } frequency } serial otherserial busID frequency nbcores nbthreads
             }
-            HardDriveItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+            HardDriveItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                 id itemtype items_id hard_drive { designation manufacturer { id name } model { id name } rpm cache interface { id name } } serial otherserial busID capacity
             }
-            MemoryItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+            MemoryItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                 id itemtype items_id memory { designation manufacturer { id name } model { id name } frequency } serial otherserial busID size
             }
         }`).then((res) => {
@@ -211,46 +202,46 @@
         }
         doGraphQLRequest(`
             query {
-                BatteryItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                BatteryItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id battery { designation manufacturer { id name } model { id name } voltage capacity } serial otherserial real_capacity
                 }
-                CameraItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                CameraItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id camera { designation manufacturer { id name } model { id name } }
                 }
-                CaseItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                CaseItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id case { designation manufacturer { id name } model { id name } } serial otherserial
                 }
-                ControllerItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                ControllerItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id controller { designation manufacturer { id name } model { id name } is_raid } serial otherserial busID
                 }
-                DriveItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                DriveItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id drive { designation manufacturer { id name } model { id name } is_writer speed interface { id name } } serial otherserial busID
                 }
-                FirmwareItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                FirmwareItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id firmware { designation manufacturer { id name } model { id name } version } serial otherserial
                 }
-                GenericDeviceItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                GenericDeviceItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id generic_device { designation manufacturer { id name } model { id name } } serial otherserial
                 }
-                GraphicCardItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                GraphicCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id graphic_card { designation manufacturer { id name } model { id name } chipset interface { id name } memory_default } serial otherserial busID memory
                 }
-                NetworkCardItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                NetworkCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id network_card { designation manufacturer { id name } model { id name } bandwidth mac_default } serial otherserial busID mac
                 }
-                PCIDeviceItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                PCIDeviceItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id pci_device { designation manufacturer { id name } model { id name } } serial otherserial busID
                 }
-                PowerSupplyItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                PowerSupplyItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id power_supply { designation manufacturer { id name } model { id name } power is_atx } serial otherserial
                 }
-                SensorItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                SensorItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id sensor { designation manufacturer { id name } model { id name } } serial otherserial
                 }
-                SoundCardItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                SoundCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id sound_card { designation manufacturer { id name } model { id name } } serial otherserial busID
                 }
-                SystemboardItem(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                SystemboardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id systemboard { designation manufacturer { id name } model { id name } chipset } serial otherserial
                 }
             }
@@ -272,7 +263,7 @@
         }
         doGraphQLRequest(`
             query {
-                Volume(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Volume(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id name device mount_point filesystem { id name } total_size free_size encryption_status encryption_tool encryption_algorithm encryption_type
                 }
             }
@@ -286,17 +277,15 @@
         if (loaded_connections.value) {
             return;
         }
-        props.main_itemtype_model.getGLPIItemtype().then(itemtype => {
-            doGraphQLRequest(`
-                query {
-                    PeripheralConnection(filter: "(itemtype_asset==${itemtype};items_id_asset==${props.items_id}),(itemtype_peripheral==${itemtype};items_id_peripheral==${props.items_id})") {
-                        id itemtype_asset items_id_asset itemtype_peripheral items_id_peripheral is_dynamic
-                    }
+        doGraphQLRequest(`
+            query {
+                PeripheralConnection(filter: "(itemtype_asset==${mainItem.getDefinition().key};items_id_asset==${mainItem.item.value.id}),(itemtype_peripheral==${mainItem.getDefinition().key};items_id_peripheral==${mainItem.item.value.id})") {
+                    id itemtype_asset items_id_asset itemtype_peripheral items_id_peripheral is_dynamic
                 }
-            `).then((res) => {
-                connections_info.value = res.data.PeripheralConnection;
-                loaded_connections.value = true;
-            });
+            }
+        `).then((res) => {
+            connections_info.value = res.data.PeripheralConnection;
+            loaded_connections.value = true;
         });
     }
 

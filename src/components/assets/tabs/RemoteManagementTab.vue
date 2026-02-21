@@ -1,21 +1,11 @@
 <script setup lang="ts">
-    import {DataTable, Column, Button} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Button, Column, DataTable } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const remote_mgmt_info = ref(null);
 
     function getRemoteLinks(type: string, remoteid: string): Array<{uri: string, label: string}> {
@@ -64,7 +54,7 @@
     onMounted(() => {
         doGraphQLRequest(`
                 query {
-                    RemoteManagement(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                    RemoteManagement(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                         id itemtype items_id type remoteid
                     }
                 }

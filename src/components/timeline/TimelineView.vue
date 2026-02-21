@@ -1,15 +1,18 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import { computed, onMounted, provide, ref, type Ref, shallowRef, useTemplateRef, watch } from "vue";
+    import { computed, onMounted, provide, ref, type Ref, useTemplateRef, watch } from "vue";
     import { useApi } from "@/composables/useApi.ts";
-    import { Button, ButtonGroup, Menu, Popover, SelectButton, SplitButton, Timeline, ToggleSwitch, ProgressBar, useToast } from 'primevue';
+    import {
+        Button, ButtonGroup, Menu, Popover, ProgressBar,
+        SelectButton, SplitButton, Timeline, ToggleSwitch, useToast
+    } from 'primevue';
     import { RouterLink } from "vue-router";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
     import { type components } from "../../../data/hlapiv2_schema";
     import { useAssistanceItem } from "@/composables/useAssistanceItem";
-    import { AbstractModel } from "@/models/AbstractModel";
     import { useDataHelper } from "@/composables/useDataHelper";
     import { useInterval } from "@/composables/useInterval";
+    import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
 
     const { itemtype, id } = defineProps({
         itemtype: {
@@ -26,6 +29,7 @@
     const { doApiRequest, normalizeComponentName, getComponentSchema } = useApi();
     const { formatDuration } = useDataHelper();
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
+    const { formatFieldsForForm } = useOpenAPIForm(await getComponentSchema(normalized_itemtype.value));
     const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
     const assistanceItemInstance = useAssistanceItem(normalized_itemtype.value, item);
     provide('assistanceItemInstance', assistanceItemInstance);
@@ -35,7 +39,7 @@
     } = assistanceItemInstance;
 
     await doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
-        item.value = AbstractModel.formatFieldsForForm(res.data, await getComponentSchema(normalized_itemtype.value));
+        item.value = formatFieldsForForm(res.data);
     });
     await loadTimelineItems();
 

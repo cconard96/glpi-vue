@@ -17,7 +17,7 @@
     const { replace: replaceRoute } = useRouter();
     const { hasRight } = useSessionStore();
     const { doGraphQLRequest } = useApi();
-    const { formatUsername } = useDataHelper();
+    const { formatUsername, formatDate } = useDataHelper();
     const loading = ref(false);
     const article = ref(null);
     const edit_mode = ref(false);
@@ -147,7 +147,7 @@
                 <div>
                     Edited on:
                     <time :datetime="new Date(article.date_mod).toISOString()">
-                        {{ new Date(article.date_mod).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) }}
+                        {{ formatDate(article.date_mod, { year: 'numeric', month: 'long', day: 'numeric' }) }}
                     </time>
                     <span class="mx-2">|</span>
                     <span>{{ article.views }} Views</span>
@@ -174,7 +174,7 @@
                             </template>
                             <template #subtitle>
                                 <time :datetime="new Date(node.date_creation).toISOString()">
-                                    {{ new Date(node.date_creation).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
+                                    {{ formatDate(node.date_creation, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
                                 </time>
                             </template>
                             <template #content>

@@ -1,27 +1,19 @@
 <script setup lang="ts">
-    import {DataTable, Column} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Column, DataTable } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import type { useAssets } from "@/composables/assets/useAssets";
+    import { useDataHelper } from "@/composables/useDataHelper";
 
     const { doGraphQLRequest } = useApi();
+    const { formatDate } = useDataHelper();
     const contract_info = ref(null);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                Contract_Item(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Contract_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id contract { id name type { id name } date_begin duration }
                 }
             }
@@ -30,9 +22,10 @@
             // add date_end field to each contract
             contract_info.value = contracts.map((ci) => {
                 if (ci.contract.date_begin) {
-                    ci.contract.date_begin = new Date(ci.contract.date_begin).toLocaleDateString();
+                    ci.contract.date_begin = formatDate(ci.contract.date_begin);
                 }
                 if (ci.contract.date_begin && ci.contract.duration) {
+                    //TODO This calculation should be done in the data helper composable. The Temporal API would probably provide a more accurate result too.
                     const endDate = new Date(new Date(ci.contract.date_begin).setMonth(new Date(ci.contract.date_begin).getMonth() + ci.contract.duration));
                     ci.contract.date_end = endDate.toLocaleDateString();
                 } else {

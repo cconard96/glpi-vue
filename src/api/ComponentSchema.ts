@@ -68,13 +68,15 @@ export class ComponentSchema {
                         continue;
                     }
                     if (prop_schema.type === this.TYPE_STRING && (prop_schema.format === this.FORMAT_STRING_DATE || prop_schema.format === this.FORMAT_STRING_DATE_TIME)) {
-                        // Convert to local date string
-                        const date = new Date(value as string);
-                        if (!isNaN(date.getTime())) {
-                            formatted[key] = date.toLocaleString();
-                        } else {
-                            formatted[key] = value; // Invalid date, keep original
-                        }
+                        // should probably keep the raw value here and only convert it to local strings when displaying it
+                        formatted[key] = value;
+                        // // Convert to local date string
+                        // const date = new Date(value as string);
+                        // if (!isNaN(date.getTime())) {
+                        //     formatted[key] = date.toLocaleString();
+                        // } else {
+                        //     formatted[key] = value; // Invalid date, keep original
+                        // }
                     } else if (prop_schema.type === this.TYPE_ARRAY && Array.isArray(value)) {
                         // Recursively format array items
                         if (prop_schema.items) {

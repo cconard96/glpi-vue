@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { routes } from './util/routes.js';
+import { routes } from './util/routes.ts';
 import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 import '@/main.css';

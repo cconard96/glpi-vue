@@ -1,37 +1,20 @@
 <script setup lang="ts">
-    import {Form, FormField, FormSubmitEvent} from '@primevue/forms';
-    import { Button, InputText, Textarea, Message, useToast } from "primevue";
+    import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
+    import { Button, InputText, Message, Textarea, useToast } from "primevue";
     import { useApi } from "@/composables/useApi";
-    import {ref} from "vue";
+    import { inject, ref } from "vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import FormFields from "@/components/forms/FormFields.vue";
-    import {AbstractModel} from "@/models/AbstractModel";
     import { useDataHelper } from "@/composables/useDataHelper";
-    import {useOpenAPIForm} from "@/composables/useOpenAPIForm";
-    import {useRouter} from "vue-router";
+    import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
+    import { useRouter } from "vue-router";
+    import { createItem, type useAssets } from "@/composables/assets/useAssets";
 
-    const props = defineProps({
-        itemtype: {
-            type: String,
-            required: true
-        },
-        items_id: {
-            type: [Number, String],
-            default: 0,
-        },
-        main_item: {
-            type: Object,
-            required: true
-        },
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-    });
-
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const { doGraphQLRequest, doApiRequest } = useApi();
-    const { formatUsername } = useDataHelper();
-    const { resolveFields } = useOpenAPIForm(props.main_itemtype_model.getOpenAPISchema());
+    const { formatUsername, formatDateTime } = useDataHelper();
+    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(mainItem.getSchema());
+    const initialValues = formatFieldsForForm(mainItem.item.value);
     const is_submitting = ref(false);
     const toast = useToast();
     const router = useRouter();
@@ -41,7 +24,7 @@
             return;
         }
         is_submitting.value = true;
-        props.main_itemtype_model.createItem(event.values).then((res) => {
+        createItem('Computer', event.values).then((res) => {
             is_submitting.value = false;
             toast.add({severity: 'success', summary: 'Success', detail: 'Item created successfully.', life: 5000});
             const new_id = res.data.id;
@@ -49,8 +32,8 @@
             router.push({
                 name: 'ItemForm',
                 params: {
-                    component_module: props.main_itemtype_model.getTypeModule(),
-                    itemtype: props.main_itemtype_model.getOpenAPISchemaName(),
+                    component_module: mainItem.getDefinition().module,
+                    itemtype: 'Computer',
                     id: parseInt(new_id)
                 }
             });
@@ -68,7 +51,7 @@
 
 <template>
     <section class="h-full overflow-y-auto">
-        <Form v-slot="$form" :initialValues="main_item" class="flex flex-col gap-4 w-full sm-w-56 px-4" @submit="onFormSubmit" :resolver="resolveFields">
+        <Form v-slot="$form" :initialValues="initialValues" class="flex flex-col gap-4 w-full sm-w-56 px-4" @submit="onFormSubmit" :resolver="resolveFields">
             <FormFields>
                 <FormField name="name" v-slot="$slot">
                     <label>
@@ -165,15 +148,15 @@
                 </FormField>
             </FormFields>
             <div class="flex flex-row-reverse gap-x-2">
-                <Button v-if="items_id && main_itemtype_model.canUpdate()" type="submit" label="Save" icon="ti ti-device-floppy" class="me-2"></Button>
-                <Button v-if="items_id && main_itemtype_model.canDelete()" type="submit" severity="warn" variant="outlined" label="Put in trashbin" icon="ti ti-trash"></Button>
-                <Button v-if="!items_id && main_itemtype_model.canCreate()" type="submit" label="Add" icon="ti ti-plus"></Button>
+                <Button v-if="mainItem.item.value.id && mainItem.canUpdateItem()" type="submit" label="Save" icon="ti ti-device-floppy" class="me-2"></Button>
+                <Button v-if="mainItem.item.value.id && mainItem.canDeleteItem()" type="submit" severity="warn" variant="outlined" label="Put in trashbin" icon="ti ti-trash"></Button>
+                <Button v-if="!mainItem.item.value.id && mainItem.getDefinition().canCreate()" type="submit" label="Add" icon="ti ti-plus"></Button>
             </div>
         </Form>
         <footer class="flex">
             <div class="flex flex-col">
-                <span v-if="main_item.date_creation" class="me-4 text-sm text-surface-500">Created on {{ new Date(main_item.date_creation).toLocaleString() }}</span>
-                <span v-if="main_item.date_mod" class="text-sm text-surface-500">Last modified on {{ new Date(main_item.date_mod).toLocaleString() }}</span>
+                <span v-if="mainItem.item.value.date_creation" class="me-4 text-sm text-surface-500">Created on {{ formatDateTime(mainItem.item.value.date_creation) }}</span>
+                <span v-if="mainItem.item.value.date_mod" class="text-sm text-surface-500">Last modified on {{ formatDateTime(mainItem.item.value.date_mod) }}</span>
             </div>
         </footer>
     </section>

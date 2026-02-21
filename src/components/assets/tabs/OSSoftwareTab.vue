@@ -1,26 +1,17 @@
 <script setup lang="ts">
-import {defineAsyncComponent, onMounted, ref} from "vue";
+    import { defineAsyncComponent, inject, onMounted, ref } from "vue";
     import {useApi} from "@/composables/useApi";
-    import {AbstractModel} from "@/models/AbstractModel";
     import {Form, FormField} from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import {InputText, DataTable, Column, Tag, useDialog, Button, Message} from "primevue";
     import {useDataHelper} from "@/composables/useDataHelper";
+    import type { useAssets } from "@/composables/assets/useAssets";
+    import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
 
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
-
-    const { doGraphQLRequest } = useApi();
-    const { getObjectProp } = useDataHelper();
+    const { doGraphQLRequest, getComponentSchema } = useApi();
+    const { getObjectProp, formatDate } = useDataHelper();
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const dialog = useDialog();
     const os_info = ref(null);
     const software_info = ref(null);
@@ -35,7 +26,7 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
 
     onMounted(async () => {
         await doGraphQLRequest(`query {
-            OSInstallation(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+            OSInstallation(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                 id itemtype items_id
                 operatingsystem { id name }
                 version { id name }
@@ -50,17 +41,20 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
                 hostid
                 date_install
             }
-            Antivirus(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+            Antivirus(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                 id itemtype items_id name manufacturer { id name } antivirus_version signature_version
                 is_active is_up_to_date date_expiration
             }
         }`).then((res) => {
-            os_info.value = AbstractModel.formatFieldsForForm(res.data.OSInstallation[0] || {});
+            getComponentSchema('OSInstallation').then(osinstallSchema => {
+                const { formatFieldsForForm } = useOpenAPIForm(osinstallSchema);
+                os_info.value = formatFieldsForForm(res.data.OSInstallation[0] || {});
+            });
             antivirus_info.value = res.data.Antivirus || [];
         });
         doGraphQLRequest(`
             query {
-                SoftwareInstallation(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                SoftwareInstallation(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id
                     softwareversion {
                         id name arch
@@ -89,10 +83,6 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
                 modal: true,
                 draggable: false,
             },
-            data: {
-                main_itemtype_model: props.main_itemtype_model,
-                items_id: props.items_id
-            }
         });
     }
 </script>
@@ -146,7 +136,7 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
                 <FormField v-if="os_info.date_install" name="date_install">
                     <div class="flex items-baseline">
                         <span class="w-1/3 text-end me-4">Installation date</span>
-                        <time class="w-2/3" :datetime="os_info.date_install" v-text="new Date(os_info.date_install).toLocaleDateString()"></time>
+                        <time class="w-2/3" :datetime="os_info.date_install" v-text="formatDate(os_info.date_install)"></time>
                     </div>
                 </FormField>
                 <FormField name="hostid">
@@ -201,7 +191,7 @@ import {defineAsyncComponent, onMounted, ref} from "vue";
             <Column field="date_expiration" header="Expiration Date" :sortable="true">
                 <template #body="slotProps">
                     <span v-if="slotProps.data.date_expiration">
-                        {{ new Date(slotProps.data.date_expiration).toLocaleDateString() }}
+                        {{ formatDate(slotProps.data.date_expiration) }}
                     </span>
                     <span v-else>
                         N/A

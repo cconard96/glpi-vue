@@ -1,8 +1,9 @@
 <script setup lang="ts">
-    import { DataView, InputText, Message, Skeleton, Button } from "primevue";
-    import { defineAsyncComponent, inject, ref, watch } from "vue";
+    import { Button, DataView, InputText, Message, Skeleton } from "primevue";
+    import { inject, ref, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
     import { useApi } from "@/composables/useApi";
+    import { useDataHelper } from "@/composables/useDataHelper";
 
     const props = defineProps({
         query: {
@@ -20,6 +21,7 @@
     const dialogRef = inject('dialogRef');
 
     const { doGraphQLRequest } = useApi();
+    const { formatDateTime } = useDataHelper();
     const search_query = ref(props.query || '');
     const loading = ref(true);
     const results = ref([]);
@@ -64,7 +66,7 @@
                 <div v-for="article in results" :key="article.id" class="p-4 mb-2 border-1 border-transparent [&:not(:last-of-type)]:border-b-(--p-dataview-border-color)">
                     <h3 class="text-lg font-bold mb-1">{{ article.name }}</h3>
                     <p v-if="article.is_faq" class="text-gray-600 mb-1">Published in FAQ</p>
-                    <p class="text-sm text-gray-600 mb-1">Last modified: {{ new Date(article.date_mod).toLocaleString() }}</p>
+                    <p class="text-sm text-gray-600 mb-1">Last modified: {{ formatDateTime(article.date_mod) }}</p>
                     <p class="max-h-32 overflow-auto" v-dompurify-html="article.content"></p>
                     <div class="flex flex-row-reverse gap-2">
                         <Button v-for="(action, action_key) in (dialogRef.data.actions || {})" :key="action_key"

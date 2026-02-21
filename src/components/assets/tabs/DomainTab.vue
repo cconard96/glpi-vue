@@ -1,27 +1,19 @@
 <script setup lang="ts">
-    import {DataTable, Column} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Column, DataTable } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
+    const { formatDate } = useDataHelper();
     const domain_info = ref(null);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                Domain_Item(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Domain_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id is_dynamic domain { id name type { id name } date_domain_creation date_expiration } relation { id name }
                 }
             }
@@ -29,10 +21,10 @@
             const domains = res.data.Domain_Item;
             domain_info.value = domains.map((di) => {
                 if (di.domain.date_domain_creation) {
-                    di.domain.date_domain_creation = new Date(di.domain.date_domain_creation).toLocaleDateString();
+                    di.domain.date_domain_creation = formatDate(di.domain.date_domain_creation);
                 }
                 if (di.domain.date_expiration) {
-                    di.domain.date_expiration = new Date(di.domain.date_expiration).toLocaleDateString();
+                    di.domain.date_expiration = formatDate(di.domain.date_expiration);
                 }
                 return di;
             });

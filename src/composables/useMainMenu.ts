@@ -1,5 +1,3 @@
-import { Computer, Monitor } from "@/models/assets";
-
 export const useMainMenu = () => {
     const menu = [
         {
@@ -11,13 +9,11 @@ export const useMainMenu = () => {
                     label: "Computers",
                     icon: "ti ti-device-laptop",
                     route: "/assets/computer",
-                    itemtype_model: Computer,
                 },
                 {
                     label: "Monitors",
                     icon: "ti ti-device-desktop",
                     route: "/assets/monitor",
-                    itemtype_model: Monitor,
                 },
                 {
                     label: "Software",

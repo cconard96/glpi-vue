@@ -1,30 +1,20 @@
 <script setup lang="ts">
-    import { DataView, SelectButton, Button, Message } from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-    import {useDataHelper} from "@/composables/useDataHelper";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Button, DataView, Message, SelectButton } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
-    const { formatUsername } = useDataHelper();
+    const { formatUsername, formatDateTime } = useDataHelper();
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const notes_info = ref(null);
     const layout = ref('list');
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                Note(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Note(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id content date_creation date_mod
                     user { id username realname firstname }
                     user_editor { id username realname firstname }
@@ -57,8 +47,8 @@
                 <div class="p-2">
                     <div v-for="note in notes_info" :key="note.id" class="p-2 mb-2 border-1 border-transparent [&:not(:last-of-type)]:border-b-(--p-dataview-border-color)">
                         <address class="mb-2 not-italic">
-                            <div><time class="text-lg" :datetime="note.date_creation" v-text="new Date(note.date_creation).toLocaleString()"></time> by {{ formatUsername(note.user) }}</div>
-                            <div class="text-sm" v-if="note.date_mod && note.date_mod !== note.date_creation">Edited: <time :datetime="note.date_mod" v-text="new Date(note.date_mod).toLocaleString()"></time> by {{ formatUsername(note.user_editor) }}</div>
+                            <div><time class="text-lg" :datetime="note.date_creation" v-text="formatDateTime(note.date_creation)"></time> by {{ formatUsername(note.user) }}</div>
+                            <div class="text-sm" v-if="note.date_mod && note.date_mod !== note.date_creation">Edited: <time :datetime="note.date_mod" v-text="formatDateTime(note.date_mod)"></time> by {{ formatUsername(note.user_editor) }}</div>
                         </address>
                         <div class="whitespace-pre-line" v-dompurify-html="note.content"></div>
                     </div>
@@ -68,8 +58,8 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-2">
                     <div v-for="note in notes_info" :key="note.id" class="p-4 border-1 border-(--p-dataview-border-color) rounded-lg shadow-sm">
                         <address class="mb-2 not-italic">
-                            <div><time class="text-lg" :datetime="note.date_creation" v-text="new Date(note.date_creation).toLocaleString()"></time> by {{ formatUsername(note.user) }}</div>
-                            <div class="text-sm" v-if="note.date_mod && note.date_mod !== note.date_creation">Edited: <time :datetime="note.date_mod" v-text="new Date(note.date_mod).toLocaleString()"></time> by {{ formatUsername(note.user_editor) }}</div>
+                            <div><time class="text-lg" :datetime="note.date_creation" v-text="formatDateTime(note.date_creation)"></time> by {{ formatUsername(note.user) }}</div>
+                            <div class="text-sm" v-if="note.date_mod && note.date_mod !== note.date_creation">Edited: <time :datetime="note.date_mod" v-text="formatDateTime(note.date_mod)"></time> by {{ formatUsername(note.user_editor) }}</div>
                         </address>
                         <div class="whitespace-pre-line" v-dompurify-html="note.content"></div>
                     </div>

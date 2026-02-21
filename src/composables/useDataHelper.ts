@@ -140,17 +140,24 @@ export function useDataHelper() {
         return date.toLocaleString();
     }
 
-    function formatDate(timestamp: string): string {
+    function formatDate(timestamp: string|number, formatOptions: Intl.DateTimeFormatOptions = undefined): string {
+        //TODO create a Intl.DateTimeFormat and use it for all date/time formatting functions to improve performance. Ideally it would be reactive and change if the user language changes (although maybe that would require a page reload anyways...)
+
+        // If the timestamp is only a date, the JavaScript Date object will interpret it as being in UTC and convert it to the local timezone, which can result in the wrong date being displayed.
+        // To prevent this, we can check if the timestamp is in the format "YYYY-MM-DD" and if so, append "T00:00:00" to it before creating the Date object.
+        if (/^\d{4}-\d{2}-\d{2}$/.test(timestamp)) {
+            timestamp += 'T00:00:00';
+        }
         const date = new Date(timestamp);
-        return date.toLocaleDateString();
+        return date.toLocaleDateString(undefined, formatOptions);
     }
 
-    function formatTime(timestamp: string): string {
+    function formatTime(timestamp: string|number): string {
         const date = new Date(timestamp);
         return date.toLocaleTimeString();
     }
 
-    function formatDateTime(timestamp: string): string {
+    function formatDateTime(timestamp: string|number): string {
         const date = new Date(timestamp);
         return date.toLocaleString();
     }

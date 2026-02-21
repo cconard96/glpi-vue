@@ -1,29 +1,21 @@
 <script setup lang="ts">
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import FormFields from "@/components/forms/FormFields.vue";
-    import {InputText, DatePicker, Fieldset, InputNumber, Textarea, Message} from "primevue";
-    import {Form, FormField} from "@primevue/forms";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
+    import { DatePicker, Fieldset, InputNumber, InputText, Message, Textarea } from "primevue";
+    import { Form, FormField } from "@primevue/forms";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import type { useAssets } from "@/composables/assets/useAssets";
+    import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
 
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
-
-    const { doGraphQLRequest } = useApi();
+    const { doGraphQLRequest, getComponentSchema } = useApi();
+    const { formatFieldsForForm } = useOpenAPIForm(await getComponentSchema('Infocom'));
     const infocom_info = ref(null);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`query {
-            Infocom(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+            Infocom(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                 id itemtype items_id comment value
                 date_buy date_use date_order date_delivery date_inventory date_warranty date_decommission
                 warranty_info warranty_value warranty_duration order_number delivery_number immo_number
@@ -33,7 +25,7 @@
                 supplier { id name }
             }
         }`).then((res) => {
-            infocom_info.value = AbstractModel.formatFieldsForForm(res.data.Infocom[0] || {});
+            infocom_info.value = formatFieldsForForm(res.data.Infocom[0] || {});
         });
     });
 </script>

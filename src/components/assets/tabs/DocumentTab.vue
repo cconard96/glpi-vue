@@ -1,28 +1,20 @@
 <script setup lang="ts">
-    import {DataTable, Column} from "primevue";
+    import { Column, DataTable } from "primevue";
     import FileUpload from "@/components/forms/FileUpload.vue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import type { useAssets } from "@/composables/assets/useAssets";
+    import { useDataHelper } from "@/composables/useDataHelper";
 
     const { doGraphQLRequest } = useApi();
+    const { formatDate } = useDataHelper();
     const document_info = ref(null);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                Document_Item(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Document_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id document { id name date_creation filename filepath link category { id name } mime }
                 }
             }
@@ -30,7 +22,7 @@
             const documents = res.data.Document_Item;
             document_info.value = documents.map((di) => {
                 if (di.document.date_creation) {
-                    di.document.date_creation = new Date(di.document.date_creation).toLocaleDateString();
+                    di.document.date_creation = formatDate(di.document.date_creation);
                 }
                 return di;
             });

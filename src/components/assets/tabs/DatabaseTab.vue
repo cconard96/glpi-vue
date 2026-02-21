@@ -1,27 +1,19 @@
 <script setup lang="ts">
-    import {DataTable, Column} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Column, DataTable } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
+    import type { useAssets } from "@/composables/assets/useAssets";
+    import { useDataHelper } from "@/composables/useDataHelper";
 
     const { doGraphQLRequest } = useApi();
+    const { formatDate } = useDataHelper();
     const database_info = ref(null);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                DatabaseInstance(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                DatabaseInstance(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id name version is_onbackup is_active status: state { id name } date_lastboot date_lastbackup
                     database { id name }
                 }
@@ -31,10 +23,10 @@
             // format dates
             database_info.value = databases.map(db => {
                 if (db.date_lastboot) {
-                    db.date_lastboot = new Date(db.date_lastboot).toLocaleDateString();
+                    db.date_lastboot = formatDate(db.date_lastboot);
                 }
                 if (db.date_lastbackup) {
-                    db.date_lastbackup = new Date(db.date_lastbackup).toLocaleDateString();
+                    db.date_lastbackup = formatDate(db.date_lastbackup);
                 }
                 return db;
             });

@@ -1,36 +1,26 @@
 <script setup lang="ts">
-    import {DataTable, Column, ProgressBar} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {useDataHelper} from "@/composables/useDataHelper";
-    import {onMounted, ref} from "vue";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import { Column, DataTable, ProgressBar } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { useDataHelper } from "@/composables/useDataHelper";
+    import { inject, onMounted, ref } from "vue";
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
-    const { getUrgencyImpactPriorityLabel } = useDataHelper();
+    const { getUrgencyImpactPriorityLabel, formatDate } = useDataHelper();
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
     const project_info = ref(null);
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                Item_Project(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Item_Project(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id project { id name code priority status { id name } percent_done date_creation }
                 }
             }
         `).then((res) => {
             project_info.value = res.data.Item_Project.map(pi => {
                 if (pi.project.date_creation) {
-                    pi.project.date_creation = new Date(pi.project.date_creation).toLocaleDateString();
+                    pi.project.date_creation = formatDate(pi.project.date_creation);
                 }
                 return pi;
             });

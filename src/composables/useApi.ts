@@ -208,9 +208,9 @@ export function useApi() {
         let fields_query_part = ''
         // Convert OpenAPI properties to GraphQL fields request
         for (let [property_name, property_info] of Object.entries(properties)) {
-            // fixups for known issues
             if (parent_property_info?.['x-itemtype'] === 'User' && property_name === 'name') {
-                property_name = 'username';
+                // fixup for known issue (name should be username) + get extra information to be able to display the user in dropdowns (first name, last name, etc)
+                property_name = 'username firstname realname';
             }
             if (property_info?.type === 'object' && property_info?.properties) {
                 // Nested object, recurse
@@ -268,6 +268,7 @@ export function useApi() {
         getItemByID,
         getSchemaNameForGLPIItemtype,
         apollo_client,
-        getValidSchemaTypesFromItemtypes
+        getValidSchemaTypesFromItemtypes,
+        getCompleteFieldsRequestForSchema,
     };
 }

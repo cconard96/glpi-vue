@@ -1,35 +1,25 @@
 <script setup lang="ts">
-    import {DataTable, Column} from "primevue";
-    import {AbstractModel} from "@/models/AbstractModel";
-    import {useApi} from "@/composables/useApi";
-    import {onMounted, ref} from "vue";
+    import { Column, DataTable } from "primevue";
+    import { useApi } from "@/composables/useApi";
+    import { inject, onMounted, ref } from "vue";
     import { useDataHelper } from "@/composables/useDataHelper";
-
-    const props = defineProps({
-        main_itemtype_model: {
-            type: Function as typeof AbstractModel,
-            required: true
-        },
-        items_id: {
-            type: Number,
-            required: true
-        }
-    });
+    import type { useAssets } from "@/composables/assets/useAssets";
 
     const { doGraphQLRequest } = useApi();
-    const { getUrgencyImpactPriorityLabel } = useDataHelper();
+    const { getUrgencyImpactPriorityLabel, formatDateTime } = useDataHelper();
     const assistance_info = ref(null);
+    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`
             query {
-                Change_Item(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Change_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id change { id name date begin_waiting_date resolution_date date_solve date_close priority urgency impact category { id name } }
                 }
-                Ticket_Item(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Ticket_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id ticket { id name date begin_waiting_date resolution_date date_solve date_close priority urgency impact category { id name } }
                 }
-                Problem_Item(filter: "itemtype==${props.main_itemtype_model.getOpenAPISchemaName()};items_id==${props.items_id}") {
+                Problem_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id problem { id name date begin_waiting_date resolution_date date_solve date_close priority urgency impact category { id name } }
                 }
             }
@@ -39,19 +29,19 @@
             const problems = res.data.Problem_Item.map(pi => ({...pi.problem, itemtype: 'Problem'}));
             assistance_info.value = [...changes, ...tickets, ...problems].map(ai => {
                 if (ai.date) {
-                    ai.date = new Date(ai.date).toLocaleDateString();
+                    ai.date = formatDateTime(ai.date);
                 }
                 if (ai.begin_waiting_date) {
-                    ai.begin_waiting_date = new Date(ai.begin_waiting_date).toLocaleDateString();
+                    ai.begin_waiting_date = formatDateTime(ai.begin_waiting_date);
                 }
                 if (ai.resolution_date) {
-                    ai.resolution_date = new Date(ai.resolution_date).toLocaleDateString();
+                    ai.resolution_date = formatDateTime(ai.resolution_date);
                 }
                 if (ai.date_solve) {
-                    ai.date_solve = new Date(ai.date_solve).toLocaleDateString();
+                    ai.date_solve = formatDateTime(ai.date_solve);
                 }
                 if (ai.date_close) {
-                    ai.date_close = new Date(ai.date_close).toLocaleDateString();
+                    ai.date_close = formatDateTime(ai.date_close);
                 }
                 return ai;
             });
