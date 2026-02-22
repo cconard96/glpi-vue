@@ -34,6 +34,19 @@
             vm_info.value = res.data.VirtualMachine;
         });
     });
+
+    function getTypeIcon(type_name: string) {
+        const type_name_lc = type_name.toLowerCase().replace('-', '');
+        if (type_name_lc.includes('docker')) {
+            return 'ti ti-brand-docker';
+        } else if (type_name_lc.includes('hyperv') || type_name_lc.includes('wsl')) {
+            return 'ti ti-brand-windows';
+        } else if (type_name_lc.includes('jails')) {
+            return 'ti ti-prison';
+        } else {
+            return 'ti ti-packages';
+        }
+    }
 </script>
 
 <template>
@@ -45,8 +58,15 @@
             </Column>
             <Column key="type" field="type.name" header="Type">
                 <template #body="slotProps">
-                    <span>{{ slotProps.data.type?.name }}</span>
-                    <span v-if="slotProps.data.system?.name"> ({{ slotProps.data.system?.name }})</span>
+                    <div class="flex">
+                        <div>
+                            <i :class="getTypeIcon(slotProps.data.type?.name || '')" class="me-2"></i>
+                        </div>
+                        <div>
+                            <span>{{ slotProps.data.type?.name }}</span>
+                            <span v-if="slotProps.data.system?.name"> ({{ slotProps.data.system?.name }})</span>
+                        </div>
+                    </div>
                 </template>
             </Column>
             <Column key="state" field="state.name" header="State">

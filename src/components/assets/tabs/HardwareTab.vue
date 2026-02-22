@@ -200,55 +200,76 @@
         if (loaded_components.value) {
             return;
         }
+        if (components_info.value === null) {
+            components_info.value = {};
+        }
         doGraphQLRequest(`
             query {
                 BatteryItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id battery { designation manufacturer { id name } model { id name } voltage capacity } serial otherserial real_capacity
+                    id battery { designation manufacturer { id name } model { id name } voltage capacity } serial otherserial real_capacity
                 }
                 CameraItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id camera { designation manufacturer { id name } model { id name } }
+                    id camera { designation manufacturer { id name } model { id name } }
                 }
                 CaseItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id case { designation manufacturer { id name } model { id name } } serial otherserial
+                    id case { designation manufacturer { id name } model { id name } } serial otherserial
                 }
                 ControllerItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id controller { designation manufacturer { id name } model { id name } is_raid } serial otherserial busID
+                    id controller { designation manufacturer { id name } model { id name } is_raid } serial otherserial busID
                 }
                 DriveItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id drive { designation manufacturer { id name } model { id name } is_writer speed interface { id name } } serial otherserial busID
-                }
-                FirmwareItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id firmware { designation manufacturer { id name } model { id name } version } serial otherserial
-                }
-                GenericDeviceItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id generic_device { designation manufacturer { id name } model { id name } } serial otherserial
-                }
-                GraphicCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id graphic_card { designation manufacturer { id name } model { id name } chipset interface { id name } memory_default } serial otherserial busID memory
-                }
-                NetworkCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id network_card { designation manufacturer { id name } model { id name } bandwidth mac_default } serial otherserial busID mac
-                }
-                PCIDeviceItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id pci_device { designation manufacturer { id name } model { id name } } serial otherserial busID
-                }
-                PowerSupplyItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id power_supply { designation manufacturer { id name } model { id name } power is_atx } serial otherserial
-                }
-                SensorItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id sensor { designation manufacturer { id name } model { id name } } serial otherserial
-                }
-                SoundCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id sound_card { designation manufacturer { id name } model { id name } } serial otherserial busID
-                }
-                SystemboardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
-                    id itemtype items_id systemboard { designation manufacturer { id name } model { id name } chipset } serial otherserial
+                    id drive { designation manufacturer { id name } model { id name } is_writer speed interface { id name } } serial otherserial busID
                 }
             }
         `).then((res) => {
-            if (components_info.value === null) {
-                components_info.value = {};
+            for (const [key, items] of Object.entries(res.data)) {
+                components_info.value[key] = items;
+                component_counts.value[key] = items.length;
+                loaded_components.value = true;
             }
+        });
+        doGraphQLRequest(`
+            query {
+                FirmwareItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id firmware { designation manufacturer { id name } model { id name } version } serial otherserial
+                }
+                GenericDeviceItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id generic_device { designation manufacturer { id name } model { id name } } serial otherserial
+                }
+                GraphicCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id graphic_card { designation manufacturer { id name } model { id name } chipset interface { id name } memory_default } serial otherserial busID memory
+                }
+                NetworkCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id network_card { designation manufacturer { id name } model { id name } bandwidth mac_default } serial otherserial busID mac
+                }
+            }
+        `).then((res) => {
+            for (const [key, items] of Object.entries(res.data)) {
+                components_info.value[key] = items;
+                component_counts.value[key] = items.length;
+                loaded_components.value = true;
+            }
+        });
+        doGraphQLRequest(`
+            query {
+
+                PCIDeviceItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id pci_device { designation manufacturer { id name } model { id name } } serial otherserial busID
+                }
+                PowerSupplyItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id power_supply { designation manufacturer { id name } model { id name } power is_atx } serial otherserial
+                }
+                SensorItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id sensor { designation manufacturer { id name } model { id name } } serial otherserial
+                }
+                SoundCardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id sound_card { designation manufacturer { id name } model { id name } } serial otherserial busID
+                }
+                SystemboardItem(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
+                    id systemboard { designation manufacturer { id name } model { id name } chipset } serial otherserial
+                }
+            }
+        `).then((res) => {
             for (const [key, items] of Object.entries(res.data)) {
                 components_info.value[key] = items;
                 component_counts.value[key] = items.length;
@@ -298,6 +319,16 @@
             loadConnectionsInfo();
         }
     });
+
+    function getVolumeUsedProgressColorClass(value: number): string {
+        if (value < 50) {
+            return 'bg-green-500';
+        } else if (value < 80) {
+            return 'bg-yellow-500';
+        } else {
+            return 'bg-red-500';
+        }
+    }
 </script>
 
 <template>
@@ -343,7 +374,8 @@
                     <div v-if="volumes_info !== null && volumes_info.length > 0">
                         <DataView :value="volumes_info">
                             <template #list="slotProps">
-                                <Card v-for="(item, index) in slotProps.items" :key="index" class="">
+                                <Card v-for="(item, index) in slotProps.items" :key="index" class=""
+                                      :pt:body="{ class: 'p-3' }">
                                     <template #title>
                                         <div class="text-base">
                                             <span>{{ item.name }}</span>
@@ -353,7 +385,7 @@
                                     </template>
                                     <template #subtitle>
                                         <div>
-                                            <div v-if="item.device !== item.mount_point">Device: {{ item.device }}</div>
+                                            <div v-if="item.device && (item.device !== item.mount_point)">Device: {{ item.device }}</div>
                                             <div v-if="item.encryption_status">
                                                 Encryption: {{ encryption_statuses[item.encryption_status] }}
                                                 <span v-if="item.encryption_tool"> using {{ item.encryption_tool  }}</span>
@@ -363,7 +395,11 @@
                                         </div>
                                     </template>
                                     <template #content>
-                                        <ProgressBar :value="item.total_size > 0 ? ((item.total_size - item.free_size) / item.total_size) * 100 : 0" :showValue="true" :style="{height: '20px'}">
+                                        <ProgressBar :value="item.total_size > 0 ? ((item.total_size - item.free_size) / item.total_size) * 100 : 0" :showValue="true" :style="{height: '20px'}"
+                                                     :pt:label="{ class: 'text-sm text-nowrap' }"
+                                                     :pt:value="({props}) => ({
+                                                        class: `${getVolumeUsedProgressColorClass(props.value)} overflow-visible`
+                                                     })">
                                             <template #default>
                                                 <span>{{ formatDataSize(item.total_size - item.free_size, 'MB') }} used of {{ formatDataSize(item.total_size, 'MB') }} ({{ getUsedPercentage(item.total_size, item.free_size) }}%)</span>
                                             </template>
@@ -412,22 +448,25 @@
             </AccordionPanel>
             <AccordionPanel value="components">
                 <AccordionHeader>Components</AccordionHeader>
-                <AccordionContent>
-                    <div v-for="(items, component_type) in components_info" :key="component_type" class="mb-6">
-                        <DataTable v-if="items.length > 0" :value="items" :rows="100" :totalRecords="items.length">
-                            <template #header>
-                                <div class="font-bold text-lg">{{ component_type.replace('Item', '').replace(/([A-Z])/g, ' $1').trim() }} ({{ items.length }})</div>
-                            </template>
-                            <Column v-for="col in component_columns[component_type]" :field="col.field" :header="col.header">
-                                <template #body="slotProps">
-                            <span>{{
-                                    col.field.endsWith('capacity') || col.field.endsWith('size') ?
-                                        formatDataSize(getObjectProp(slotProps.data, col.field), 'MB') :
-                                        getObjectProp(slotProps.data, col.field)
-                                }}</span>
+                <AccordionContent :pt:contentwrapper="{ class: 'overflow-x-hidden' }">
+                    <div class="flex flex-col overflow-x-hidden gap-4">
+                        <div v-for="(items, component_type) in components_info" :key="component_type" class="overflow-x-hidden">
+                            <DataTable v-if="items.length > 0" :value="items" :rows="100" :totalRecords="items.length" scrollable
+                                       :pt:header="{ class: 'py-2' }">
+                                <template #header>
+                                    <div class="font-bold text-lg">{{ component_type.replace('Item', '').replace(/([A-Z])/g, ' $1').trim() }} ({{ items.length }})</div>
                                 </template>
-                            </Column>
-                        </DataTable>
+                                <Column v-for="col in component_columns[component_type]" :field="col.field" :header="col.header" headerClass="py-1">
+                                    <template #body="slotProps">
+                                <span>{{
+                                        col.field.endsWith('capacity') || col.field.endsWith('size') ?
+                                            formatDataSize(getObjectProp(slotProps.data, col.field), 'MB') :
+                                            getObjectProp(slotProps.data, col.field)
+                                    }}</span>
+                                    </template>
+                                </Column>
+                            </DataTable>
+                        </div>
                     </div>
                 </AccordionContent>
             </AccordionPanel>
