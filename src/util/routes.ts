@@ -1,4 +1,4 @@
-import { useAssets } from "@/composables/assets/useAssets";
+import { useApi } from '@/composables/useApi.ts';
 
 export const routes = [
     { name: 'Login', path: '/login', component: () => import('../views/LoginView.vue'), meta: {requiresAuth: false} },
@@ -84,6 +84,28 @@ export const routes = [
                             { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` },
                         ];
                     },
+                }
+            },
+            {
+                name: 'AssetItemFormByUniqueField',
+                path: ':component_module(assets)/:itemtype/:unique_field(uuid|name|serial|otherserial)/:unique_value',
+                component: () => import('../components/assets/AssetItemView.vue'),
+                beforeEnter: async (to) => {
+                    const { doGraphQLRequest } = useApi();
+                    const itemtype = to.params.itemtype.charAt(0).toUpperCase() + to.params.itemtype.slice(1);
+                    const unique_field = to.params.unique_field;
+                    const unique_value = to.params.unique_value;
+                    return await doGraphQLRequest(`query { ${itemtype}(filter: "${unique_field}=='${unique_value}'") { id } }`).then(response => {
+                        const items = response.data[itemtype];
+                        if (items.length === 1) {
+                            return {path: `/${to.params.component_module}/${to.params.itemtype}/${items[0].id}`};
+                        } else if (items.length > 1) {
+                            // multiple results, redirect to search page with filter
+                            return { path: `/${to.params.component_module}/${to.params.itemtype}`, query: { filter: `${unique_field}=='${unique_value}'` } };
+                        } else {
+                            return { name: 'NotFound' };
+                        }
+                    });
                 }
             },
             {

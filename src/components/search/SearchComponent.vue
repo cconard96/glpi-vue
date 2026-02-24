@@ -3,6 +3,7 @@
     import { useApi, type SearchResult } from '@/composables/useApi.ts';
     import { ComponentSchema } from "@/api/ComponentSchema";
     import {computed, onMounted, ref, watch} from "vue";
+    import { useRoute } from 'vue-router';
 
     const { component_module, itemtype } = defineProps({
         component_module: {
@@ -48,8 +49,11 @@
     };
 
     const filter = computed(() => {
-        return `is_deleted==${is_deleted.value ? 1 : 0}` +
-            (default_filters[itemtype.toLowerCase()] ? `;${default_filters[itemtype.toLowerCase()]}` : '');
+        const default_filter = default_filters[itemtype.toLowerCase()] || '';
+        if (useRoute().query.filter) {
+            return `${useRoute().query.filter};is_deleted==${is_deleted.value ? 1 : 0}`;
+        }
+        return `is_deleted==${is_deleted.value ? 1 : 0};${default_filter}`;
     });
     watch(filter, () => {
         updateResults();
