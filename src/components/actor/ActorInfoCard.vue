@@ -2,6 +2,7 @@
     import { Card } from 'primevue';
     import {computed, onBeforeMount, ref} from "vue";
     import { useApi } from '@/composables/useApi';
+    import { components } from "../../../data/hlapiv2_schema";
 
     interface ActorInfo {
         id: number,
@@ -28,7 +29,9 @@
 
     onBeforeMount(() => {
         if (props.actor_type === 'User') {
-            doGraphQLRequest(
+            doGraphQLRequest<{
+                User: Pick<components['schemas']['User'], 'id' | 'username' | 'realname' | 'firstname' | 'title' | 'category' | 'phone' | 'phone2' | 'mobile' | 'emails' | 'picture'>[]
+            }>(
                 `
                     query {
                         User (filter: "id==${props.actor_data.id}") {

@@ -3,11 +3,11 @@
     import { useApi } from "@/composables/useApi";
     import { inject, onMounted, ref } from "vue";
     import { useDataHelper } from "@/composables/useDataHelper";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import type { useAsset } from "@/composables/assets/useAsset.js";
 
     const { doGraphQLRequest } = useApi();
     const { formatDataSize } = useDataHelper();
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
     const vm_info = ref(null);
 
     function getStatusSeverity(state_name: string) {

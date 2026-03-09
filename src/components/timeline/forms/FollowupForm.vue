@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Avatar, Button, Card, Fluid, ToggleSwitch, useDialog } from "primevue";
-    import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
+    import { Button, Card, Fluid, ToggleSwitch, useDialog } from "primevue";
+    import { FormField, FormSubmitEvent } from '@primevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/composables/useSessionStore";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import { useApi } from "@/composables/useApi";
@@ -8,14 +8,15 @@
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { defineAsyncComponent, inject, onMounted, TemplateRef, ref, useTemplateRef } from "vue";
     import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
 
     const { getFriendlyName, hasRight, getUserID } = useSessionStore();
-    const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
-    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(await getComponentSchema('Followup'));
+    const { getComponentSchema, doGraphQLRequest } = useApi();
+    const { resolveFields } = useOpenAPIForm(await getComponentSchema('Followup'));
     const emits = defineEmits(['close', 'add']);
     const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
     const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Followup', ref({})));
-    const followup = ref(formatFieldsForForm(assistanceTimelineItemInstance?.item.value));
+    const followup = ref(assistanceTimelineItemInstance?.item.value);
 
     const dialog = useDialog();
     const followup_form = useTemplateRef('followup_form');
@@ -100,7 +101,7 @@
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Form ref="followup_form" :initialValues="followup" :resolver="resolveFields" @submit="onSubmit">
+        <AdvancedForm schemaName="Followup" ref="followup_form" :initialValues="followup" :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
                     class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor.value}`,
@@ -149,7 +150,7 @@
                     <Button type="submit" :icon="followup.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="followup.id ? 'Save' : 'Add'"></Button>
                 </template>
             </Card>
-        </Form>
+        </AdvancedForm>
     </div>
 </template>
 

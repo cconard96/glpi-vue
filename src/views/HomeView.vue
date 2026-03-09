@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
     import NavMenu from "@/components/NavMenu.vue";
     import { RouterView, useRouter } from "vue-router";
     import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog } from "primevue";

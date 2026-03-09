@@ -2,11 +2,11 @@
     import { Column, DataTable } from "primevue";
     import { useApi } from "@/composables/useApi";
     import { inject, onMounted, ref } from "vue";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import type { useAsset } from "@/composables/assets/useAsset.js";
 
     const { doGraphQLRequest } = useApi();
     const line_info = ref(null);
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`

@@ -39,7 +39,7 @@
     } = assistanceItemInstance;
 
     await doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
-        item.value = formatFieldsForForm(res.data);
+        item.value = res.data;
     });
     await loadTimelineItems();
 

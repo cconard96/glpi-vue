@@ -17,3 +17,35 @@ index 5c727f4..4befaf5 100644
        if ((_this$$refs$clearIcon2 = this.$refs.clearIcon) !== null && _this$$refs$clearIcon2 !== void 0 && (_this$$refs$clearIcon2 = _this$$refs$clearIcon2.$el) !== null && _this$$refs$clearIcon2 !== void 0 && _this$$refs$clearIcon2.style) {
          this.$refs.clearIcon.$el.style.display = !this.$filled ? 'none' : 'block';
        }
+diff --git a/node_modules/primevue/select/Select.vue b/node_modules/primevue/select/Select.vue
+index 80e1dfc..dcd8155 100644
+--- a/node_modules/primevue/select/Select.vue
++++ b/node_modules/primevue/select/Select.vue
+@@ -1019,15 +1019,23 @@ export default {
+         hasSelectedOption() {
+             return this.$filled;
+         },
++        selectedOption() {
++            const options = this.optionGroupLabel ? this.flatOptions(this.options) : this.options || [];
++
++            return options.find((option) => !this.isOptionGroup(option) && this.isSelected(option));
++        },
+         label() {
+-            const selectedOptionIndex = this.findSelectedOptionIndex();
++            const selectedOption = this.selectedOption;
++            if (!this.$filled) {
++                return this.placeholder || 'p-emptylabel';
++            }
+ 
+-            return selectedOptionIndex !== -1 ? this.getOptionLabel(this.visibleOptions[selectedOptionIndex]) : this.placeholder || 'p-emptylabel';
++            return selectedOption ? this.getOptionLabel(selectedOption) : this.getOptionLabel(this.d_value);
+         },
+         editableInputValue() {
+-            const selectedOptionIndex = this.findSelectedOptionIndex();
++            const selectedOption = this.selectedOption;
+ 
+-            return selectedOptionIndex !== -1 ? this.getOptionLabel(this.visibleOptions[selectedOptionIndex]) : this.d_value || '';
++            return selectedOption ? this.getOptionLabel(selectedOption) : this.d_value || '';
+         },
+         equalityKey() {
+             return this.optionValue ? null : this.dataKey;

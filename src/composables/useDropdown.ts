@@ -73,8 +73,46 @@ export function useDropdown(
         });
     }
 
+    function getDropdownOptionsTree(filter: Ref<string>): Promise<Array<object>> {
+        const main_filter = filter.value ? `name=ilike='${filter.value}'` : '';
+        const complete_filter = main_filter + (fetch_options.condition ? (main_filter ? `;${fetch_options.condition}` : fetch_options.condition) : '');
+        const filter_clause = complete_filter ? `, filter:"${complete_filter}"` : '';
+        const params = `${filter_clause}`.replace(/^, /, '');
+
+        const fields_request = 'key: id label: name level parent { id }';
+        return doGraphQLRequest(`
+            query { ${schema_name}${params ? ('(' + params + ')') : ''} { ${fields_request} } }
+        `, {}).then((response) => {
+            const optionsTree: Array<any> = [];
+            const itemsById: { [key: number]: any } = {};
+
+            response.data[schema_name].forEach((item: any) => {
+                const option = {
+                    key: item.key,
+                    label: item.label,
+                    children: [],
+                };
+                itemsById[item.key] = option;
+
+                if (item.parent && item.parent.id) {
+                    const parentOption = itemsById[item.parent.id];
+                    if (parentOption) {
+                        parentOption.children.push(option);
+                    } else {
+                        optionsTree.push(option);
+                    }
+                } else {
+                    optionsTree.push(option);
+                }
+            });
+
+            return optionsTree;
+        });
+    }
+
     return {
         getDropdownOptions,
+        getDropdownOptionsTree,
         loading,
     }
 }

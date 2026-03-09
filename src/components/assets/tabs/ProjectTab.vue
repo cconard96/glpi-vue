@@ -3,11 +3,11 @@
     import { useApi } from "@/composables/useApi";
     import { useDataHelper } from "@/composables/useDataHelper";
     import { inject, onMounted, ref } from "vue";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import type { useAsset } from "@/composables/assets/useAsset.js";
 
     const { doGraphQLRequest } = useApi();
     const { getUrgencyImpactPriorityLabel, formatDate } = useDataHelper();
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
     const project_info = ref(null);
 
     onMounted(() => {

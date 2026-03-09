@@ -8,6 +8,8 @@
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
     import { useDataHelper } from "@/composables/useDataHelper";
+    import { useAssistanceItem } from "@/composables/useAssistanceItem.ts";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
 
     const { getFriendlyName } = useSessionStore();
     const { getDurationFromMaskedInput, getMaskedInputFromDuration } = useDataHelper();
@@ -15,11 +17,11 @@
     const emits = defineEmits(['close', 'add']);
     const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
     const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Cost', ref({})));
-    const assistanceItemInstance = inject('assistanceItemInstance');
-    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(await getComponentSchema(assistanceItemInstance.itemtype + 'Cost'));
+    const assistanceItemInstance = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance');
+    const { resolveFields } = useOpenAPIForm(await getComponentSchema(`${assistanceItemInstance.itemtype}Cost`));
 
     const cost = ref({
-        ...formatFieldsForForm(assistanceTimelineItemInstance?.item.value),
+        ...assistanceTimelineItemInstance?.item.value,
         duration: assistanceTimelineItemInstance?.item.value.duration ? getMaskedInputFromDuration(assistanceTimelineItemInstance.item.value.duration) : '00:00'
     });
     const cost_form = useTemplateRef('cost_form');
@@ -49,7 +51,7 @@
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
         <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
-        <Form ref="cost_form" :initialValues="cost" :resolver="resolveFields" @submit="onSubmit">
+        <AdvancedForm :schemaName="`${assistanceItemInstance.itemtype}Cost`" ref="cost_form" :initialValues="cost" :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
                     class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor}`,
@@ -132,7 +134,7 @@
                     <Button type="submit" :icon="cost.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="cost.id ? 'Save' : 'Add'"></Button>
                 </template>
             </Card>
-        </Form>
+        </AdvancedForm>
     </div>
 </template>
 

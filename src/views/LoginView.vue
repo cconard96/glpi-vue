@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
     import { Form } from '@primevue/forms';
     import { Card, InputText, Password, Button, Message } from 'primevue';
     import { useAuth } from '@/composables/useAuth';

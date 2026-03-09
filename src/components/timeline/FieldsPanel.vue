@@ -1,17 +1,31 @@
 <script setup lang="ts">
     import {
-        Accordion, AccordionContent, AccordionHeader, AccordionPanel,
-        DatePicker, FloatLabel, InputText, ScrollPanel,
-        Message, Tag, SelectButton, Fluid, Button, InputGroup, InputGroupAddon, useToast
+        Accordion,
+        AccordionContent,
+        AccordionHeader,
+        AccordionPanel,
+        Button,
+        DatePicker,
+        FloatLabel,
+        Fluid,
+        InputText,
+        Message,
+        ScrollPanel,
+        SelectButton,
+        Tag,
+        useDialog,
+        useToast
     } from "primevue";
-    import { Form, FormField } from "@primevue/forms";
-    import { computed, defineAsyncComponent, inject, onMounted, ref, toRef } from "vue";
-    import {useApi} from "@/composables/useApi";
-    import type { components } from 'data/hlapiv2_schema';
+    import { FormField } from "@primevue/forms";
+    import { defineAsyncComponent, inject, onMounted, ref } from "vue";
+    import { useApi } from "@/composables/useApi";
+    import type { components } from "../../../data/hlapiv2_schema";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { RouterLink } from "vue-router";
     import ActorFields from "@/components/timeline/ActorFields.vue";
-    import { useDialog } from "primevue";
+    import SLMFields from "@/components/timeline/SLMFields.vue";
+    import { useAssistanceItem } from "@/composables/useAssistanceItem.ts";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
 
     const props = defineProps<{
         itemtype: 'Ticket' | 'Change' | 'Problem',
@@ -20,11 +34,11 @@
 
     const toast = useToast();
     const dialog = useDialog();
-    const { doApiRequest, doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
+    const { doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
     const {
         statusOptions, getTypeName, urgencyImpactOptions, priorityOptions, itemtypeIcon, assistanceLinkTypeLabels,
         requesters, observers, assigned, globalApprovalIcon, globalApprovalLabel, current_new_item
-    } = inject('assistanceItemInstance');
+    } = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance');
 
     const form_resolver = async (data) => {
         // For now, just return the data as is.
@@ -72,6 +86,10 @@
     const kbitems = ref([]);
     const item_links = ref([]);
     const project_links = ref([]);
+    const slaTTOName = ref('');
+    const slaTTRName = ref('');
+    const olaTTOName = ref('');
+    const olaTTRName = ref('');
 
     onMounted(() => {
         doGraphQLRequest(`
@@ -161,6 +179,23 @@
                 });
             });
         });
+        if (props.itemtype === 'Ticket') {
+            doGraphQLRequest(`
+                query {
+                    SLA(filter: "id=in=(${(props.item as components['schemas']['Ticket']).sla_tto},${(props.item as components['schemas']['Ticket']).sla_ttr})") {
+                        id name
+                    }
+                    OLA(filter: "id=in=(${(props.item as components['schemas']['Ticket']).ola_tto},${(props.item as components['schemas']['Ticket']).ola_ttr})") {
+                        id name
+                    }
+                }
+            `, {}, 'cache-first').then((res) => {
+                slaTTOName.value = res.data.SLA.find(sla => sla.id === (props.item as components['schemas']['Ticket']).sla_tto)?.name || '';
+                slaTTRName.value = res.data.SLA.find(sla => sla.id === (props.item as components['schemas']['Ticket']).sla_ttr)?.name || '';
+                olaTTOName.value = res.data.OLA.find(ola => ola.id === (props.item as components['schemas']['Ticket']).ola_tto)?.name || '';
+                olaTTRName.value = res.data.OLA.find(ola => ola.id === (props.item as components['schemas']['Ticket']).ola_ttr)?.name || '';
+            });
+        }
     });
 
     function showKBSearch() {
@@ -211,7 +246,7 @@
 </script>
 
 <template>
-    <Form v-slot="$form" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
+    <AdvancedForm :schemaName="itemtype" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
         <ScrollPanel>
             <Accordion :value="['main', 'actors']" multiple>
                 <AccordionPanel value="main">
@@ -219,7 +254,7 @@
                         <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">
                             <i :class="`${itemtypeIcon} me-2`"></i>
                             {{ getTypeName(1) }}
-                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item._entity.name }}</span></Tag>
+                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item.entity.name }}</span></Tag>
                         </span>
                     </AccordionHeader>
                     <AccordionContent>
@@ -237,7 +272,7 @@
                                 </FormField>
                                 <FormField name="category">
                                     <!-- TODO Make a tree select -->
-                                    <FieldSelect label="Category" type="ITILCategory" label_type="on"></FieldSelect>
+                                    <FieldSelect label="Category" type="ITILCategory" label_type="on" treeMode></FieldSelect>
                                 </FormField>
                                 <FormField name="location">
                                     <FieldSelect label="Location" type="Location" label_type="on"></FieldSelect>
@@ -355,50 +390,13 @@
                     <AccordionContent>
                         <Fluid>
                             <div class="flex flex-col space-y-4">
-                                <FormField name="own_date">
-                                    <FloatLabel variant="on">
-                                        <InputGroup>
-                                            <DatePicker inputId="own_date" show-time showIcon showButtonBar></DatePicker>
-                                            <InputGroupAddon>
-                                                <Button icon="ti ti-stopwatch" title="Assign SLA" aria-label="Assign SLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                        <label for="own_date">Time to Own</label>
-                                    </FloatLabel>
-                                </FormField>
-                                <FormField name="resolution_date">
-                                    <FloatLabel variant="on">
-                                        <InputGroup>
-                                        <DatePicker inputId="resolution_date" showTime showIcon showButtonBar></DatePicker>
-                                            <InputGroupAddon>
-                                                <Button icon="ti ti-stopwatch" title="Assign SLA" aria-label="Assign SLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                        <label for="resolution_date">Time to Resolve</label>
-                                    </FloatLabel>
-                                </FormField>
-                                <FormField name="internal_take_into_account_date">
-                                    <FloatLabel variant="on">
-                                        <InputGroup>
-                                        <DatePicker inputId="internal_take_into_account_date" showTime showIcon showButtonBar></DatePicker>
-                                            <InputGroupAddon>
-                                                <Button icon="ti ti-stopwatch" title="Assign OLA" aria-label="Assign OLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                        <label for="internal_take_into_account_date">Internal Time to Own</label>
-                                    </FloatLabel>
-                                </FormField>
-                                <FormField name="internal_resolution_date">
-                                    <FloatLabel variant="on">
-                                        <InputGroup>
-                                        <DatePicker inputId="internal_resolution_date" showTime showIcon showButtonBar></DatePicker>
-                                            <InputGroupAddon>
-                                                <Button icon="ti ti-stopwatch" title="Assign OLA" aria-label="Assign OLA" severity="secondary" variant="text" @click.prevent.stop="showNotImplementedToast"></Button>
-                                            </InputGroupAddon>
-                                        </InputGroup>
-                                        <label for="internal_resolution_date">Internal Time to Resolve</label>
-                                    </FloatLabel>
-                                </FormField>
+                                <!--suppress TypeScriptValidateTypes -->
+                                <SLMFields :fields="[
+                                    { field: 'own_date', label: 'Time to Own', type: 'SLA', assignedLevel: slaTTOName ? {id: (item as components['schemas']['Ticket']).sla_tto, name: slaTTOName} : null },
+                                    { field: 'resolution_date', label: 'Time to Resolve', type: 'SLA', assignedLevel: slaTTRName ? {id: (item as components['schemas']['Ticket']).sla_ttr, name: slaTTRName} : null },
+                                    { field: 'internal_take_into_account_date', label: 'Internal Time to Own', type: 'OLA', assignedLevel: olaTTOName ? {id: (item as components['schemas']['Ticket']).ola_tto, name: olaTTOName} : null },
+                                    { field: 'internal_resolution_date', label: 'Internal Time to Resolve', type: 'OLA', assignedLevel: olaTTRName ? {id: (item as components['schemas']['Ticket']).ola_ttr, name: olaTTRName} : null },
+                                ]"></SLMFields>
                             </div>
                         </Fluid>
                     </AccordionContent>
@@ -471,7 +469,7 @@
                 </AccordionPanel>
             </Accordion>
         </ScrollPanel>
-    </Form>
+    </AdvancedForm>
 </template>
 
 <style scoped>

@@ -1,3 +1,5 @@
+import { OpenAPISchemaDefinition } from "@/types";
+
 export class ComponentSchema {
     public readonly TYPE_STRING = 'string';
     public readonly TYPE_INTEGER = 'integer';
@@ -18,16 +20,16 @@ export class ComponentSchema {
     public readonly FORMAT_NUMBER_FLOAT = 'float';
     public readonly FORMAT_BOOLEAN_BOOLEAN = 'boolean';
 
-    private readonly properties: any;
+    private readonly properties: Record<string, OpenAPISchemaDefinition>;
     private description: string;
 
-    constructor(component_schema) {
+    constructor(component_schema: OpenAPISchemaDefinition) {
         this.description = component_schema.description || '';
         this.properties = component_schema.properties || {};
     }
 
-    flattenProperties(prefix: string = '', collapse_array_types: boolean = false, parent_obj = null) {
-        const flattened = {};
+    flattenProperties(prefix: string = '', collapse_array_types: boolean = false, parent_obj: OpenAPISchemaDefinition | null = null): Record<string, OpenAPISchemaDefinition> {
+        const flattened: Record<string, OpenAPISchemaDefinition> = {};
         const to_flatten = parent_obj?.properties || this.properties;
         for (let [name, prop] of Object.entries(to_flatten)) {
             if (collapse_array_types && prop.type === this.TYPE_ARRAY) {

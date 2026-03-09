@@ -112,6 +112,11 @@ export const useMainMenu = () => {
                     icon: "ti ti-chart-pie",
                     route: "/assistance/statistics"
                 },
+                {
+                    label: "Planning",
+                    icon: "ti ti-calendar-time",
+                    route: "/assistance/planning"
+                },
             ]
         },
         {

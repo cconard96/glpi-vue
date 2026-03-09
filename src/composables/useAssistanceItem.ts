@@ -3,10 +3,16 @@ import {type components} from "../../data/hlapiv2_schema";
 import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketRights } from "@/composables/useSessionStore";
 import { useApi } from "@/composables/useApi";
 import { useDataHelper } from "@/composables/useDataHelper";
+import { AssistanceTimelineItemtype } from "@/composables/useAssistanceTimelineItem.ts";
 
-type TimelineItem = components['schemas']['Followup'] | components['schemas']['Task'] | components['schemas']['Solution'] | components['schemas']['Document'] | components['schemas']['Approval'];
+type TimelineItem = components['schemas']['Followup'] | components['schemas']['TicketTask']
+    | components['schemas']['ChangeTask'] | components['schemas']['ProblemTask'] | components['schemas']['Solution']
+    | components['schemas']['Document'] | components['schemas']['TicketValidation'] | components['schemas']['ChangeValidation'];
 
-export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: Ref<components['schemas'][typeof itemtype]>) {
+type AssistanceType = 'Ticket' | 'Change' | 'Problem';
+type AssistanceSchema<T extends AssistanceType = AssistanceType> = components['schemas'][T];
+
+export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: Ref<AssistanceSchema<T>>) {
     const session = useSessionStore();
     const { doApiRequest } = useApi();
     const { formatDateTime } = useDataHelper();
@@ -16,95 +22,25 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         props?: Record<string, any>
     }> = shallowRef(null);
     const statuses = {
-        1: {
-            key: 'new',
-            label: 'New',
-            icon: 'ti ti-circle-filled',
-            color: '#49bf4d',
-        },
-        2: {
-            key: 'assigned',
-            label: 'Processing (Assigned)',
-            icon: 'ti ti-circle',
-            color: '#49bf4d',
-        },
-        3: {
-            key: 'planned',
-            label: 'Processing (Planned)',
-            icon: 'ti ti-calendar',
-            color: '#1b2f62',
-        },
-        4: {
-            key: 'waiting',
-            label: 'Pending',
-            icon: 'ti ti-circle-filled',
-            color: '#ffa500',
-        },
-        5: {
-            key: 'solved',
-            label: 'Solved',
-            icon: 'ti ti-circle',
-            color: '#000000',
-        },
-        6: {
-            key: 'closed',
-            label: 'Closed',
-            icon: 'ti ti-circle-filled',
-            color: '#000000',
-        },
-        7: {
-            key: 'accepted',
-            label: 'Accepted',
-            icon: 'ti ti-circle-check-filled',
-            color: '#00ff00',
-        },
-        8: {
-            key: 'observe',
-            label: 'Review',
-            icon: 'ti ti-eye',
-            color: '#000000',
-        },
-        9: {
-            key: 'eval',
-            label: 'Evaluation',
-            icon: 'ti ti-circle',
-            color: '#add8e6',
-        },
-        10: {
-            key: 'approval',
-            label: 'Approval',
-            icon: 'ti ti-help',
-            color: '#8cabdb',
-        },
-        11: {
-            key: 'test',
-            label: 'Testing',
-            icon: 'ti ti-help',
-            color: '#ffa500',
-        },
-        12: {
-            key: 'qualif',
-            label: 'Qualification',
-            icon: 'ti ti-circle',
-            color: '#ffa500',
-        },
-        13: {
-            key: 'refused',
-            label: 'Refused',
-            icon: 'ti ti-circle-x',
-            color: '#a72f00',
-        },
-        14: {
-            key: 'canceled',
-            label: 'Canceled',
-            icon: 'ti ti-ban',
-            color: '#000000',
-        }
+        1: { key: 'new', label: 'New', icon: 'ti ti-circle-filled', color: '#49bf4d' },
+        2: { key: 'assigned', label: 'Processing (Assigned)', icon: 'ti ti-circle', color: '#49bf4d' },
+        3: { key: 'planned', label: 'Processing (Planned)', icon: 'ti ti-calendar', color: '#1b2f62' },
+        4: { key: 'waiting', label: 'Pending', icon: 'ti ti-circle-filled', color: '#ffa500' },
+        5: { key: 'solved', label: 'Solved', icon: 'ti ti-circle', color: '#000000' },
+        6: { key: 'closed', label: 'Closed', icon: 'ti ti-circle-filled', color: '#000000' },
+        7: { key: 'accepted', label: 'Accepted', icon: 'ti ti-circle-check-filled', color: '#00ff00' },
+        8: { key: 'observe', label: 'Review', icon: 'ti ti-eye', color: '#000000' },
+        9: { key: 'eval', label: 'Evaluation', icon: 'ti ti-circle', color: '#add8e6' },
+        10: { key: 'approval', label: 'Approval', icon: 'ti ti-help', color: '#8cabdb' },
+        11: { key: 'test', label: 'Testing', icon: 'ti ti-help', color: '#ffa500' },
+        12: { key: 'qualif', label: 'Qualification', icon: 'ti ti-circle', color: '#ffa500' },
+        13: { key: 'refused', label: 'Refused', icon: 'ti ti-circle-x', color: '#a72f00' },
+        14: { key: 'canceled', label: 'Canceled', icon: 'ti ti-ban', color: '#000000' }
     };
 
-    const requesters = computed(() => item.value._team.filter(team => team.role === 'requester'));
-    const observers = computed(() => item.value._team.filter(team => team.role === 'observer'));
-    const assigned = computed(() => item.value._team.filter(team => team.role === 'assigned'));
+    const requesters = computed(() => item.value.team.filter(team => team.role === 'requester'));
+    const observers = computed(() => item.value.team.filter(team => team.role === 'observer'));
+    const assigned = computed(() => item.value.team.filter(team => team.role === 'assigned'));
 
     const isMyItem = computed(() => {
         return item.value.user_recipient.id === session.user_id || requesters.value.some(team => team.id === session.user_id && team.type === 'User');
@@ -238,7 +174,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         label: string,
         icon: string,
         command: () => void,
-        isAllowedAction?: ComputedRef<boolean>
+        isAllowedAction?: ComputedRef<boolean> | boolean
     }[]> = ref([
         {
             label: 'Answer',
@@ -315,8 +251,8 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
     /** The allowed timeline actions minus the main timeline action, which show as the options in the SplitButton dropdown. */
     const extraTimelineActions = computed(() => allowed_timeline_actions.value.length > 1 ? allowed_timeline_actions.value.slice(1) : []);
 
-    const statusIcon = computed(() => statuses[item.value.status] ? statuses[item.value.status].icon : '');
-    const statusColor = computed(() => statuses[item.value.status] ? statuses[item.value.status].color : '#000000');
+    const statusIcon = computed(() => statuses[item.value.status.id] ? statuses[item.value.status.id].icon : '');
+    const statusColor = computed(() => statuses[item.value.status.id] ? statuses[item.value.status.id].color : '#000000');
     const statusOptions = computed(() => {
         const statusesByItemtype = {
             'Ticket': [1, 10, 2, 3, 4, 5, 6],
@@ -409,7 +345,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
         return null;
     });
 
-    const timelineItems: Ref<Array<TimelineItem>> = ref(null);
+    const timelineItems: Ref<Array<{type: AssistanceTimelineItemtype, item: TimelineItem}>> = ref(null);
 
     function loadTimelineItems() {
         return doApiRequest(`Assistance/${itemtype}/${item.value.id}/Timeline`).then((res) => {
@@ -427,7 +363,7 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
                 const newTimelineItems = [...updated_items, ...costs];
 
                 (updated_items as Array<{type: string, item: object}>).forEach(timeline_item => {
-                    if (timeline_item.type === 'Validation' && timeline_item.item.status >= 3) {
+                    if (timeline_item.type === 'Validation' && timeline_item.item.status.id >= 3) {
                         newTimelineItems.push({
                             type: 'ValidationAnswer',
                             item: {
@@ -462,13 +398,13 @@ export function useAssistanceItem(itemtype: 'Ticket'|'Change'|'Problem', item: R
             }
         }
 
-        if ([5, 6, 8, 13, 14].includes(item.value.status)) {
+        if ([5, 6, 8, 13, 14].includes(item.value.status.id)) {
             if (item.value.date_solve) {
                 milestone_items.push({status: 'Resolution', date: formatDateTime(item.value.date_solve)});
             }
         }
 
-        if ([6, 13, 14].includes(item.value.status)) {
+        if ([6, 13, 14].includes(item.value.status.id)) {
             if (item.value.date_close) {
                 milestone_items.push({status: 'Closure', date: formatDateTime(item.value.date_close)});
             }

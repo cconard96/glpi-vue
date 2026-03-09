@@ -4,7 +4,7 @@
     import { useBaseItem } from "@/types";
     import { inject } from "vue";
 
-    const mainItem: useBaseItem = inject('mainItem');
+    const mainItem: useBaseItem<any> = inject('mainItem');
     const itemDefinition = mainItem.getDefinition();
 </script>
 
@@ -20,7 +20,7 @@
                 <span v-else class="italic">New {{ itemDefinition.getLabel(1) }}</span>
             </h1>
         </header>
-        <div v-if="mainItem.item.value.entity !== undefined">
+        <div v-if="mainItem.item.value.entity !== undefined && mainItem.item.value.entity !== null">
             <Tag class="ml-2">
                 <div class="text-ellipsis text-nowrap"><span class="float-end">Entity: {{ mainItem.item.value.entity.name }}</span></div>
                 <ToggleButton v-if="mainItem.item.value.is_recursive !== undefined" class="bg-transparent text-inherit text-(length:--p-tag-font-size) font-(--p-tag-font-weight) ps-2 py-0"

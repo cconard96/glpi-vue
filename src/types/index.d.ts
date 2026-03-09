@@ -1,4 +1,5 @@
 import type { Component, Ref } from "vue";
+import type { components } from "../../data/hlapiv2_schema";
 
 export interface BaseItemDefinition {
     key: string,
@@ -16,9 +17,9 @@ export interface BaseItemDefinition {
     canRestore: () => boolean,
 }
 
-export interface useBaseItem {
+export interface useBaseItem<T extends keyof components['schemas']> {
     getDefinition: () => BaseItemDefinition,
-    item: Ref<any>,
+    item: Ref<components['schemas'][T]>,
 }
 
 interface TabDefinition {
@@ -26,4 +27,22 @@ interface TabDefinition {
     label: string;
     icon: string;
     component: Component;
+}
+
+interface GLPICreateResponseBody {
+    id: number;
+    href: string;
+}
+
+interface OpenAPISchemaDefinition {
+    type: string;
+    format?: string;
+    description?: string;
+    properties?: Record<string, OpenAPISchemaDefinition>;
+    items?: OpenAPISchemaDefinition;
+    /** @description Custom property to indicate the internal GLPI itemtype/class related to this schema */
+    'x-itemtype'?: string;
+    'x-mapped-property'?: boolean;
+    'x-mapped-from'?: string;
+    'x-mapper'?: (value: any) => any;
 }

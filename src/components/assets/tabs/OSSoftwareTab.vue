@@ -1,17 +1,17 @@
 <script setup lang="ts">
     import { defineAsyncComponent, inject, onMounted, ref } from "vue";
     import { useApi } from "@/composables/useApi";
-    import { Form, FormField } from '@primevue/forms';
     import FormFields from "@/components/forms/FormFields.vue";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { Button, Column, DataTable, InputText, Message, Tag, useDialog } from "primevue";
     import { useDataHelper } from "@/composables/useDataHelper";
-    import { AssetCapabilities, useAssets } from "@/composables/assets/useAssets";
-    import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
+    import { AssetCapabilities, useAsset } from "@/composables/assets/useAsset.js";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
+    import ValidatedFormField from "@/components/forms/ValidatedFormField.vue";
 
     const { doGraphQLRequest, getComponentSchema } = useApi();
     const { getObjectProp, formatDate } = useDataHelper();
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
     const hasSoftwareCapability = mainItem.hasCapability(AssetCapabilities.HasSoftware);
     const hasOSCapability = mainItem.hasCapability(AssetCapabilities.HasOS);
     const hasAntivirusCapability = mainItem.hasCapability(AssetCapabilities.HasAntiviruses);
@@ -47,8 +47,7 @@
                 }
             }`).then((res) => {
                 getComponentSchema('OSInstallation').then(osinstallSchema => {
-                    const {formatFieldsForForm} = useOpenAPIForm(osinstallSchema);
-                    os_info.value = formatFieldsForForm(res.data.OSInstallation[0] || {});
+                    os_info.value = res.data.OSInstallation[0] || {};
                 });
             });
         }
@@ -101,64 +100,32 @@
 
 <template>
     <section v-if="os_info !== null">
-        <Form v-slot="$form" :initialValues="os_info" class="flex flex-col gap-4 w-full sm-w-56 px-4">
+        <AdvancedForm schemaName="OSInstallation" :initialValues="os_info" class="flex flex-col gap-4 w-full sm-w-56 px-4">
             <FormFields>
-                <FormField name="operatingsystem" v-slot="$slot">
-                    <FieldSelect label="Name"></FieldSelect>
-                </FormField>
-                <FormField name="version" v-slot="$slot">
-                    <FieldSelect label="Version"></FieldSelect>
-                </FormField>
-                <FormField name="architecture" v-slot="$slot">
-                    <FieldSelect label="Architecture"></FieldSelect>
-                </FormField>
-                <FormField name="servicepack" v-slot="$slot">
-                    <FieldSelect label="Service pack"></FieldSelect>
-                </FormField>
-                <FormField name="kernel_version" v-slot="$slot">
-                    <FieldSelect label="Kernel"></FieldSelect>
-                </FormField>
-                <FormField name="edition" v-slot="$slot">
-                    <FieldSelect label="Edition"></FieldSelect>
-                </FormField>
-                <FormField name="licenceid">
-                    <label>
-                        <span>Product ID</span>
-                        <InputText type="text"></InputText>
-                    </label>
-                </FormField>
-                <FormField name="license_number">
-                    <label>
-                        <span>Serial number</span>
-                        <InputText type="text"></InputText>
-                    </label>
-                </FormField>
-                <FormField name="company">
-                    <label>
-                        <span>Company</span>
-                        <InputText type="text"></InputText>
-                    </label>
-                </FormField>
-                <FormField name="owner">
-                    <label>
-                        <span>Owner</span>
-                        <InputText type="text"></InputText>
-                    </label>
-                </FormField>
-                <FormField v-if="os_info.date_install" name="date_install">
+                <ValidatedFormField name="operatingsystem" label="Name" :as="FieldSelect" :fieldProps="{type: 'OperatingSystem'}"></ValidatedFormField>
+                <ValidatedFormField name="version" label="Version" :as="FieldSelect" :fieldProps="{type: 'OperatingSystemVersion'}"></ValidatedFormField>
+                <ValidatedFormField name="architecture" label="Architecture" :as="FieldSelect" :fieldProps="{type: 'OperatingSystemArchitecture'}"></ValidatedFormField>
+                <ValidatedFormField name="servicepack" label="Service Pack" :as="FieldSelect" :fieldProps="{type: 'OperatingSystemServicePack'}"></ValidatedFormField>
+                <ValidatedFormField name="kernel_version" label="Kernel" :as="FieldSelect" :fieldProps="{type: 'OperatingSystemKernelVersion'}"></ValidatedFormField>
+                <ValidatedFormField name="edition" label="Edition" :as="FieldSelect" :fieldProps="{type: 'OperatingSystemEdition'}"></ValidatedFormField>
+                <ValidatedFormField name="licenceid" label="Product ID" :as="InputText" :fieldProps="{type: 'text'}"></ValidatedFormField>
+                <ValidatedFormField name="license_number" label="Serial number" :as="InputText" :fieldProps="{type: 'text'}"></ValidatedFormField>
+                <ValidatedFormField name="company" label="Company" :as="InputText" :fieldProps="{type: 'text'}"></ValidatedFormField>
+                <ValidatedFormField name="owner" label="Owner" :as="InputText" :fieldProps="{type: 'text'}"></ValidatedFormField>
+                <ValidatedFormField v-if="os_info.date_install" name="date_install">
                     <div class="flex items-baseline">
                         <span class="w-1/3 text-end me-4">Installation date</span>
                         <time class="w-2/3" :datetime="os_info.date_install" v-text="formatDate(os_info.date_install)"></time>
                     </div>
-                </FormField>
-                <FormField name="hostid">
+                </ValidatedFormField>
+                <ValidatedFormField name="hostid">
                     <label>
                         <span>Host ID</span>
                         <InputText type="text"></InputText>
                     </label>
-                </FormField>
+                </ValidatedFormField>
             </FormFields>
-        </Form>
+        </AdvancedForm>
         <DataTable v-if="antivirus_info !== null" :value="antivirus_info" class="mt-6" :rows="antivirus_info.length" sortMode="multiple" removableSort>
             <template #empty>
                 <Message severity="info">No results found.</Message>

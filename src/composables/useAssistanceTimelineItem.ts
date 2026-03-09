@@ -4,7 +4,7 @@ import { useApi } from "@/composables/useApi";
 import type { useAssistanceItem } from "@/composables/useAssistanceItem";
 import { computed, defineAsyncComponent, inject, ref, Ref } from "vue";
 
-type AssistanceTimelineItemtype = 'content'|'Followup'|'Task'|'Solution'|'Document'|'Cost'|'Validation'|'ValidationAnswer';
+export type AssistanceTimelineItemtype = 'content'|'Followup'|'Task'|'Solution'|'Document'|'Cost'|'Validation'|'ValidationAnswer';
 interface ContentItem {
     name: string;
     content: string;
@@ -19,9 +19,10 @@ interface ContentItem {
     date_creation: string|Date;
 }
 type AssistanceTimelineItem =
-    components['schemas']['Followup'] | components['schemas']['Task'] | components['schemas']['Solution']
-    | components['schemas']['Document'] | components['schemas']['Cost'] | components['schemas']['Validation']
-    | components['schemas']['ValidationAnswer'] | ContentItem;
+    components['schemas']['Followup'] | components['schemas']['TicketTask'] | components['schemas']['ChangeTask']
+    | components['schemas']['ProblemTask'] | components['schemas']['Solution'] | components['schemas']['Document']
+    | components['schemas']['TicketCost'] | components['schemas']['ChangeCost'] | components['schemas']['ProblemCost']
+    | components['schemas']['TicketValidation'] | components['schemas']['ChangeValidation'] | ContentItem;
 
 export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, item: Ref<AssistanceTimelineItem>) {
     const toast = useToast();
@@ -176,11 +177,11 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
                 // Optimistic UI
                 if (assistanceItemInstance !== null) {
                     assistanceItemInstance.timelineItems.value = assistanceItemInstance.timelineItems.value.filter(i => {
-                        return !(i.type === itemtype && i.item.id === item.value.id);
+                        return !(i.type === itemtype && i.item.id === (item.value as Exclude<AssistanceTimelineItem, ContentItem>).id);
                     });
                 }
 
-                doApiRequest(`${getRESTEndpoint(parentItemtype, parentID)}/${item.value.id}`, {
+                doApiRequest(`${getRESTEndpoint(parentItemtype, parentID)}/${(item.value as Exclude<AssistanceTimelineItem, ContentItem>).id}`, {
                     method: 'DELETE'
                 }).catch(() => {
                     toast.add({
@@ -258,7 +259,8 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
 
         if (assistanceItemInstance) {
             // find the original item in the timeline and update it optimistically
-            const originalItemIndex = assistanceItemInstance.timelineItems.value.findIndex(i => i.type === itemtype && i.item.id === item.value.id);
+            const originalItemIndex = assistanceItemInstance.timelineItems.value
+                .findIndex(i => i.type === itemtype && i.item.id === (item.value as Exclude<AssistanceTimelineItem, ContentItem>).id);
             if (originalItemIndex !== -1) {
                 assistanceItemInstance.timelineItems.value[originalItemIndex] = {
                     type: itemtype,

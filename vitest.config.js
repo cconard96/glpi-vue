@@ -22,7 +22,8 @@ export default defineConfig({
             headless: true,
         },
         globals: true,
-        hookTimeout: 10000,
+        hookTimeout: 5000,
+        testTimeout: 5000,
         snapshotSerializers: ['./node_modules/vue3-snapshot-serializer/index.js'],
         screenshotDirectory: 'tests/__screenshots__',
         resolveSnapshotPath: (testPath, snapExtension) => {

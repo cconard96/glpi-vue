@@ -1,16 +1,16 @@
 <script setup lang="ts">
     import ItemFormHeader from "@/components/forms/ItemFormHeader.vue";
-    import { useAssets, loadItem, getEmptyItem } from "@/composables/assets/useAssets";
+    import { useAsset, loadItem, getEmptyItem, type AssetType } from "@/composables/assets/useAsset.js";
     import { provide } from "vue";
     import TabbedForm from "@/components/TabbedForm.vue";
 
     const props = defineProps<{
-        component_module: string;
-        itemtype: string;
+        itemtype: AssetType;
         id?: number;
     }>();
 
-    const asset = useAssets(props.itemtype, props.id ? await loadItem(props.itemtype, props.id) : await getEmptyItem(props.itemtype));
+    const isNewItem = !props.id;
+    const asset = useAsset(props.itemtype, !isNewItem ? await loadItem(props.itemtype, props.id) : await getEmptyItem(props.itemtype));
     provide('mainItem', asset);
 </script>
 

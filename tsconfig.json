@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "esnext",
-        "moduleResolution": "nodenext",
+        "moduleResolution": "bundler",
         "importHelpers": true,
         "isolatedModules": true,
         "noEmit": true,

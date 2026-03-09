@@ -2,7 +2,7 @@ import { defineAsyncComponent, type Component, type Ref, ref } from "vue";
 import { useApi } from "@/composables/useApi";
 import { useSessionStore, BaseRights } from "@/composables/useSessionStore";
 import { type AxiosResponse } from "axios";
-import { BaseItemDefinition, TabDefinition, useBaseItem } from "@/types";
+import { BaseItemDefinition, GLPICreateResponseBody, TabDefinition, useBaseItem } from "@/types";
 import { components } from "../../../data/hlapiv2_schema";
 
 export enum AssetCapabilities {
@@ -36,6 +36,7 @@ export enum AssetCapabilities {
     HasSoftware = 'hasSoftware',
     HasVirtualization = 'hasVirtualization',
     HasVolumes = 'hasVolumes',
+    HasTemplates = 'hasTemplates',
 }
 
 export const AssetCapabilitySets = {
@@ -67,6 +68,7 @@ const builtinAssets = [
         capabilities: [
             AssetCapabilities.HasType, AssetCapabilities.HasModel, AssetCapabilities.HasAutomaticInventory,
             AssetCapabilities.HasRacks, AssetCapabilities.HasRemoteManagement, AssetCapabilities.HasReservations,
+            AssetCapabilities.HasTemplates,
             ...AssetCapabilitySets.CommonSet, ...AssetCapabilitySets.HardwareSet, ...AssetCapabilitySets.SoftwareSet,
             ...AssetCapabilitySets.NetworkingSet
         ],
@@ -80,12 +82,13 @@ const builtinAssets = [
     }
 ];
 
-type AssetType = AssetDefinition['key'];
+export type AssetType = keyof components['schemas'] & AssetDefinition['key'];
+type AssetSchema<T extends AssetType> = components['schemas'][T];
 
 const { getComponentSchema, doApiRequest, doGraphQLRequest, getCompleteFieldsRequestForSchema } = useApi();
 const { hasRight } = useSessionStore();
 
-export function loadItem(asset_type: AssetType, id: number, fields: string[] = []): Promise<Ref<components['schemas'][typeof asset_type]>> {
+export function loadItem<T extends AssetType>(asset_type: T, id: number, fields: string[] = []): Promise<Ref<AssetSchema<T>>> {
     return getComponentSchema(asset_type).then(schema => {
         const fields_to_query = fields.length > 0 ? fields.join(' ') : getCompleteFieldsRequestForSchema(schema.properties);
         return doGraphQLRequest(`
@@ -95,12 +98,12 @@ export function loadItem(asset_type: AssetType, id: number, fields: string[] = [
                 }
             }
         `).then((response) => {
-            return ref(response.data[asset_type][0]);
+            return ref(response.data[asset_type][0] satisfies AssetSchema<T>);
         });
     });
 }
 
-export function getEmptyItem(asset_type: AssetType): Promise<Ref<components['schemas'][typeof asset_type]>> {
+export function getEmptyItem<T extends AssetType>(asset_type: T): Promise<Ref<AssetSchema<T>>> {
     return getComponentSchema(asset_type).then(schema => {
         const props = {};
         if (schema && schema.properties) {
@@ -116,20 +119,20 @@ export function getEmptyItem(asset_type: AssetType): Promise<Ref<components['sch
             }
         }
         return props;
-    }).then(props => {
+    }).then((props: Record<string, object>) => {
         const new_item = {};
         for (const [key, prop] of Object.entries(props)) {
-            if (prop.hasOwnProperty('default')) {
+            if ('default' in prop) {
                 new_item[key] = prop.default;
             } else {
                 new_item[key] = null;
             }
         }
-        return new_item;
+        return ref(new_item) as Ref<AssetSchema<T>>;
     });
 }
 
-export function getDefinition(asset_type): AssetDefinition {
+export function getDefinition<T extends AssetType>(asset_type: T): AssetDefinition {
     return builtinAssets.find(asset => asset.key === asset_type);
 }
 
@@ -137,14 +140,14 @@ export function getAllDefinitions(): Array<AssetDefinition> {
     return builtinAssets;
 }
 
-export function createItem(asset_type: AssetType, fields: Record<string, any>): Promise<AxiosResponse<any>> {
+export function createItem<T extends AssetType>(asset_type: T, fields: components['schemas'][T]): Promise<AxiosResponse<GLPICreateResponseBody>> {
     return doApiRequest(getDefinition(asset_type).restEndpoint, {
         method: 'POST',
         data: fields,
     });
 }
 
-export function useAssets(asset_type: AssetType, item: Ref<components['schemas'][typeof asset_type]>): useBaseItem & {
+export function useAsset<T extends AssetType>(asset_type: T, item: Ref<components['schemas'][T]>): useBaseItem<T> & {
     getTabs: () => TabDefinition[],
     getSchema: () => Promise<any>,
     getGLPIItemtype: () => Promise<string>,

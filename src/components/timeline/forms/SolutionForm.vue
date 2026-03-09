@@ -6,6 +6,7 @@
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import { useApi } from "@/composables/useApi";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
 
     const props = defineProps<{
         initialContent?: string
@@ -15,7 +16,6 @@
     const { getComponentSchema } = useApi();
     const { resolveFields } = useOpenAPIForm(getComponentSchema('Solution'));
     defineEmits(['close', 'add']);
-    const new_timeline_item_el = useTemplateRef('new_timeline_item')
     const dialog = useDialog();
     const solution_form = useTemplateRef<FormInstance>('solution_form');
 
@@ -59,7 +59,7 @@
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
         <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
-        <Form ref="solution_form" :resolver="resolveFields" :initialValues="solution" @submit="onFormSubmit">
+        <AdvancedForm schemaName="Solution" ref="solution_form" :resolver="resolveFields" :initialValues="solution" @submit="onFormSubmit">
             <Card :pt="{
                 body: {
                     class: `bg-cyan-300/50 dark:bg-cyan-700/25`,
@@ -109,7 +109,7 @@
                     <Button type="submit" icon="ti ti-plus" label="Add"></Button>
                 </template>
             </Card>
-        </Form>
+        </AdvancedForm>
     </div>
 </template>
 

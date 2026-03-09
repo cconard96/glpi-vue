@@ -2,10 +2,10 @@
     import { Button, Column, DataTable } from "primevue";
     import { useApi } from "@/composables/useApi";
     import { inject, onMounted, ref } from "vue";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import type { useAsset } from "@/composables/assets/useAsset.js";
 
     const { doGraphQLRequest } = useApi();
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
     const remote_mgmt_info = ref(null);
 
     function getRemoteLinks(type: string, remoteid: string): Array<{uri: string, label: string}> {

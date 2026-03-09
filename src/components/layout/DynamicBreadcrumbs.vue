@@ -8,9 +8,11 @@
         return currentRoute?.meta?.breadcrumbs ? currentRoute.meta.breadcrumbs(currentRoute) : [];
     });
 
-    const component_module = currentRoute.params.component_module as string;
-    const itemtype = currentRoute.params.itemtype as string;
+    const itemtype = currentRoute?.params?.itemtype ? (currentRoute.params.itemtype.charAt(0).toUpperCase() + currentRoute.params.itemtype.slice(1)) : null;
     const items_id = parseInt(currentRoute.params.id as string);
+    const breadcrumbActionsComponent = computed(() => {
+        return currentRoute?.meta?.breadcrumbActionsComponent ? currentRoute.meta.breadcrumbActionsComponent(currentRoute) : null;
+    });
 </script>
 
 <template>
@@ -33,14 +35,9 @@
                 </span>
             </template>
         </Breadcrumb>
-<!--        <div v-if="itemtype_model" class="content-center">-->
-<!--            <Button v-if="itemtype_model.canCreate()" label="Add" size="small" v-slot="slotProps">-->
-<!--                <RouterLink :class="slotProps.class" :to="{ name: 'NewItemForm', params: { component_module: component_module, itemtype: itemtype } }">-->
-<!--                    <i class="ti ti-plus"></i>-->
-<!--                    <span class="p-button-label">Add</span>-->
-<!--                </RouterLink>-->
-<!--            </Button>-->
-<!--        </div>-->
+        <div class="content-center">
+            <component v-if="breadcrumbActionsComponent" :is="breadcrumbActionsComponent" :itemtype="itemtype" :items_id="items_id"></component>
+        </div>
     </div>
 </template>
 

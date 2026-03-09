@@ -2,8 +2,9 @@
     import {DataTable, Column, InputText, SelectButton, Message} from 'primevue';
     import { useApi, type SearchResult } from '@/composables/useApi.ts';
     import { ComponentSchema } from "@/api/ComponentSchema";
-    import {computed, onMounted, ref, watch} from "vue";
+    import { computed, onMounted, PropType, ref, watch } from "vue";
     import { useRoute } from 'vue-router';
+    import { components } from "../../../data/hlapiv2_schema";
 
     const { component_module, itemtype } = defineProps({
         component_module: {
@@ -11,7 +12,7 @@
             required: true
         },
         itemtype: {
-            type: String,
+            type: String as PropType<keyof components['schemas']>,
             required: true
         }
     });
@@ -25,7 +26,7 @@
     // For recursive/nested properties, use dot notation for now
 
     const flattened_properties = schema.flattenProperties();
-    const columns = [];
+    const columns: Array<{field: string, header: string, type: string, format: string}> = [];
     // Object.keys(flattened_properties).map(key => ({
     //     field: key,
     //     header: key
@@ -53,7 +54,10 @@
         if (useRoute().query.filter) {
             return `${useRoute().query.filter};is_deleted==${is_deleted.value ? 1 : 0}`;
         }
-        return `is_deleted==${is_deleted.value ? 1 : 0};${default_filter}`;
+        if ('is_deleted' in flattened_properties) {
+            return `is_deleted==${is_deleted.value ? 1 : 0};${default_filter}`;
+        }
+        return default_filter;
     });
     watch(filter, () => {
         updateResults();

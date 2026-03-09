@@ -7,6 +7,14 @@
         enable_file_upload: {
             type: Boolean,
             default: false
+        },
+        editorProps: {
+            type: Object,
+            default: () => ({})
+        },
+        fileUploadProps: {
+            type: Object,
+            default: () => ({})
         }
     });
 
@@ -15,8 +23,8 @@
 
 <template>
     <div>
-        <Editor editorStyle="height: 150px" v-model="model"></Editor>
-        <FileUpload v-if="enable_file_upload"></FileUpload>
+        <Editor editorStyle="height: 150px" v-model="model" v-bind="editorProps"></Editor>
+        <FileUpload v-if="enable_file_upload" v-bind="fileUploadProps"></FileUpload>
     </div>
 </template>
 

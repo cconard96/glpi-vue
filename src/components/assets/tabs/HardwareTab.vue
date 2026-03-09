@@ -6,7 +6,7 @@
     import { useApi } from "@/composables/useApi";
     import { inject, onMounted, ref, watch } from "vue";
     import { useDataHelper } from "@/composables/useDataHelper";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import type { useAsset } from "@/composables/assets/useAsset.js";
 
 
     const { doGraphQLRequest } = useApi();
@@ -169,7 +169,7 @@
     };
     const connections_info = ref(null);
     const loaded_connections = ref(false);
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
 
     onMounted(async () => {
         // Load data for summary

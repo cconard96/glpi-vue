@@ -1,32 +1,72 @@
 import { useApi } from '@/composables/useApi.ts';
+import { defineAsyncComponent } from "vue";
+import { RouteLocationNormalizedGeneric, RouteRecordRaw } from "vue-router";
 
-export const routes = [
+function normalizeItemtype<T extends string>(itemtype: T): Capitalize<T> {
+    return (itemtype.charAt(0).toUpperCase() + itemtype.slice(1)) as Capitalize<T>;
+}
+
+function getComponentModuleLabel(component_module: string): string {
+    switch (component_module) {
+        case 'assets':
+            return 'Assets';
+        case 'assistance':
+            return 'Assistance';
+        case 'management':
+            return 'Management';
+        case 'tools':
+            return 'Tools';
+        case 'administration':
+            return 'Administration';
+        case 'setup':
+            return 'Setup';
+        default:
+            return component_module.charAt(0).toUpperCase() + component_module.slice(1);
+    }
+}
+
+function getComponentModuleBreadcrumbActionsComponent(component_module: string) {
+    switch (component_module) {
+        case 'assets':
+            return defineAsyncComponent(() => import('../components/layout/AssetItemBreadcrumbActions.vue'));
+        default:
+            return null;
+    }
+}
+
+const allModulesPattern = 'assets|assistance|management|tools|administration|setup';
+const itemtypePattern = '[a-zA-Z_]+';
+
+export const routes: RouteRecordRaw[] = [
     { name: 'Login', path: '/login', component: () => import('../views/LoginView.vue'), meta: {requiresAuth: false} },
     {
         name: 'Home',
         path: '/',
         component: () => import('../views/HomeView.vue'),
         children: [
-            {
-                name: 'Central',
-                path: '/',
-                component: () => import('../components/home/CentralView.vue'),
-                props: true,
-            },
+            { name: 'Central', path: '/', component: () => import('../components/home/CentralView.vue'), props: true },
             {
                 name: 'Search',
-                path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype',
+                path: `:component_module(${allModulesPattern})/:itemtype(${itemtypePattern})`,
                 component: () => import('../components/search/SearchComponent.vue'),
-                props: true,
+                props: (route) => {
+                    return {
+                        component_module: route.params.component_module as string,
+                        itemtype: normalizeItemtype(route.params.itemtype as string),
+                    };
+                },
                 meta: {
-                    title: (route) => `Search ${route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1)}`,
-                    breadcrumbs: (route) => {
+                    title: (route: RouteLocationNormalizedGeneric) => `Search ${normalizeItemtype(route.params.itemtype as string)}`,
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
                         return [
                             ...route.params.component_module ? [
-                                { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
+                                { label: getComponentModuleLabel(route.params.component_module as string), disabled: true }
                             ] : [],
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` }
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/${route.params.component_module}/${route.params.itemtype}` }
                         ];
+                    },
+                    breadcrumbActionsComponent: (route: RouteLocationNormalizedGeneric) => {
+                        return getComponentModuleBreadcrumbActionsComponent(route.params.component_module as string);
                     }
                 }
             },
@@ -34,18 +74,18 @@ export const routes = [
                 name: 'ITILTimeline',
                 path: 'assistance/:itemtype(ticket|change|problem)/:id(\\d+)',
                 component: () => import('../components/timeline/TimelineView.vue'),
-                props: (route) => {
-                    const id = parseInt(route.params.id);
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    const id = parseInt(route.params.id as string);
                     return {
                         itemtype: route.params.itemtype,
                         id: isNaN(id) ? null : id,
                     };
                 },
                 meta: {
-                    breadcrumbs: (route) => {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
                         return [
-                            { label: 'Assistance', disabled: true },
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/assistance/${route.params.itemtype}` },
+                            { label: getComponentModuleLabel('assistance'), disabled: true },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/assistance/${route.params.itemtype}` },
                         ];
                     }
                 }
@@ -66,42 +106,41 @@ export const routes = [
             },
             {
                 name: 'AssetItemForm',
-                path: ':component_module(assets)/:itemtype/:id(\\d+)',
+                path: `:component_module(assets)/:itemtype(${itemtypePattern})/:id(\\d+)`,
                 component: () => import('../components/assets/AssetItemView.vue'),
-                props: (route) => {
+                props: (route: RouteLocationNormalizedGeneric) => {
                     return {
                         component_module: 'assets',
-                        itemtype: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1),
-                        id: parseInt(route.params.id),
+                        itemtype: normalizeItemtype(route.params.itemtype as string),
+                        id: parseInt(route.params.id as string),
                     };
                 },
                 meta: {
-                    breadcrumbs: (route) => {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
                         return [
-                            ...route.params.component_module ? [
-                                { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
-                            ] : [],
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` },
+                            { label: getComponentModuleLabel('assets'), disabled: true },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/assets/${route.params.itemtype}` },
                         ];
                     },
+                    breadcrumbActionsComponent: () => getComponentModuleBreadcrumbActionsComponent('assets'),
                 }
             },
             {
                 name: 'AssetItemFormByUniqueField',
-                path: ':component_module(assets)/:itemtype/:unique_field(uuid|name|serial|otherserial)/:unique_value',
+                path: `:component_module(assets)/:itemtype(${itemtypePattern})/:unique_field(uuid|name|serial|otherserial)/:unique_value`,
                 component: () => import('../components/assets/AssetItemView.vue'),
-                beforeEnter: async (to) => {
+                beforeEnter: async (to: RouteLocationNormalizedGeneric) => {
                     const { doGraphQLRequest } = useApi();
-                    const itemtype = to.params.itemtype.charAt(0).toUpperCase() + to.params.itemtype.slice(1);
+                    const itemtype = normalizeItemtype(to.params.itemtype as string);
                     const unique_field = to.params.unique_field;
                     const unique_value = to.params.unique_value;
                     return await doGraphQLRequest(`query { ${itemtype}(filter: "${unique_field}=='${unique_value}'") { id } }`).then(response => {
                         const items = response.data[itemtype];
                         if (items.length === 1) {
-                            return {path: `/${to.params.component_module}/${to.params.itemtype}/${items[0].id}`};
+                            return {path: `/assets/${to.params.itemtype}/${items[0].id}`};
                         } else if (items.length > 1) {
                             // multiple results, redirect to search page with filter
-                            return { path: `/${to.params.component_module}/${to.params.itemtype}`, query: { filter: `${unique_field}=='${unique_value}'` } };
+                            return { path: `/assets/${to.params.itemtype}`, query: { filter: `${unique_field}=='${unique_value}'` } };
                         } else {
                             return { name: 'NotFound' };
                         }
@@ -109,11 +148,32 @@ export const routes = [
                 }
             },
             {
+                name: 'NewAssetItemForm',
+                path: `:component_module(assets)/:itemtype(${itemtypePattern})/new`,
+                component: () => import('../components/assets/AssetItemView.vue'),
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    return {
+                        component_module: 'assets',
+                        itemtype: normalizeItemtype(route.params.itemtype as string),
+                        id: 0,
+                    };
+                },
+                meta: {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
+                        return [
+                            { label: getComponentModuleLabel('assets'), disabled: true },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/assets/${route.params.itemtype}` },
+                        ];
+                    },
+                    breadcrumbActionsComponent: () => getComponentModuleBreadcrumbActionsComponent('assets'),
+                }
+            },
+            {
                 name: 'ItemForm',
                 path: ':component_module(assistance|management|tools|administration|setup)/:itemtype/:id(\\d+)',
                 component: () => import('../components/TabbedForm.vue'),
-                props: (route) => {
-                    const id = parseInt(route.params.id);
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    const id = parseInt(route.params.id as string);
                     return {
                         component_module: route.params.component_module,
                         itemtype: route.params.itemtype,
@@ -121,35 +181,31 @@ export const routes = [
                     };
                 },
                 meta: {
-                    breadcrumbs: (route) => {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
                         return [
                             ...route.params.component_module ? [
-                                { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
+                                { label: getComponentModuleLabel(route.params.component_module as string), disabled: true }
                             ] : [],
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/${route.params.component_module}/${route.params.itemtype}` },
                         ];
                     }
                 }
             },
             {
                 name: 'NewItemForm',
-                path: ':component_module(assets|assistance|management|tools|administration|setup)/:itemtype/new',
+                path: ':component_module(assistance|management|tools|administration|setup)/:itemtype/new',
                 component: () => import('../components/TabbedForm.vue'),
                 props: true,
                 meta: {
-                    breadcrumbs: (route) => {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
                         return [
                             ...route.params.component_module ? [
-                                { label: route.params.component_module.charAt(0).toUpperCase() + route.params.component_module.slice(1), disabled: true }
+                                { label: getComponentModuleLabel(route.params.component_module as string), disabled: true }
                             ] : [],
-                            { label: route.params.itemtype.charAt(0).toUpperCase() + route.params.itemtype.slice(1), route: `/${route.params.component_module}/${route.params.itemtype}` },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/${route.params.component_module}/${route.params.itemtype}` },
                         ];
                     }
                 }
-            },
-            {
-                name: 'ProjectKanban',
-                path: 'tools/project/:id/kanban',
             },
             {
                 name: 'Knowbase',

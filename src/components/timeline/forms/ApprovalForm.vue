@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Avatar, Card, Button, Select, FloatLabel, useToast, Fluid, Message } from "primevue";
-    import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
+    import { FormSubmitEvent } from '@primevue/forms';
     import {useSessionStore} from "@/composables/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
@@ -8,17 +8,19 @@
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
     import FieldSelect from "@/components/forms/FieldSelect.vue";
     import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
+    import ValidatedFormField from "@/components/forms/ValidatedFormField.vue";
 
     const { getFriendlyName, getUserID } = useSessionStore();
     const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
-    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(getComponentSchema('Approval'));
     const emits = defineEmits(['close', 'add']);
     const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
     const assistanceItemInstance = inject('assistanceItemInstance');
+    const { resolveFields } = useOpenAPIForm(getComponentSchema(`${assistanceItemInstance.itemtype as 'Ticket' | 'Change'}Validation`));
     const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Validation', ref({
         requester: getUserID
     })));
-    const approval = ref(formatFieldsForForm(assistanceTimelineItemInstance?.item.value));
+    const approval = ref(assistanceTimelineItemInstance?.item.value);
     const toast = useToast();
 
     const approval_form = useTemplateRef('approval_form');
@@ -83,7 +85,7 @@
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
         <Avatar icon="ti ti-user" class="ms-2" :title="getFriendlyName" size="large"></Avatar>
-        <Form ref="approval_form" :initialValues="approval" :resolver="resolveFields" @submit="onSubmit">
+        <AdvancedForm :schemaName="`${assistanceItemInstance.itemtype as 'Ticket' | 'Change'}Validation`" ref="approval_form" :initialValues="approval" :resolver="resolveFields" @submit="onSubmit">
             <Card :pt="{
                 body: {
                     class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor.value}`,
@@ -99,15 +101,18 @@
                     <Message>Not implemented yet</Message>
                     <div class="flex flex-col mb-2 -mt-2">
                         <Fluid class="grid grid-cols-2 gap-2 mb-2">
-                            <FormField name="approval_template">
-                                <FieldSelect label="Template" type="ApprovalTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
-                            </FormField>
-                            <FormField name="approval_step">
-                                <FieldSelect label="Approval step" type="ApprovalStep" label_type="on"></FieldSelect>
-                            </FormField>
-                            <FormField name="requester">
-                                <FieldSelect label="Requester" :options="[{ key: getUserID, label: getFriendlyName }]" optionValue="key" optionLabel="label" label_type="on"></FieldSelect>
-                            </FormField>
+                            <ValidatedFormField name="approval_template" label="Approval template" :as="FieldSelect"
+                                                :fieldProps="{type: 'ValidationTemplate', label_type: 'on'}"
+                                                @change="applySelectedTemplate"></ValidatedFormField>
+                            <ValidatedFormField name="approval_step" label="Approval step" :as="FieldSelect" :fieldProps="{type: 'ApprovalStep', label_type: 'on'}"></ValidatedFormField>
+                            <ValidatedFormField name="requester" label="Requester" :as="FieldSelect"
+                                                :fieldProps="{
+                                                    options: [{key: getUserID, label: getFriendlyName}],
+                                                    optionValue: 'key',
+                                                    optionLabel: 'label',
+                                                    label_type: 'on'
+                                                }">
+                            </ValidatedFormField>
                             <FloatLabel variant="on">
                                 <Select inputId="approver" name="approver"
                                         filterMode="lenient" :options="[]"
@@ -117,14 +122,19 @@
                                 <label for="approver">Approver</label>
                             </FloatLabel>
                         </Fluid>
-                        <RichTextEditor :enable_file_upload="true"></RichTextEditor>
+                        <ValidatedFormField name="submission_comment" :as="RichTextEditor" :fieldProps="{
+                            enable_file_upload: true,
+                            editorProps: {
+                                'aria-label': 'Submission comment'
+                            }
+                        }"></ValidatedFormField>
                     </div>
                 </template>
                 <template #footer>
                     <Button icon="ti ti-plus" label="Add"></Button>
                 </template>
             </Card>
-        </Form>
+        </AdvancedForm>
     </div>
 </template>
 

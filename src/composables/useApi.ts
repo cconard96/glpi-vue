@@ -6,6 +6,12 @@ import { SetContextLink } from "@apollo/client/link/context";
 import { gql } from "graphql-tag";
 import { useAuth } from "./useAuth";
 import { useSessionStore } from "./useSessionStore";
+import {type components} from "../../data/hlapiv2_schema";
+import { OpenAPISchemaDefinition } from "@/types";
+
+interface GraphQLResponseData {
+    errors?: any;
+}
 
 let api_schema = null;
 // Map of lowercase component names to actual component names
@@ -122,7 +128,8 @@ export function useApi() {
         });
     }
 
-    const getComponentSchema = (component_name) => {
+    const getComponentSchema =
+        <T extends keyof components['schemas']>(component_name: T): Promise<OpenAPISchemaDefinition> => {
         return getComponents().then(components => {
             return normalizeComponentName(component_name).then(normalized_name => {
                 return components.schemas ? components.schemas[normalized_name] : null;
@@ -173,9 +180,9 @@ export function useApi() {
         });
     };
 
-    const doGraphQLRequest = (query, variables = {}, fetchPolicy: FetchPolicy = 'no-cache', errorPolicy: ErrorPolicy = null) => {
-        return apollo_client.query({
-            variables: variables as intrinsic,
+    const doGraphQLRequest = <T>(query: string, variables = {}, fetchPolicy: FetchPolicy = 'no-cache', errorPolicy: ErrorPolicy = null) => {
+        return apollo_client.query<GraphQLResponseData & T>({
+            variables: variables,
             query: gql`${query}`,
             fetchPolicy: fetchPolicy,
             errorPolicy: errorPolicy,
@@ -204,7 +211,7 @@ export function useApi() {
         });
     }
 
-    function getCompleteFieldsRequestForSchema(properties, parent_property_name = null, parent_property_info = null) {
+    function getCompleteFieldsRequestForSchema(properties: OpenAPISchemaDefinition | {}, parent_property_name = null, parent_property_info = null) {
         let fields_query_part = ''
         // Convert OpenAPI properties to GraphQL fields request
         for (let [property_name, property_info] of Object.entries(properties)) {

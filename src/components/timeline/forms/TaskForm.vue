@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Button, Card, DatePicker, FloatLabel, Fluid, InputMask, ToggleSwitch } from "primevue";
-    import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
+    import { FormField, FormSubmitEvent } from '@primevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/composables/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/components/forms/RichTextEditor.vue";
@@ -10,19 +10,20 @@
     import { useDataHelper } from "@/composables/useDataHelper";
     import { useAssistanceTimelineItem } from "@/composables/useAssistanceTimelineItem";
     import { useAssistanceItem } from "@/composables/useAssistanceItem";
+    import AdvancedForm from "@/components/forms/AdvancedForm.vue";
 
     const { getFriendlyName, hasRight, getUserID } = useSessionStore();
     const { getDurationFromMaskedInput, getMaskedInputFromDuration } = useDataHelper();
     const assistanceItemInstance = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance', null);
-    const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
-    const { resolveFields, formatFieldsForForm } = useOpenAPIForm(await getComponentSchema(`${assistanceItemInstance.itemtype}Task`));
+    const { getComponentSchema, doGraphQLRequest } = useApi();
+    const { resolveFields } = useOpenAPIForm(await getComponentSchema(`${assistanceItemInstance.itemtype}Task`));
     const { formatUsername } = useDataHelper();
     const emits = defineEmits(['close', 'add']);
     const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Task', ref({
         state: 1,
     })));
     const task = ref({
-        ...formatFieldsForForm(assistanceTimelineItemInstance?.item.value),
+        ...assistanceTimelineItemInstance?.item.value,
         duration: assistanceTimelineItemInstance?.item.value.duration ? getMaskedInputFromDuration(assistanceTimelineItemInstance.item.value.duration * 60) : '00:00'
     });
     const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
@@ -101,7 +102,7 @@
 
 <template>
     <div ref="new_timeline_item" class="flex mb-4 flex-row-reverse">
-        <Form ref="task_form" :initial-values="task" :resolver="resolveFields" @submit="onFormSubmit">
+        <AdvancedForm :schemaName="`${assistanceItemInstance.itemtype}Task`" ref="task_form" :initial-values="task" :resolver="resolveFields" @submit="onFormSubmit">
             <Card :pt="{
                 body: {
                     class: `p-4 ${assistanceTimelineItemInstance.itemBackgroundColor.value}`,
@@ -190,7 +191,7 @@
                     <Button type="submit" :icon="task.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="task.id ? 'Save' : 'Add'"></Button>
                 </template>
             </Card>
-        </Form>
+        </AdvancedForm>
     </div>
 </template>
 

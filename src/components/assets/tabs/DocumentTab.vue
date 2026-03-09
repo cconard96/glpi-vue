@@ -3,13 +3,13 @@
     import FileUpload from "@/components/forms/FileUpload.vue";
     import { useApi } from "@/composables/useApi";
     import { inject, onMounted, ref } from "vue";
-    import type { useAssets } from "@/composables/assets/useAssets";
+    import type { useAsset } from "@/composables/assets/useAsset.js";
     import { useDataHelper } from "@/composables/useDataHelper";
 
     const { doGraphQLRequest } = useApi();
     const { formatDate } = useDataHelper();
     const document_info = ref(null);
-    const mainItem: ReturnType<typeof useAssets> = inject('mainItem');
+    const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
 
     onMounted(() => {
         doGraphQLRequest(`
