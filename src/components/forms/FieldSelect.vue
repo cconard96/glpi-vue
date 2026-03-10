@@ -172,7 +172,7 @@
 <!--                    :optionValue="optionValue" :optionLabel="optionLabel" v-model="model" :options="options"-->
 <!--                    filter :showClear="showClear" @change="$emit('change', $event)" @beforeShow="onLazyLoadTree"-->
 <!--        ></TreeSelect>-->
-        <Select v-if="!multiple" v-bind="formField.field.props" :aria-labelledby="labelID" class="min-w-32" :class="label_type === 'inline' ? 'w-full' : ''"
+        <Select v-if="!multiple" v-bind="formField.field.props" :aria-labelledby="labelID" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"
                 :optionValue="optionValue" :optionLabel="optionLabel" v-model="selectedValue" :options="options"
                 :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus :showClear="showClear"
                 @change="$emit('change', $event)"
@@ -192,7 +192,7 @@
                 <slot name="option" v-bind="slotProps"></slot>
             </template>
         </Select>
-        <MultiSelect v-else v-bind="formField.field.props" :aria-labelledby="labelID" class="min-w-32" :class="label_type === 'inline' ? 'w-full' : ''"
+        <MultiSelect v-else v-bind="formField.field.props" :aria-labelledby="labelID" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"
                      :dataKey="optionValue" :optionValue="optionValue" :optionLabel="optionLabel" v-model="selectedValue" :options="options"
                      :virtual-scroller-options="virtual_scroller_options" filter autoFilterFocus display="chip" show-clear
                      :pt:label="{
