@@ -6,6 +6,7 @@
     import {useSessionStore} from "@/composables/useSessionStore";
     import {useRouter} from "vue-router";
     import {useDataHelper} from "@/composables/useDataHelper";
+    import CommentsPanel from "@/components/kb/CommentsPanel.vue";
 
     const props = defineProps({
         article_id: {
@@ -60,8 +61,6 @@
         return mod_date > creation_date;
     });
     const comments_opened = ref(false);
-    const comments = ref([]);
-    const comment_expanded_keys = ref(new Map<string, boolean>());
 
     function toggleShareOptions(e) {
         if (share_popover_el.value) {
@@ -74,43 +73,6 @@
             actions_menu_el.value.toggle(e);
         }
     }
-
-    watch(comments_opened, (v) => {
-        if (!loading.value && v) {
-            // Load comments
-            doGraphQLRequest(`
-                query {
-                    KBArticleComment (filter: "kbarticle.id==${article.value.id}") {
-                        id comment date_creation date_mod
-                        kbarticle { id }
-                        user { id username firstname realname }
-                        parent { id comment date_creation date_mod user { id username firstname realname } }
-                    }
-                }
-            `).then((res) => {
-                const comments_data = res.data.KBArticleComment;
-                // build comment tree
-                const comment_map: Record<string, any> = {};
-                comments_data.forEach((comment: any) => {
-                    comment_expanded_keys.value.set(comment.id, true);
-                    comment.children = [];
-                    comment_map[comment.id] = {
-                        ...comment,
-                        key: comment.id
-                    };
-                });
-                const comment_tree: any[] = [];
-                comments_data.forEach((comment: any) => {
-                    if (comment.parent && comment_map[comment.parent.id]) {
-                        comment_map[comment.parent.id].children.push(comment);
-                    } else {
-                        comment_tree.push(comment);
-                    }
-                });
-                comments.value = comment_tree;
-            });
-        }
-    });
 </script>
 
 <template>
@@ -163,31 +125,7 @@
         <div v-else-if="loading" class="flex justify-center items-center h-64">
             <ProgressSpinner />
         </div>
-        <Card ref="comments_panel" v-if="comments_opened" class="h-full overflow-hidden" role="complementary" aria-label="Comments"
-              :pt="{ body: { class: 'h-full' }, content: { class: 'overflow-auto grow-1' } }">
-            <template #content>
-                <Tree :value="comments" :expandedKeys="comment_expanded_keys">
-                    <template #default="{node}">
-                        <Card>
-                            <template #title>
-                                <span v-text="formatUsername(node.user)"></span>
-                            </template>
-                            <template #subtitle>
-                                <time :datetime="new Date(node.date_creation).toISOString()">
-                                    {{ formatDate(node.date_creation, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
-                                </time>
-                            </template>
-                            <template #content>
-                                <span class="ms-2" v-text="node.comment"></span>
-                            </template>
-                        </Card>
-                    </template>
-                </Tree>
-            </template>
-            <template #footer>
-                <InputText placeholder="Add a comment..." fluid></InputText>
-            </template>
-        </Card>
+        <CommentsPanel v-if="comments_opened" :article="article" ref="comments_panel"></CommentsPanel>
     </div>
 </template>
 

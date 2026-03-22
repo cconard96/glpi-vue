@@ -56,7 +56,8 @@
             <Menubar v-else :model="items" :pt="{
                 rootlist: {
                     'class': 'justify-self-start z-1000 w-auto max-w-screen'
-                }
+                },
+                root: { class: 'p-2' },
             }"></Menubar>
         </div>
     </nav>

@@ -1,0 +1,14 @@
+{
+    "login": {
+        "button": {
+            "login": "Login"
+        },
+        "error": {
+            "fatalAppError": "An error occurred. Please login again.",
+            "session_expired": "Your session has expired"
+        },
+        "password": "Password",
+        "title": "{brandName} - Login",
+        "username": "Username"
+    }
+}

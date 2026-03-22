@@ -120,10 +120,10 @@ export function useDataHelper() {
      * If the difference between the current time and the timestamp is greater than this cutoff, the function will return the absolute time instead of the relative time.
      * Defaults to 24 hours.
      */
-    function formatRelativeTime(timestamp: string|Date, relativeCutoff: number = 24 * 60 * 60): string {
+    function formatRelativeTime(timestamp: number|string|Date, relativeCutoff: number = 24 * 60 * 60): string {
         const date = new Date(timestamp);
         const now = new Date();
-        const diff = Math.floor((now - date) / 1000); // difference in seconds
+        const diff = Math.floor((now.getTime() - date.getTime()) / 1000); // difference in seconds
 
         if (relativeCutoff !== undefined && diff > relativeCutoff) {
             return date.toLocaleString();

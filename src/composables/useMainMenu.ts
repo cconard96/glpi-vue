@@ -23,7 +23,7 @@ export const useMainMenu = () => {
                 {
                     label: "Network devices",
                     icon: "ti ti-network",
-                    route: "/assets/networkequipment"
+                    route: "/assets/NetworkEquipment"
                 },
                 {
                     label: "Peripherals",
@@ -326,9 +326,9 @@ export const useMainMenu = () => {
                     route: "/setup/servicelevel"
                 },
                 {
-                    label: "General",
+                    label: "Settings",
                     icon: "ti ti-adjustments",
-                    route: "/setup/general"
+                    route: "/setup/settings"
                 },
                 {
                     label: "Fields unicity",

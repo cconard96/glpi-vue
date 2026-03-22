@@ -29,7 +29,8 @@
 
     const props = defineProps<{
         itemtype: 'Ticket' | 'Change' | 'Problem',
-        item: components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']
+        item: components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem'],
+        formID: string,
     }>();
 
     const toast = useToast();
@@ -246,7 +247,7 @@
 </script>
 
 <template>
-    <AdvancedForm :schemaName="itemtype" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
+    <AdvancedForm :id="formID" :schemaName="itemtype" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
         <ScrollPanel>
             <Accordion :value="['main', 'actors']" multiple>
                 <AccordionPanel value="main">

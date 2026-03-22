@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { useApi } from "@/composables/useApi";
 import {components} from "../../data/hlapiv2_schema";
 
+// oxlint-disable-next-line no-unused-vars
 interface EntityTreeNode {
     key: number,
     label: string,
@@ -215,7 +216,7 @@ export const ITILSubItemRights = {
     SEEPRIVATEGROUPS: 65536,
 }
 
-export const ApprovalRights = {
+export const TicketApprovalRights = {
     /** Can create approval requests for "Request" type of tickets */
     CREATEREQUEST: 1024,
     /** Can create approval requests for "Incident" type of tickets */
@@ -226,7 +227,22 @@ export const ApprovalRights = {
     VALIDATEINCIDENT: 8192,
 }
 
+export const ChangeApprovalRights = {
+    VALIDATE: 1024,
+}
+
+export const BaseAssistanceRights = {
+    READMY: 1,
+    UPDATE: 2,
+    CREATE: 4,
+    DELETE: 8,
+    PURGE: 16,
+    READALL: 1024,
+    SURVEY: 131072,
+}
+
 export const TicketRights = {
+    ...BaseAssistanceRights,
     READGROUP: 2048,
     READASSIGN: 4096,
     ASSIGN: 8192,

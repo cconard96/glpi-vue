@@ -1,9 +1,11 @@
-import { defineAsyncComponent, type Component, type Ref, ref } from "vue";
+import { defineAsyncComponent, type Ref, ref } from "vue";
 import { useApi } from "@/composables/useApi";
 import { useSessionStore, BaseRights } from "@/composables/useSessionStore";
 import { type AxiosResponse } from "axios";
-import { BaseItemDefinition, GLPICreateResponseBody, TabDefinition, useBaseItem } from "@/types";
+import { BaseItemDefinition, GLPICreateResponseBody, SchemaName, TabDefinition, useBaseItem } from "@/types";
 import { components } from "../../../data/hlapiv2_schema";
+import { useRouter } from "vue-router";
+import { ToastServiceMethods } from "primevue";
 
 export enum AssetCapabilities {
     HasType = 'hasType',
@@ -55,7 +57,33 @@ type AssetDefinition = BaseItemDefinition & {
     capabilities: AssetCapabilities[],
 }
 
-const builtinAssets = [
+const getDefaultRightChecks = (rightname: string) => {
+    return {
+        canView: () => hasRight(rightname, BaseRights.READ),
+        canCreate: () => hasRight(rightname, BaseRights.CREATE),
+        canUpdate: () => hasRight(rightname, BaseRights.UPDATE),
+        canDelete: () => hasRight(rightname, BaseRights.DELETE),
+        canPurge: () => hasRight(rightname, BaseRights.PURGE),
+        canRestore: () => hasRight(rightname, BaseRights.PURGE),
+    }
+}
+
+const builtinAssets: Array<{
+    key: SchemaName,
+    module: string,
+    restEndpoint: string,
+    getLabel: (count: number) => string,
+    icon: string,
+    rightname: string,
+    capabilities: AssetCapabilities[],
+    main_tab_component: ReturnType<typeof defineAsyncComponent>,
+    canView: () => boolean,
+    canCreate: () => boolean,
+    canUpdate: () => boolean,
+    canDelete: () => boolean,
+    canPurge: () => boolean,
+    canRestore: () => boolean,
+}> = [
     {
         key: 'Computer',
         module: 'assets',
@@ -73,12 +101,95 @@ const builtinAssets = [
             ...AssetCapabilitySets.NetworkingSet
         ],
         main_tab_component: defineAsyncComponent(() => import('@/components/assets/ComputerForm.vue')),
-        canView: () => hasRight('computer', BaseRights.READ),
-        canCreate: () => hasRight('computer', BaseRights.CREATE),
-        canUpdate: () => hasRight('computer', BaseRights.UPDATE),
-        canDelete: () => hasRight('computer', BaseRights.DELETE),
-        canPurge: () => hasRight('computer', BaseRights.PURGE),
-        canRestore: () => hasRight('computer', BaseRights.PURGE),
+        ...getDefaultRightChecks('computer'),
+    },
+    {
+        key: 'Monitor',
+        module: 'assets',
+        restEndpoint: 'Assets/Monitor',
+        getLabel: (count: number) => {
+            return count === 1 ? 'Monitor' : 'Monitors';
+        },
+        icon: 'ti ti-device-desktop',
+        rightname: 'monitor',
+        capabilities: [
+            AssetCapabilities.HasType, AssetCapabilities.HasModel, AssetCapabilities.HasAutomaticInventory,
+            AssetCapabilities.HasRacks, AssetCapabilities.HasReservations, AssetCapabilities.HasTemplates,
+            ...AssetCapabilitySets.CommonSet, ...AssetCapabilitySets.HardwareSet, ...AssetCapabilitySets.SoftwareSet,
+            ...AssetCapabilitySets.NetworkingSet
+        ],
+        main_tab_component: defineAsyncComponent(() => import('@/components/assets/MonitorForm.vue')),
+        ...getDefaultRightChecks('monitor'),
+    },
+    {
+        key: 'Software',
+        module: 'assets',
+        restEndpoint: 'Assets/Software',
+        getLabel: (count: number) => {
+            return count === 1 ? 'Software' : 'Software';
+        },
+        icon: 'ti ti-apps',
+        rightname: 'software',
+        capabilities: [
+            AssetCapabilities.HasReservations, AssetCapabilities.HasTemplates, ...AssetCapabilitySets.CommonSet,
+        ],
+        main_tab_component: defineAsyncComponent(() => import('@/components/assets/SoftwareForm.vue')),
+        ...getDefaultRightChecks('software'),
+    },
+    {
+        key: 'NetworkEquipment',
+        module: 'assets',
+        restEndpoint: 'Assets/NetworkEquipment',
+        getLabel: (count: number) => {
+            return count === 1 ? 'Network device' : 'Network devices';
+        },
+        icon: 'ti ti-network',
+        rightname: 'networking',
+        capabilities: [
+            AssetCapabilities.HasType, AssetCapabilities.HasModel, AssetCapabilities.HasAutomaticInventory,
+            AssetCapabilities.HasRacks, AssetCapabilities.HasRemoteManagement, AssetCapabilities.HasReservations,
+            AssetCapabilities.HasTemplates,
+            ...AssetCapabilitySets.CommonSet, ...AssetCapabilitySets.HardwareSet, ...AssetCapabilitySets.SoftwareSet,
+            ...AssetCapabilitySets.NetworkingSet
+        ],
+        main_tab_component: defineAsyncComponent(() => import('@/components/assets/NetworkEquipmentForm.vue')),
+        ...getDefaultRightChecks('networking'),
+    },
+    {
+        key: 'Peripheral',
+        module: 'assets',
+        restEndpoint: 'Assets/Peripheral',
+        getLabel: (count: number) => {
+            return count === 1 ? 'Peripheral' : 'Peripherals';
+        },
+        icon: 'ti ti-usb',
+        rightname: 'peripheral',
+        capabilities: [
+            AssetCapabilities.HasType, AssetCapabilities.HasModel, AssetCapabilities.HasAutomaticInventory,
+            AssetCapabilities.HasRacks, AssetCapabilities.HasReservations, AssetCapabilities.HasTemplates,
+            ...AssetCapabilitySets.CommonSet, ...AssetCapabilitySets.HardwareSet, ...AssetCapabilitySets.SoftwareSet,
+            ...AssetCapabilitySets.NetworkingSet
+        ],
+        main_tab_component: defineAsyncComponent(() => import('@/components/assets/PeripheralForm.vue')),
+        ...getDefaultRightChecks('peripheral'),
+    },
+    {
+        key: 'Printer',
+        module: 'assets',
+        restEndpoint: 'Assets/Printer',
+        getLabel: (count: number) => {
+            return count === 1 ? 'Printer' : 'Printers';
+        },
+        icon: 'ti ti-printer',
+        rightname: 'printer',
+        capabilities: [
+            AssetCapabilities.HasType, AssetCapabilities.HasModel, AssetCapabilities.HasAutomaticInventory,
+            AssetCapabilities.HasRacks, AssetCapabilities.HasReservations, AssetCapabilities.HasTemplates,
+            ...AssetCapabilitySets.CommonSet, ...AssetCapabilitySets.HardwareSet, ...AssetCapabilitySets.SoftwareSet,
+            ...AssetCapabilitySets.NetworkingSet
+        ],
+        main_tab_component: defineAsyncComponent(() => import('@/components/assets/PrinterForm.vue')),
+        ...getDefaultRightChecks('printer'),
     }
 ];
 
@@ -87,6 +198,7 @@ type AssetSchema<T extends AssetType> = components['schemas'][T];
 
 const { getComponentSchema, doApiRequest, doGraphQLRequest, getCompleteFieldsRequestForSchema } = useApi();
 const { hasRight } = useSessionStore();
+const router = useRouter();
 
 export function loadItem<T extends AssetType>(asset_type: T, id: number, fields: string[] = []): Promise<Ref<AssetSchema<T>>> {
     return getComponentSchema(asset_type).then(schema => {
@@ -160,6 +272,8 @@ export function useAsset<T extends AssetType>(asset_type: T, item: Ref<component
     canDeleteItem: () => boolean,
     canPurgeItem: () => boolean,
     canRestoreItem: () => boolean,
+    updateItem: (fields: components['schemas'][T]) => Promise<AxiosResponse>,
+    createOrUpdateItem: (fields: components['schemas'][T], toastService?: ToastServiceMethods, redirectToNewItem?: boolean) => Promise<AxiosResponse>,
 } {
     function getDefinition(): AssetDefinition {
         return builtinAssets.find(asset => asset.key === asset_type);
@@ -302,6 +416,52 @@ export function useAsset<T extends AssetType>(asset_type: T, item: Ref<component
         return definition ? definition.canRestore() : false;
     }
 
+    function updateItem(fields: components['schemas'][T]): Promise<AxiosResponse> {
+        if (!('id' in item.value) || !item.value.id) {
+            throw new Error('Cannot update item');
+        }
+        return doApiRequest(`${getDefinition().restEndpoint}/${item.value.id}`, {
+            method: 'PATCH',
+            data: fields,
+        });
+    }
+
+    function createOrUpdateItem(fields: components['schemas'][T], toastService: ToastServiceMethods = null, redirectToNewItem: boolean = true): Promise<void | AxiosResponse> {
+        const handleFailure = (err) => {
+            if (err.response && err.response.data && err.response.data.message) {
+                toastService.add({severity: 'error', summary: 'Error', detail: err.response.data.message, life: 5000});
+            } else {
+                toastService.add({severity: 'error', summary: 'Error', detail: 'An unknown error occurred.', life: 5000});
+            }
+        }
+        if ('id' in item.value && item.value.id) {
+            return updateItem(fields).then(response => {
+                if (toastService !== null) {
+                    toastService.add({severity: 'success', summary: 'Success', detail: 'Item updated successfully.', life: 5000});
+                }
+                return response;
+            }).catch(handleFailure);
+        } else {
+            return createItem(asset_type, fields).then(response => {
+                if (toastService !== null) {
+                    toastService.add({severity: 'success', summary: 'Success', detail: 'Item created successfully.', life: 5000});
+                }
+                if (redirectToNewItem) {
+                    const new_id = response.data.id;
+                    // Redirect to the new item page
+                    router.push({
+                        name: 'AssetItemForm',
+                        params: {
+                            itemtype: asset_type,
+                            id: new_id,
+                        }
+                    });
+                }
+                return response;
+            }).catch(handleFailure);
+        }
+    }
+
     return {
         getDefinition,
         hasCapability,
@@ -317,5 +477,7 @@ export function useAsset<T extends AssetType>(asset_type: T, item: Ref<component
         canDeleteItem,
         canPurgeItem,
         canRestoreItem,
+        createOrUpdateItem,
+        updateItem,
     }
 }

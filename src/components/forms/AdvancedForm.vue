@@ -2,12 +2,12 @@
     import { Form, FormSubmitEvent } from "@primevue/forms";
     import { FormResolverOptions } from "@primevue/forms/form";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm.ts";
-    import { components } from "../../../data/hlapiv2_schema";
     import { computed } from "vue";
     import { useApi } from "@/composables/useApi.ts";
+    import { SchemaName } from "@/types";
 
     const props = defineProps<{
-        schemaName: keyof components['schemas'];
+        schemaName: SchemaName;
         initialValues: Record<string, any>;
         resolver?: (e: FormResolverOptions) => Promise<Record<string, any>> | Record<string, any> | undefined;
     }>();

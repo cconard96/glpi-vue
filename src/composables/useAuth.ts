@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useSessionStore} from "@/composables/useSessionStore";
-// import { usePreferencesStore } from "@/composables/usePreferencesStore";
 import { useApi } from "@/composables/useApi";
 import { useRouter } from "vue-router";
+import { usePreferencesStore } from "@/composables/usePreferencesStore.ts";
+import { useIndexedDB } from "@/composables/useIndexedDB.ts";
 
 export function useAuth() {
     const REFRESH_GRACE_PERIOD = 5 * 60 * 1000; // 5 minutes
@@ -14,7 +15,6 @@ export function useAuth() {
         const client_secret = import.meta.env.VITE_CLIENT_SECRET;
 
         const auth_url = `${host}/api.php/token`;
-        localStorage.removeItem('api_schema');
 
         return axios.post(auth_url, {
             grant_type: 'password',
@@ -28,7 +28,6 @@ export function useAuth() {
             // Add expiration time (current time + expires_in seconds)
             jwt.expiration = Date.now() + (jwt.expires_in * 1000);
             localStorage.setItem('jwt', JSON.stringify(jwt));
-            localStorage.removeItem('api_schema'); // Clear cached schema on new login
             console.log('Login successful, tokens received');
 
             // Timer to keep trying to refresh the token every 30 minutes to ensure it stays valid even when the app is left open
@@ -39,17 +38,33 @@ export function useAuth() {
             });
 
             // Immediately load the API schema, session info, and locales
-            const { getApiSchema, apollo_client } = useApi();
-            apollo_client.resetStore();
+            const { apollo_client } = useApi();
+            const { clearAllStores } = useIndexedDB();
             return Promise.all([
-                getApiSchema(),
+                apollo_client.resetStore(),
+                clearAllStores(),
+                loadApiSchema(),
                 loadSession(),
                 loadEntityTree(),
                 //loadLocales(),
-                //loadPreferences(),
-            ]);
+
+            ]).then(() => {
+                // Need to wait for session to load before loading preferences since it needs the user ID
+                return loadPreferences();
+            });
         });
     };
+
+    const loadApiSchema = () => {
+        const { doApiRequest } = useApi();
+        const { saveOpenAPIComponenets } = useIndexedDB();
+        return doApiRequest('doc.json').then(response => {
+            return saveOpenAPIComponenets(response.data.components.schemas);
+        }).catch(error => {
+            console.error('Failed to fetch API schema:', error);
+            throw error;
+        });
+    }
 
     const loadSession = () => {
         const { doApiRequest } = useApi();
@@ -75,14 +90,15 @@ export function useAuth() {
     //         console.log('Localization data loaded');
     //     });
     // }
-    //
-    // const loadPreferences = () => {
-    //     const { doApiRequest } = useApi();
-    //     return doApiRequest('Administration/User/Me/Preference').then(response => {
-    //         const store = usePreferencesStore();
-    //         store.loadPreferences(response.data);
-    //     });
-    // }
+
+    const loadPreferences = () => {
+        const { doApiRequest } = useApi();
+        const { getUserID } = useSessionStore();
+        return doApiRequest(`Administration/User/${getUserID}/Preference`).then(response => {
+            const store = usePreferencesStore();
+            store.loadPreferences(response.data);
+        });
+    }
 
     /**
      * Refresh the authentication token using the refresh token if needed.
@@ -137,15 +153,15 @@ export function useAuth() {
         return jwt ? jwt.access_token : null;
     }
 
-    const logout = () => {
+    const logout = async () => {
         if (refresh_timer) {
             clearInterval(refresh_timer);
         }
         localStorage.removeItem('jwt');
-        localStorage.removeItem('api_schema');
         localStorage.removeItem('locales');
         const store = useSessionStore();
         store.clearSession();
+        await useIndexedDB().clearAllStores();
     };
 
     const isAuthenticated = () => {

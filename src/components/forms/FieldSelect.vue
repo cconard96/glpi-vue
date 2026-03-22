@@ -182,10 +182,10 @@
                     <slot name="value" v-bind="slotProps"></slot>
                 </div>
                 <div v-else-if="slotProps.value" class="flex align-items-center">
-                    <div>{{ selectedLabel }}</div>
+                    <div>{{ selectedLabel ?? "&nbsp;" }}</div>
                 </div>
                 <div v-else class="flex align-items-center">
-                    <div>{{ slotProps.placeholder || '&nbsp;' }}</div>
+                    <div>{{ slotProps.placeholder || "&nbsp;" }}</div>
                 </div>
             </template>
             <template v-if="$slots.option" #option="slotProps">

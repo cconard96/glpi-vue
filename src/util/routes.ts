@@ -227,6 +227,25 @@ export const routes: RouteRecordRaw[] = [
                 path: 'assistance/planning',
                 component: () => import('../components/assistance/planning/PlanningView.vue'),
             },
+            {
+                name: 'PluginDirectory',
+                path: 'setup/plugin',
+                component: () => import('../components/setup/plugins/PluginDirectory.vue'),
+            },
+            {
+                name: 'Settings',
+                path: 'setup/settings',
+                component: () => import('../components/setup/settings/SettingsView.vue'),
+                meta: {
+                    title: 'Settings',
+                    breadcrumbs: () => {
+                        return [
+                            { label: 'Setup', disabled: true },
+                            { label: 'Settings', route: `/setup/settings` },
+                        ];
+                    }
+                }
+            },
             { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
         ],
     },

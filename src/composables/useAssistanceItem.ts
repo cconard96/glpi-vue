@@ -1,6 +1,6 @@
 import {type Component, computed, type ComputedRef, defineAsyncComponent, ref, type Ref, type ShallowRef, shallowRef} from "vue";
 import {type components} from "../../data/hlapiv2_schema";
-import { useSessionStore, ITILSubItemRights, BaseRights, ApprovalRights, TicketRights } from "@/composables/useSessionStore";
+import { useSessionStore, ITILSubItemRights, BaseRights, TicketApprovalRights, TicketRights } from "@/composables/useSessionStore";
 import { useApi } from "@/composables/useApi";
 import { useDataHelper } from "@/composables/useDataHelper";
 import { AssistanceTimelineItemtype } from "@/composables/useAssistanceTimelineItem.ts";
@@ -129,7 +129,7 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         if (itemtype === 'Ticket') {
             return session.hasRight(
                 validation_rightname,
-                item.value.type === 1 ? ApprovalRights.CREATEINCIDENT : ApprovalRights.CREATEREQUEST
+                item.value.type === 1 ? TicketApprovalRights.CREATEINCIDENT : TicketApprovalRights.CREATEREQUEST
             );
         } else {
             return session.hasRight(validation_rightname, BaseRights.CREATE);

@@ -8,6 +8,7 @@ import { useAuth } from "./useAuth";
 import { useSessionStore } from "./useSessionStore";
 import {type components} from "../../data/hlapiv2_schema";
 import { OpenAPISchemaDefinition } from "@/types";
+import { useIndexedDB } from "@/composables/useIndexedDB.ts";
 
 interface GraphQLResponseData {
     errors?: any;
@@ -53,6 +54,7 @@ export interface SearchResult {
 
 export function useApi() {
     const { getAuthToken, refreshAuthToken } = useAuth();
+    const { getOpenAPIComponent, getAllOpenAPIComponentNames } = useIndexedDB();
 
     /**
      * Get headers for the session data like entity and profile
@@ -97,7 +99,7 @@ export function useApi() {
 
         return doApiRequest('doc.json').then(response => {
             api_schema = response.data;
-            localStorage.setItem('api_schema', JSON.stringify(api_schema));
+            //localStorage.setItem('api_schema', JSON.stringify(api_schema));
             console.log('API schema fetched successfully');
             return api_schema;
         }).catch(error => {
@@ -107,13 +109,22 @@ export function useApi() {
     };
 
     const getComponentNameMap = () => {
-        return getApiSchema().then((api_schema) => {
+        return getAllOpenAPIComponentNames().then(component_names => {
             component_name_map = {};
-            Object.keys(api_schema.components.schemas).forEach(name => {
+            component_names.forEach(name => {
                 component_name_map[name.toLowerCase()] = name;
             });
             return component_name_map;
         });
+
+
+        // return getApiSchema().then((api_schema) => {
+        //     component_name_map = {};
+        //     Object.keys(api_schema.components.schemas).forEach(name => {
+        //         component_name_map[name.toLowerCase()] = name;
+        //     });
+        //     return component_name_map;
+        // });
     }
 
     const normalizeComponentName = (name) => {
@@ -122,19 +133,21 @@ export function useApi() {
         });
     }
 
-    const getComponents = () => {
-        return getApiSchema().then(schema => {
-            return schema.components || {};
-        });
-    }
+    // const getComponents = () => {
+    //     return getOpenAPIComponents();
+    //     // return getApiSchema().then(schema => {
+    //     //     return schema.components || {};
+    //     // });
+    // }
 
     const getComponentSchema =
         <T extends keyof components['schemas']>(component_name: T): Promise<OpenAPISchemaDefinition> => {
-        return getComponents().then(components => {
-            return normalizeComponentName(component_name).then(normalized_name => {
-                return components.schemas ? components.schemas[normalized_name] : null;
-            });
-        });
+        return getOpenAPIComponent(component_name);
+        // return getComponents().then(components => {
+        //     return normalizeComponentName(component_name).then(normalized_name => {
+        //         return components.schemas ? components.schemas[normalized_name] : null;
+        //     });
+        // });
     }
 
     const search = (component_module, component_name, queryParams = {}): Promise<SearchResult> => {

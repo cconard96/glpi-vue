@@ -1,11 +1,14 @@
 <script setup lang="ts">
     import { Message, ProgressSpinner, Tab, TabList, TabPanels, Tabs } from 'primevue';
     import LazyTabPanel from "@/components/core/LazyTabPanel.vue";
-    import { useTemplateRef } from "vue";
+    import { ref, useTemplateRef } from "vue";
     import { TabDefinition } from "@/types";
 
     const props = defineProps<{
         tabs: TabDefinition[],
+    }>();
+    defineEmits<{
+        (e: 'update:value', value: string): void;
     }>();
 
     const tab_panel_refs = useTemplateRef('tabPanelRefs');
@@ -54,7 +57,7 @@
 </script>
 
 <template>
-    <Tabs v-if="tabs.length > 1" :value="main_tab.key" class="grid grid-cols-[200px_1fr] overflow-hidden" orientation="vertical" lazy>
+    <Tabs v-if="tabs.length > 1" :value="main_tab.key" @update:value="$emit('update:value', $event as string)" class="grid grid-cols-[200px_1fr] overflow-hidden" orientation="vertical" lazy>
         <TabList :pt="{ tabList: {class: 'flex-col overflow-y-auto', 'aria-orientation': 'vertical'} }">
             <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">
                 <i v-if="tab.icon" :class="`${tab.icon} me-2`"></i>

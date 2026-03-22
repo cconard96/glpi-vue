@@ -16,7 +16,7 @@ vi.mock('@/composables/useApi', () => ({
 }));
 
 test('Renders', () => {
-    const { getByRole, baseElement } = render(InstallSoftware, {
+    const { baseElement } = render(InstallSoftware, {
         global: {
             mocks: {
                 $primevue: {

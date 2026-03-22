@@ -17,9 +17,9 @@
         }
     });
 
-    const { getComponentSchema, search } = useApi();
+    const { getComponentSchema, search, normalizeComponentName } = useApi();
 
-    const schema = new ComponentSchema(await getComponentSchema(itemtype));
+    const schema = new ComponentSchema(await getComponentSchema(await normalizeComponentName(itemtype)));
     const is_deleted = ref(0);
 
     // Get all columns, which are the properties of the schema.
@@ -51,7 +51,7 @@
 
     const filter = computed(() => {
         const default_filter = default_filters[itemtype.toLowerCase()] || '';
-        if (useRoute().query.filter) {
+        if (useRoute()?.query?.filter) {
             return `${useRoute().query.filter};is_deleted==${is_deleted.value ? 1 : 0}`;
         }
         if ('is_deleted' in flattened_properties) {

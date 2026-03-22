@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
-    import { computed, onMounted, provide, ref, type Ref, useTemplateRef, watch } from "vue";
+    import { computed, onMounted, provide, ref, type Ref, useId, useTemplateRef, watch } from "vue";
     import { useApi } from "@/composables/useApi.ts";
     import {
         Button, ButtonGroup, Menu, Popover, ProgressBar,
@@ -37,6 +37,7 @@
         mainTimelineAction, extraTimelineActions, current_new_item, statusIcon, statusColor,
         loadTimelineItems, timelineItems, canUpdateItem, milestones
     } = assistanceItemInstance;
+    const assistanceFormID = useId();
 
     await doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
         item.value = res.data;
@@ -272,7 +273,7 @@
                 </template>
             </div>
             <div ref="right-side" class="col-span-4 2xl:col-span-3 overflow-y-auto">
-                <FieldsPanel :itemtype="normalized_itemtype" :item="item"></FieldsPanel>
+                <FieldsPanel :formID="assistanceFormID" :itemtype="normalized_itemtype" :item="item"></FieldsPanel>
             </div>
             <div class="relative h-22 col-span-12">
                 <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
@@ -321,7 +322,7 @@
                                 { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge', command: showNotImplementedToast },
                                 { key: 'save_as_pdf', label: 'Save as PDF', icon: 'ti ti-file-type-pdf', command: exportPDF },
                             ]"></Menu>
-                            <Button label="Save" icon="ti ti-device-floppy" severity="primary"></Button>
+                            <Button label="Save" type="submit" icon="ti ti-device-floppy" severity="primary" :form="assistanceFormID"></Button>
                         </ButtonGroup>
                     </div>
                 </div>
