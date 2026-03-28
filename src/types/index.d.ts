@@ -1,6 +1,8 @@
 import type { Component, Ref } from "vue";
 import type { components } from "../../data/hlapiv2_schema";
 
+export type SchemaName = keyof components['schemas'];
+
 export interface BaseItemDefinition {
     key: string,
     module: string,
@@ -17,7 +19,7 @@ export interface BaseItemDefinition {
     canRestore: () => boolean,
 }
 
-export interface useBaseItem<T extends keyof components['schemas']> {
+export interface useBaseItem<T extends SchemaName> {
     getDefinition: () => BaseItemDefinition,
     item: Ref<components['schemas'][T]>,
 }

@@ -7,12 +7,14 @@
     import { useAuth } from "@/composables/useAuth.ts";
     import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
     import DynamicBreadcrumbs from "@/components/layout/DynamicBreadcrumbs.vue";
-    import { breakpointsBootstrapV5, useBreakpoints } from "@vueuse/core";
+    import NetworkStatusArea from "@/components/layout/NetworkStatusArea.vue";
+    import { useDeviceCapabilities } from "@/composables/useDeviceCapabilities.ts";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
     const router = useRouter();
     const dialog = useDialog();
+
     const top_right_menu = ref([
         {
             label: `${session_store.getActiveProfile.name}\n${session_store.getActiveEntity.short_name}`,
@@ -80,9 +82,7 @@
         }
     ]);
     const mobile_menu_el = useTemplateRef('mobile_menu');
-
-    const breakpoints = useBreakpoints(breakpointsBootstrapV5);
-    const is_mobile = breakpoints.smaller('md');
+    const { isMobileScreenSize } = useDeviceCapabilities();
 </script>
 
 <template>
@@ -90,29 +90,40 @@
         <DynamicDialog />
         <Toast />
         <ConfirmDialog />
-        <Teleport class="contents" :disabled="!is_mobile" to="#mobile_menu" defer>
-            <NavMenu :mobile="is_mobile" />
+        <Teleport class="contents" :disabled="!isMobileScreenSize" to="#mobile_menu" defer>
+            <NavMenu :mobile="isMobileScreenSize" />
         </Teleport>
-        <div :class="`px-4 pt-2 h-screen grid grid-cols-1 ${is_mobile ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
-            <div class="mb-2 flex justify-between">
-                <div class="flex">
+        <div :class="`px-4 pt-2 h-screen grid grid-cols-1 ${isMobileScreenSize ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
+            <div class="mb-2 flex justify-between max-w-full overflow-x-hidden">
+                <div class="flex overflow-x-hidden">
                     <div id="mobile_menu" class="me-2"></div>
                     <DynamicBreadcrumbs></DynamicBreadcrumbs>
                 </div>
-                <Menubar class="p-2" :model="top_right_menu" :pt="{
-                    rootList: {
-                        'class': 'whitespace-pre-wrap max-w-96',
-                    },
-                    itemLabel: ({ props }) => {
-                        if (props.root) {
-                            return { 'class': 'text-sm' };
-                        }
-                    },
-                    submenu: {
-                        'class': 'justify-self-end z-1000'
-                    }
-                }" breakpoint="">
-                </Menubar>
+                <div class="flex gap-4">
+                    <NetworkStatusArea></NetworkStatusArea>
+                    <Menubar :class="`p-2 ${isMobileScreenSize ? 'w-[44px] h-[44px]' : ''}`" :model="top_right_menu" :pt="{
+                            rootList: {
+                                class: `whitespace-pre-wrap max-w-96 ${isMobileScreenSize ? 'mx-auto' : ''}`,
+                            },
+                            itemLabel: ({ props }) => {
+                                if (props.root) {
+                                    return { 'class': isMobileScreenSize ? 'hidden' : 'text-sm' };
+                                }
+                            },
+                            itemLink: ({ props }) => {
+                                if (props.root) {
+                                    return { 'class': isMobileScreenSize ? 'p-0' : '' };
+                                }
+                            },
+                            submenu: {
+                                'class': 'justify-self-end z-1000'
+                            },
+                            submenuIcon: {
+                                class: isMobileScreenSize ? 'hidden!' : '',
+                            }
+                        }" breakpoint="">
+                    </Menubar>
+                </div>
             </div>
             <RouterView v-slot="{ Component }">
                 <ErrorBoundary>
