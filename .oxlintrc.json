@@ -1,9 +1,13 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
     "plugins": ["eslint", "typescript", "unicorn", "oxc", "import", "jsdoc", "vitest", "vue"],
+    "jsPlugins": ["@intlify/eslint-plugin-vue-i18n"],
     "categories": {},
     "rules": {},
     "settings": {
+        "@intlify/vue-i18n": {
+            "parser": "vue-eslint-parser"
+        },
         "jsx-a11y": {
             "polymorphicPropName": null,
             "components": {},

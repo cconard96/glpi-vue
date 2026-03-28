@@ -4,10 +4,14 @@
     import { useAuth } from '@/composables/useAuth';
     import { useRouter } from "vue-router";
     import { computed, onMounted, ref } from "vue";
+    import { useI18n } from "vue-i18n";
+    import { useBranding } from "@/composables/plugins/branding/useBranding.ts";
 
     const { login, isAuthenticated } = useAuth();
+    const { brandName } = useBranding();
     const router = useRouter();
     const loading = ref(false);
+    const { t: $t } = useI18n();
 
     const onSubmit = (data) => {
         loading.value = true;
@@ -27,15 +31,17 @@
     };
 
     onMounted(() => {
-        document.title = "GLPI - Login";
+        document.title = $t('login.title', {
+            brandName: brandName.value
+        });
     });
 
     const error_message = computed(() => {
         const error_code = router.currentRoute.value.query.error;
         if (error_code === '1') {
-            return 'Your session has expired';
+            return $t('login.error.session_expired', 'Your session has expired');
         } else if (error_code === '2') {
-            return 'An error occurred. Please login again.';
+            return $t('login.error.fatalAppError', 'An error occurred. Please login again.');
         }
         return null;
     });
@@ -44,7 +50,7 @@
 <template>
     <Card class="mx-auto mt-10 w-fit" v-focustrap>
         <template #title>
-            <h1 class="text-center text-4xl">GLPI</h1>
+            <h1 class="text-center text-4xl" v-text="brandName"></h1>
         </template>
         <template #content>
             <Message v-if="$route.query.error" class="mb-4" severity="error" variant="outlined">
@@ -54,13 +60,13 @@
                 <div class="mb-4">
                     <div class="max-w-64 mx-auto flex flex-col gap-3">
                         <InputText name="username" class="max-w-64" autocomplete="username"
-                                   placeholder="Username" autofocus fluid />
+                                   :placeholder="$t('login.username', 'Username')" autofocus fluid />
                         <Password name="password" class="max-w-64" :inputProps="{ autocomplete: 'current-password' }"
-                                  placeholder="Password" :feedback="false" fluid />
+                                  :placeholder="$t('login.password', 'Password')" :feedback="false" fluid />
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <Button :loading="loading" type="submit" label="Login" class="self-center"/>
+                    <Button :loading="loading" type="submit" :label="$t('login.button.login', 'Login')" class="self-center"/>
                 </div>
             </Form>
         </template>

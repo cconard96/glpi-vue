@@ -14,6 +14,8 @@ import VueDOMPurifyHTML from 'vue-dompurify-html';
 import { ConfirmationService, DialogService, ToastService } from "primevue";
 import {definePreset} from "@primeuix/themes";
 import { all } from 'primelocale';
+import { Tooltip } from "primevue";
+import { i18n } from "@/util/i18n.ts";
 
 // get user language
 const user_lang = navigator.language || 'en';
@@ -78,5 +80,7 @@ createApp(App)
     .use(DialogService)
     .use(ToastService)
     .use(ConfirmationService)
+    .use(i18n)
     .directive('focustrap', FocusTrap)
+    .directive('tooltip', Tooltip)
     .mount('#app')
