@@ -79,7 +79,6 @@ export function useApi() {
             url = url.substring(1);
         }
         return refreshAuthToken().then(() => {
-            console.log('Making API request to', url);
             return axios.request({
                 ...config,
                 url: `${host}/api.php/${url}`,
@@ -100,7 +99,6 @@ export function useApi() {
         return doApiRequest('doc.json').then(response => {
             api_schema = response.data;
             //localStorage.setItem('api_schema', JSON.stringify(api_schema));
-            console.log('API schema fetched successfully');
             return api_schema;
         }).catch(error => {
             console.error('Failed to fetch API schema:', error);

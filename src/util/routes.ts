@@ -38,6 +38,17 @@ const allModulesPattern = 'assets|assistance|management|tools|administration|set
 const itemtypePattern = '[a-zA-Z_]+';
 
 export const routes: RouteRecordRaw[] = [
+    {
+        name: 'auth_callback',
+        path: '/auth-callback',
+        props: (route) => {
+            return {
+                code: route.query.code,
+            };
+        },
+        component: () => import('../views/AuthCallbackView.vue'),
+        meta: {requiresAuth: false}
+    },
     { name: 'Login', path: '/login', component: () => import('../views/LoginView.vue'), meta: {requiresAuth: false} },
     {
         name: 'Home',

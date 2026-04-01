@@ -1,13 +1,13 @@
 # glpi-vue
 
-An unofficial frontend for GLPI with with Vue.js, PrimeVue, and TailwindCSS.
+A modern frontend for GLPI with with Vue.js, PrimeVue, and TailwindCSS.
 
-Don't use this in production.
+This is still a work in progress and is not yet ready for production use.
 
-.env file required.
+This project is working with the latest improvements to the GLPI API and so may it may not be fully compatible with the latest stable release of GLPI.
+It is recommended to use the [hlapi/vue_frontend_testing](https://github.com/cconard96/glpi/tree/hlapi/vue_frontend_testing) branch on my GLPI fork which contains the latest API changes used in this project.
 
-- VITE_CLIENT_ID=GLPI OAuth Client ID (Must have api and graphql scopes and password grant)
+## .env file required
+- VITE_CLIENT_ID=GLPI OAuth Client ID (Must have api and graphql scopes and authorization code grant)
 - VITE_CLIENT_SECRET=OAuth Client Secret
 - VITE_GLPI_URL=GLPI URL
-
-This requires the latest GLPI 11 branch which includes the v2.1 of the High-Level API.

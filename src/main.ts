@@ -30,7 +30,6 @@ const router = createRouter({
 const { isAuthenticated } = useAuth();
 
 router.beforeEach((to, from) => {
-    console.log(`Navigating to ${to.fullPath} from ${from.fullPath}`);
     if (to?.meta?.title) {
         document.title = typeof to.meta.title === 'function' ? to.meta.title(to) : to.meta.title;
     }

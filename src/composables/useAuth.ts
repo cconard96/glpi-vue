@@ -9,51 +9,30 @@ export function useAuth() {
     const REFRESH_GRACE_PERIOD = 5 * 60 * 1000; // 5 minutes
     let refresh_timer = null;
 
-    const login = (username, password) => {
-        const host = import.meta.env.VITE_GLPI_URL;
-        const client_id = import.meta.env.VITE_CLIENT_ID;
-        const client_secret = import.meta.env.VITE_CLIENT_SECRET;
-
-        const auth_url = `${host}/api.php/token`;
-
-        return axios.post(auth_url, {
-            grant_type: 'password',
-            client_id: client_id,
-            client_secret: client_secret,
-            username: username,
-            password: password,
-            scope: 'api graphql',
-        }).then(response => {
-            const jwt = response.data;
-            // Add expiration time (current time + expires_in seconds)
-            jwt.expiration = Date.now() + (jwt.expires_in * 1000);
-            localStorage.setItem('jwt', JSON.stringify(jwt));
-            console.log('Login successful, tokens received');
-
-            // Timer to keep trying to refresh the token every 30 minutes to ensure it stays valid even when the app is left open
-            refresh_timer = setInterval(() => {
-                refreshAuthToken().catch(() => {
-                    console.warn('Automatic token refresh failed, user may need to log in again');
-                });
-            });
-
-            // Immediately load the API schema, session info, and locales
-            const { apollo_client } = useApi();
-            const { clearAllStores } = useIndexedDB();
-            return Promise.all([
-                apollo_client.resetStore(),
-                clearAllStores(),
-                loadApiSchema(),
-                loadSession(),
-                loadEntityTree(),
-                //loadLocales(),
-
-            ]).then(() => {
-                // Need to wait for session to load before loading preferences since it needs the user ID
-                return loadPreferences();
+    const postLogin = (): Promise<void> => {
+        // Timer to keep trying to refresh the token every 30 minutes to ensure it stays valid even when the app is left open
+        refresh_timer = setInterval(() => {
+            refreshAuthToken().catch(() => {
+                console.warn('Automatic token refresh failed, user may need to log in again');
             });
         });
-    };
+
+        // Immediately load the API schema, session info, and locales
+        const { apollo_client } = useApi();
+        const { clearAllStores } = useIndexedDB();
+        return Promise.all([
+            apollo_client.resetStore(),
+            clearAllStores(),
+            loadApiSchema(),
+            loadSession(),
+            loadEntityTree(),
+            //loadLocales(),
+
+        ]).then(() => {
+            // Need to wait for session to load before loading preferences since it needs the user ID
+            return loadPreferences();
+        });
+    }
 
     const loadApiSchema = () => {
         const { doApiRequest } = useApi();
@@ -136,7 +115,6 @@ export function useAuth() {
                 // Add expiration time (current time + expires_in seconds)
                 jwt.expiration = Date.now() + (jwt.expires_in * 1000);
                 localStorage.setItem('jwt', JSON.stringify(jwt));
-                console.log('Token refreshed successfully');
                 resolve();
             }).catch(error => {
                 console.error('Token refresh failed:', error);
@@ -151,6 +129,43 @@ export function useAuth() {
     const getAuthToken = () => {
         const jwt = JSON.parse(localStorage.getItem('jwt'));
         return jwt ? jwt.access_token : null;
+    }
+
+    /**
+     * Authorization code flow as alternative to password grant flow.
+     */
+    const authorize = () => {
+        const host = import.meta.env.VITE_GLPI_URL;
+        const client_id = import.meta.env.VITE_CLIENT_ID;
+        const redirect_uri = `${window.location.origin}/auth-callback`;
+        const auth_url = `${host}/api.php/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=api%20graphql`;
+        window.location.href = auth_url;
+    }
+
+    const handleAuthCallback = (code) => {
+        const host = import.meta.env.VITE_GLPI_URL;
+        const client_id = import.meta.env.VITE_CLIENT_ID;
+        const client_secret = import.meta.env.VITE_CLIENT_SECRET;
+        const auth_url = `${host}/api.php/token`;
+        console.log('Handling auth callback with code:', code);
+
+        return axios.post(auth_url, {
+            grant_type: 'authorization_code',
+            client_id: client_id,
+            client_secret: client_secret,
+            code: code,
+            redirect_uri: `${window.location.origin}/auth-callback`,
+        }).then(response => {
+            console.log('Authorization code exchange successful:', response.data);
+            const jwt = response.data;
+            // Add expiration time (current time + expires_in seconds)
+            jwt.expiration = Date.now() + (jwt.expires_in * 1000);
+            localStorage.setItem('jwt', JSON.stringify(jwt));
+            return postLogin();
+        }).catch(error => {
+            console.error('Authorization code exchange failed:', error);
+            throw error;
+        });
     }
 
     const logout = async () => {
@@ -169,11 +184,12 @@ export function useAuth() {
     };
 
     return {
-        login,
         logout,
         isAuthenticated,
         getAuthToken,
         refreshAuthToken,
         loadSession,
+        authorize,
+        handleAuthCallback
     };
 }
