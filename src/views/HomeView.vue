@@ -94,14 +94,14 @@
             <NavMenu :mobile="isMobileScreenSize" />
         </Teleport>
         <div :class="`px-4 pt-2 h-screen grid grid-cols-1 ${isMobileScreenSize ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
-            <div class="mb-2 flex justify-between max-w-full overflow-x-hidden">
+            <div class="mb-2 flex justify-between max-w-full overflow-x-hidden bg-(--p-content-background)">
                 <div class="flex overflow-x-hidden">
                     <div id="mobile_menu" class="me-2"></div>
                     <DynamicBreadcrumbs></DynamicBreadcrumbs>
                 </div>
                 <div class="flex gap-4">
                     <NetworkStatusArea></NetworkStatusArea>
-                    <Menubar :class="`p-2 ${isMobileScreenSize ? 'w-[44px] h-[44px]' : ''}`" :model="top_right_menu" :pt="{
+                    <Menubar :class="`p-2 ${isMobileScreenSize ? 'w-[44px] h-[44px]' : ''} bg-transparent`" :model="top_right_menu" :pt="{
                             rootList: {
                                 class: `whitespace-pre-wrap max-w-96 ${isMobileScreenSize ? 'mx-auto' : ''}`,
                             },

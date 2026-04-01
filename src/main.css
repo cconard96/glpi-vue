@@ -11,6 +11,12 @@ html {
     }
 }
 
+@layer base {
+    .ti {
+        font-size: 1.25rem;
+    }
+}
+
 @theme {
     --text-base: 14px;
 }
