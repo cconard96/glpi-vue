@@ -29,6 +29,11 @@
                             {
                                 props: {
                                     position: 'topright',
+                                    pt: {
+                                        root: {
+                                            class: 'w-auto h-auto',
+                                        },
+                                    },
                                     modal: true,
                                     draggable: false,
                                     header: 'Select Profile',
@@ -47,6 +52,11 @@
                             {
                                 props: {
                                     position: 'topright',
+                                    pt: {
+                                        root: {
+                                            class: 'w-auto h-auto',
+                                        },
+                                    },
                                     modal: true,
                                     draggable: false,
                                     header: 'Select Entity',

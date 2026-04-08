@@ -30,11 +30,6 @@
         const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/components/kb/QuickSearchKB.vue')), {
             props: {
                 header: 'Search KB Articles',
-                pt: {
-                    root: {
-                        class: 'w-5/10 h-8/10'
-                    }
-                },
                 modal: true,
                 draggable: false,
             },

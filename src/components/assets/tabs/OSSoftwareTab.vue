@@ -86,11 +86,6 @@
         dialog.open(defineAsyncComponent(() => import('@/components/assets/dialogs/InstallSoftware.vue')), {
             props: {
                 header: 'Install Software',
-                pt: {
-                    root: {
-                        class: 'w-5/10 h-8/10'
-                    }
-                },
                 modal: true,
                 draggable: false,
             },

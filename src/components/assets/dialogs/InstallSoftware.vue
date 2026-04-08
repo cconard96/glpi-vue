@@ -28,7 +28,7 @@
                 selectable: false,
             }));
         });
-    }, 100, { maxWait: 1000 });
+    }, 200, { maxWait: 1000 });
 
     function onNodeExpand(node) {
         if (node.children) {

@@ -14,7 +14,7 @@
     const components_info = ref(null);
     const component_counts = ref({});
     const loaded_components = ref(false);
-    const active_accordion = ref<string|null>(null);
+    const active_accordion = ref<Array<string>|null>(null);
     const component_columns: Record<string, Array<{field: string, header: string}>> = {
         'BatteryItem': [
             { field: 'battery.designation', header: 'Designation' },
@@ -318,7 +318,7 @@
         } else if (newVal.includes('connections')) {
             loadConnectionsInfo();
         }
-    });
+    }, { deep: true });
 
     function getVolumeUsedProgressColorClass(value: number): string {
         if (value < 50) {

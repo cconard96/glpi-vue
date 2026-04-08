@@ -1,10 +1,14 @@
 <script setup lang="ts">
-    import { Column, DataTable } from "primevue";
+    import { Column, DataTable, Button, useDialog, useToast } from "primevue";
     import { useApi } from "@/composables/useApi";
-    import { inject, onMounted, ref } from "vue";
+    import { defineAsyncComponent, inject, onMounted, ref } from "vue";
     import { type useAsset } from "@/composables/assets/useAsset.js";
+    import { useI18n } from "vue-i18n";
 
     const { doGraphQLRequest } = useApi();
+    const dialog = useDialog();
+    const toast = useToast();
+    const { t: $t } = useI18n();
     const appliance_info = ref(null);
     const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
 
@@ -24,6 +28,36 @@
             appliance_info.value = res.data.Appliance_Item;
         });
     });
+
+    function openAddRelationDialog(usedRelationsData: { environment: any[]; domain: any[]; location: any[]; network: any[]; }) {
+        const relationDialog = dialog.open(defineAsyncComponent(() => import('@/components/assets/dialogs/AddApplianceRelation.vue')), {
+            props: {
+                header: $t('management.appliance.addRelation', 'Add Relation'),
+                modal: true,
+                draggable: false,
+                //dismissableMask: true, //TODO the other dialogs need this
+            },
+            data: {
+                usedRelations: {
+                    environment: usedRelationsData.environment,
+                    domain: usedRelationsData.domain,
+                    location: usedRelationsData.location,
+                    network: usedRelationsData.network,
+                }
+            },
+            emits: {
+                onSave: ({ selectedRelations }) => {
+                    toast.add({
+                        severity: 'info',
+                        summary: 'Not implemented',
+                        detail: 'This action is not implemented yet.',
+                        life: 5000,
+                    });
+                    relationDialog.close();
+                }
+            }
+        });
+    }
 </script>
 
 <template>
@@ -52,6 +86,10 @@
                             <strong>Network:</strong> {{ net.name }}
                         </div>
                     </div>
+                    <Button variant="link" size="small" severity="secondary" class="p-0" @click="openAddRelationDialog(slotProps.data)">
+                        <i class="ti ti-plus"></i>
+                        {{ $t('management.appliance.addRelation', 'Add Relation') }}
+                    </Button>
                 </template>
             </Column>
         </DataTable>

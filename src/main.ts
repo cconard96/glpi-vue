@@ -16,6 +16,7 @@ import {definePreset} from "@primeuix/themes";
 import { all } from 'primelocale';
 import { Tooltip } from "primevue";
 import { i18n } from "@/util/i18n.ts";
+import { primeVuePassthrough } from "@/util/primeVuePassthrough.ts";
 
 // get user language
 const user_lang = navigator.language || 'en';
@@ -74,6 +75,7 @@ createApp(App)
             },
         },
         locale: locale,
+        pt: primeVuePassthrough,
     })
     .use(VueDOMPurifyHTML)
     .use(DialogService)
