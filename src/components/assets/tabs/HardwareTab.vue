@@ -329,41 +329,88 @@
             return 'bg-red-500';
         }
     }
+
+    /**
+     * Group memory modules by their size and returns a string representation of the grouping (example "2x 8GB").
+     */
+    function getGroupedMemoryModuleText(): Array<string> {
+        const sizes = {};
+        for (const mem of components_info.value.MemoryItem) {
+            const size = mem.size || 0;
+            if (!sizes[size]) {
+                sizes[size] = 0;
+            }
+            sizes[size]++;
+        }
+        const parts = [];
+        for (const [size, count] of Object.entries(sizes)) {
+            parts.push(`${count}x ${formatDataSize(parseInt(size), 'MB')}`);
+        }
+        return parts;
+    }
 </script>
 
 <template>
     <section v-if="components_info !== null" class="">
         <div class="text-4xl text-center mb-2">Hardware summary</div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <Card v-if="components_info.ProcessorItem" class="flex flex-row items-center" :pt="{body: { class: 'p-2'} }">
+            <Card v-if="components_info.ProcessorItem" :pt="{body: { class: 'p-2'} }">
                 <template #header>
-                    <i class="ti ti-cpu text-6xl"></i>
-                    <span class="sr-only">Processor</span>
+                    <div class="text-3xl">
+                        <i class="ti ti-cpu me-2"></i>
+                        <span>Processor</span>
+                    </div>
                 </template>
                 <template #content>
-                    <div><span class="text-lg me-2">Total Processors:</span>{{ components_info.ProcessorItem.length }}</div>
-                    <div><span class="text-lg me-2">Total Cores:</span>{{ components_info.ProcessorItem.length > 0 ? components_info.ProcessorItem.reduce((acc, proc) => acc + (proc.nbcores || 0), 0) : 0 }}</div>
-                    <div><span class="text-lg me-2">Total Threads:</span>{{ components_info.ProcessorItem.length > 0 ? components_info.ProcessorItem.reduce((acc, proc) => acc + (proc.nbthreads || 0), 0) : 0 }}</div>
+                    <div class="grid grid-cols-[1fr_auto]">
+                        <span class="text-lg me-2">Processors:</span>
+                        <div>
+                            <div v-for="(proc, index) in components_info.ProcessorItem" :key="index" class="me-2">{{ proc.processor.designation || proc.processor.model.name || 'Unknown' }}</div>
+                        </div>
+                        <span class="text-lg me-2">Total Cores/Threads:</span>
+                        <div>
+                            {{ components_info.ProcessorItem.length > 0 ? components_info.ProcessorItem.reduce((acc, proc) => acc + (proc.nbcores || 0), 0) : 0 }}
+                            /
+                            {{ components_info.ProcessorItem.length > 0 ? components_info.ProcessorItem.reduce((acc, proc) => acc + (proc.nbthreads || 0), 0) : 0 }}
+                        </div>
+                    </div>
                 </template>
             </Card>
-            <Card v-if="components_info.HardDriveItem" class="flex flex-row items-center" :pt="{body: { class: 'p-2'} }">
+            <Card v-if="components_info.HardDriveItem" :pt="{body: { class: 'p-2'} }">
                 <template #header>
-                    <i class="ti ti-server-2 text-6xl"></i>
-                    <span class="sr-only">Storage</span>
+                    <div class="text-3xl">
+                        <i class="ti ti-server-2 me-2"></i>
+                        <span>Storage</span>
+                    </div>
                 </template>
                 <template #content>
-                    <div><span class="text-lg me-2">Total Drives:</span>{{ components_info.HardDriveItem.length }}</div>
-                    <div><span class="text-lg me-2">Total Storage:</span>{{ components_info.HardDriveItem.length > 0 ? formatDataSize(components_info.HardDriveItem.reduce((acc, drive) => acc + (drive.capacity || 0), 0), 'MB') : '0 B' }}</div>
+                    <div class="grid grid-cols-[1fr_auto]">
+                        <span class="text-lg me-2">Drives:</span>
+                        <div>
+                            <div v-for="(drive, index) in components_info.HardDriveItem" :key="index" class="me-2">{{ drive.hard_drive.designation || drive.hard_drive.model.name || 'Unknown' }}</div>
+                        </div>
+                        <span class="text-lg me-2">Total Storage:</span>
+                        <div>{{ components_info.HardDriveItem.length > 0 ? formatDataSize(components_info.HardDriveItem.reduce((acc, drive) => acc + (drive.capacity || 0), 0), 'MB') : '0 B' }}</div>
+                    </div>
+<!--                    <div><span class="text-lg me-2">Total Drives:</span>{{ components_info.HardDriveItem.length }}</div>-->
+<!--                    <div><span class="text-lg me-2">Total Storage:</span>{{ components_info.HardDriveItem.length > 0 ? formatDataSize(components_info.HardDriveItem.reduce((acc, drive) => acc + (drive.capacity || 0), 0), 'MB') : '0 B' }}</div>-->
                 </template>
             </Card>
-            <Card v-if="components_info.MemoryItem" class="flex flex-row items-center" :pt="{body: { class: 'p-2'} }">
+            <Card v-if="components_info.MemoryItem" :pt="{body: { class: 'p-2'} }">
                 <template #header>
-                    <i class="ti ti-topology-bus rotate-180 block text-6xl"></i>
-                    <span class="sr-only">Memory</span>
+                    <div class="text-3xl">
+                        <i class="ti ti-topology-bus rotate-180 inline-block align-text-top me-2"></i>
+                        <span>Memory</span>
+                    </div>
                 </template>
                 <template #content>
-                    <div><span class="text-lg me-2">Total Modules:</span>{{ components_info.MemoryItem.length }}</div>
-                    <div><span class="text-lg me-2">Total Memory:</span>{{ components_info.MemoryItem.length > 0 ? formatDataSize(components_info.MemoryItem.reduce((acc, mem) => acc + (mem.size || 0), 0), 'MB') : '0 B' }}</div>
+                    <div class="grid grid-cols-[1fr_auto]">
+                        <span class="text-lg me-2">Memory Modules:</span>
+                        <div>
+                            <span v-for="(text, index) in getGroupedMemoryModuleText()" :key="index" class="inline-block me-2">{{ text }}</span>
+                        </div>
+                        <span class="text-lg me-2">Total Memory:</span><div>{{ components_info.MemoryItem.length > 0 ? formatDataSize(components_info.MemoryItem.reduce((acc, mem) => acc + (mem.size || 0), 0), 'MB') : '0 B' }}</div>
+                    </div>
                 </template>
             </Card>
         </div>
