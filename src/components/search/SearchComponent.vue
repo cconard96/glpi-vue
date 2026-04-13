@@ -5,6 +5,7 @@
     import { computed, onMounted, PropType, ref, watch } from "vue";
     import { useRoute } from 'vue-router';
     import { components } from "../../../data/hlapiv2_schema";
+    import { useDataHelper } from "@/composables/useDataHelper.ts";
 
     const { component_module, itemtype } = defineProps({
         component_module: {
@@ -18,6 +19,7 @@
     });
 
     const { getComponentSchema, search, normalizeComponentName } = useApi();
+    const { formatDate, formatDateTime } = useDataHelper();
 
     const schema = new ComponentSchema(await getComponentSchema(await normalizeComponentName(itemtype)));
     const is_deleted = ref(0);
@@ -27,13 +29,12 @@
 
     const flattened_properties = schema.flattenProperties();
     const columns: Array<{field: string, header: string, type: string, format: string}> = [];
-    // Object.keys(flattened_properties).map(key => ({
-    //     field: key,
-    //     header: key
-    // }));
     for (const [key, value] of Object.entries(flattened_properties)) {
-        if (key === 'content') {
-            continue; // skip content field for now
+        if (key === 'content' || key === 'is_deleted') {
+            continue;
+        }
+        if (value.type === 'array' || value.type === 'object' || key.includes('.')) {
+            continue;
         }
         columns.push({
             field: key,
@@ -137,7 +138,10 @@
             <Column v-for="col of columns" :field="col.field" :header="col.header">
                 <template #body="slotProps">
                     <RouterLink v-if="col.field === 'id' || col.field === 'name'" :to="`/${component_module}/${itemtype}/${slotProps.data.id}`">{{ slotProps.data[col.field] }}</RouterLink>
+                    <div v-else-if="slotProps.data[col.field] === null"></div>
                     <div v-else-if="col.type === 'string' && col.format === 'html'" v-dompurify-html="slotProps.data[col.field]"></div>
+                    <div v-else-if="col.type === 'string' && col.format === 'date'">{{ formatDate(slotProps.data[col.field]) }}</div>
+                    <div v-else-if="col.type === 'string' && col.format === 'date-time'">{{ formatDateTime(slotProps.data[col.field]) }}</div>
                     <span v-else>{{ slotProps.data[col.field] }}</span>
                 </template>
             </Column>
