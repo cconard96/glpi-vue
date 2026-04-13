@@ -34,7 +34,7 @@ export function getSearchSettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.allow_search_global.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -46,7 +46,7 @@ export function getSearchSettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.allow_search_all.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {

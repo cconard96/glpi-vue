@@ -14,7 +14,7 @@ export function getItemLocksSettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.lock_use_lock_item.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {

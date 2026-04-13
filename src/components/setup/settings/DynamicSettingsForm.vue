@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import { computed } from "vue";
+    import { computedAsync } from "@vueuse/core";
     import { useSettings } from "@/composables/setup/useSettings.ts";
     import FormFields from "@/components/forms/FormFields.vue";
     import AdvancedForm from "@/components/forms/AdvancedForm.vue";
@@ -11,7 +13,7 @@
     }>();
 
     const { getSettingDefinitions, getSettingValues } = useSettings();
-    const settingDefinitions = getSettingDefinitions(props.context, props.scope, props.category);
+    const settingDefinitions = computed(() => getSettingDefinitions(props.context, props.scope, props.category));
     const settings = await getSettingValues(props.context, props.scope, props.category);
 </script>
 

@@ -9,6 +9,7 @@
     //const router = useRouter();
     const { searchQuery, filteredSettings } = useSettings();
     const activeTab = ref(null);
+    // noinspection JSDeprecatedSymbols
     /** * On Mac, show '⌘' instead of 'Ctrl' for the search shortcut. */
     const searchModifier = navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl';
     const searchInputID = useId();
@@ -18,7 +19,6 @@
             if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
                 event.preventDefault();
                 const searchInput = document.getElementById(searchInputID) as HTMLInputElement;
-                console.log(searchInput);
                 if (searchInput) {
                     searchInput.focus();
                 }
@@ -28,10 +28,9 @@
     });
 
     function gotoSetting(setting: Setting) {
-        // const route = getSettingRoute(setting);
-        // if (route) {
-        //     router.push(route);
-        // }
+        searchQuery.value = '';
+        // Need to force a re-render instead of just updating the active tab. The form doesn't work with computed initial values.
+        // Also need to update URL for better navigation support.
         activeTab.value = setting.category;
     }
 </script>
@@ -63,7 +62,7 @@
                 <template v-if="activeTab === null">
                     <h1 class="text-heading-1 mb-2">Settings</h1>
                     <div v-if="isMobileScreenSize" class="grid grid-cols-1 gap-2 overflow-auto px-2">
-                        <div v-for="(category, categoryKey) in settingCategories" :key="categoryKey" class="p-4 border rounded-lg shadow-sm select-none cursor-pointer" role="button" @click="activeTab = categoryKey">
+                        <div v-for="(category, categoryKey) in settingCategories" :key="categoryKey" class="p-4 border rounded-lg shadow-sm select-none cursor-pointer border-surface-600" role="button" @click="activeTab = categoryKey">
                             <div class="flex justify-between">
                                 <h2 class="text-heading-2">
                                     <i v-if="category.icon" :class="`${category.icon} me-2`"></i>
@@ -76,7 +75,7 @@
                         </div>
                     </div>
                     <div v-else class="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 overflow-auto px-2">
-                        <div v-for="(category, categoryKey) in settingCategories" :key="categoryKey" class="p-4 border rounded-lg shadow-sm select-none cursor-pointer" role="button" @click="activeTab = categoryKey">
+                        <div v-for="(category, categoryKey) in settingCategories" :key="categoryKey" class="p-4 border rounded-lg shadow-sm select-none cursor-pointer border-surface-600" role="button" @click="activeTab = categoryKey">
                             <h2 class="text-heading-2">
                                 <i v-if="category.icon" :class="`${category.icon} me-2`"></i>
                                 {{ category.label }}

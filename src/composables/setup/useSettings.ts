@@ -11,6 +11,7 @@ import { getItemLocksSettings } from "@/util/settings/itemLocksSettings.ts";
 import { getProjectSettings } from "@/util/settings/projectSettings.ts";
 import { getSearchSettings } from "@/util/settings/searchSettings.ts";
 import { getSecuritySettings } from "@/util/settings/securitySettings.ts";
+import { getUserPreferencesSettings } from "@/util/settings/userPreferences.ts";
 
 interface SettingCategoryData {
     label: string;
@@ -45,7 +46,7 @@ export const settingCategories = {
     },
     'item_locks': {
         label: 'Item locks',
-        description: 'Settings related to locking items when they are edited to prevent concurrent modifications',
+        description: 'Locking items when they are edited to prevent concurrent modifications',
         icon: 'ti ti-lock',
     },
     "projects": {
@@ -58,6 +59,82 @@ export const settingCategories = {
         description: 'Password policies, 2FA and other security related settings',
         icon: 'ti ti-shield-lock',
     },
+    //TODO
+    "asset_definitions": {
+        label: 'Asset definitions',
+        description: 'Custom asset definitions',
+        icon: 'ti ti-database-cog',
+    },
+    "notifications": {
+        label: 'Notifications',
+        description: 'Notifications',
+        icon: 'ti ti-bell',
+    },
+    "webhooks": {
+        label: 'Webhooks',
+        description: 'Webhooks',
+        icon: 'ti ti-webhook',
+    },
+    "slm": {
+        label: 'Service levels',
+        description: 'Service levels (SLA and OLA))',
+        icon: 'ti ti-checkup-list',
+    },
+    "field_unicity": {
+        label: 'Field unicity',
+        description: 'Field unicity constraints',
+        icon: 'ti ti-fingerprint',
+    },
+    "crontasks": {
+        label: 'Automatic actions',
+        description: 'Sutomatic actions and scheduled tasks',
+        icon: 'ti ti-settings-automation',
+    },
+    "authentication": {
+        label: 'Authentication',
+        description: 'Suthentication methods and identity providers',
+        icon: 'ti ti-login',
+    },
+    "oauth": {
+        label: 'OAuth',
+        description: 'OAuth clients',
+        icon: 'ti ti-key',
+    },
+    "email_receivers": {
+        label: 'Email receivers',
+        description: 'Email receivers and processing',
+        icon: 'ti ti-mail',
+    },
+    "external_links": {
+        label: 'External links',
+        description: 'External links and integrations',
+        icon: 'ti ti-link',
+    },
+    "plugins": {
+        label: 'Plugins',
+        description: 'Plugins',
+        icon: 'ti ti-puzzle',
+    },
+    "dictionaries": {
+        label: 'Dictionaries',
+        description: 'Dictionaries',
+        icon: 'ti ti-vocabulary',
+    },
+    "rules": {
+        label: 'Rules',
+        description: 'Rules and business logic',
+        icon: 'ti ti-book',
+    },
+    "inventory": {
+        label: 'Inventory',
+        description: 'Inventory management and discovery',
+        icon: 'ti ti-cloud-download',
+    },
+    "forms": {
+        label: 'Forms',
+        description: 'Assistance forms',
+        icon: 'ti ti-forms',
+    }
 } as const satisfies Record<string, SettingCategoryData>;
 
 export interface Setting {
@@ -85,6 +162,7 @@ export function useSettings() {
         ...getItemLocksSettings($t),
         ...getProjectSettings($t),
         ...getSecuritySettings($t),
+        ...getUserPreferencesSettings($t),
     ];
     const allSettingsForSearch = computed(() => {
         // add a 'key' property based on context, category and name to uniquely identify selections
@@ -101,6 +179,7 @@ export function useSettings() {
         fuseOptions: {
             keys: ['name', 'label', 'keywords'],
             minMatchCharLength: 1,
+            threshold: 0.5,
         }
     });
 

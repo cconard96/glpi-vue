@@ -37,7 +37,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.login_remember_default.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -49,7 +49,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.display_login_source.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -61,7 +61,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.use_password_security.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -85,7 +85,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.password_need_number.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -97,7 +97,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.password_need_letter.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -109,7 +109,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.password_need_caps.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             }
         },
         {
@@ -121,7 +121,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.password_need_symbol.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
         {
@@ -206,7 +206,7 @@ export function getSecuritySettings($t: ComposerTranslation): Array<Setting> {
             keywords: $t('settings.core.2fa_enforced.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true },
+                props: { binary: true, trueValue: '1', falseValue: '0' },
             },
         },
     ];

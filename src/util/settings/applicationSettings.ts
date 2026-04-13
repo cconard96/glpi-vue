@@ -74,7 +74,7 @@ export function getApplicationSettings($t: ComposerTranslation): Array<Setting> 
             keywords: $t('settings.core.use_public_faq.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true }
+                props: { binary: true, trueValue: '1', falseValue: '0' }
             }
         },
         {
@@ -86,7 +86,7 @@ export function getApplicationSettings($t: ComposerTranslation): Array<Setting> 
             keywords: $t('settings.core.allow_unauthenticated_uploads.keywords', ''),
             field: {
                 component: Checkbox,
-                props: { binary: true }
+                props: { binary: true, trueValue: '1', falseValue: '0' }
             }
         },
         {

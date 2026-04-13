@@ -16,8 +16,8 @@
         const columnCount = props.columns ?? defaultColumnCount;
         const baseClasses = [
             "gap-y-4",
-            "flex",
-            "flex-wrap",
+            "grid",
+            `grid-cols-${columnCount}`,
             "[&>div>label]:flex",
             "[&>div>label]:items-baseline",
             "[&>div>label>span:first-of-type]:w-1/3",
@@ -30,11 +30,6 @@
             "[&>div>.p-message]:ps-4",
             "[&>div>.p-message]:mt-1"
         ];
-        if (columnCount === 1) {
-            baseClasses.push("flex-col");
-        } else {
-            baseClasses.push(`grid`, `grid-cols-${columnCount}`);
-        }
 
         return baseClasses.join(' ');
     });
