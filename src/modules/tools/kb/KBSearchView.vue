@@ -20,7 +20,7 @@
         document.title = $t('tools.knowbase.label', 'Knowledge base');
     });
 
-    await doGraphQLRequest(`query { KBCategory { id name parent { id name } } KBArticle { id name categories { id } } }`).then((res) => {
+    await doGraphQLRequest(`query { KBCategory { id name parent { id } } KBArticle { id name categories { id } } }`).then((res) => {
         const categories = res.data.KBCategory;
         const articles = res.data.KBArticle;
         // Build category tree
