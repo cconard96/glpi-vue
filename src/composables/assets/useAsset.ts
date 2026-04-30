@@ -68,22 +68,7 @@ const getDefaultRightChecks = (rightname: string) => {
     }
 }
 
-const builtinAssets: Array<{
-    key: SchemaName,
-    module: string,
-    restEndpoint: string,
-    getLabel: (count: number) => string,
-    icon: string,
-    rightname: string,
-    capabilities: AssetCapabilities[],
-    main_tab_component: ReturnType<typeof defineAsyncComponent>,
-    canView: () => boolean,
-    canCreate: () => boolean,
-    canUpdate: () => boolean,
-    canDelete: () => boolean,
-    canPurge: () => boolean,
-    canRestore: () => boolean,
-}> = [
+const builtinAssets: Array<AssetDefinition> = [
     {
         key: 'Computer',
         module: 'assets',

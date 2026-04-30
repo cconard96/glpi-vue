@@ -9,6 +9,7 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig(({ mode }) => {
     return {
         build: {
+            modulePreload: false,
             rollupOptions: {
                 output: {
                     manualChunks: {

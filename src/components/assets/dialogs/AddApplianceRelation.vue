@@ -4,7 +4,7 @@
     import { useApi } from "@/composables/useApi.ts";
     import { inject, type Ref, ref, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
-    import { type DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+    import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
     import { FormSubmitEvent } from "@primevue/forms";
 
     defineEmits<{
