@@ -17,6 +17,9 @@ import { all } from 'primelocale';
 import { Tooltip } from "primevue";
 import { i18n } from "@/util/i18n.ts";
 import { primeVuePassthrough } from "@/util/primeVuePassthrough.ts";
+import Sortable, { MultiDrag } from "sortablejs";
+
+Sortable.mount(new MultiDrag());
 
 // get user language
 const user_lang = navigator.language || 'en';

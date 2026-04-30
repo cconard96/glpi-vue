@@ -41,7 +41,8 @@
         "primelocale": "^2.2.4",
         "primevue": "^4.4.0",
         "quill": "^2.0.3",
-        "tailwindcss": "^4.1.14",
+        "sortablejs": "^1.15.7",
+        "tailwindcss": "^4.2.4",
         "tailwindcss-primeui": "^0.6.1",
         "vue": "^3.5.17",
         "vue-dompurify-html": "^5.3.0",
@@ -51,6 +52,7 @@
     },
     "devDependencies": {
         "@intlify/eslint-plugin-vue-i18n": "^4.3.0",
+        "@types/sortablejs": "^1.15.9",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vitest/browser-playwright": "^4.0.4",
         "@vitest/coverage-v8": "^4.0.4",

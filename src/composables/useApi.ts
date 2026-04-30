@@ -157,7 +157,10 @@ export function useApi() {
         }).then(normalized_name => {
             // ucfirst component_module
             component_module = component_module.charAt(0).toUpperCase() + component_module.slice(1).toLowerCase();
-            const url = `${component_module}/${normalized_name}`;
+            let url = `${component_module}/${normalized_name}`;
+            if (component_module === 'Tools' && normalized_name === 'Project') {
+                url = 'Project';
+            }
 
             const doSearch = (url, queryParams, is_retry = false): Promise<SearchResult> => {
                 return doApiRequest(url, {

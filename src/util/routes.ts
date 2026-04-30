@@ -29,6 +29,8 @@ function getComponentModuleBreadcrumbActionsComponent(component_module: string) 
     switch (component_module) {
         case 'assets':
             return defineAsyncComponent(() => import('../components/layout/AssetItemBreadcrumbActions.vue'));
+        case 'projects':
+            return defineAsyncComponent(() => import('../components/layout/ProjectBreadcrumbActions.vue'));
         default:
             return null;
     }
@@ -77,7 +79,11 @@ export const routes: RouteRecordRaw[] = [
                         ];
                     },
                     breadcrumbActionsComponent: (route: RouteLocationNormalizedGeneric) => {
-                        return getComponentModuleBreadcrumbActionsComponent(route.params.component_module as string);
+                        let componentModule = route.params.component_module as string;
+                        if (componentModule === 'tools' && route.params.itemtype === 'project') {
+                            componentModule = 'projects'; // use projects breadcrumb actions for tools/project search
+                        }
+                        return getComponentModuleBreadcrumbActionsComponent(componentModule);
                     }
                 }
             },
@@ -255,6 +261,42 @@ export const routes: RouteRecordRaw[] = [
                             { label: 'Settings', route: `/setup/settings` },
                         ];
                     }
+                }
+            },
+            {
+                name: 'GlobalProjectKanban',
+                path: ':component_module(tools)/:itemtype(project)/kanban',
+                component: () => import('../components/projects/ProjectKanban.vue'),
+                meta: {
+                    title: 'Global Project Kanban',
+                    breadcrumbs: () => {
+                        return [
+                            { label: 'Project', disabled: true },
+                            { label: 'Global Kanban', route: `/tools/project/kanban` },
+                        ];
+                    },
+                    breadcrumbActionsComponent: () => getComponentModuleBreadcrumbActionsComponent('projects'),
+                }
+            },
+            {
+                name: 'NewProjectForm',
+                path: `:component_module(tools)/:itemtype(project)/new`,
+                component: () => import('../components/projects/ProjectForm.vue'),
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    return {
+                        component_module: 'tools',
+                        itemtype: normalizeItemtype(route.params.itemtype as string),
+                        id: 0,
+                    };
+                },
+                meta: {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
+                        return [
+                            { label: getComponentModuleLabel('assets'), disabled: true },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/tools/${route.params.itemtype}` },
+                        ];
+                    },
+                    breadcrumbActionsComponent: () => getComponentModuleBreadcrumbActionsComponent('projects'),
                 }
             },
             { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
