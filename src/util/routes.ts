@@ -257,6 +257,20 @@ export const routes: RouteRecordRaw[] = [
                     }
                 }
             },
+            {
+                name: 'Rules',
+                path: 'administration/rule',
+                component: () => import('../components/administration/rules/RulesView.vue'),
+                meta: {
+                    title: 'Rules',
+                    breadcrumbs: () => {
+                        return [
+                            { label: 'Administration', disabled: true },
+                            { label: 'Rules', route: `/administration/rules` },
+                        ];
+                    }
+                }
+            },
             { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
         ],
     },
