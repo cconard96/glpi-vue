@@ -54,7 +54,7 @@ export interface SearchResult {
 
 export function useApi() {
     const { getAuthToken, refreshAuthToken } = useAuth();
-    const { getOpenAPIComponent, getAllOpenAPIComponentNames } = useIndexedDB();
+    const { getOpenAPIComponent, getAllOpenAPIComponentNames, getOpenAPISchemaNameForGLPIItemtype } = useIndexedDB();
 
     /**
      * Get headers for the session data like entity and profile
@@ -90,22 +90,6 @@ export function useApi() {
         });
     }
 
-    const getApiSchema = () => {
-        api_schema = api_schema ?? JSON.parse(localStorage.getItem('api_schema'));
-        if (api_schema) {
-            return Promise.resolve(api_schema);
-        }
-
-        return doApiRequest('doc.json').then(response => {
-            api_schema = response.data;
-            //localStorage.setItem('api_schema', JSON.stringify(api_schema));
-            return api_schema;
-        }).catch(error => {
-            console.error('Failed to fetch API schema:', error);
-            throw error;
-        });
-    };
-
     const getComponentNameMap = () => {
         return getAllOpenAPIComponentNames().then(component_names => {
             component_name_map = {};
@@ -114,15 +98,6 @@ export function useApi() {
             });
             return component_name_map;
         });
-
-
-        // return getApiSchema().then((api_schema) => {
-        //     component_name_map = {};
-        //     Object.keys(api_schema.components.schemas).forEach(name => {
-        //         component_name_map[name.toLowerCase()] = name;
-        //     });
-        //     return component_name_map;
-        // });
     }
 
     const normalizeComponentName = (name) => {
@@ -131,21 +106,9 @@ export function useApi() {
         });
     }
 
-    // const getComponents = () => {
-    //     return getOpenAPIComponents();
-    //     // return getApiSchema().then(schema => {
-    //     //     return schema.components || {};
-    //     // });
-    // }
-
     const getComponentSchema =
         <T extends keyof components['schemas']>(component_name: T): Promise<OpenAPISchemaDefinition> => {
         return getOpenAPIComponent(component_name);
-        // return getComponents().then(components => {
-        //     return normalizeComponentName(component_name).then(normalized_name => {
-        //         return components.schemas ? components.schemas[normalized_name] : null;
-        //     });
-        // });
     }
 
     const search = (component_module, component_name, queryParams = {}): Promise<SearchResult> => {
@@ -245,24 +208,13 @@ export function useApi() {
         return fields_query_part;
     }
 
-    function getSchemaNameForGLPIItemtype(itemtype: string): Promise<string | null> {
-        return getApiSchema().then((api_schema) => {
-            for (let [schema_name, schema_info] of Object.entries(api_schema.components.schemas)) {
-                if (schema_info['x-itemtype'] === itemtype) {
-                    return schema_name;
-                }
-            }
-            return null;
-        });
-    }
-
     /**
      * Takes an array of GLPI internal class names (itemtypes) and returns an array of valid schema component names.
      * @param itemtypes
      */
     function getValidSchemaTypesFromItemtypes(itemtypes: Array<string>): Promise<Array<string>> {
         return Promise.all(itemtypes.map(itemtype => {
-            return getSchemaNameForGLPIItemtype(itemtype).then(schema_name => {
+            return getOpenAPISchemaNameForGLPIItemtype(itemtype).then(schema_name => {
                 if (schema_name) {
                     return schema_name;
                 } else {
@@ -282,9 +234,7 @@ export function useApi() {
         doApiRequest,
         normalizeComponentName,
         doGraphQLRequest,
-        getApiSchema,
         getItemByID,
-        getSchemaNameForGLPIItemtype,
         apollo_client,
         getValidSchemaTypesFromItemtypes,
         getCompleteFieldsRequestForSchema,

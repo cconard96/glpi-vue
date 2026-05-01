@@ -105,6 +105,33 @@ export function useIndexedDB() {
         });
     }
 
+    function getOpenAPISchemaNameForGLPIItemtype(itemtype: string): Promise<string | null> {
+        return openDatabase().then(db => {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([TABLE_OPENAPISCHEMA_COMPONENTS], 'readonly');
+                const store = transaction.objectStore(TABLE_OPENAPISCHEMA_COMPONENTS);
+
+                // check all components for a schema with a 'x-itemtype' property matching the given itemtype
+                const request = store.getAll();
+
+                request.onsuccess = (event) => {
+                    const result = (event.target as IDBRequest).result;
+                    for (const entry of result) {
+                        if (entry.schema['x-itemtype'] === itemtype) {
+                            resolve(entry.name);
+                            return;
+                        }
+                    }
+                    resolve(null); // not found
+                };
+
+                request.onerror = (event) => {
+                    reject((event.target as IDBRequest).error);
+                };
+            });
+        });
+    }
+
     function clearAllStores(): Promise<void> {
         return openDatabase().then(db => {
             return new Promise((resolve, reject) => {
@@ -124,6 +151,7 @@ export function useIndexedDB() {
         getOpenAPIComponents,
         getOpenAPIComponent,
         getAllOpenAPIComponentNames,
+        getOpenAPISchemaNameForGLPIItemtype,
         clearAllStores
     }
 }
