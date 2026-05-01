@@ -22,7 +22,6 @@
         "@primeuix/themes": "^1.2.5",
         "@primevue/forms": "^4.4.1",
         "@tabler/icons-webfont": "^3.35.0",
-        "@tailwindcss/vite": "^4.1.14",
         "@vueuse/core": "^14.1.0",
         "@vueuse/integrations": "^14.2.1",
         "axios": "^1.12.2",
@@ -41,7 +40,6 @@
         "primelocale": "^2.2.4",
         "primevue": "^4.4.0",
         "quill": "^2.0.3",
-        "tailwindcss": "^4.1.14",
         "tailwindcss-primeui": "^0.6.1",
         "vue": "^3.5.17",
         "vue-dompurify-html": "^5.3.0",
@@ -51,6 +49,7 @@
     },
     "devDependencies": {
         "@intlify/eslint-plugin-vue-i18n": "^4.3.0",
+        "@tailwindcss/vite": "^0.0.0-insiders.52f94c7",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vitest/browser-playwright": "^4.0.4",
         "@vitest/coverage-v8": "^4.0.4",
@@ -61,16 +60,20 @@
         "oxfmt": "^0.33.0",
         "oxlint": "^1.48.0",
         "playwright": "^1.56.1",
+        "tailwindcss": "^0.0.0-insiders.52f94c7",
         "typescript": "^5.9.3",
-        "vite": "7.1.5",
+        "vite": "^8.0.10",
         "vite-plugin-pwa": "^1.2.0",
-        "vite-plugin-vue-devtools": "^8.0.0",
+        "vite-plugin-vue-devtools": "^8.1.1",
         "vitest": "^4.0.4",
         "vitest-browser-vue": "^2.0.1",
         "vue-i18n-extract": "^2.0.7",
         "vue3-snapshot-serializer": "^2.13.0"
     },
     "overrides": {
-        "html2canvas": "html2canvas-pro"
+        "html2canvas": "html2canvas-pro",
+        "vite-plugin-pwa": {
+            "vite": "$vite"
+        }
     }
 }
