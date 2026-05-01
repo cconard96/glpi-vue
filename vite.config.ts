@@ -9,12 +9,19 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig(({ mode }) => {
     return {
         build: {
+            // AFAIK preload doesn't really apply much here because this app uses PWA and the service worker will already handle caching all resources. So, loading times are very fast.
             modulePreload: false,
             rollupOptions: {
                 output: {
-                    manualChunks: {
-                        // ECharts is a large library used only in specific parts of the app to display charts so it should be kept separate
-                        echarts: ['echarts', 'vue-echarts'],
+                    codeSplitting: {
+                        groups: [
+                            {
+                                // ECharts is a large library used only in specific parts of the app to display charts so it should be kept separate
+                                name: 'echarts',
+                                test: /[\\/]node_modules[\\/](echarts|vue-echarts)[\\/]/,
+                                priority: 20,
+                            }
+                        ],
                     },
                 },
             },
