@@ -67,9 +67,9 @@
                     </a>
                 </template>
             </PanelMenu>
-            <Menubar v-else :model="visibleItems" :pt="{
+            <Menubar v-else :model="visibleItems" class="static" :pt="{
                 rootlist: {
-                    'class': 'justify-self-start z-1000 w-auto max-w-screen'
+                    'class': 'w-auto max-w-screen top-[55px] left-[14px]'
                 },
                 root: { class: 'p-2' },
             }"></Menubar>
