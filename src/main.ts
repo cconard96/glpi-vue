@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, vaporInteropPlugin } from 'vue'
 import App from './App.vue'
 import { routes } from './util/routes.ts';
 import PrimeVue from 'primevue/config';
@@ -60,6 +60,7 @@ pinia.use(piniaPluginPersistedstate)
 const theme_preset = definePreset(Lara, {});
 
 createApp(App)
+    .use(vaporInteropPlugin)
     .use(router)
     .use(pinia)
     .use(PrimeVue, {

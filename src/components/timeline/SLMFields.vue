@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" vapor>
     import { Button, DatePicker, FloatLabel, InputGroup, InputGroupAddon, Tag } from "primevue";
     import { FormField } from "@primevue/forms";
 

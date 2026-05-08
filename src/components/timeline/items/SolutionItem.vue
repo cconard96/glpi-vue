@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" vapor>
     import { Button, Card, Tag } from "primevue";
     import { useDataHelper } from "@/composables/useDataHelper";
     import { components } from "../../../../data/hlapiv2_schema";

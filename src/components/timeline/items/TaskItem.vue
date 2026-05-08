@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" vapor>
     import { Button, Card, Checkbox, Menu, Tag } from "primevue";
     import { useDataHelper } from "@/composables/useDataHelper";
     import { useApi } from '@/composables/useApi';

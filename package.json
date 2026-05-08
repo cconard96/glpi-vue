@@ -41,7 +41,7 @@
         "primevue": "^4.4.0",
         "quill": "^2.0.3",
         "tailwindcss-primeui": "^0.6.1",
-        "vue": "^3.5.17",
+        "vue": "^3.6.0-beta.11",
         "vue-dompurify-html": "^5.3.0",
         "vue-echarts": "^8.0.1",
         "vue-i18n": "^11.3.0",
@@ -74,6 +74,8 @@
         "html2canvas": "html2canvas-pro",
         "vite-plugin-pwa": {
             "vite": "$vite"
-        }
+        },
+        "vue": "^3.6.0-beta.11",
+        "tailwindcss": "^0.0.0-insiders.52f94c7"
     }
 }

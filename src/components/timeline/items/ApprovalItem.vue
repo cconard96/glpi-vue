@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" vapor>
     import { Button, Card, Menu, Tag, useToast } from "primevue";
     import { Form, FormField, FormInstance } from '@primevue/forms';
     import { useDataHelper } from "@/composables/useDataHelper";

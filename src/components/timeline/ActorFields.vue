@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" vapor>
     import { components } from "../../../data/hlapiv2_schema";
     import { MultiSelect, SelectButton, FloatLabel, InputText } from "primevue";
     import { shallowRef, ref, useTemplateRef } from "vue";

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" vapor>
     import TimelineItem from "@/components/timeline/TimelineItem.vue";
     import { computed, onMounted, provide, ref, type Ref, useId, useTemplateRef, watch } from "vue";
     import { useApi } from "@/composables/useApi.ts";
