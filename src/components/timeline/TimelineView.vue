@@ -240,7 +240,7 @@
             <div></div>
         </div>
         <div class="grid grid-cols-12 overflow-y-hidden">
-            <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
+            <div ref="left-side" :class="isNewItem ? 'flex-col' : 'flex-col-reverse'" class="col-span-8 2xl:col-span-9 flex space-y-4 px-10 overflow-y-auto pb-10">
                 <template v-if="view_mode !== 'milestones'">
                     <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" @close="current_new_item = null"></component>
                     <TimelineItem v-for="item in filteredItems" :key="`${item.type}-${item.item.id}`"
