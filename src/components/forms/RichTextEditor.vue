@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import FileUpload from "./FileUpload.vue";
     import Editor from "primevue/editor";
-    import { inject } from "vue";
 
     defineProps({
         enable_file_upload: {

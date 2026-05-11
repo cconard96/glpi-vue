@@ -8,41 +8,39 @@
     } from 'primevue';
     import { RouterLink } from "vue-router";
     import FieldsPanel from "@/components/timeline/FieldsPanel.vue";
-    import { type components } from "../../../data/hlapiv2_schema";
-    import { useAssistanceItem } from "@/composables/useAssistanceItem";
+    import { useAssistanceItem, getEmptyItem, AssistanceType, AssistanceSchema } from "@/composables/useAssistanceItem";
     import { useDataHelper } from "@/composables/useDataHelper";
     import { useInterval } from "@/composables/useInterval";
     import { useOpenAPIForm } from "@/composables/useOpenAPIForm";
+    import { useI18n } from "vue-i18n";
 
-    const { itemtype, id } = defineProps({
-        itemtype: {
-            type: String,
-            required: true
-        },
-        id: {
-            type: Number,
-            required: true
-        }
-    });
+    const { itemtype, id } = defineProps<{
+        itemtype: AssistanceType;
+        id: number;
+    }>();
 
+    const { t: $t } = useI18n();
     const toast = useToast();
     const { doApiRequest, normalizeComponentName, getComponentSchema } = useApi();
     const { formatDuration } = useDataHelper();
     const normalized_itemtype = ref(await normalizeComponentName(itemtype));
-    const { formatFieldsForForm } = useOpenAPIForm(await getComponentSchema(normalized_itemtype.value));
-    const item: Ref<components['schemas']['Ticket'] | components['schemas']['Change'] | components['schemas']['Problem']>  = ref(null);
+    const item: Ref<AssistanceSchema>  = ref(id > 0 ? null : await getEmptyItem(itemtype));
     const assistanceItemInstance = useAssistanceItem(normalized_itemtype.value, item);
-    provide('assistanceItemInstance', assistanceItemInstance);
+
     const {
         mainTimelineAction, extraTimelineActions, current_new_item, statusIcon, statusColor,
         loadTimelineItems, timelineItems, canUpdateItem, milestones
     } = assistanceItemInstance;
     const assistanceFormID = useId();
+    const isNewItem = ref(id === 0);
 
-    await doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
-        item.value = res.data;
-    });
-    await loadTimelineItems();
+    if (!isNewItem.value) {
+        await doApiRequest(`Assistance/${normalized_itemtype.value}/${id}`).then(async (res) => {
+            item.value = res.data;
+        });
+        await loadTimelineItems();
+    }
+    provide('assistanceItemInstance', assistanceItemInstance);
 
     const left_side = useTemplateRef('left-side');
     const right_side = useTemplateRef('right-side');
@@ -63,10 +61,16 @@
     }
 
     onMounted(() => {
-        document.title = `${itemtype_name} #${item.value.id} - ${item.value.name}`;
+        if (isNewItem.value) {
+            document.title = $t('new_item.page_title', {
+                itemtype: itemtype_name
+            }, { default: 'New {itemtype}' });
+        } else {
+            document.title = `${itemtype_name} #${item.value.id} - ${item.value.name}`;
 
-        //fetch timeline items every 1 minute to keep it updated without the user having to reload, but back off to 5 minutes when idle
-        useInterval(loadTimelineItems, 60 * 1000, 5 * 60 * 1000);
+            //fetch timeline items every 1 minute to keep it updated without the user having to reload, but back off to 5 minutes when idle
+            useInterval(loadTimelineItems, 60 * 1000, 5 * 60 * 1000);
+        }
     });
 
     const filters = {
@@ -107,7 +111,10 @@
         },
     };
     const view_mode = ref('default');
-    const filtered_items = computed(() => {
+    const filteredItems = computed(() => {
+        if (isNewItem) {
+            return [];
+        }
         const filtered = timelineItems.value.filter((timeline_item) => {
             if (view_mode.value === 'todo') {
                 return timeline_item.type === 'Task';
@@ -236,7 +243,7 @@
             <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                 <template v-if="view_mode !== 'milestones'">
                     <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" @close="current_new_item = null"></component>
-                    <TimelineItem v-for="item in filtered_items" :key="`${item.type}-${item.item.id}`"
+                    <TimelineItem v-for="item in filteredItems" :key="`${item.type}-${item.item.id}`"
                                   :item="item" :todoListMode="view_mode === 'todo'" />
                     <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
                         type: 'content',
@@ -277,7 +284,7 @@
             </div>
             <div class="relative h-22 col-span-12">
                 <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
-                    <div class="[&>*]:me-2">
+                    <div v-if="!isNewItem" class="[&>*]:me-2">
                         <SplitButton v-if="current_new_item === null && mainTimelineAction" :label="mainTimelineAction.label" :icon="mainTimelineAction.icon"
                                      :model="extraTimelineActions" :menuButtonProps="{'aria-label': 'More Options'}"
                                      @click="mainTimelineAction.command">
@@ -311,6 +318,7 @@
                             </template>
                         </SelectButton>
                     </div>
+                    <div v-else></div>
                     <div class="">
                         <ButtonGroup>
                             <Button title="Put in trashbin" icon="ti ti-trash" severity="danger" variant="outlined"></Button>

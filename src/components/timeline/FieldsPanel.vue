@@ -37,6 +37,7 @@
     const dialog = useDialog();
     const { doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
     const {
+        isNewItem,
         statusOptions, getTypeName, urgencyImpactOptions, priorityOptions, itemtypeIcon, assistanceLinkTypeLabels,
         requesters, observers, assigned, globalApprovalIcon, globalApprovalLabel, current_new_item
     } = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance');
@@ -93,7 +94,8 @@
     const olaTTRName = ref('');
 
     onMounted(() => {
-        doGraphQLRequest(`
+        if (isNewItem.value) {
+            doGraphQLRequest(`
             query {
                 KBArticle_Item(filter: "itemtype==${props.itemtype};items_id==${props.item.id}") {
                     id itemtype items_id kbarticle { id name }
@@ -107,54 +109,54 @@
                 }
             }
         `, {}, 'no-cache', 'all').then((res) => {
-            kbitems.value = res.data.KBArticle_Item;
-            project_links.value = res.data.ITIL_Project.map(ip => ip.project);
-            const links = [];
-            for (const link_type of assistance_link_types) {
-                if (link_type.itemtypes.includes(props.itemtype)) {
-                    // get the id and name for the other side of the link
-                    const link_data = res.data[link_type.link_type];
-                    if (!link_data) {
-                        // maybe the user does not have permission to see those itemtypes
-                        continue;
-                    }
-                    for (const link of link_data) {
-                        let linked_item = null;
-                        // if this is a link between the same itemtype, find the other side of the link by ID. Otherwise look for the other itemtype.
-                        if (link_type.itemtypes.length === 1) {
-                            const prop = props.itemtype.toLowerCase();
-                            if (link[`${prop}_1`].id === props.item.id) {
-                                linked_item = link[`${prop}_2`];
+                kbitems.value = res.data.KBArticle_Item;
+                project_links.value = res.data.ITIL_Project.map(ip => ip.project);
+                const links = [];
+                for (const link_type of assistance_link_types) {
+                    if (link_type.itemtypes.includes(props.itemtype)) {
+                        // get the id and name for the other side of the link
+                        const link_data = res.data[link_type.link_type];
+                        if (!link_data) {
+                            // maybe the user does not have permission to see those itemtypes
+                            continue;
+                        }
+                        for (const link of link_data) {
+                            let linked_item = null;
+                            // if this is a link between the same itemtype, find the other side of the link by ID. Otherwise look for the other itemtype.
+                            if (link_type.itemtypes.length === 1) {
+                                const prop = props.itemtype.toLowerCase();
+                                if (link[`${prop}_1`].id === props.item.id) {
+                                    linked_item = link[`${prop}_2`];
+                                } else {
+                                    linked_item = link[`${prop}_1`];
+                                }
                             } else {
-                                linked_item = link[`${prop}_1`];
-                            }
-                        } else {
-                            for (const it of link_type.itemtypes) {
-                                if (it.toLowerCase() !== props.itemtype.toLowerCase()) {
-                                    linked_item = link[it.toLowerCase()];
-                                    break;
+                                for (const it of link_type.itemtypes) {
+                                    if (it.toLowerCase() !== props.itemtype.toLowerCase()) {
+                                        linked_item = link[it.toLowerCase()];
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        if (linked_item) {
-                            links.push({
-                                link_type: link_type.link_type,
-                                link: link.link,
-                                linked_item: linked_item
-                            });
+                            if (linked_item) {
+                                links.push({
+                                    link_type: link_type.link_type,
+                                    link: link.link,
+                                    linked_item: linked_item
+                                });
+                            }
                         }
                     }
                 }
-            }
-            assistance_links.value = links;
+                assistance_links.value = links;
 
-            // handle fetching extra data about the assets for this assistance item
-            const linked_assets_data = res.data[`${props.itemtype}_Item`];
-            getValidSchemaTypesFromItemtypes(linked_assets_data.map(i => i.itemtype)).then((valid_types) => {
-                if (valid_types.length === 0) {
-                    return;
-                }
-                doGraphQLRequest(`
+                // handle fetching extra data about the assets for this assistance item
+                const linked_assets_data = res.data[`${props.itemtype}_Item`];
+                getValidSchemaTypesFromItemtypes(linked_assets_data.map(i => i.itemtype)).then((valid_types) => {
+                    if (valid_types.length === 0) {
+                        return;
+                    }
+                    doGraphQLRequest(`
                     query {
                         ${valid_types.map(type => `
                             ${type}(filter: "id=in=(${linked_assets_data.filter(i => i.itemtype === type).map(i => i.id).join(',')})") {
@@ -163,25 +165,25 @@
                         `).join(' ')}
                     }
                 `).then((res) => {
-                    for (const type of valid_types) {
-                        const items = res.data[type];
-                        for (const item of linked_assets_data.filter(i => i.itemtype === type)) {
-                            const asset_data = items.find(i => i.id === item.id);
-                            if (asset_data) {
-                                item_links.value.push({
-                                    id: item.id,
-                                    itemtype: item.itemtype,
-                                    items_id: item.items_id,
-                                    name: asset_data.name
-                                });
+                        for (const type of valid_types) {
+                            const items = res.data[type];
+                            for (const item of linked_assets_data.filter(i => i.itemtype === type)) {
+                                const asset_data = items.find(i => i.id === item.id);
+                                if (asset_data) {
+                                    item_links.value.push({
+                                        id: item.id,
+                                        itemtype: item.itemtype,
+                                        items_id: item.items_id,
+                                        name: asset_data.name
+                                    });
+                                }
                             }
                         }
-                    }
+                    });
                 });
             });
-        });
-        if (props.itemtype === 'Ticket') {
-            doGraphQLRequest(`
+            if (props.itemtype === 'Ticket') {
+                doGraphQLRequest(`
                 query {
                     SLA(filter: "id=in=(${(props.item as components['schemas']['Ticket']).sla_tto},${(props.item as components['schemas']['Ticket']).sla_ttr})") {
                         id name
@@ -191,11 +193,12 @@
                     }
                 }
             `, {}, 'cache-first').then((res) => {
-                slaTTOName.value = res.data.SLA.find(sla => sla.id === (props.item as components['schemas']['Ticket']).sla_tto)?.name || '';
-                slaTTRName.value = res.data.SLA.find(sla => sla.id === (props.item as components['schemas']['Ticket']).sla_ttr)?.name || '';
-                olaTTOName.value = res.data.OLA.find(ola => ola.id === (props.item as components['schemas']['Ticket']).ola_tto)?.name || '';
-                olaTTRName.value = res.data.OLA.find(ola => ola.id === (props.item as components['schemas']['Ticket']).ola_ttr)?.name || '';
-            });
+                    slaTTOName.value = res.data.SLA.find(sla => sla.id === (props.item as components['schemas']['Ticket']).sla_tto)?.name || '';
+                    slaTTRName.value = res.data.SLA.find(sla => sla.id === (props.item as components['schemas']['Ticket']).sla_ttr)?.name || '';
+                    olaTTOName.value = res.data.OLA.find(ola => ola.id === (props.item as components['schemas']['Ticket']).ola_tto)?.name || '';
+                    olaTTRName.value = res.data.OLA.find(ola => ola.id === (props.item as components['schemas']['Ticket']).ola_ttr)?.name || '';
+                });
+            }
         }
     });
 
@@ -217,7 +220,6 @@
                     if (action === 'link') {
                         // TODO Link the article to the assistance item
                     } else if (action === 'use_as_solution') {
-                        console.log('article content', article.content);
                         current_new_item.value = {
                             component: defineAsyncComponent(() => import('@/components/timeline/forms/SolutionForm.vue')),
                             props: {

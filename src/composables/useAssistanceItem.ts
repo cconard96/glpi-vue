@@ -4,13 +4,102 @@ import { useSessionStore, ITILSubItemRights, BaseRights, TicketApprovalRights, T
 import { useApi } from "@/composables/useApi";
 import { useDataHelper } from "@/composables/useDataHelper";
 import { AssistanceTimelineItemtype } from "@/composables/useAssistanceTimelineItem.ts";
+import { AssetType } from "@/composables/assets/useAsset.ts";
 
 type TimelineItem = components['schemas']['Followup'] | components['schemas']['TicketTask']
     | components['schemas']['ChangeTask'] | components['schemas']['ProblemTask'] | components['schemas']['Solution']
     | components['schemas']['Document'] | components['schemas']['TicketValidation'] | components['schemas']['ChangeValidation'];
 
-type AssistanceType = 'Ticket' | 'Change' | 'Problem';
-type AssistanceSchema<T extends AssistanceType = AssistanceType> = components['schemas'][T];
+export type AssistanceType = 'Ticket' | 'Change' | 'Problem';
+export type AssistanceSchema<T extends AssistanceType = AssistanceType> = components['schemas'][T];
+
+const { getComponentSchema } = useApi();
+
+const statuses = {
+    1: { key: 'new', label: 'New', icon: 'ti ti-circle-filled', color: '#49bf4d' },
+    2: { key: 'assigned', label: 'Processing (Assigned)', icon: 'ti ti-circle', color: '#49bf4d' },
+    3: { key: 'planned', label: 'Processing (Planned)', icon: 'ti ti-calendar', color: '#1b2f62' },
+    4: { key: 'waiting', label: 'Pending', icon: 'ti ti-circle-filled', color: '#ffa500' },
+    5: { key: 'solved', label: 'Solved', icon: 'ti ti-circle', color: '#000000' },
+    6: { key: 'closed', label: 'Closed', icon: 'ti ti-circle-filled', color: '#000000' },
+    7: { key: 'accepted', label: 'Accepted', icon: 'ti ti-circle-check-filled', color: '#00ff00' },
+    8: { key: 'observe', label: 'Review', icon: 'ti ti-eye', color: '#000000' },
+    9: { key: 'eval', label: 'Evaluation', icon: 'ti ti-circle', color: '#add8e6' },
+    10: { key: 'approval', label: 'Approval', icon: 'ti ti-help', color: '#8cabdb' },
+    11: { key: 'test', label: 'Testing', icon: 'ti ti-help', color: '#ffa500' },
+    12: { key: 'qualif', label: 'Qualification', icon: 'ti ti-circle', color: '#ffa500' },
+    13: { key: 'refused', label: 'Refused', icon: 'ti ti-circle-x', color: '#a72f00' },
+    14: { key: 'canceled', label: 'Canceled', icon: 'ti ti-ban', color: '#000000' }
+};
+
+/**
+ * A set of default properties which either are not provided (yet) by the API or are unique for this client app.
+ */
+const clientDefaultPropertyValues = {
+    id: 0,
+    status: {
+        id: 1,
+        name: statuses[1].label
+    },
+    type: 1,
+    urgency: 3,
+    impact: 3,
+    priority: 3,
+}
+
+export function getEmptyItem<T extends AssistanceType>(assistance_type: T): Promise<Ref<AssistanceSchema<T>>> {
+    return getComponentSchema(assistance_type).then(schema => {
+        const props = {};
+        if (schema && schema.properties) {
+            for (const [key, prop] of Object.entries(schema.properties)) {
+                // If name ends with '.id' and only contains a single '.', it's likely an item dropdown
+                const is_item_dropdown = key.endsWith('.id') && (key.match(/\./g) || []).length === 1;
+                const field_name = is_item_dropdown ? key.slice(0, -3) : key;
+                if (!is_item_dropdown && key.includes('.')) {
+                    // Ignore other nested properties for now
+                    continue;
+                }
+                props[field_name] = prop;
+            }
+        }
+        return props;
+    }).then((props: Record<string, object>) => {
+        const { active_entity } = useSessionStore();
+        const new_item = {};
+
+        for (const [key, prop] of Object.entries(props)) {
+            if ('default' in prop) {
+                new_item[key] = prop.default;
+            } else {
+                if (key === 'team') {
+                    new_item[key] = [
+                        {
+                            role: 'requester',
+                            type: 'User',
+                            id: useSessionStore().user_id,
+                            name: useSessionStore().name,
+                            realname: useSessionStore().real_name,
+                            firstname: useSessionStore().first_name,
+                        }
+                    ];
+                } else if (key in clientDefaultPropertyValues) {
+                    new_item[key] = clientDefaultPropertyValues[key];
+                } else if (key === 'entity') {
+                    new_item[key] = {
+                        id: active_entity.id,
+                        name: active_entity.short_name,
+                        completename: active_entity.complete_name,
+                    };
+                } else if (prop.type === 'array') {
+                    new_item[key] = [];
+                } else {
+                    new_item[key] = null;
+                }
+            }
+        }
+        return ref(new_item) as Ref<AssistanceSchema<T>>;
+    });
+}
 
 export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: Ref<AssistanceSchema<T>>) {
     const session = useSessionStore();
@@ -21,22 +110,8 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         component: Component,
         props?: Record<string, any>
     }> = shallowRef(null);
-    const statuses = {
-        1: { key: 'new', label: 'New', icon: 'ti ti-circle-filled', color: '#49bf4d' },
-        2: { key: 'assigned', label: 'Processing (Assigned)', icon: 'ti ti-circle', color: '#49bf4d' },
-        3: { key: 'planned', label: 'Processing (Planned)', icon: 'ti ti-calendar', color: '#1b2f62' },
-        4: { key: 'waiting', label: 'Pending', icon: 'ti ti-circle-filled', color: '#ffa500' },
-        5: { key: 'solved', label: 'Solved', icon: 'ti ti-circle', color: '#000000' },
-        6: { key: 'closed', label: 'Closed', icon: 'ti ti-circle-filled', color: '#000000' },
-        7: { key: 'accepted', label: 'Accepted', icon: 'ti ti-circle-check-filled', color: '#00ff00' },
-        8: { key: 'observe', label: 'Review', icon: 'ti ti-eye', color: '#000000' },
-        9: { key: 'eval', label: 'Evaluation', icon: 'ti ti-circle', color: '#add8e6' },
-        10: { key: 'approval', label: 'Approval', icon: 'ti ti-help', color: '#8cabdb' },
-        11: { key: 'test', label: 'Testing', icon: 'ti ti-help', color: '#ffa500' },
-        12: { key: 'qualif', label: 'Qualification', icon: 'ti ti-circle', color: '#ffa500' },
-        13: { key: 'refused', label: 'Refused', icon: 'ti ti-circle-x', color: '#a72f00' },
-        14: { key: 'canceled', label: 'Canceled', icon: 'ti ti-ban', color: '#000000' }
-    };
+
+    const isNewItem = computed<boolean>(() => (item.value.id ?? 0) <= 0);
 
     const requesters = computed(() => item.value.team.filter(team => team.role === 'requester'));
     const observers = computed(() => item.value.team.filter(team => team.role === 'observer'));
@@ -169,6 +244,8 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
             );
         }
     });
+
+    const canCreate = computed(() => session.hasRight(itemtype.toLowerCase(), BaseRights.CREATE));
 
     const all_timeline_actions: Ref<{
         label: string,
@@ -418,6 +495,7 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
     return {
         itemtype,
         item,
+        isNewItem,
         timelineItems,
         loadTimelineItems,
         all_timeline_actions,
@@ -438,6 +516,7 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         assistanceLinkTypeLabels,
         globalApprovalIcon,
         globalApprovalLabel,
+        canCreate,
         canUpdateItem,
         milestones,
     }

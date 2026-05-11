@@ -1,9 +1,9 @@
 <script setup lang="ts">
     import { Button, SplitButton } from "primevue";
-    import { AssetCapabilities, getDefinition } from "@/composables/assets/useAsset.js";
+    import { AssetCapabilities, getDefinition, AssetType } from "@/composables/assets/useAsset.js";
 
     const props = defineProps<{
-        itemtype: string;
+        itemtype: AssetType;
         items_id: number;
     }>();
 

@@ -29,6 +29,8 @@ function getComponentModuleBreadcrumbActionsComponent(component_module: string) 
     switch (component_module) {
         case 'assets':
             return defineAsyncComponent(() => import('../components/layout/AssetItemBreadcrumbActions.vue'));
+        case 'assistance':
+            return defineAsyncComponent(() => import('../components/layout/AssistanceBreadcrumbActions.vue'));
         default:
             return null;
     }
@@ -88,7 +90,7 @@ export const routes: RouteRecordRaw[] = [
                 props: (route: RouteLocationNormalizedGeneric) => {
                     const id = parseInt(route.params.id as string);
                     return {
-                        itemtype: route.params.itemtype,
+                        itemtype: normalizeItemtype(route.params.itemtype as string),
                         id: isNaN(id) ? null : id,
                     };
                 },
@@ -98,7 +100,28 @@ export const routes: RouteRecordRaw[] = [
                             { label: getComponentModuleLabel('assistance'), disabled: true },
                             { label: normalizeItemtype(route.params.itemtype as string), route: `/assistance/${route.params.itemtype}` },
                         ];
-                    }
+                    },
+                    breadcrumbActionsComponent: () => getComponentModuleBreadcrumbActionsComponent('assistance'),
+                }
+            },
+            {
+                name: 'NewAssistanceItemForm',
+                path: `assistance/:itemtype(ticket|change|problem)/new`,
+                component: () => import('../components/timeline/TimelineView.vue'),
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    return {
+                        itemtype: normalizeItemtype(route.params.itemtype as string),
+                        id: 0,
+                    };
+                },
+                meta: {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
+                        return [
+                            { label: getComponentModuleLabel('assistance'), disabled: true },
+                            { label: normalizeItemtype(route.params.itemtype as string), route: `/assistance/${route.params.itemtype}` },
+                        ];
+                    },
+                    breadcrumbActionsComponent: () => getComponentModuleBreadcrumbActionsComponent('assistance'),
                 }
             },
             {

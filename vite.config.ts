@@ -58,6 +58,19 @@ export default defineConfig(({ mode }) => {
                     ],
                     "shortcuts": [
                         {
+                            "name": "Create ticket",
+                            "short_name": "Create ticket",
+                            "description": "Create a new ticket",
+                            "url": "/assistance/ticket/new",
+                            "icons": [
+                                {
+                                    "src": "Icon-96.png",
+                                    "sizes": "96x96",
+                                    "type": "image/png"
+                                }
+                            ],
+                        },
+                        {
                             "name": "My tickets",
                             "short_name": "My tickets",
                             "description": "View your tickets",
