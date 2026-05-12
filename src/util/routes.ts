@@ -257,6 +257,24 @@ export const routes: RouteRecordRaw[] = [
                     }
                 }
             },
+            {
+                name: 'EntityForm',
+                path: ':component_module(administration)/:itemtype(entity)/:id(\\d+)',
+                component: () => import('../components/admin/entity/EntityView.vue'),
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    return {
+                        id: parseInt(route.params.id as string),
+                    }
+                },
+                meta: {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
+                        return [
+                            { label: getComponentModuleLabel('administration'), disabled: true },
+                            { label: 'Entity', route: `/administration/entity` },
+                        ];
+                    },
+                }
+            },
             { name: 'NotFound', path: '/:pathMatch(.*)*', component: () => import('../views/NotFoundView.vue') }
         ],
     },

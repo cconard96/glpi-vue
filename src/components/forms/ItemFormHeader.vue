@@ -16,7 +16,7 @@
         <header>
             <h1>
                 <i :class="`${itemDefinition.icon} mr-2`"></i>
-                <span v-if="mainItem.item.value.id">{{ mainItem.item.value.name }}</span>
+                <span v-if="mainItem.item.value.id || (itemDefinition.key === 'Entity' && mainItem.item.value.id === 0)">{{ mainItem.item.value.name }}</span>
                 <span v-else class="italic">New {{ itemDefinition.getLabel(1) }}</span>
             </h1>
         </header>

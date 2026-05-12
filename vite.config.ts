@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from "vite-plugin-pwa";
+import monaco from './plugins/vite-plugin-monaco-editor.ts';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -21,6 +22,12 @@ export default defineConfig(({ mode }) => {
                                 name: 'echarts',
                                 test: /[\\/]node_modules[\\/](echarts|vue-echarts)[\\/]/,
                                 priority: 20,
+                            },
+                            {
+                                // Monaco editor is also very large and only used in specific parts of the app
+                                name: 'monaco-editor',
+                                test: /[\\/]node_modules[\\/](monaco-editor)[\\/]/,
+                                priority: 20,
                             }
                         ],
                     },
@@ -29,6 +36,48 @@ export default defineConfig(({ mode }) => {
         },
         plugins: [
             vue(), vueDevTools(), tailwindcss(),
+            monaco({
+                languages: ['css'],
+                //FIXME Feature exclusion does not seem to work, the bundle still includes all features.
+                features: [
+                    "!bracketMatching",
+                    "!caretOperations",
+                    "!clipboard",
+                    "!codeAction",
+                    "!codelens",
+                    "!colorPicker",
+                    "!comment",
+                    "!contextmenu",
+                    "!cursorUndo",
+                    "!dnd",
+                    '!find',
+                    "!folding",
+                    "!fontZoom",
+                    "!format",
+                    "!gotoError",
+                    "!gotoLine",
+                    "!gotoSymbol",
+                    "!hover",
+                    "!iPadShowKeyboard",
+                    "!inPlaceReplace",
+                    "!inspectTokens",
+                    "!linesOperations",
+                    "!links",
+                    "!multicursor",
+                    "!parameterHints",
+                    "!quickCommand",
+                    "!quickOutline",
+                    "!referenceSearch",
+                    "!rename",
+                    "!smartSelect",
+                    "!suggest",
+                    "!toggleHighContrast",
+                    "!toggleTabFocusMode",
+                    "!wordHighlighter",
+                    "!wordOperations",
+                    "!wordPartOperations",
+                ]
+            }),
             VitePWA({
                 manifestFilename: "manifest.json",
                 manifest: {
@@ -83,6 +132,9 @@ export default defineConfig(({ mode }) => {
                 },
                 workbox: {
                     globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+                    // ignore monaco-editor as it is too large to be cached.
+                    //TODO Revisit this when looking at the issue fix feature exclusion. Ideally, nothing needs to be excluded from the precache.
+                    globIgnores: ["assets/monaco-editor-*.js"],
                 },
                 devOptions: {
                     enabled: true,
