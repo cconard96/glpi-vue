@@ -369,7 +369,7 @@
                         <div v-else class="flex flex-col space-y-2">
                             <div v-for="link in item_links" :key="link.itemtype + '_' + link.items_id" class="hover:bg-gray-800 p-2">
                                 <!-- TODO Do not assume the item is an asset -->
-                                <RouterLink :to="{ name: 'ItemForm', params: { component_module: 'assets', itemtype: link.itemtype, id: link.items_id } }">
+                                <RouterLink :to="{ name: 'AssetItemForm', params: { component_module: 'assets', itemtype: link.itemtype, id: link.items_id } }">
                                     {{ link.itemtype }}: {{ link.name }}
                                 </RouterLink>
                             </div>
