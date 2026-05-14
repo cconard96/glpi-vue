@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { useAuth } from "@/composables/useAuth.ts";
+    import { useAuth } from "@/common/useAuth.ts";
     import { useRouter } from "vue-router";
 
     const props = defineProps({

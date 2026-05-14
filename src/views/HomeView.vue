@@ -1,14 +1,14 @@
 <script setup lang="ts">
-    import NavMenu from "@/components/NavMenu.vue";
+    import NavMenu from "@/common/NavMenu.vue";
     import { RouterView, useRouter } from "vue-router";
     import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog } from "primevue";
-    import { useSessionStore } from "@/composables/useSessionStore.ts";
+    import { useSessionStore } from "@/common/useSessionStore.ts";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
-    import { useAuth } from "@/composables/useAuth.ts";
-    import ErrorBoundary from "@/components/core/ErrorBoundary.vue";
-    import DynamicBreadcrumbs from "@/components/layout/DynamicBreadcrumbs.vue";
-    import NetworkStatusArea from "@/components/layout/NetworkStatusArea.vue";
-    import { useDeviceCapabilities } from "@/composables/useDeviceCapabilities.ts";
+    import { useAuth } from "@/common/useAuth.ts";
+    import ErrorBoundary from "@/common/ErrorBoundary.vue";
+    import DynamicBreadcrumbs from "@/common/layout/DynamicBreadcrumbs.vue";
+    import NetworkStatusArea from "@/common/layout/NetworkStatusArea.vue";
+    import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
@@ -25,7 +25,7 @@
                     icon: 'ti ti-user-check',
                     command: () => {
                         dialog.open(
-                            defineAsyncComponent(() => import('@/components/usermenu/ProfileSelector.vue')),
+                            defineAsyncComponent(() => import('@/common/usermenu/ProfileSelector.vue')),
                             {
                                 props: {
                                     position: 'topright',
@@ -48,7 +48,7 @@
                     command: () => {
                         //return;
                         dialog.open(
-                            defineAsyncComponent(() => import('@/components/usermenu/EntitySelector.vue')),
+                            defineAsyncComponent(() => import('@/common/usermenu/EntitySelector.vue')),
                             {
                                 props: {
                                     position: 'topright',

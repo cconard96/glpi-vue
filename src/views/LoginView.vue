@@ -1,10 +1,10 @@
 <script setup lang="ts">
     import { Card, Button, Message } from 'primevue';
-    import { useAuth } from '@/composables/useAuth';
+    import { useAuth } from '@/common/useAuth';
     import { useRouter } from "vue-router";
     import { computed, onMounted, ref } from "vue";
     import { useI18n } from "vue-i18n";
-    import { useBranding } from "@/composables/plugins/branding/useBranding.ts";
+    import { useBranding } from "@/modules/plugins/branding/useBranding.ts";
 
     const { authorize } = useAuth();
     const { brandName } = useBranding();
