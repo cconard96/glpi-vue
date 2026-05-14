@@ -5,7 +5,7 @@ import FocusTrap from "primevue/focustrap";
 import { render } from "vitest-browser-vue";
 import { nextTick } from 'vue';
 
-vi.mock('@/composables/useAuth.ts', () => ({
+vi.mock('@/common/useAuth.ts', () => ({
     useAuth: () => ({
         login: vi.fn().mockImplementation((username, password) => {
             if (username === 'testuser' && password === 'password') {

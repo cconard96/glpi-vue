@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import { routes } from './util/routes.ts';
+import { routes } from '@/core/util/routes.ts';
 import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 import '@/main.css';
@@ -9,14 +9,14 @@ import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import FocusTrap from 'primevue/focustrap';
 import {createRouter, createWebHistory} from "vue-router";
-import {useAuth} from "@/composables/useAuth.ts";
+import {useAuth} from "@/common/useAuth.ts";
 import VueDOMPurifyHTML from 'vue-dompurify-html';
 import { ConfirmationService, DialogService, ToastService } from "primevue";
 import {definePreset} from "@primeuix/themes";
 import { all } from 'primelocale';
 import { Tooltip } from "primevue";
-import { i18n } from "@/util/i18n.ts";
-import { primeVuePassthrough } from "@/util/primeVuePassthrough.ts";
+import { i18n } from "@/core/util/i18n.ts";
+import { primeVuePassthrough } from "@/core/util/primeVuePassthrough.ts";
 
 // get user language
 const user_lang = navigator.language || 'en';

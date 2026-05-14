@@ -1,0 +1,195 @@
+import axios from "axios";
+import { useSessionStore} from "@/common/useSessionStore";
+import { useApi } from "@/common/useApi";
+import { useRouter } from "vue-router";
+import { usePreferencesStore } from "@/common/usePreferencesStore.ts";
+import { useIndexedDB } from "@/common/useIndexedDB.ts";
+
+export function useAuth() {
+    const REFRESH_GRACE_PERIOD = 5 * 60 * 1000; // 5 minutes
+    let refresh_timer = null;
+
+    const postLogin = (): Promise<void> => {
+        // Timer to keep trying to refresh the token every 30 minutes to ensure it stays valid even when the app is left open
+        refresh_timer = setInterval(() => {
+            refreshAuthToken().catch(() => {
+                console.warn('Automatic token refresh failed, user may need to log in again');
+            });
+        });
+
+        // Immediately load the API schema, session info, and locales
+        const { apollo_client } = useApi();
+        const { clearAllStores } = useIndexedDB();
+        return Promise.all([
+            apollo_client.resetStore(),
+            clearAllStores(),
+            loadApiSchema(),
+            loadSession(),
+            loadEntityTree(),
+            //loadLocales(),
+
+        ]).then(() => {
+            // Need to wait for session to load before loading preferences since it needs the user ID
+            return loadPreferences();
+        });
+    }
+
+    const loadApiSchema = () => {
+        const { doApiRequest } = useApi();
+        const { saveOpenAPIComponenets } = useIndexedDB();
+        return doApiRequest('doc.json').then(response => {
+            return saveOpenAPIComponenets(response.data.components.schemas);
+        }).catch(error => {
+            console.error('Failed to fetch API schema:', error);
+            throw error;
+        });
+    }
+
+    const loadSession = () => {
+        const { doApiRequest } = useApi();
+        return doApiRequest('Session').then(response => {
+            const store = useSessionStore();
+            store.loadSession(response.data);
+        });
+    }
+
+    const loadEntityTree = () => {
+        const { doApiRequest } = useApi();
+        return doApiRequest('/Session/EntityTree').then((res) => {
+            const store = useSessionStore();
+            store.loadEntityTreeData(res.data);
+        });
+    }
+
+    // const loadLocales = () => {
+    //     const { doApiRequest } = useApi();
+    //     console.log('Loading localization data');
+    //     return doApiRequest('locales').then(response => {
+    //         localStorage.setItem('locales', JSON.stringify(response.data));
+    //         console.log('Localization data loaded');
+    //     });
+    // }
+
+    const loadPreferences = () => {
+        const { doApiRequest } = useApi();
+        const { getUserID } = useSessionStore();
+        return doApiRequest(`Administration/User/${getUserID}/Preference`).then(response => {
+            const store = usePreferencesStore();
+            store.loadPreferences(response.data);
+        });
+    }
+
+    /**
+     * Refresh the authentication token using the refresh token if needed.
+     * @param {boolean} force Force refresh even if the token is still valid.
+     * @returns {Promise<void>}
+     */
+    const refreshAuthToken = (force = false) => {
+        const host = import.meta.env.VITE_GLPI_URL;
+        const client_id = import.meta.env.VITE_CLIENT_ID;
+        const client_secret = import.meta.env.VITE_CLIENT_SECRET;
+        const auth_url = `${host}/api.php/token`;
+
+        return new Promise((resolve, reject) => {
+            const jwt = JSON.parse(localStorage.getItem('jwt') || '{}');
+            // If JWT empty, reject immediately
+            if (!jwt || !jwt.refresh_token) {
+                console.warn('No refresh token available');
+                logout();
+                return reject();
+            }
+            // If not forcing and won't expire in the next 5 minutes, resolve immediately
+            if (!force && jwt.expiration && (Date.now() < (jwt.expiration - REFRESH_GRACE_PERIOD))) {
+                return resolve();
+            }
+
+            axios.post(auth_url, {
+                grant_type: 'refresh_token',
+                client_id: client_id,
+                client_secret: client_secret,
+                refresh_token: jwt.refresh_token,
+            }).then(response => {
+                const jwt = JSON.parse(localStorage.getItem('jwt')) || {};
+                jwt.access_token = response.data.access_token;
+                jwt.refresh_token = response.data.refresh_token;
+                // Add expiration time (current time + expires_in seconds)
+                jwt.expiration = Date.now() + (jwt.expires_in * 1000);
+                localStorage.setItem('jwt', JSON.stringify(jwt));
+                resolve();
+            }).catch(error => {
+                console.error('Token refresh failed:', error);
+                // Log out if refresh fails
+                logout();
+                const router = useRouter();
+                return router.push({ name: 'Login', query: { redirect: router.currentRoute.value.fullPath } }).then(reject);
+            });
+        });
+    };
+
+    const getAuthToken = () => {
+        const jwt = JSON.parse(localStorage.getItem('jwt'));
+        return jwt ? jwt.access_token : null;
+    }
+
+    /**
+     * Authorization code flow as alternative to password grant flow.
+     */
+    const authorize = () => {
+        const host = import.meta.env.VITE_GLPI_URL;
+        const client_id = import.meta.env.VITE_CLIENT_ID;
+        const redirect_uri = `${window.location.origin}/auth-callback`;
+        const auth_url = `${host}/api.php/authorize?response_type=code&client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=api%20graphql`;
+        window.location.href = auth_url;
+    }
+
+    const handleAuthCallback = (code) => {
+        const host = import.meta.env.VITE_GLPI_URL;
+        const client_id = import.meta.env.VITE_CLIENT_ID;
+        const client_secret = import.meta.env.VITE_CLIENT_SECRET;
+        const auth_url = `${host}/api.php/token`;
+        console.log('Handling auth callback with code:', code);
+
+        return axios.post(auth_url, {
+            grant_type: 'authorization_code',
+            client_id: client_id,
+            client_secret: client_secret,
+            code: code,
+            redirect_uri: `${window.location.origin}/auth-callback`,
+        }).then(response => {
+            console.log('Authorization code exchange successful:', response.data);
+            const jwt = response.data;
+            // Add expiration time (current time + expires_in seconds)
+            jwt.expiration = Date.now() + (jwt.expires_in * 1000);
+            localStorage.setItem('jwt', JSON.stringify(jwt));
+            return postLogin();
+        }).catch(error => {
+            console.error('Authorization code exchange failed:', error);
+            throw error;
+        });
+    }
+
+    const logout = async () => {
+        if (refresh_timer) {
+            clearInterval(refresh_timer);
+        }
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('locales');
+        const store = useSessionStore();
+        store.clearSession();
+        await useIndexedDB().clearAllStores();
+    };
+
+    const isAuthenticated = () => {
+        return !!localStorage.getItem('jwt');
+    };
+
+    return {
+        logout,
+        isAuthenticated,
+        getAuthToken,
+        refreshAuthToken,
+        loadSession,
+        authorize,
+        handleAuthCallback
+    };
+}
