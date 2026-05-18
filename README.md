@@ -28,3 +28,9 @@ There are no current plans to gate each release version behind new time locks gi
 The current GPLv3+ relicensing date is April 13th, 2030.
 
 Some individual components may released separately under GPLv3+ as they are developed if they may be useful as standalone components (such as a Kanban or Scheduler component).
+
+## Credits
+
+- Illustrations by [unDraw](https://undraw.co/). The illustrations used within GLPI are licensed under CC-BY-SA-4.0, which is not compatible with the BUSL.
+  The illustrations from unDraw however are provided under a compatible license.
+  Illustrations set within GLPI are mapped to unDraw alternatives within this application, but not all illustrations have a direct alternative.
