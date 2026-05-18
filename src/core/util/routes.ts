@@ -56,6 +56,7 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/HomeView.vue'),
         children: [
             { name: 'Central', path: '/', component: () => import('@/modules/home/CentralView.vue'), props: true },
+            { name: 'ServiceCatalog', path: '/ServiceCatalog', component: () => import('@/modules/home/ServiceCatalogView.vue'), props: true },
             {
                 name: 'Search',
                 path: `:component_module(${allModulesPattern})/:itemtype(${itemtypePattern})`,
