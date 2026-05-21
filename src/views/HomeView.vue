@@ -103,7 +103,7 @@
         <Teleport class="contents" :disabled="!isMobileScreenSize" to="#mobile_menu" defer>
             <NavMenu :mobile="isMobileScreenSize" />
         </Teleport>
-        <div :class="`px-4 pt-2 h-screen grid grid-cols-1 ${isMobileScreenSize ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
+        <div :class="`px-4 pt-2 not-print:h-screen grid grid-cols-1 ${isMobileScreenSize ? 'col-span-2' : 'col-span-1'} grid-rows-[60px_auto]`">
             <div class="mb-2 flex justify-between max-w-full overflow-x-hidden bg-(--p-content-background)">
                 <div class="flex overflow-x-hidden">
                     <div id="mobile_menu" class="me-2"></div>

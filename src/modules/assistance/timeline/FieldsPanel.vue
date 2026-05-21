@@ -17,7 +17,7 @@
         useToast
     } from "primevue";
     import { FormField } from "@primevue/forms";
-    import { defineAsyncComponent, inject, onMounted, ref } from "vue";
+    import { defineAsyncComponent, inject, onMounted, onUnmounted, ref } from "vue";
     import { useApi } from "@/common/useApi";
     import type { components } from "../../../../data/hlapiv2_schema";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
@@ -91,8 +91,24 @@
     const slaTTRName = ref('');
     const olaTTOName = ref('');
     const olaTTRName = ref('');
+    const accordionActive = ref(['main', 'actors']);
+    /** A temporary variable to store the original active accordion panels before printing, so we can restore it after printing. */
+    const originalAccordionActive = ref([...accordionActive.value]);
+
+    const onBeforePrint = () => {
+        // open all accordion panels before printing, so all content is visible in the printout
+        originalAccordionActive.value = [...accordionActive.value];
+        accordionActive.value = ['main', 'actors', 'items', 'service_levels', 'linked_assistance_objects', 'linked_projects', 'kbarticles'];
+    };
+
+    const onAfterPrint = () => {
+        // restore the original active accordion panels after printing
+        accordionActive.value = [...originalAccordionActive.value];
+    };
 
     onMounted(() => {
+        window.addEventListener('beforeprint', onBeforePrint);
+        window.addEventListener('afterprint', onAfterPrint);
         doGraphQLRequest(`
             query {
                 KBArticle_Item(filter: "itemtype==${props.itemtype};items_id==${props.item.id}") {
@@ -199,6 +215,11 @@
         }
     });
 
+    onUnmounted(() => {
+        window.removeEventListener('beforeprint', onBeforePrint);
+        window.removeEventListener('afterprint', onAfterPrint);
+    });
+
     function showKBSearch() {
         const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/modules/tools/kb/QuickSearchKB.vue')), {
             props: {
@@ -244,7 +265,7 @@
 <template>
     <AdvancedForm :id="formID" :schemaName="itemtype" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
         <ScrollPanel>
-            <Accordion :value="['main', 'actors']" multiple>
+            <Accordion v-model:value="accordionActive" multiple>
                 <AccordionPanel value="main">
                     <AccordionHeader class="p-3" as="div">
                         <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">
