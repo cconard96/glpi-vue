@@ -1,14 +1,13 @@
 <script setup lang="ts">
     import { use as echarts_use } from 'echarts/core';
     import { SVGRenderer } from 'echarts/renderers';
-    import { LineChart, LinesChart } from 'echarts/charts';
+    import { LineChart } from 'echarts/charts';
     import {
         TooltipComponent, GridComponent, ToolboxComponent, LegendComponent, TitleComponent,
     } from 'echarts/components';
     import VChart from 'vue-echarts';
     import {onMounted, ref} from "vue";
     import { FloatLabel, DatePicker } from 'primevue';
-    import {LegacyGridContainLabel} from "echarts/features";
 
     const {selected_report, report_data} = defineProps<{
         selected_report: any,
@@ -21,8 +20,8 @@
     });
 
     echarts_use([
-        SVGRenderer, LinesChart, LineChart, TooltipComponent, GridComponent, ToolboxComponent, LegendComponent,
-        TitleComponent, LegacyGridContainLabel
+        SVGRenderer, LineChart, TooltipComponent, GridComponent, ToolboxComponent, LegendComponent,
+        TitleComponent
     ]);
 
     const state_count_option = ref(null);
