@@ -17,9 +17,8 @@ export default defineConfig(({ mode }) => {
                     codeSplitting: {
                         groups: [
                             {
-                                // ECharts is a large library used only in specific parts of the app to display charts so it should be kept separate
-                                name: 'echarts',
-                                test: /[\\/]node_modules[\\/](echarts|vue-echarts)[\\/]/,
+                                name: 'chartjs',
+                                test: /[\\/]node_modules[\\/]chart.js/,
                                 priority: 20,
                             }
                         ],
