@@ -19,7 +19,7 @@
 
 <template>
     <div class="flex gap-4 overflow-x-auto">
-        <Breadcrumb :class="`text-nowrap p-4 ${isMobileScreenSize ? 'h-[44px] pt-4 pb-0 overflow-y-clip' : ''}`" :home="{ icon: 'pi pi-home', route: '/', label: 'Home', 'aria-label': 'Test' }" :model="breadcrumbs" aria-label="Breadcrumbs">
+        <Breadcrumb :class="`text-nowrap p-4 ${isMobileScreenSize ? 'h-[44px] pt-4 pb-0 overflow-y-clip' : ''}`" :home="{ icon: 'ti ti-home', route: '/', label: 'Home', 'aria-label': 'Test' }" :model="breadcrumbs" aria-label="Breadcrumbs">
             <template #item="{item, props}">
                 <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
                     <a :href="href" @click="navigate" v-bind="props">

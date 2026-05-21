@@ -4,7 +4,6 @@ import { routes } from '@/core/util/routes.ts';
 import PrimeVue from 'primevue/config';
 import Lara from '@primeuix/themes/lara';
 import '@/main.css';
-import '@tabler/icons-webfont/dist/fonts/tabler-icons.woff2';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import FocusTrap from 'primevue/focustrap';

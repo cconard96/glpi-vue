@@ -49,7 +49,7 @@
                     <a v-else class="flex items-center cursor-pointer px-4 py-2" :href="item.url" :target="item.target">
                         <span :class="item.icon" />
                         <span class="ml-2">{{ item.label }}</span>
-                        <span v-if="item.items" class="pi pi-angle-down text-primary ml-auto" />
+                        <span v-if="item.items" class="ti ti-chevron-down text-primary ml-auto" />
                     </a>
                 </template>
             </PanelMenu>

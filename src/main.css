@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss-primeui";
-@import 'primeicons/primeicons.css';
-@import '@tabler/icons-webfont/dist/tabler-icons.min.css';
+@import 'lib/tabler-icons/tabler-icons.min.css';
 
 html {
     overflow: hidden;
