@@ -287,13 +287,13 @@
                                     <FieldSelect label="Urgency" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
                                         <template #value="slotProps">
                                             <div class="flex items-baseline">
-                                                <i class="pi pi-circle-fill me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
+                                                <i class="ti ti-circle-filled me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
                                                 <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
                                             </div>
                                         </template>
                                         <template #option="slotProps">
                                             <div class="flex items-baseline">
-                                                <i class="pi pi-circle-fill me-2" :style="`color: ${slotProps.option['color']}`"></i>
+                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>
                                                 <div>{{ slotProps.option['label'] }}</div>
                                             </div>
                                         </template>
@@ -303,13 +303,13 @@
                                     <FieldSelect label="Impact" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
                                         <template #value="slotProps">
                                             <div class="flex items-baseline">
-                                                <i class="pi pi-circle-fill me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
+                                                <i class="ti ti-circle-filled me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
                                                 <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
                                             </div>
                                         </template>
                                         <template #option="slotProps">
                                             <div class="flex items-baseline">
-                                                <i class="pi pi-circle-fill me-2" :style="`color: ${slotProps.option['color']}`"></i>
+                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>
                                                 <div>{{ slotProps.option['label'] }}</div>
                                             </div>
                                         </template>
@@ -319,13 +319,13 @@
                                     <FieldSelect label="Priority" :options="priorityOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
                                         <template #value="slotProps">
                                             <div class="flex items-baseline">
-                                                <i class="pi pi-circle-fill me-2" :style="`color: ${priorityOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
+                                                <i class="ti ti-circle-filled me-2" :style="`color: ${priorityOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
                                                 <div>{{ priorityOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
                                             </div>
                                         </template>
                                         <template #option="slotProps">
                                             <div class="flex items-baseline">
-                                                <i class="pi pi-circle-fill me-2" :style="`color: ${slotProps.option['color']}`"></i>
+                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>
                                                 <div>{{ slotProps.option['label'] }}</div>
                                             </div>
                                         </template>
