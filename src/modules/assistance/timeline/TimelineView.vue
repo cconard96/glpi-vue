@@ -13,6 +13,7 @@
     import { useDataHelper } from "@/common/useDataHelper";
     import { useInterval } from "@/common/useInterval";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";
+    import PrintTarget from "@/common/PrintTarget.vue";
 
     const { itemtype, id } = defineProps({
         itemtype: {
@@ -180,19 +181,6 @@
         return todo_done_count > 0 ? Math.round((done_count / todo_done_count) * 100) : 0;
     });
 
-    function exportPDF() {
-        view_mode.value = 'default';
-        import('html2pdf.js').then((m) => {
-            const html2pdf = m.default;
-            html2pdf().from(pdf_root.value).set({
-                filename: `${itemtype_name}_${item.value.id}.pdf`,
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-            }).save();
-        });
-    }
-
     watch(current_new_item, (newValue, oldValue) => {
         if (oldValue === null) {
             view_mode.value = 'default';
@@ -219,116 +207,117 @@
 </script>
 
 <template>
-    <section ref="pdf_root" class="grid grid-rows-[auto_1fr] h-full overflow-hidden">
-        <div class="text-lg flex justify-between p-2">
-            <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
-                <i class="ti ti-list-search"></i>
-            </RouterLink>
-            <header>
-                <h1>
-                    <i :class="`${statusIcon} mr-2`" :style="`color: ${statusColor}`"></i>
-                    {{ item.name }}
-                </h1>
-            </header>
-            <div></div>
-        </div>
-        <div class="grid grid-cols-12 overflow-y-hidden">
-            <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
-                <template v-if="view_mode !== 'milestones'">
-                    <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" @close="current_new_item = null"></component>
-                    <TimelineItem v-for="item in filtered_items" :key="`${item.type}-${item.item.id}`"
-                                  :item="item" :todoListMode="view_mode === 'todo'" />
-                    <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
-                        type: 'content',
-                        item: {
-                            name: item.name,
-                            content: item.content,
-                            user: item._user_recipient,
-                            user_editor: item._user_editor,
-                            date_creation: item.date_creation || item.date
-                        }
-                    }"></TimelineItem>
-                    <div v-if="view_mode === 'todo'">
-                        <div class="flex flex-col gap-4 mb-8">
-                            <div class="me-6">
-                                <i class="ti ti-clock text-2xl me-2"></i>
-                                Total Task Duration: {{ formatDuration(total_task_duration, 's') }}
-                            </div>
-                            <div class="flex">
-                                <i class="ti ti-check text-2xl me-2"></i>
-                                <ProgressBar class="w-64" :value="task_percent_done" :showValue="true"></ProgressBar>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-                <template v-else>
-                    <Timeline :value="milestones">
-                        <template #opposite="slotProps">
-                            {{ slotProps.item.date }}
-                        </template>
-                        <template #content="slotProps">
-                            {{ slotProps.item.status }}
-                        </template>
-                    </Timeline>
-                </template>
+    <PrintTarget>
+        <section ref="pdf_root" class="grid grid-rows-[auto_1fr] h-full not-print:overflow-hidden">
+            <div class="text-lg flex justify-between p-2">
+                <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
+                    <i class="ti ti-list-search"></i>
+                </RouterLink>
+                <header>
+                    <h1>
+                        <i :class="`${statusIcon} mr-2`" :style="`color: ${statusColor}`"></i>
+                        {{ item.name }}
+                    </h1>
+                </header>
+                <div></div>
             </div>
-            <div ref="right-side" class="col-span-4 2xl:col-span-3 overflow-y-auto">
-                <FieldsPanel :formID="assistanceFormID" :itemtype="normalized_itemtype" :item="item"></FieldsPanel>
-            </div>
-            <div class="relative h-22 col-span-12">
-                <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
-                    <div class="[&>*]:me-2">
-                        <SplitButton v-if="current_new_item === null && mainTimelineAction" :label="mainTimelineAction.label" :icon="mainTimelineAction.icon"
-                                     :model="extraTimelineActions" :menuButtonProps="{'aria-label': 'More Options'}"
-                                     @click="mainTimelineAction.command">
-                        </SplitButton>
-                        <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"
-                                @click="toggleFiltersMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
-                        <Popover ref="filters_menu">
-                            <div class="flex flex-col gap-2">
-                                <div class="flex" v-for="[filter_item_key, filter_item] in Object.entries(filters)">
-                                    <ToggleSwitch :id="filter_item_key" :model-value="filter_item.value"></ToggleSwitch>
-                                    <label :for="filter_item_key" class="ms-2">
-                                        <i :class="filter_item.icon"></i>
-                                        {{ filter_item.label }}
-                                    </label>
+            <div class="grid grid-cols-12 not-print:overflow-y-hidden">
+                <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
+                    <template v-if="view_mode !== 'milestones'">
+                        <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" @close="current_new_item = null"></component>
+                        <TimelineItem v-for="item in filtered_items" :key="`${item.type}-${item.item.id}`"
+                                      :item="item" :todoListMode="view_mode === 'todo'" />
+                        <TimelineItem :class="(view_mode !== 'todo' && filters.filter_description.value.value) ? '' : 'hidden'" key="content" :item="{
+                            type: 'content',
+                            item: {
+                                name: item.name,
+                                content: item.content,
+                                user: item._user_recipient,
+                                user_editor: item._user_editor,
+                                date_creation: item.date_creation || item.date
+                            }
+                        }"></TimelineItem>
+                        <div v-if="view_mode === 'todo'">
+                            <div class="flex flex-col gap-4 mb-8">
+                                <div class="me-6">
+                                    <i class="ti ti-clock text-2xl me-2"></i>
+                                    Total Task Duration: {{ formatDuration(total_task_duration, 's') }}
+                                </div>
+                                <div class="flex">
+                                    <i class="ti ti-check text-2xl me-2"></i>
+                                    <ProgressBar class="w-64" :value="task_percent_done" :showValue="true"></ProgressBar>
                                 </div>
                             </div>
-                        </Popover>
-                        <SelectButton :pt="{ pcToggleButton: {root: { class: 'inline-flex px-(--p-button-padding-x) py-(--p-button-padding-y)' } } }"
-                                      :options="[
-                            { key: 'default', label: 'Default View', icon: 'ti ti-messages' },
-                            { key: 'todo', label: 'TODO List View', icon: 'ti ti-list-check' },
-                            { key: 'milestones', label: 'Milestones View', icon: 'ti ti-flag' },
-                        ]" v-model="view_mode" optionValue="key" optionLabel="label">
-                            <template #option="slotProps">
-                                <i
-                                    :title="slotProps.option.label"
-                                    :aria-label="slotProps.option.label"
-                                    :class="slotProps.option.icon"
-                                    class="text-base!"
-                                ></i>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <Timeline :value="milestones">
+                            <template #opposite="slotProps">
+                                {{ slotProps.item.date }}
                             </template>
-                        </SelectButton>
-                    </div>
-                    <div class="">
-                        <ButtonGroup>
-                            <Button title="Put in trashbin" icon="ti ti-trash" severity="danger" variant="outlined"></Button>
-                            <Button title="Actions" icon="ti ti-dots-vertical" variant="outlined"
-                                    @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
-                            <Menu ref="actions_menu" :popup="true" :model="[
-                                { key: 'clone', label: 'Clone', icon: 'ti ti-copy', command: showNotImplementedToast },
-                                { key: 'transfer', label: 'Transfer to another entity', icon: 'ti ti-corner-right-up', command: showNotImplementedToast },
-                                { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge', command: showNotImplementedToast },
-                                { key: 'save_as_pdf', label: 'Save as PDF', icon: 'ti ti-file-type-pdf', command: exportPDF },
-                            ]"></Menu>
-                            <Button label="Save" type="submit" icon="ti ti-device-floppy" severity="primary" :form="assistanceFormID"></Button>
-                        </ButtonGroup>
+                            <template #content="slotProps">
+                                {{ slotProps.item.status }}
+                            </template>
+                        </Timeline>
+                    </template>
+                </div>
+                <div ref="right-side" class="col-span-4 2xl:col-span-3 not-print:overflow-y-auto">
+                    <FieldsPanel :formID="assistanceFormID" :itemtype="normalized_itemtype" :item="item"></FieldsPanel>
+                </div>
+                <div class="relative h-22 col-span-12">
+                    <div class="absolute inset-x-0 bottom-0 h-20 justify-between flex">
+                        <div class="[&>*]:me-2">
+                            <SplitButton v-if="current_new_item === null && mainTimelineAction" :label="mainTimelineAction.label" :icon="mainTimelineAction.icon"
+                                         :model="extraTimelineActions" :menuButtonProps="{'aria-label': 'More Options'}"
+                                         @click="mainTimelineAction.command">
+                            </SplitButton>
+                            <Button icon="ti ti-filter" title="Timeline filter" variant="outlined"
+                                    @click="toggleFiltersMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
+                            <Popover ref="filters_menu">
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex" v-for="[filter_item_key, filter_item] in Object.entries(filters)">
+                                        <ToggleSwitch :id="filter_item_key" :model-value="filter_item.value"></ToggleSwitch>
+                                        <label :for="filter_item_key" class="ms-2">
+                                            <i :class="filter_item.icon"></i>
+                                            {{ filter_item.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </Popover>
+                            <SelectButton :pt="{ pcToggleButton: {root: { class: 'inline-flex px-(--p-button-padding-x) py-(--p-button-padding-y)' } } }"
+                                          :options="[
+                                { key: 'default', label: 'Default View', icon: 'ti ti-messages' },
+                                { key: 'todo', label: 'TODO List View', icon: 'ti ti-list-check' },
+                                { key: 'milestones', label: 'Milestones View', icon: 'ti ti-flag' },
+                            ]" v-model="view_mode" optionValue="key" optionLabel="label">
+                                <template #option="slotProps">
+                                    <i
+                                        :title="slotProps.option.label"
+                                        :aria-label="slotProps.option.label"
+                                        :class="slotProps.option.icon"
+                                        class="text-base!"
+                                    ></i>
+                                </template>
+                            </SelectButton>
+                        </div>
+                        <div class="">
+                            <ButtonGroup>
+                                <Button title="Put in trashbin" icon="ti ti-trash" severity="danger" variant="outlined"></Button>
+                                <Button title="Actions" icon="ti ti-dots-vertical" variant="outlined"
+                                        @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
+                                <Menu ref="actions_menu" :popup="true" :model="[
+                                    { key: 'clone', label: 'Clone', icon: 'ti ti-copy', command: showNotImplementedToast },
+                                    { key: 'transfer', label: 'Transfer to another entity', icon: 'ti ti-corner-right-up', command: showNotImplementedToast },
+                                    { key: 'merge_as_followup', label: 'Merge as Followup', icon: 'ti ti-git-merge', command: showNotImplementedToast },
+                                ]"></Menu>
+                                <Button label="Save" type="submit" icon="ti ti-device-floppy" severity="primary" :form="assistanceFormID"></Button>
+                            </ButtonGroup>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </PrintTarget>
 </template>
 
 <style scoped>

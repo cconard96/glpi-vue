@@ -3,7 +3,7 @@
         computed,
         defineAsyncComponent,
         inject,
-        onMounted,
+        onMounted, onUnmounted,
         onUpdated, provide,
         shallowRef, toRef,
         useTemplateRef,
@@ -43,35 +43,40 @@
         handleInlineImages();
     }, {immediate: true});
 
+    function lazyLoadImages() {
+        timeline_item_element.value.querySelectorAll('img[src^="/front/document.send.php"]').forEach((img: HTMLImageElement) => {
+            const url = new URL(img.src);
+            const docid = url.searchParams.get('docid');
+            // image content needs to be loaded via API and converted to base64 data url to work around authentication issues
+            img.style.display = 'none';
+            if (docid) {
+                const onImgFailure = () => {
+                    img.alt = 'Failed to load image';
+                    img.style.display = 'block';
+                };
+                doApiRequest(`/Management/Document/${docid}/Download`, {
+                    method: 'GET',
+                    responseType: 'blob'
+                }).then((response) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        img.src = reader.result as string;
+                    };
+                    reader.readAsDataURL(response.data);
+                    img.style.display = 'block';
+                }, () => {
+                    onImgFailure();
+                }).catch(() => {
+                    onImgFailure();
+                });
+            }
+        });
+    }
+
     item_visible_watcher = watch(item_visible, (isVisible) => {
         if (isVisible) {
-            timeline_item_element.value.querySelectorAll('img[src^="/front/document.send.php"]').forEach((img: HTMLImageElement) => {
-                const url = new URL(img.src);
-                const docid = url.searchParams.get('docid');
-                // image content needs to be loaded via API and converted to base64 data url to work around authentication issues
-                img.style.display = 'none';
-                if (docid) {
-                    const onImgFailure = () => {
-                        img.alt = 'Failed to load image';
-                        img.style.display = 'block';
-                    };
-                    doApiRequest(`/Management/Document/${docid}/Download`, {
-                        method: 'GET',
-                        responseType: 'blob'
-                    }).then((response) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
-                            img.src = reader.result as string;
-                        };
-                        reader.readAsDataURL(response.data);
-                        img.style.display = 'block';
-                    }, () => {
-                        onImgFailure();
-                    }).catch(() => {
-                        onImgFailure();
-                    });
-                }
-            });
+            lazyLoadImages();
+            item_visible_watcher.stop();
         }
     });
 
@@ -91,16 +96,20 @@
         });
     }
 
-
     onMounted(() => {
         const { stop: stopIntersectionObserver } = useIntersectionObserver(timeline_item_element, ([entry], observerElement) => {
             item_visible.value = entry?.isIntersecting || false;
         });
+        window.addEventListener('beforeprint', lazyLoadImages);
         handleInlineImages();
     });
     onUpdated(() => {
         item_visible.value = false;
         handleInlineImages();
+    });
+
+    onUnmounted(() => {
+        window.removeEventListener('beforeprint', lazyLoadImages);
     });
 
     watch(() => props.todoListMode, () => {
