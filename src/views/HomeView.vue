@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import NavMenu from "@/common/NavMenu.vue";
     import { RouterView, useRouter } from "vue-router";
-    import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog } from "primevue";
+    import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog, Select, Button } from "primevue";
     import { useSessionStore } from "@/common/useSessionStore.ts";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
     import { useAuth } from "@/common/useAuth.ts";
@@ -9,6 +9,7 @@
     import DynamicBreadcrumbs from "@/common/layout/DynamicBreadcrumbs.vue";
     import NetworkStatusArea from "@/common/layout/NetworkStatusArea.vue";
     import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
+    import { supportedAppLocales, userLang } from "@/core/util/i18n.ts";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();
@@ -17,6 +18,7 @@
 
     const top_right_menu = ref([
         {
+            key: 'root',
             label: `${session_store.getActiveProfile.name}\n${session_store.getActiveEntity.short_name}`,
             icon: 'ti ti-user',
             items: [
@@ -66,6 +68,14 @@
                     }
                 },
                 {
+                    key: 'language',
+                    label: 'Language',
+                    icon: 'ti ti-language',
+                    command: () => {
+                        return false;
+                    }
+                },
+                {
                     separator: true
                 },
                 {
@@ -93,6 +103,10 @@
     ]);
     const mobile_menu_el = useTemplateRef('mobile_menu');
     const { isMobileScreenSize } = useDeviceCapabilities();
+    const supportedLocales = Object.entries(supportedAppLocales).map(([key, label]) => ({
+        key: key,
+        label: label
+    }));
 </script>
 
 <template>
@@ -132,6 +146,35 @@
                                 class: isMobileScreenSize ? 'hidden!' : '',
                             }
                         }" breakpoint="">
+                        <template #item="{item}">
+                            <div v-if="item.key === 'root'" class="flex items-center">
+                                <Button class="gap-2 flex" variant="text" severity="secondary" size="small">
+                                    <i class="p-menubar-item-icon" :class="item.icon" aria-hidden="true"></i>
+                                    <span v-if="!isMobileScreenSize" class="text-left whitespace-pre-wrap">
+                                        {{ item.label }}
+                                    </span>
+                                    <span>
+                                        <i class="p-menubar-item-icon ti ti-chevron-down" aria-hidden="true"></i>
+                                    </span>
+                                </Button>
+                            </div>
+                            <template v-else-if="item.key === 'language'">
+                                <div class="p-menubar-item-content" @click.stop>
+                                    <div class="p-menubar-item-link flex gap-2 cursor-default">
+                                        <i :class="item.icon" aria-hidden="true"></i>
+                                        <Select :options="supportedLocales" optionLabel="label" optionValue="key" v-model="userLang" fluid></Select>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="p-menubar-item-content">
+                                    <Button class="p-menubar-item-link flex gap-2 text-base justify-start" variant="text" severity="secondary" size="small" fluid>
+                                        <i :class="item.icon" aria-hidden="true"></i>
+                                        <span v-text="item.label"></span>
+                                    </Button>
+                                </div>
+                            </template>
+                        </template>
                     </Menubar>
                 </div>
             </div>

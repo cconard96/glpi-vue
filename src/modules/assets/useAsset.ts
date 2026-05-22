@@ -6,6 +6,7 @@ import { BaseItemDefinition, GLPICreateResponseBody, SchemaName, TabDefinition, 
 import { components } from "../../../data/hlapiv2_schema";
 import { useRouter } from "vue-router";
 import { ToastServiceMethods } from "primevue";
+import { useI18n } from "vue-i18n";
 
 export enum AssetCapabilities {
     HasType = 'hasType',
@@ -74,7 +75,10 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/Computer',
         getLabel: (count: number) => {
-            return count === 1 ? 'Computer' : 'Computers';
+            const i18n = useI18n();
+            return i18n.t('assets.computer.label', count, {
+                default: count === 1 ? 'Computer' : 'Computers'
+            });
         },
         icon: 'ti ti-device-laptop',
         rightname: 'computer',

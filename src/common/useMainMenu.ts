@@ -264,7 +264,7 @@ export const useMainMenu = () => {
                     route: "/administration/dictionary"
                 },
                 {
-                    label: "profiles",
+                    label: "Profiles",
                     icon: "ti ti-user-check",
                     route: "/administration/profile"
                 },
