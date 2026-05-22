@@ -46,7 +46,7 @@
                     { label: 'Closure', data: Object.values(report_data.time_close_avg) },
                     { label: 'Real Duration', data: Object.values(report_data.time_treatment_avg) },
                 ]
-            }"></Chart>
+            }" showSaveAsImage showDownloadData></Chart>
             <Chart class="h-128" type="line" :options="{
                 plugins: {
                     title: { text: 'Satisfaction Survey' },
@@ -57,7 +57,7 @@
                     { label: 'Opened', data: Object.values(report_data.satisfaction_surveys_open) },
                     { label: 'Answered', data: Object.values(report_data.satisfaction_surveys_answered) },
                 ]
-            }"></Chart>
+            }" showSaveAsImage showDownloadData></Chart>
             <Chart class="h-128" type="line" :options="{
                 plugins: {
                     title: { text: 'Satisfaction Survey Average Rating' },
@@ -67,7 +67,7 @@
                 datasets: [
                     { label: 'Average Rating', data: Object.values(report_data.satisfaction_surveys_avg_rating) },
                 ]
-            }"></Chart>
+            }" showSaveAsImage showDownloadData></Chart>
         </div>
     </div>
 </template>
