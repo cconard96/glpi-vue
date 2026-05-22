@@ -95,7 +95,7 @@ export const useMainMenu = () => {
                 {
                     label: "Service catalog",
                     icon: "ti ti-library",
-                    route: "/assistance/servicecatalog"
+                    route: "/ServiceCatalog"
                 },
                 {
                     label: "Changes",
