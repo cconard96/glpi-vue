@@ -1,5 +1,7 @@
 {
-    "login": {
-        "username": "Nom d'utilisateur"
+    "assets": {
+        "computer": {
+            "label": "Ordinateur | Ordinateurs"
+        }
     }
 }

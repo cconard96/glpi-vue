@@ -39,7 +39,7 @@
                 <Message v-if="$route.query.error" class="mb-4" severity="error" variant="outlined">
                     {{ error_message }}
                 </Message>
-                <Button label="Login" severity="primary" @click="authorize"/>
+                <Button :label="$t('login.button.login', 'Login')" severity="primary" @click="authorize"/>
     <!--            <Button label="Continue as guest" class="w-full" severity="secondary" @click="router.push('/')"/>-->
             </div>
         </template>
