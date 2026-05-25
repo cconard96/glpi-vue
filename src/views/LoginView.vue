@@ -14,8 +14,8 @@
 
     onMounted(() => {
         document.title = $t('login.title', {
-            brandName: brandName.value
-        });
+            brandName: brandName.value,
+        }, 'Login - {brandName}');
     });
 
     const error_message = computed(() => {

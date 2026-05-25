@@ -2,34 +2,66 @@
     import {Card, Select, FloatLabel, Message, ProgressSpinner} from 'primevue';
     import { useApi } from "@/common/useApi";
     import {watchEffect, ref, defineAsyncComponent, markRaw} from "vue";
+    import { useI18n } from "vue-i18n";
 
+    const { t: $t } = useI18n();
     const { doApiRequest } = useApi();
     const available_reports = [
         {
             label: 'Tickets',
             items: [
-                { assistance_type: 'Ticket', report_type: 'Global', label: 'Global', component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue'))) },
+                {
+                    assistance_type: 'Ticket',
+                    report_type: 'Global',
+                    label: $t('assistnace.statistics.global_report', 'Global'),
+                    component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue')))
+                },
                 // { assistance_type: 'Ticket', report_type: 'Characteristics', label: 'By ticket' },
                 // { assistance_type: 'Ticket', report_type: 'AssetCharacteristics', label: 'By hardware characteristics' },
-                { assistance_type: 'Ticket', report_type: 'Asset', label: 'By hardware', component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue'))) },
+                {
+                    assistance_type: 'Ticket',
+                    report_type: 'Asset',
+                    label: $t('assistnace.statistics.by_hardware_report', 'Ny hardware'),
+                    component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue')))
+                },
             ]
         },
         {
             label: 'Problem',
             items: [
-                { assistance_type: 'Problem', report_type: 'Global', label: 'Global', component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue'))) },
+                {
+                    assistance_type: 'Problem',
+                    report_type: 'Global',
+                    label: $t('assistnace.statistics.global_report', 'Global'),
+                    component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue')))
+                },
                 // { assistance_type: 'Problem', report_type: 'Characteristics', label: 'By problem' },
                 // { assistance_type: 'Problem', report_type: 'AssetCharacteristics', label: 'By hardware characteristics' },
-                { assistance_type: 'Problem', report_type: 'Asset', label: 'By hardware', component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue'))) },
+                {
+                    assistance_type: 'Problem',
+                    report_type: 'Asset',
+                    label: $t('assistnace.statistics.by_hardware_report', 'Ny hardware'),
+                    component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue')))
+                },
             ]
         },
         {
             label: 'Change',
             items: [
-                { assistance_type: 'Change', report_type: 'Global', label: 'Global', component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue'))) },
+                {
+                    assistance_type: 'Change',
+                    report_type: 'Global',
+                    label: $t('assistnace.statistics.global_report', 'Global'),
+                    component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue')))
+                },
                 // { assistance_type: 'Change', report_type: 'Characteristics', label: 'By change' },
                 // { assistance_type: 'Change', report_type: 'AssetCharacteristics', label: 'By hardware characteristics' },
-                { assistance_type: 'Change', report_type: 'Asset', label: 'By hardware', component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue'))) },
+                {
+                    assistance_type: 'Change',
+                    report_type: 'Asset',
+                    label: $t('assistnace.statistics.by_hardware_report', 'Ny hardware'),
+                    component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue')))
+                },
             ]
         },
     ];
@@ -73,12 +105,12 @@
                     <Select inputId="stat_report_type" class="min-w-64" :loading="!available_reports.length"
                             optionGroupChildren="items" optionGroupLabel="label" optionLabel="label"
                             :options="available_reports" v-model="selected_report"></Select>
-                    <label for="stat_report_type">Report</label>
+                    <label for="stat_report_type">{{ $t('assistance.statistics.report', 'Report') }}</label>
                 </FloatLabel>
             </div>
             <div class="mt-2">
                 <Message v-if="error" severity="error">
-                    An error occurred while loading the report
+                    {{ $t('assistance.statistics.error_loading', 'An error occured while loading the report') }}
                 </Message>
                 <Suspense v-else-if="report_data">
                     <component :is="selected_report?.component" :selected_report="selected_report" :report_data="report_data" v-model:selected_date_range="selected_date_range"></component>

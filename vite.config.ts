@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from "vite-plugin-pwa";
+import extractI18nPlugin from "./plugins/vite-plugin-extract-i18n.ts";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -28,6 +29,7 @@ export default defineConfig(({ mode }) => {
         },
         plugins: [
             vue(), vueDevTools(), tailwindcss(),
+            extractI18nPlugin(),
             VitePWA({
                 manifestFilename: "manifest.json",
                 manifest: {

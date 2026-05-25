@@ -4,7 +4,9 @@
     import { Button, AutoComplete, InputGroup, InputGroupAddon } from "primevue";
     import DynamicSettingsForm from "./DynamicSettingsForm.vue";
     import { useSettings, settingCategories, Setting } from "./useSettings.ts";
+    import { useI18n } from "vue-i18n";
 
+    const { t: $t } = useI18n();
     const { isMobileScreenSize } = useDeviceCapabilities();
     //const router = useRouter();
     const { searchQuery, filteredSettings } = useSettings();
@@ -15,6 +17,7 @@
     const searchInputID = useId();
 
     onMounted(() => {
+        document.title = $t('setup.setting.menu_label', 'Settings');
         function handleKeyDown(event: KeyboardEvent) {
             if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
                 event.preventDefault();

@@ -14,12 +14,7 @@
     const is_profile_valid_for_entity = computed(() => {
         for (const [profile_id, assignment] of Object.entries(profiles)) {
             if (profile_id == getActiveProfile.id) {
-                console.log(assignment);
                 for (const ent of Object.values(assignment.entities)) {
-                    console.log({
-                        ent,
-                        selected_entity: selected_entity.value,
-                    });
                     if (ent.id == selected_entity.value) {
                         return true;
                     } else if (ent.is_recursive) {
@@ -42,7 +37,6 @@
                         for (const root_node of entity_tree.value) {
                             findParents(root_node, selected_entity.value);
                         }
-                        console.log('Parents of selected entity:', parents);
                         if (parents.includes(ent.id)) {
                             return true;
                         }
@@ -94,7 +88,7 @@
                 <div>
                     {{ node.label }}
                     <Button v-if="node.children.length" size="small" variant="outlined" class="ms-2"
-                            title="Select child entities" @click.stop="doChangeEntity(node, true)">
+                            :title="$t('entity_selector.select_child_entities', 'Select child entities')" @click.stop="doChangeEntity(node, true)">
                         <i class="ti ti-chevrons-down"></i>
                     </Button>
                 </div>
@@ -102,9 +96,11 @@
         </Tree>
         <template v-if="selected_entity !== null && !is_profile_valid_for_entity">
             <Message severity="warn" class="mt-2">
-                The current profile "{{ getActiveProfile.name }}" is not valid for the selected entity.
+                {{ $t('entity_selector.current_profile_not_valid', {
+                    currentProfile: getActiveProfile.name
+                }, 'The current profile {currentProfile} is not valid for the selected entity') }}
                 <br>
-                Please select a different profile:
+                {{ $t('entity_selector.select_different_profile', 'Please select a different profile') }}
             </Message>
             <TreeSelect :options="Object.values(profiles).map(profile => ({ label: profile.name, value: profile.id }))"
                         v-model="selected_profile" filter selectionMode="single" fluid>

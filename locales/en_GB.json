@@ -1,3 +1,833 @@
 {
-
+  "item": {
+    "add_from_template": "Add from template",
+    "manage_templates": "Manage templates",
+    "new_item": "New {itemLabel}",
+    "type": "Type | Types",
+    "fields": {
+      "name": "Name",
+      "date_begin": "Begin date",
+      "duration": "Duration",
+      "date_end": "End date",
+      "date": "Date",
+      "category": "Category",
+      "date_creation": "Creation date",
+      "date_expiration": "Expiration date",
+      "status": "Status",
+      "comment": "Comment"
+    },
+    "add": "Add",
+    "save": "Save"
+  },
+  "login": {
+    "title": "Login - {brandName}",
+    "error": {
+      "session_expired": "Your session has expired",
+      "fatalAppError": "An error occurred. Please login again."
+    },
+    "button": {
+      "login": "Login"
+    }
+  },
+  "common": {
+    "error": {
+      "not_implemented": "Not implemented",
+      "an_error_occured": "An error occurred:",
+      "results_limited": "Results have been limited to {limit} for performance reasons. Please use the search to load more specific results.",
+      "error": "Error",
+      "item_deletion": "Failed to delete the {itemType}. Please try again.",
+      "item_additon": "Failed to add the {itemType}. Please try again.",
+      "item_update": "Failed to update the {itemType}. Please try again.",
+      "go_back_home": "Go back to home"
+    },
+    "main_navigation": "Main Navigation",
+    "priority": {
+      "very_low": "Very Low",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "very_high": "Very High",
+      "major": "Major"
+    },
+    "unknown": "Unknown",
+    "relative_time": {
+      "just_now": "Just now",
+      "seconds_ago": "{count} seconds ago",
+      "hours_ago": "{count} hours ago",
+      "days_ago": "{count} days ago"
+    },
+    "date_range": "Date range",
+    "close": "Close",
+    "created": "Created {dateTime}",
+    "not_applicable": {
+      "short": "N/A"
+    },
+    "confirm": {
+      "item_deletion": "Are you sure you want to delete this {itemType}?",
+      "item_deletion_title": "Danger Zone"
+    },
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "actions": "Actions",
+    "uploaded": "Uploaded {dateTime}"
+  },
+  "search": {
+    "placeholder": "Search",
+    "item_status": {
+      "active": "Active",
+      "deleted": "Deleted"
+    },
+    "no_results_found": "No results found",
+    "title": "Search"
+  },
+  "home": {
+    "tab": {
+      "dashboard": "Dashboard",
+      "personal": "Personal",
+      "group": "Group",
+      "global": "Global",
+      "rss": "RSS Feeds"
+    }
+  },
+  "service_catalog": {
+    "search": {
+      "placeholder": "Search for services and articles..."
+    }
+  },
+  "item_form": {
+    "back_to_search": "Back to search results",
+    "include_child_entities": "+ Child entities",
+    "exclude_child_entities": "only",
+    "toggle_child_entities": "Toggle including child entities"
+  },
+  "assets": {
+    "computer": {
+      "label": "Computer | Computers"
+    },
+    "monitor": {
+      "label": "Monitor | Monitors"
+    },
+    "software": {
+      "label": "Software | Software"
+    },
+    "networkequipment": {
+      "label": "Network Equipment | Network Equipment"
+    },
+    "peripheral": {
+      "label": "Peripheral | Peripherals"
+    },
+    "printer": {
+      "label": "Printer | Printers"
+    },
+    "cartridge": {
+      "label": "Cartridge | Cartridges"
+    },
+    "menu_label": "Asset | Assets"
+  },
+  "settings": {
+    "core": {
+      "lock_use_lock_item": {
+        "label": "Use locks",
+        "keywords": ""
+      },
+      "lock_lockprofile_id": {
+        "label": "Profile to be used when viewing a locked item",
+        "keywords": ""
+      },
+      "projecttask_unstarted_states_id": {
+        "label": "Status of unstarted tasks",
+        "keywords": ""
+      },
+      "projecttask_inprogress_states_id": {
+        "label": "Status of tasks in progress",
+        "keywords": ""
+      },
+      "projecttask_completed_states_id": {
+        "label": "Status of completed tasks",
+        "keywords": ""
+      },
+      "allow_search_view": {
+        "label": "Items seen",
+        "keywords": ""
+      },
+      "allow_search_global": {
+        "label": "Global search",
+        "keywords": ""
+      },
+      "allow_search_all": {
+        "label": "Allow searching across all columns, even those not shown",
+        "keywords": ""
+      },
+      "list_limit_max": {
+        "label": "Default search results per page limit",
+        "keywords": ""
+      },
+      "cut": {
+        "label": "Default character limit for summary text",
+        "keywords": ""
+      },
+      "url_maxlength": {
+        "label": "Default URL length limit",
+        "keywords": ""
+      },
+      "url_base": {
+        "label": "URL of the application",
+        "keywords": ""
+      },
+      "text_login": {
+        "label": "Text on login page",
+        "keywords": ""
+      },
+      "helpdesk_doc_url": {
+        "label": "Simplified interface help link",
+        "url_base": {
+          "keywords": ""
+        }
+      },
+      "central_doc_url": {
+        "label": "Standard interface help link",
+        "keywords": ""
+      },
+      "decimal_number": {
+        "label": "Default decimals limit",
+        "keywords": ""
+      },
+      "use_public_faq": {
+        "label": "Allow anonymous FAQ access",
+        "keywords": ""
+      },
+      "allow_unauthenticated_uploads": {
+        "label": "Allow unauthenticated uploads",
+        "keywords": ""
+      },
+      "document_max_size": {
+        "label": "Maximum upload size (Mio)",
+        "keywords": "",
+        "helpText": "The maximum upload size is primarily determined by the \"upload_max_filesize\" and \"post_max_size\" PHP settings. This setting is to further restrict the uploads for just GLPI."
+      },
+      "dropdown_max": {
+        "label": "Page size for dropdowns",
+        "keywords": ""
+      },
+      "ajax_limit_count": {
+        "label": "Number of options needed to show search in dropdowns",
+        "keywords": ""
+      },
+      "login_remember_time": {
+        "label": "Time to allow auto login (remember me)",
+        "keywords": ""
+      },
+      "login_remember_default": {
+        "label": "Default remember me option",
+        "keywords": ""
+      },
+      "display_login_source": {
+        "label": "Display login source",
+        "keywords": ""
+      },
+      "use_password_security": {
+        "label": "Force passwords to comply with security policy",
+        "keywords": ""
+      },
+      "password_min_length": {
+        "label": "Minimum length for passwords",
+        "keywords": ""
+      },
+      "password_need_number": {
+        "label": "Require passwords to contain a number",
+        "keywords": ""
+      },
+      "password_need_letter": {
+        "label": "Require passwords to contain a lowercase letter",
+        "keywords": ""
+      },
+      "password_need_caps": {
+        "label": "Require passwords to contain an uppercase letter",
+        "keywords": ""
+      },
+      "password_need_symbol": {
+        "label": "Require passwords to contain a symbol",
+        "keywords": ""
+      },
+      "password_expiration_delay": {
+        "label": "Password expiration delay in days (-1 to disable)",
+        "keywords": ""
+      },
+      "password_expiration_notice": {
+        "label": "Password expiration notice time in days (-1 to disable)",
+        "keywords": ""
+      },
+      "password_expiration_lock_delay": {
+        "label": "Delay before account deactivation in days after password expiration (-1 to disable)",
+        "keywords": ""
+      },
+      "password_init_token_delay": {
+        "label": "Validity period of the password initialization token",
+        "keywords": ""
+      },
+      "non_reusable_passwords_count": {
+        "label": "Number of non-reusable previous passwords",
+        "keywords": ""
+      },
+      "2fa_suffix": {
+        "label": "2FA Suffix",
+        "keywords": ""
+      },
+      "2fa_enforced": {
+        "label": "Enforce 2FA",
+        "keywords": ""
+      },
+      "language": {
+        "label": "Language",
+        "keywords": ""
+      },
+      "date_format": {
+        "label": "Date format",
+        "keywords": ""
+      },
+      "names_format": {
+        "label": "Names format",
+        "keywords": ""
+      },
+      "number_format": {
+        "label": "Number format",
+        "keywords": ""
+      },
+      "list_limit": {
+        "label": "Results per page",
+        "keywords": ""
+      },
+      "backcreated": {
+        "label": "Go to created item after creation",
+        "keywords": ""
+      },
+      "use_flat_dropdowntree": {
+        "label": "Display the tree dropdown complete name in dropdown inputs",
+        "keywords": ""
+      },
+      "use_flat_dropdowntree_on_search_result": {
+        "label": "Display the complete name of tree dropdown in search results",
+        "keywords": ""
+      },
+      "show_count_on_tabs": {
+        "label": "Show count on tabs",
+        "keywords": ""
+      },
+      "is_ids_visible": {
+        "label": "Show item IDs",
+        "keywords": ""
+      },
+      "keep_devices_when_purging_item": {
+        "label": "Keep devices when purging an item",
+        "keywords": ""
+      },
+      "notification_to_myself": {
+        "label": "Notifications for my changes",
+        "keywords": ""
+      },
+      "display_count_on_home": {
+        "label": "Results to display on home page",
+        "keywords": ""
+      },
+      "pdffont": {
+        "label": "PDF export font",
+        "keywords": ""
+      },
+      "csv_delimiter": {
+        "label": "CSV delimiter",
+        "keywords": ""
+      },
+      "palette": {
+        "label": "Theme",
+        "keywords": "color palette skin"
+      },
+      "page_layout": {
+        "label": "Page layout",
+        "keywords": ""
+      },
+      "richtext_layout": {
+        "label": "Rich text field layout",
+        "keywords": ""
+      },
+      "highcontrast_css": {
+        "label": "Enable high contrast",
+        "keywords": ""
+      },
+      "timezone": {
+        "label": "Timezone",
+        "keywords": ""
+      },
+      "default_central_tab": {
+        "label": "Default homepage tab",
+        "keywords": "central"
+      },
+      "timeline_order": {
+        "label": "Timeline order",
+        "keywords": ""
+      },
+      "show_search_form": {
+        "label": "Show search form above results",
+        "keywords": ""
+      },
+      "search_pagination_on_top": {
+        "label": "Show search pagination above results",
+        "keywords": ""
+      },
+      "followup_private": {
+        "label": "Private followups by default",
+        "keywords": ""
+      },
+      "show_jobs_at_login": {
+        "label": "Show new tickets on the home page",
+        "keywords": ""
+      },
+      "task_private": {
+        "label": "Private tasks by default",
+        "keywords": ""
+      },
+      "default_requesttypes_id": {
+        "label": "Request sources by default",
+        "keywords": ""
+      },
+      "task_state": {
+        "label": "Tasks state by default",
+        "keywords": ""
+      },
+      "planned_task_state": {
+        "label": "Planned tasks state by default",
+        "keywords": ""
+      },
+      "refresh_views": {
+        "label": "Automatically refresh data (tickets list, project kanban) in minutes.",
+        "keywords": ""
+      },
+      "set_default_tech": {
+        "label": "Pre-select me as a technician when creating a ticket",
+        "keywords": ""
+      },
+      "set_default_requester": {
+        "label": "Pre-select me as a requester when creating a ticket",
+        "keywords": ""
+      },
+      "set_followup_tech": {
+        "label": "Add me as a technician when adding a ticket follow-up",
+        "keywords": ""
+      },
+      "set_solution_tech": {
+        "label": "Add me as a technician when adding a ticket solution",
+        "keywords": ""
+      },
+      "timeline_action_btn_layout": {
+        "label": "Action button layout",
+        "keywords": ""
+      },
+      "timeline_date_format": {
+        "label": "Timeline date display",
+        "keywords": ""
+      },
+      "priority_1": {
+        "label": "Very low priority color",
+        "keywords": ""
+      },
+      "priority_2": {
+        "label": "Low priority color",
+        "keywords": ""
+      },
+      "priority_3": {
+        "label": "Medium priority color",
+        "keywords": ""
+      },
+      "priority_4": {
+        "label": "High priority color",
+        "keywords": ""
+      },
+      "priority_5": {
+        "label": "Very high priority color",
+        "keywords": ""
+      },
+      "priority_6": {
+        "label": "Major priority color",
+        "keywords": ""
+      },
+      "duedateok_color": {
+        "label": "Due date OK color",
+        "keywords": ""
+      },
+      "duedatewarning_color": {
+        "label": "Due date warning color",
+        "keywords": ""
+      },
+      "duedatewarning_less": {
+        "label": "Warning state threshold",
+        "keywords": ""
+      },
+      "duedatecritical_color": {
+        "label": "Due date critical color",
+        "keywords": ""
+      },
+      "duedatecritical_less": {
+        "label": "Critical state threshold",
+        "keywords": ""
+      },
+      "default_dashboard_central": {
+        "label": "Central dashboard",
+        "keywords": ""
+      },
+      "default_dashboard_assets": {
+        "label": "Assets dashboard",
+        "keywords": ""
+      },
+      "default_dashboard_helpdesk": {
+        "label": "Assistance dashboard",
+        "keywords": ""
+      },
+      "default_dashboard_mini_ticket": {
+        "label": "Mini tickets dashboard",
+        "keywords": ""
+      },
+      "is_notif_enable_default": {
+        "label": "Enable notifications",
+        "keywords": ""
+      },
+      "toast_location": {
+        "label": "Toast location",
+        "keywords": "popup notifications"
+      }
+    }
+  },
+  "profile_selector": {
+    "current_profile": "Current profile: {currentProfile}"
+  },
+  "entity_selector": {
+    "select_child_entities": "Select child entities",
+    "current_profile_not_valid": "The current profile {currentProfile} is not valid for the selected entity",
+    "select_different_profile": "Please select a different profile"
+  },
+  "network_status": {
+    "offline": "Offline",
+    "slow_connection": "Slow connection detected",
+    "data_saver": "Data-saver mode active"
+  },
+  "breadcrumbs": {
+    "home": "Home"
+  },
+  "management": {
+    "appliance": {
+      "addRelation": "Add Relation",
+      "label": "Appliance | Appliances",
+      "selectRelationType": "Select relation type"
+    },
+    "menu_label": "Management",
+    "license": {
+      "label": "License | Licenses"
+    },
+    "budget": {
+      "label": "Budget | Budgets"
+    },
+    "supplier": {
+      "label": "Supplier | Suppliers"
+    },
+    "contact": {
+      "label": "Contact | Contacts"
+    },
+    "contract": {
+      "label": "Contract | Contracts"
+    },
+    "document": {
+      "label": "Document | Documents",
+      "fields": {
+        "heading": "Heading"
+      }
+    },
+    "line": {
+      "label": "Phone line | Phone lines"
+    },
+    "certificate": {
+      "label": "Certificate | Certificates",
+      "fields": {
+        "dns_name": "DNS name",
+        "dns_suffix": "DNS suffix"
+      }
+    },
+    "datacenter": {
+      "label": "Data center | Data centers"
+    },
+    "cluster": {
+      "label": "Cluster | Clusters"
+    },
+    "database": {
+      "label": "Database | Databases"
+    },
+    "domain": {
+      "label": "Domain | Domains"
+    },
+    "cost": {
+      "fields": {
+        "cost_time": "Time cost",
+        "cost_fixed": "Fixed cost",
+        "cost_material": "Material cost",
+        "cost_total": "Total cost"
+      }
+    }
+  },
+  "assistance": {
+    "menu_label": "Assistance",
+    "ticket": {
+      "label": "Ticket | Tickets"
+    },
+    "servicecatalog": {
+      "label": "Service catalog"
+    },
+    "change": {
+      "label": "Change | Changes"
+    },
+    "problem": {
+      "label": "Problem | Problems"
+    },
+    "statistics": {
+      "label": "Statistics",
+      "number_of_label": "Number of {assistanceType}",
+      "report": "Report",
+      "error_loading": "An error occured while loading the report",
+      "global_assistance": {
+        "title": "Global Assistance Statistics",
+        "number_open": "Opened",
+        "number_solved": "Solved",
+        "number_late": "Late",
+        "number_closed": "Closed"
+      },
+      "avg_time": {
+        "title": "Average Time (hours)",
+        "time_solve_avg": "Resolution",
+        "time_close_avg": "Closure",
+        "time_treatment_avg": "Real duration"
+      },
+      "satisfaction_survey": {
+        "title": "Satisfaction Survey",
+        "opened": "Opened",
+        "answered": "Answered"
+      },
+      "satisfaction_survey_avg_rating": {
+        "title": "Satisfaction Survey Average Rating",
+        "avg_rating": "Average Rating"
+      }
+    },
+    "planning": {
+      "label": "Planning"
+    },
+    "fields": {
+      "begin_waiting_date": "Begin waiting date",
+      "resolution_date": "Resolution date",
+      "date_solve": "Solve date",
+      "date_close": "Close date",
+      "priority": "Priority",
+      "urgency": "Urgency",
+      "impact": "Impact",
+      "private": "Private",
+      "requester": "Requesters",
+      "observer": "Observers",
+      "assigned": "Assigned",
+      "assigned_to": "Assigned to",
+      "assigned_to_group": "Assigned to group"
+    },
+    "task": {
+      "fields": {
+        "category": "Category"
+      },
+      "label": "Task | Tasks"
+    },
+    "approval": {
+      "fields": {
+        "requester": "Requester",
+        "approver": "Approver",
+        "submission_comment": "Submission comment"
+      },
+      "original_request": "Original request",
+      "request_answer_status": "Approval request answer: {status}",
+      "label": "Approval | Approvals",
+      "sent_to": "Approval sent to {approver}",
+      "action": {
+        "refuse": "Refuse",
+        "approve": "Approve"
+      }
+    },
+    "timeline": {
+      "content": "assistance.timeline.content"
+    },
+    "followup": {
+      "label": "Followup | Followups"
+    },
+    "solution": {
+      "label": "Solution | Solutions",
+      "answer_status": "{status}",
+      "fields": {
+        "status_date": "Status date"
+      }
+    },
+    "document": {
+      "label": "Document | Documents"
+    },
+    "cost": {
+      "label": "Cost | Costs"
+    },
+    "approval_answer": {
+      "label": "Approval Answer | Approval Answers"
+    }
+  },
+  "tools": {
+    "menu_label": "Tools",
+    "project": {
+      "label": "Project | Projects"
+    },
+    "reminder": {
+      "label": "Reminder | Reminders"
+    },
+    "rssfeed": {
+      "label": "RSS feed | RSS feeds"
+    },
+    "knowbase": {
+      "label": "Knowledge base",
+      "search_kb": "Search KB",
+      "save_to_kb": "Save to KB"
+    },
+    "reservation": {
+      "label": "Reservation | Reservations"
+    },
+    "report": {
+      "label": "Report | Reports"
+    },
+    "savedsearch": {
+      "label": "Saved search | Saved searches"
+    }
+  },
+  "administration": {
+    "menu_label": "Administration",
+    "user": {
+      "label": "User | Users"
+    },
+    "group": {
+      "label": "Group | Groups"
+    },
+    "entity": {
+      "label": "Entity | Entities"
+    },
+    "rule": {
+      "label": "Rule | Rules"
+    },
+    "dictionary": {
+      "label": "Dictionary | Dictionaries"
+    },
+    "profile": {
+      "label": "Profile | Profiles"
+    },
+    "queuednotification": {
+      "menu_label": "Notification queue"
+    },
+    "log": {
+      "label": "Log | Logs"
+    },
+    "inventory": {
+      "menu_label": "Inventory"
+    },
+    "form": {
+      "label": "Form | Forms"
+    }
+  },
+  "setup": {
+    "menu_label": "Setup",
+    "assetdefinition": {
+      "label": "Asset definition | Asset definitions"
+    },
+    "dropdown": {
+      "label": "Dropdown | Dropdowns",
+      "applianceenvironment": {
+        "label": "Appliance Environment | Appliance Environments"
+      },
+      "followuptemplate": {
+        "label": "Solution template | Solution templates"
+      },
+      "solutiontype": {
+        "label": "Solution type | Solution types"
+      },
+      "requesttype": {
+        "label": "Request source | Request sources"
+      },
+      "validationtemplate": {
+        "label": "Approval template | Approval templates"
+      },
+      "approvalstep": {
+        "label": "Approval step | Approval steps"
+      }
+    },
+    "component": {
+      "label": "Component | Components"
+    },
+    "notification": {
+      "label": "Notification | Notifications"
+    },
+    "webhook": {
+      "label": "Webhook | Webhooks"
+    },
+    "servicelevel": {
+      "label": "Service level | Service levels"
+    },
+    "setting": {
+      "menu_label": "Settings"
+    },
+    "fieldunicity": {
+      "label": "Field unicity rule | Field unicity rules"
+    },
+    "crontask": {
+      "label": "Automatic action | Automatic actions"
+    },
+    "authentication": {
+      "menu_label": "Authentication"
+    },
+    "oauthclient": {
+      "label": "OAuth client | OAuth clients"
+    },
+    "mailcollector": {
+      "label": "Receiver | Receivers"
+    },
+    "link": {
+      "label": "External link | External links"
+    },
+    "plugin": {
+      "label": "Plugin | Plugins"
+    },
+    "dropdowns": {
+      "location": "Location | Locations",
+      "network": "Network | Networks"
+    }
+  },
+  "charts": {
+    "save_as_image": "Save as image",
+    "download_data": "Download data",
+    "default_a11y_caption": "Chart data",
+    "default_a11y_y_axis_label": "Label"
+  },
+  "fileupload": {
+    "drag_and_drop": "Drag and drop files here to attach"
+  },
+  "button": {
+    "save": "Save"
+  },
+  "user": {
+    "unknown": "Unknown User",
+    "fields": {
+      "title": "Title",
+      "category": "Category",
+      "email": "Email",
+      "phone": "Phone",
+      "phone2": "Phone 2",
+      "mobile": "Mobile"
+    }
+  },
+  "assistnace": {
+    "statistics": {
+      "global_report": "Global",
+      "by_hardware_report": "Ny hardware"
+    }
+  }
 }

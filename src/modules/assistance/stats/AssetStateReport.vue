@@ -2,6 +2,7 @@
     import {DatePicker, FloatLabel, DataTable, Column} from "primevue";
     import {computed} from "vue";
     import {useApi} from "@/common/useApi";
+    import { useI18n } from "vue-i18n";
 
     const {selected_report, report_data} = defineProps<{
         selected_report: any,
@@ -12,6 +13,7 @@
         required: true
     });
 
+    const { t: $t } = useI18n();
     const { doGraphQLRequest } = useApi();
 
     const items = computed(() => {
@@ -46,9 +48,22 @@
             entity_map[entity.id] = entity.completename;
         }
         for (const item of items.value) {
-            item.entity_name = entity_map[item.entity] || 'N/A';
+            item.entity_name = entity_map[item.entity] || $t('common.not_applicable.short', 'N/A');
         }
     });
+
+    function getAssistanceTypeLabel(assistanceType: string) {
+        switch (assistanceType.toLowerCase()) {
+            case 'ticket':
+                return $t('assistance.ticket.label', 99);
+            case 'change':
+                return $t('assistance.change.label', 99);
+            case 'problem':
+                return $t('assistance.problem.label', 99);
+            default:
+                return assistanceType;
+        }
+    }
 </script>
 
 <template>
@@ -56,15 +71,19 @@
         <div class="w-full mt-4">
             <FloatLabel variant="on">
                 <DatePicker id="date_range" selectionMode="range" v-model="selected_date_range" :manualInput="false"></DatePicker>
-                <label for="date_range">Date Range</label>
+                <label for="date_range">{{ $t('common.date_range', 'Date range') }}</label>
             </FloatLabel>
         </div>
         <div>
             <DataTable :value="items">
-                <Column field="itemtype" header="Itemtype">Itemtype</Column>
-                <Column field="name" header="Name">Name</Column>
-                <Column field="entity_name" header="Entity">Entity</Column>
-                <Column field="number_open" :header="`Number of ${selected_report.assistance_type}`"></Column>
+                <Column field="itemtype" :header="$t('item.type', 1, {
+                    default: 'Type | Types',
+                })"></Column>
+                <Column field="name" :header="$t('item.fields.name')"></Column>
+                <Column field="entity_name" :header="$t('administration.entity.label', 1)"></Column>
+                <Column field="number_open" :header="$t('assistance.statistics.number_of_label', {
+                    assistanceType: getAssistanceTypeLabel(selected_report.assistance_type)
+                }, 'Number of {assistanceType}')"></Column>
             </DataTable>
         </div>
     </div>

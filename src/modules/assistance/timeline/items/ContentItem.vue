@@ -19,9 +19,9 @@
         }" class="max-w-200'">
         <template #title>
             <div class="justify-between flex items-center">
-                <div class="text-sm">Created {{ formatRelativeTime(item.date_creation || item.date) }}</div>
+                <div class="text-sm">{{ $t('common.created', { dateTime: formatRelativeTime(item.date_creation) }, 'Created {dateTime}') }}</div>
                 <div class="ms-4 flex items-center">
-                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" title="Actions" aria-label="Actions"></Button>
+                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" :title="$t('common.actions', 'Actions')" :aria-label="$t('common.actions', 'Actions')"></Button>
                 </div>
             </div>
         </template>

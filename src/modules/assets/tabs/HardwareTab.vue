@@ -366,7 +366,7 @@
                         <span class="text-lg me-2">Processors:</span>
                         <div>
                             <div v-for="(proc, index) in components_info.ProcessorItem" :key="index" class="me-2">{{ proc.processor.designation || proc.processor.model.name || 'Unknown' }}</div>
-                            <div v-if="components_info.ProcessorItem.length === 0" v-text="$t('not_available.short', 'N/A')"></div>
+                            <div v-if="components_info.ProcessorItem.length === 0" v-text="$t('common.not_applicable.short', 'N/A')"></div>
                         </div>
                         <span class="text-lg me-2">Total Cores/Threads:</span>
                         <div>
@@ -389,7 +389,7 @@
                         <span class="text-lg me-2">Drives:</span>
                         <div>
                             <div v-for="(drive, index) in components_info.HardDriveItem" :key="index" class="me-2">{{ drive.hard_drive.designation || drive.hard_drive.model.name || 'Unknown' }}</div>
-                            <div v-if="components_info.HardDriveItem.length === 0" v-text="$t('not_available.short', 'N/A')"></div>
+                            <div v-if="components_info.HardDriveItem.length === 0" v-text="$t('common.not_applicable.short', 'N/A')"></div>
                         </div>
                         <span class="text-lg me-2">Total Storage:</span>
                         <div>{{ components_info.HardDriveItem.length > 0 ? formatDataSize(components_info.HardDriveItem.reduce((acc, drive) => acc + (drive.capacity || 0), 0), 'MB') : '0 B' }}</div>
@@ -410,7 +410,7 @@
                         <span class="text-lg me-2">Memory Modules:</span>
                         <div>
                             <span v-for="(text, index) in getGroupedMemoryModuleText()" :key="index" class="inline-block me-2">{{ text }}</span>
-                            <div v-if="components_info.MemoryItem.length === 0" v-text="$t('not_available.short', 'N/A')"></div>
+                            <div v-if="components_info.MemoryItem.length === 0" v-text="$t('common.not_applicable.short', 'N/A')"></div>
                         </div>
                         <span class="text-lg me-2">Total Memory:</span><div>{{ components_info.MemoryItem.length > 0 ? formatDataSize(components_info.MemoryItem.reduce((acc, mem) => acc + (mem.size || 0), 0), 'MB') : '0 B' }}</div>
                     </div>

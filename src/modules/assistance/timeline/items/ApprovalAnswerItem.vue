@@ -39,13 +39,17 @@
         }" class="max-w-200'">
         <template #title>
             <div class="justify-between flex items-center">
-                <div class="text-sm">Created {{ formatRelativeTime(item.date) }}</div>
+                <div class="text-sm">{{ $t('common.created', { dateTime: formatRelativeTime(item.date) }, 'Created {dateTime}') }}</div>
             </div>
         </template>
         <template #content>
             <div>
-                <Button variant="link" size="small" class="p-0 text-inherit font-bold" @click="scrollToOriginalRequest">Original request</Button>
-                <div :class="item.status === 3 ? 'text-green-700' : 'text-red-700'">Approval request answer: {{ item.status === 3 ? 'Approved' : 'Refused' }}</div>
+                <Button variant="link" size="small" class="p-0 text-inherit font-bold" @click="scrollToOriginalRequest">{{ $t('assistance.approval.original_request', 'Original request') }}</Button>
+                <div :class="item.status === 3 ? 'text-green-700' : 'text-red-700'">
+                    {{ $t('assistance.approval.request_answer_status', {
+                        status: item.status === 3 ? '@:assistance.approval.status.approved' : '@:assistance.approval.status.refused'
+                    }, 'Approval request answer: {status}') }}
+                </div>
                 <div v-dompurify-html="item.comment"></div>
             </div>
         </template>

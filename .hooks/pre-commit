@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# GLPI Vue
+
+# Run custom hooks in git/hooks/pre-commit.d directory if it exists
+
+echo "Running custom pre-commit hooks..."
+if [ -d "$(dirname "$0")/pre-commit.d" ]; then
+  for hook in "$(dirname "$0")/pre-commit.d/"*; do
+    if [ -x "$hook" ]; then
+      "$hook"
+    fi
+  done
+fi
+
+echo "Running GLPI Vue pre-commit hooks..."
+
+npm run build
+npm run report-i18n

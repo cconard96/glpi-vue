@@ -41,16 +41,18 @@
     <section v-if="contract_info">
         <DataTable :value="contract_info" class="mt-6" :rows="contract_info.length"
                    sortMode="multiple" removableSort>
-            <Column key="contract.name" field="contract.name" header="Name"></Column>
-            <Column key="contract.type.name" field="contract.type.name" header="Type"></Column>
-            <Column key="contract.date_begin" field="contract.date_begin" header="Start Date"></Column>
-            <Column key="contract.duration" field="contract.duration" header="Duration">
+            <Column key="contract.name" field="contract.name" :header="$t('item.fields.name', 'Name')"></Column>
+            <Column key="contract.type.name" field="contract.type.name" :header="$t('item.type', 1, {
+                default: 'Type | Types',
+            })"></Column>
+            <Column key="contract.date_begin" field="contract.date_begin" :header="$t('item.fields.date_begin', 'Begin date')"></Column>
+            <Column key="contract.duration" field="contract.duration" :header="$t('item.fields.duration', 'Duration')">
                 <template #body="slotProps">
                     <span v-if="slotProps.data.contract.duration">{{ slotProps.data.contract.duration }} months</span>
                     <span v-else>N/A</span>
                 </template>
             </Column>
-            <Column key="contract.date_end" field="contract.date_end" header="End Date"></Column>
+            <Column key="contract.date_end" field="contract.date_end" :header="$t('item.fields.date_end', 'End date')"></Column>
         </DataTable>
     </section>
 </template>

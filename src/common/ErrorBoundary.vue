@@ -17,13 +17,13 @@
 <template>
     <div v-if="error">
         <Message severity="error" icon="ti ti-exclamation-circle">
-            <h2 class="font-bold mb-2">An error occurred:</h2>
+            <h2 class="font-bold mb-2">{{ $t('common.error.an_error_occured', 'An error occurred:') }}</h2>
             <p class="">{{ error.message }}</p>
             <p v-if="dev_mode" class="mt-4">
                 <strong>Stack Trace:</strong>
                 <span class="whitespace-pre-wrap">{{ error.stack }}</span>
             </p>
-            <RouterLink to="/">Go back to home</RouterLink>
+            <RouterLink to="/">{{ $t('common.error.go_back_home', 'Go back to home') }}</RouterLink>
         </Message>
     </div>
     <div v-else class="flex overflow-hidden"><slot></slot></div>

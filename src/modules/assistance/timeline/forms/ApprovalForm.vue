@@ -94,18 +94,22 @@
             }">
                 <template #header>
                     <div class="flex flex-row-reverse">
-                        <Button icon="ti ti-x" class="p-button-text p-button-plain" title="Close" aria-label="Close" @click="$emit('close')"></Button>
+                        <Button icon="ti ti-x" class="p-button-text p-button-plain" :title="$t('common.close', 'Close')" :aria-label="$t('common.close', 'Close')" @click="$emit('close')"></Button>
                     </div>
                 </template>
                 <template #content>
-                    <Message>Not implemented yet</Message>
+                    <Message>{{ $t('common.error.not_implemented') }}</Message>
                     <div class="flex flex-col mb-2 -mt-2">
                         <Fluid class="grid grid-cols-2 gap-2 mb-2">
-                            <ValidatedFormField name="approval_template" label="Approval template" :as="FieldSelect"
+                            <ValidatedFormField name="approval_template" :label="$t('setup.dropdown.validationtemplate.label', 1, {
+                                    default: 'Approval template | Approval templates'
+                                })" :as="FieldSelect"
                                                 :fieldProps="{type: 'ValidationTemplate', label_type: 'on'}"
                                                 @change="applySelectedTemplate"></ValidatedFormField>
-                            <ValidatedFormField name="approval_step" label="Approval step" :as="FieldSelect" :fieldProps="{type: 'ApprovalStep', label_type: 'on'}"></ValidatedFormField>
-                            <ValidatedFormField name="requester" label="Requester" :as="FieldSelect"
+                            <ValidatedFormField name="approval_step" :label="$t('setup.dropdown.approvalstep.label',1, {
+                                    default: 'Approval step | Approval steps'
+                                })" :as="FieldSelect" :fieldProps="{type: 'ApprovalStep', label_type: 'on'}"></ValidatedFormField>
+                            <ValidatedFormField name="requester" :label="$t('assistance.approval.fields.requester', 'Requester')" :as="FieldSelect"
                                                 :fieldProps="{
                                                     options: [{key: getUserID, label: getFriendlyName}],
                                                     optionValue: 'key',
@@ -119,19 +123,19 @@
                                         optionValue="key" optionLabel="label"
                                         fluid
                                 ></Select>
-                                <label for="approver">Approver</label>
+                                <label for="approver">{{ $t('assistance.approval.fields.approver', 'Approver') }}</label>
                             </FloatLabel>
                         </Fluid>
                         <ValidatedFormField name="submission_comment" :as="RichTextEditor" :fieldProps="{
                             enable_file_upload: true,
                             editorProps: {
-                                'aria-label': 'Submission comment'
+                                'aria-label': $t('assistance.approval.fields.submission_comment', 'Submission comment')
                             }
                         }"></ValidatedFormField>
                     </div>
                 </template>
                 <template #footer>
-                    <Button icon="ti ti-plus" label="Add"></Button>
+                    <Button icon="ti ti-plus" :label="$t('item.add', 'Add')"></Button>
                 </template>
             </Card>
         </AdvancedForm>

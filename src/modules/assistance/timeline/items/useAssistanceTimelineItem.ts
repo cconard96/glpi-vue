@@ -3,6 +3,7 @@ import { useConfirm, useToast } from "primevue";
 import { useApi } from "@/common/useApi";
 import type { useAssistanceItem } from "@/modules/assistance/timeline/useAssistanceItem";
 import { computed, defineAsyncComponent, inject, ref, Ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 export type AssistanceTimelineItemtype = 'content'|'Followup'|'Task'|'Solution'|'Document'|'Cost'|'Validation'|'ValidationAnswer';
 interface ContentItem {
@@ -33,23 +34,38 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
 
     //TODO proper translations/pluralization
     function getTypeName(count: number) {
+        const { t: $t } = useI18n();
         switch (itemtype) {
             case 'content':
-                return 'Content';
+                return $t('assistance.timeline.content');
             case 'Followup':
-                return count === 1 ? 'Followup' : 'Followups';
+                return $t('assistance.followup.label', count, {
+                    default: 'Followup | Followups',
+                });
             case 'Task':
-                return count === 1 ? 'Task' : 'Tasks';
+                return $t('assistance.task.label', count, {
+                    default: 'Task | Tasks',
+                });
             case 'Solution':
-                return count === 1 ? 'Solution' : 'Solutions';
+                return $t('assistance.solution.label', count, {
+                    default: 'Solution | Solutions',
+                });
             case 'Document':
-                return count === 1 ? 'Document' : 'Documents';
+                return $t('assistance.document.label', count, {
+                    default: 'Document | Documents',
+                });
             case 'Cost':
-                return count === 1 ? 'Cost' : 'Costs';
+                return $t('assistance.cost.label', count, {
+                    default: 'Cost | Costs',
+                });
             case 'Validation':
-                return count === 1 ? 'Approval' : 'Approvals';
+                return $t('assistance.approval.label', count, {
+                    default: 'Approval | Approvals',
+                });
             case 'ValidationAnswer':
-                return count === 1 ? 'Approval Answer' : 'Approval Answers';
+                return $t('assistance.approval_answer.label', count, {
+                    default: 'Approval Answer | Approval Answers',
+                });
         }
     }
 
@@ -154,23 +170,27 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
 
+        const { t: $t } = useI18n();
+
         if (itemtype === 'content') {
             // not a real timeline item, but rather a representation of the ticket/change/problem description.
             return;
         }
 
         confirm.require({
-            message: `Are you sure you want to delete this ${getTypeName(1).toLowerCase()}?`,
-            header: 'Danger Zone',
+            message: $t('common.confirm.item_deletion', {
+                itemType: getTypeName(1).toLowerCase(),
+            }, 'Are you sure you want to delete this {itemType}?'),
+            header: $t('common.confirm.item_deletion_title', 'Danger Zone'),
             icon: 'ti ti-circle-x',
-            rejectLabel: 'Cancel',
+            rejectLabel: $t('common.cancel', 'Cancel'),
             rejectProps: {
-                label: 'Cancel',
+                label: $t('common.cancel', 'Cancel'),
                 severity: 'secondary',
                 outlined: true
             },
             acceptProps: {
-                label: 'Delete',
+                label: $t('common.delete', 'Delete'),
                 severity: 'danger'
             },
             accept: () => {
@@ -186,8 +206,10 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
                 }).catch(() => {
                     toast.add({
                         severity: 'error',
-                        summary: 'Error',
-                        detail: `Failed to delete ${getTypeName(1).toLowerCase()}. Please try again.`,
+                        summary: $t('common.error.error', 'Error'),
+                        detail: $t('common.error.item_deletion', {
+                            itemType: getTypeName(1).toLowerCase(),
+                        }, 'Failed to delete the {itemType}. Please try again.'),
                         life: 5000,
                     });
                 }).finally(() => {
@@ -212,6 +234,8 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
 
+        const { t: $t } = useI18n();
+
         if (itemtype === 'content') {
             return;
         }
@@ -229,8 +253,10 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         }).catch(() => {
             toast.add({
                 severity: 'error',
-                summary: 'Error',
-                detail: `Failed to add ${getTypeName(1).toLowerCase()}. Please try again.`,
+                summary: $t('common.error.error', 'Error'),
+                detail: $t('common.error.item_additon', {
+                    itemType: getTypeName(1).toLowerCase(),
+                }, 'Failed to add the {itemType}. Please try again.'),
                 life: 5000,
             });
         }).finally(() => {
@@ -252,6 +278,8 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
     function updateItem(itemData: AssistanceTimelineItem, pendingItemData: AssistanceTimelineItem, parentItemtype: 'Ticket'|'Change'|'Problem' = undefined, parentID: number = undefined) {
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
+
+        const { t: $t } = useI18n();
 
         if (itemtype === 'content') {
             return;
@@ -275,8 +303,10 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         }).catch(() => {
             toast.add({
                 severity: 'error',
-                summary: 'Error',
-                detail: `Failed to update ${getTypeName(1).toLowerCase()}. Please try again.`,
+                summary: $t('common.error.error', 'Error'),
+                detail: $t('common.error.item_update', {
+                    itemType: getTypeName(1).toLowerCase(),
+                }, 'Failed to update the {itemType}. Please try again.'),
                 life: 5000,
             });
         }).finally(() => {
@@ -288,9 +318,11 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
 
     const actionsMenuOptions = computed(() => {
         const options = [];
+        const { t: $t } = useI18n();
+
         if (['Followup', 'Task', 'Solution', 'Document', 'Cost', 'Validation'].includes(itemtype)) {
-            options.push({key: 'edit', label: 'Edit', icon: 'ti ti-pencil', command: () => { editMode.value = true }});
-            options.push({key: 'delete', label: 'Delete', icon: 'ti ti-trash', command: () => userDeleteItem()});
+            options.push({key: 'edit', label: $t('common.edit', 'Edit'), icon: 'ti ti-pencil', command: () => { editMode.value = true }});
+            options.push({key: 'delete', label: $t('common.delete', 'Delete'), icon: 'ti ti-trash', command: () => userDeleteItem()});
         }
         return options;
     });

@@ -1,3 +1,5 @@
+import { useI18n } from "vue-i18n";
+
 export function useDataHelper() {
     /**
      * Format memory size to a more readable format in MB, GB, TB, etc.
@@ -43,20 +45,21 @@ export function useDataHelper() {
         } else if (user.realname) {
             return user.realname;
         } else {
-            return user.username || user.name || 'Unknown User';
+            return user.username || user.name || useI18n().t('user.unknown', 'Unknown User');
         }
     }
 
     function getUrgencyImpactPriorityLabel(value: number): string {
+        const { t: $t } = useI18n();
         const labels = {
-            1: 'Very Low',
-            2: 'Low',
-            3: 'Medium',
-            4: 'High',
-            5: 'Very High',
-            6: 'Major',
+            1: $t('common.priority.very_low', 'Very Low'),
+            2: $t('common.priority.low', 'Low'),
+            3: $t('common.priority.medium', 'Medium'),
+            4: $t('common.priority.high', 'High'),
+            5: $t('common.priority.very_high', 'Very High'),
+            6: $t('common.priority.major', 'Major'),
         };
-        return labels[value] || 'Unknown';
+        return labels[value] || $t('common.unknown', 'Unknown');
     }
 
     /**
@@ -66,8 +69,9 @@ export function useDataHelper() {
      * @param format The format to use with Intl.DurationFormat. narrow: "1h 30m", short: "1 hr 30 min", long: "1 hour, 30 minutes"
      */
     function formatDuration(value: number, unit: string, format: 'narrow'|'short'|'long' = 'long'): string {
+        const { t: $t } = useI18n();
         if (value === 0) {
-            return 'N/A';
+            return $t('common.not_applicable.short', 'N/A');
         }
         // create a duration object based on the given value and unit. The value needs broken out to the correct units (for example 65 minutes should be 1 hour and 5 minutes)
         const duration = {
@@ -121,6 +125,7 @@ export function useDataHelper() {
      * Defaults to 24 hours.
      */
     function formatRelativeTime(timestamp: number|string|Date, relativeCutoff: number = 24 * 60 * 60): string {
+        const { t: $t } = useI18n();
         const date = new Date(timestamp);
         const now = new Date();
         const diff = Math.floor((now.getTime() - date.getTime()) / 1000); // difference in seconds
@@ -130,13 +135,21 @@ export function useDataHelper() {
         }
 
         if (diff < 15) {
-            return 'Just now';
+            return $t('common.relative_time.just_now', 'Just now');
         }
 
-        if (diff < 60) return `${diff} seconds ago`;
-        if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-        if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-        if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
+        if (diff < 60) return $t('common.relative_time.seconds_ago', {
+            count: diff,
+        }, '{count} seconds ago');
+        if (diff < 3600) return $t('common.relative_time.seconds_ago', {
+            count: Math.floor(diff / 60),
+        }, '{count} minutes ago');
+        if (diff < 86400) return $t('common.relative_time.hours_ago', {
+            count: Math.floor(diff / 3600),
+        }, '{count} hours ago');
+        if (diff < 604800) return $t('common.relative_time.days_ago', {
+            count: Math.floor(diff / 86400),
+        }, '{count} days ago');
         return date.toLocaleString();
     }
 

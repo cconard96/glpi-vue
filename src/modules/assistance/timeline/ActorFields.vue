@@ -5,6 +5,7 @@
     import { useDataHelper } from "@/common/useDataHelper";
     import { useApi } from "@/common/useApi";
     import { useDebounceFn } from "@vueuse/core";
+    import { useI18n } from "vue-i18n";
 
     const props = defineProps<{
         requesters: Array<components['schemas']['TeamMember']>
@@ -14,6 +15,7 @@
 
     const { formatUsername } = useDataHelper();
     const { doGraphQLRequest } = useApi();
+    const { t: $t } = useI18n();
 
     const selected_requesters = ref(props.requesters.map(member => `${member.type}-${member.id}`));
     const selected_observers = ref(props.observers.map(member => `${member.type}-${member.id}`));
@@ -26,9 +28,9 @@
     }
 
     const actor_type_labels = {
-        'requesters': 'Requesters',
-        'observers': 'Observers',
-        'assigned': 'Assigned'
+        'requesters': $t('assistance.fields.requester', 'Requesters'),
+        'observers': $t('assistance.fields.observer', 'Observers'),
+        'assigned': $t('assistance.fields.assigned', 'Assigned')
     }
 
     const requester_type_filter = shallowRef<Array<'User'|'Group'>>(['User']);
@@ -148,7 +150,7 @@
             >
                 <template #header>
                     <SelectButton :options="allowed_actor_itemtypes['requesters']" v-model="requester_type_filter" multiple></SelectButton>
-                    <InputText ref="requester-search" placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="requester_filter" @input="updateActorOptions('requesters')"></InputText>
+                    <InputText ref="requester-search" :placeholder="$t('search.placeholder')" class="p-inputtext-sm w-full mt-2" v-model="requester_filter" @input="updateActorOptions('requesters')"></InputText>
                 </template>
             </MultiSelect>
             <label>{{ actor_type_labels['requesters'] }}</label>
@@ -160,7 +162,7 @@
             >
                 <template #header>
                     <SelectButton :options="allowed_actor_itemtypes['observers']" v-model="observer_type_filter" multiple></SelectButton>
-                    <InputText ref="observer-search" placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="observer_filter" @input="updateActorOptions('observers')"></InputText>
+                    <InputText ref="observer-search" :placeholder="$t('search.placeholder')" class="p-inputtext-sm w-full mt-2" v-model="observer_filter" @input="updateActorOptions('observers')"></InputText>
                 </template>
             </MultiSelect>
             <label>{{ actor_type_labels['observers'] }}</label>
@@ -172,7 +174,7 @@
             >
                 <template #header>
                     <SelectButton :options="allowed_actor_itemtypes['assigned']" v-model="assigned_type_filter" multiple></SelectButton>
-                    <InputText ref="assigned-search" placeholder="Search..." class="p-inputtext-sm w-full mt-2" v-model="assigned_filter" @input="updateActorOptions('assigned')"></InputText>
+                    <InputText ref="assigned-search" :placeholder="$t('search.placeholder')" class="p-inputtext-sm w-full mt-2" v-model="assigned_filter" @input="updateActorOptions('assigned')"></InputText>
                 </template>
             </MultiSelect>
             <label>{{ actor_type_labels['assigned'] }}</label>

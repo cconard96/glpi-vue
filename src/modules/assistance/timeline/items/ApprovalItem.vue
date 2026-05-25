@@ -134,14 +134,16 @@
         }" class="max-w-200'">
         <template #title>
             <div class="justify-between flex items-center">
-                <div class="text-sm">Created {{ formatRelativeTime(approval.submission_date) }}</div>
+                <div class="text-sm">{{ $t('common.created', { dateTime: formatRelativeTime(approval.submission_date) }, 'Created {dateTime}') }}</div>
                 <div class="ms-4 flex items-center">
-                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" title="Actions" aria-label="Actions"
+                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" :title="$t('common.actions', 'Actions')" :aria-label="$t('common.actions', 'Actions')"
                             @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                     <Menu ref="actions_menu" :popup="true" :model="actionsMenuOptions"></Menu>
                 </div>
             </div>
-            <Tag class="text-sm select-none" v-if="approver" severity="secondary">Approval sent to {{ formatUsername(approver) }}</Tag>
+            <Tag class="text-sm select-none" v-if="approver" severity="secondary">
+                {{ $t('assistance.approval.sent_to', { approver: formatUsername(approver) }, 'Approval sent to {approver}') }}
+            </Tag>
         </template>
         <template #content>
             <div>
@@ -154,8 +156,8 @@
                     <RichTextEditor></RichTextEditor>
                 </FormField>
                 <div class="flex gap-2 justify-end mt-2">
-                    <Button label="Refuse" severity="danger" @click="answer(false, approval_answer_form.getFieldState('approval_comment').value)"></Button>
-                    <Button label="Approve" severity="success" @click="answer(true, approval_answer_form.getFieldState('approval_comment').value)"></Button>
+                    <Button :label="$t('assistance.approval.action.refuse', 'Refuse')" severity="danger" @click="answer(false, approval_answer_form.getFieldState('approval_comment').value)"></Button>
+                    <Button :label="$t('assistance.approval.action.approve', 'Approve')" severity="success" @click="answer(true, approval_answer_form.getFieldState('approval_comment').value)"></Button>
                 </div>
             </Form>
         </template>

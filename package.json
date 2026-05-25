@@ -5,6 +5,7 @@
     "description": "A Vue-based frontend for GLPI",
     "type": "module",
     "scripts": {
+        "prepare": ".hooks/prepare.sh",
         "dev": "vite --force",
         "build": "vite build",
         "preview": "vite preview",
@@ -15,7 +16,8 @@
         "lint:fix": "oxlint --fix",
         "fmt": "oxfmt --check",
         "fmt:fix": "oxfmt",
-        "extract-i18n": "vue-i18n-extract report --vueFiles './src/**/*.?(vue)' --languageFiles './locales/*.json'"
+        "report-i18n": "vue-i18n-extract report --ci --vueFiles './src/**/*.?(ts|vue)' --languageFiles './locales/*.json'",
+        "extract-i18n": "vue-i18n-extract report --add --vueFiles './src/**/*.?(ts|vue)' --languageFiles './locales/*.json'"
     },
     "dependencies": {
         "@apollo/client": "^4.2.0",
