@@ -21,7 +21,7 @@
             <div class="justify-between flex items-center">
                 <div class="text-sm">Created {{ formatRelativeTime(item.date_creation) }}</div>
                 <div class="ms-4 flex items-center">
-                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" title="Actions" aria-label="Actions"></Button>
+                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" :title="$t('common.actions', 'Actions')" :aria-label="$t('common.actions', 'Actions')"></Button>
                 </div>
             </div>
         </template>
@@ -37,8 +37,10 @@
                     'ti ti-check': item.status === 3,
                     'ti ti-x': item.status === 4
                 }" aria-label="Solution status"></i>
-                {{ item.status === 2 ? 'Solved' : (item.status === 3 ? 'Accepted' : 'Refused') }}
-                <time :datetime="item.status === 2 ? item.date_creation : item.date_approval" class="ms-2" aria-label="Status date">
+                {{ $t('assistance.solution.answer_status', {
+                status: item.status === 2 ? '@:assistance.solution.status.solved' : (item.status === 3 ? '@:assistance.solution.status.approved' : '@:assistance.solution.status.refused')
+            }, '{status}') }}
+                <time :datetime="item.status === 2 ? item.date_creation : item.date_approval" class="ms-2" :aria-label="$t('assistance.solution.fields.status_date', 'Status date')">
                     {{ formatRelativeTime(item.status === 2 ? item.date_creation : item.date_approval) }}
                 </time>
             </Tag>

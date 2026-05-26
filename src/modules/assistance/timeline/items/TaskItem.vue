@@ -51,10 +51,10 @@
         }" class="max-w-200'">
         <template #title>
             <div class="justify-between flex items-center">
-                <div class="text-sm">Created {{ formatRelativeTime(task.date_creation || task.date) }}</div>
+                <div class="text-sm">{{ $t('common.created', { dateTime: formatRelativeTime(task.date_creation || task.date) }, 'Created {dateTime}') }}</div>
                 <div class="ms-4 flex items-center">
-                    <i v-if="task.is_private" class="ti ti-eye-off" title="Private task" aria-label="Private task"></i>
-                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" title="Actions" aria-label="Actions"
+                    <i v-if="task.is_private" class="ti ti-eye-off" :title="$t('assistance.fields.private')" :aria-label="$t('assistance.fields.private')"></i>
+                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" :title="$t('common.actions', 'Actions')" :aria-label="$t('common.actions', 'Actions')"
                             @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                     <Menu ref="actions_menu" :popup="true" :model="actionsMenuOptions"></Menu>
                 </div>
@@ -68,19 +68,19 @@
         <template #footer class="text-sm">
             <div class="gap-2 flex select-none">
                 <Tag v-if="task.user_tech" severity="secondary">
-                    <i class="ti ti-user me-2" aria-label="Assigned to"></i>
+                    <i class="ti ti-user me-2" :aria-label="$t('assistance.fields.assigned_to', 'Assigned to')"></i>
                     {{ formatUsername(task.user_tech) }}
                 </Tag>
                 <Tag v-if="task.group_tech" severity="secondary">
-                    <i class="ti ti-users me-2" aria-label="Assigned to group"></i>
+                    <i class="ti ti-users me-2" :aria-label="$t('assistance.fields.assigned_to_group', 'Assigned to group')"></i>
                     {{ formatUsername(task.group_tech) }}
                 </Tag>
                 <Tag v-if="task.duration" severity="secondary">
-                    <i class="ti ti-clock me-2" aria-label="Duration"></i>
+                    <i class="ti ti-clock me-2" :aria-label="$t('item.fields.duration')"></i>
                     {{ formatDuration(task.duration, 'm', 'narrow') }}
                 </Tag>
                 <Tag v-if="task.category?.id" severity="secondary">
-                    <i class="ti ti-tag me-2" aria-label="Category"></i>
+                    <i class="ti ti-tag me-2" :aria-label="$t('item.fields.category')"></i>
                     {{ task.category.name }}
                 </Tag>
             </div>

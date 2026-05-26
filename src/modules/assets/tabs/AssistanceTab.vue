@@ -52,29 +52,31 @@
 <template>
     <section v-if="assistance_info">
         <DataTable :value="assistance_info" class="mt-6" :rows="assistance_info.length" sortMode="multiple" removableSort>
-            <Column key="itemtype" field="itemtype" header="Type"></Column>
-            <Column key="name" field="name" header="Name"></Column>
-            <Column key="date" field="date" header="Date"></Column>
-            <Column key="begin_waiting_date" field="begin_waiting_date" header="Begin Waiting Date"></Column>
-            <Column key="resolution_date" field="resolution_date" header="Resolution Date"></Column>
-            <Column key="date_solve" field="date_solve" header="Solve Date"></Column>
-            <Column key="date_close" field="date_close" header="Close Date"></Column>
-            <Column key="priority" field="priority" header="Priority">
+            <Column key="itemtype" field="itemtype" :header="$t('item.type', 1, {
+                default: 'Type | Types',
+            })"></Column>
+            <Column key="name" field="name" :header="$t('item.fields.name', 'Name')"></Column>
+            <Column key="date" field="date" :header="$t('item.fields.date', 'Date')"></Column>
+            <Column key="begin_waiting_date" field="begin_waiting_date" :header="$t('assistance.fields.begin_waiting_date', 'Begin waiting date')"></Column>
+            <Column key="resolution_date" field="resolution_date" :header="$t('assistance.fields.resolution_date', 'Resolution date')"></Column>
+            <Column key="date_solve" field="date_solve" :header="$t('assistance.fields.date_solve', 'Solve date')"></Column>
+            <Column key="date_close" field="date_close" :header="$t('assistance.fields.date_close', 'Close date')"></Column>
+            <Column key="priority" field="priority" :header="$t('assistance.fields.priority', 'Priority')">
                 <template #body="slotProps">
                     <span>{{ getUrgencyImpactPriorityLabel(slotProps.data.priority) }}</span>
                 </template>
             </Column>
-            <Column key="urgency" field="urgency" header="Urgency">
+            <Column key="urgency" field="urgency" :header="$t('assistance.fields.urgency', 'Urgency')">
                 <template #body="slotProps">
                     <span>{{ getUrgencyImpactPriorityLabel(slotProps.data.urgency) }}</span>
                 </template>
             </Column>
-            <Column key="impact" field="impact" header="Impact">
+            <Column key="impact" field="impact" :header="$t('assistance.fields.impact', 'Impact')">
                 <template #body="slotProps">
                     <span>{{ getUrgencyImpactPriorityLabel(slotProps.data.impact) }}</span>
                 </template>
             </Column>
-            <Column key="category.name" field="category.name" header="Category"></Column>
+            <Column key="category.name" field="category.name" :header="$t('item.fields.category', 'Category')"></Column>
         </DataTable>
     </section>
 </template>

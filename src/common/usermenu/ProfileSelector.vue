@@ -33,7 +33,11 @@
 
 <template>
     <div>
-        <Message>Current profile: {{ active_profile.name }}. This UI is not finalized.</Message>
+        <Message>
+            {{ $t('profile_selector.current_profile', {
+                currentProfile: active_profile.name
+            }, 'Current profile: {currentProfile}') }}
+        </Message>
         <InputText v-model="searchTerm" class="w-full"></InputText>
         <Listbox :options="filtered_nodes" optionValue="key" optionLabel="label"
               @change="doChangeProfile($event)" class="max-h-96 overflow-auto">

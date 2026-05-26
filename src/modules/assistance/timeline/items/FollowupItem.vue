@@ -28,10 +28,10 @@
         }" class="max-w-200'">
         <template #title>
             <div class="justify-between flex items-center">
-                <div class="text-sm">Created {{ formatRelativeTime(followup.date_creation || followup.date) }}</div>
+                <div class="text-sm">{{ $t('common.created', { dateTime: formatRelativeTime(followup.date_creation || followup.date) }, 'Created {dateTime}') }}</div>
                 <div class="ms-4 flex items-center">
-                    <i v-if="followup.is_private" class="ti ti-eye-off" title="Private follow-up" aria-label="Private follow-up"></i>
-                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" title="Actions" aria-label="Actions"
+                    <i v-if="followup.is_private" class="ti ti-eye-off" :title="$t('assistance.fields.private')" :aria-label="$t('assistance.fields.private')"></i>
+                    <Button icon="ti ti-dots-vertical" severity="secondary" variant="text" size="small" :title="$t('common.actions', 'Actions')" :aria-label="$t('common.actions', 'Actions')"
                             @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                     <Menu ref="actions_menu" :popup="true" :model="actionsMenuOptions"></Menu>
                 </div>
@@ -44,7 +44,7 @@
         </template>
         <template #footer class="text-sm select-none">
             <Tag v-if="followup.request_type && followup.request_type.id" severity="secondary">
-                <i class="ti ti-inbox me-2" aria-label="Request source"></i>
+                <i class="ti ti-inbox me-2" :aria-label="$t('setup.dropdown.requesttype.label')"></i>
                 {{ followup.request_type.name }}
             </Tag>
         </template>

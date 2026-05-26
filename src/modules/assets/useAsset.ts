@@ -75,9 +75,9 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/Computer',
         getLabel: (count: number) => {
-            const i18n = useI18n();
-            return i18n.t('assets.computer.label', count, {
-                default: count === 1 ? 'Computer' : 'Computers'
+            const { t: $t } = useI18n();
+            return $t('assets.computer.label', count, {
+                default: 'Computer | Computers',
             });
         },
         icon: 'ti ti-device-laptop',
@@ -97,7 +97,10 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/Monitor',
         getLabel: (count: number) => {
-            return count === 1 ? 'Monitor' : 'Monitors';
+            const { t: $t } = useI18n();
+            return $t('assets.monitor.label', count, {
+                default: 'Monitor | Monitors',
+            });
         },
         icon: 'ti ti-device-desktop',
         rightname: 'monitor',
@@ -115,7 +118,10 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/Software',
         getLabel: (count: number) => {
-            return count === 1 ? 'Software' : 'Software';
+            const { t: $t } = useI18n();
+            return $t('assets.software.label', count, {
+                default: 'Software | Software',
+            });
         },
         icon: 'ti ti-apps',
         rightname: 'software',
@@ -130,7 +136,10 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/NetworkEquipment',
         getLabel: (count: number) => {
-            return count === 1 ? 'Network device' : 'Network devices';
+            const { t: $t } = useI18n();
+            return $t('assets.networkequipment.label', count, {
+                default: 'Network Equipment | Network Equipment',
+            });
         },
         icon: 'ti ti-network',
         rightname: 'networking',
@@ -149,7 +158,10 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/Peripheral',
         getLabel: (count: number) => {
-            return count === 1 ? 'Peripheral' : 'Peripherals';
+            const { t: $t } = useI18n();
+            return $t('assets.peripheral.label', count, {
+                default: 'Peripheral | Peripherals',
+            });
         },
         icon: 'ti ti-usb',
         rightname: 'peripheral',
@@ -167,7 +179,10 @@ const builtinAssets: Array<AssetDefinition> = [
         module: 'assets',
         restEndpoint: 'Assets/Printer',
         getLabel: (count: number) => {
-            return count === 1 ? 'Printer' : 'Printers';
+            const { t: $t } = useI18n();
+            return $t('assets.printer.label', count, {
+                default: 'Printer | Printers',
+            });
         },
         icon: 'ti ti-printer',
         rightname: 'printer',
@@ -179,6 +194,22 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./PrinterForm.vue')),
         ...getDefaultRightChecks('printer'),
+    },
+    {
+        key: 'Cartridge',
+        module: 'assets',
+        restEndpoint: 'Assets/Cartridge',
+        getLabel: (count: number) => {
+            const { t: $t } = useI18n();
+            return $t('assets.cartridge.label', count, {
+                default: 'Cartridge | Cartridges',
+            });
+        },
+        icon: 'ti ti-droplet-half-2',
+        rightname: 'cartridge',
+        capabilities: [], //TODO
+        main_tab_component: defineAsyncComponent(() => import('./CartridgeForm.vue')),
+        ...getDefaultRightChecks('cartridge'),
     }
 ];
 

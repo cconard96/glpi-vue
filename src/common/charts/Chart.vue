@@ -35,10 +35,10 @@
         </div>
         <canvas ref="chart" aria-hidden="true"></canvas>
         <table class="sr-only">
-            <caption>{{ chartOptions.plugins?.title?.text || 'Chart data' }}</caption>
+            <caption>{{ chartOptions.plugins?.title?.text || $t('charts.default_a11y_caption', 'Chart data') }}</caption>
             <thead>
                 <tr>
-                    <th scope="col">Label</th>
+                    <th scope="col">{{ $t('charts.default_a11y_y_axis_label', 'Label') }}</th>
                     <th v-for="dataset in chartData.datasets" :key="dataset.label" scope="col">{{ dataset.label }}</th>
                 </tr>
             </thead>

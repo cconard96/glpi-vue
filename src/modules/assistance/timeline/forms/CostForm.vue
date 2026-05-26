@@ -60,8 +60,8 @@
             }">
                 <template #header>
                     <div class="flex flex-row-reverse">
-                        <Button icon="ti ti-x" class="p-button-text p-button-plain" title="Close"
-                                aria-label="Close" @click="$emit('close')"></Button>
+                        <Button icon="ti ti-x" class="p-button-text p-button-plain" :title="$t('common.close', 'Close')"
+                                :aria-label="$t('common.close', 'Close')" @click="$emit('close')"></Button>
                     </div>
                 </template>
                 <template #content>
@@ -70,29 +70,29 @@
                             <FormField name="name">
                                 <FloatLabel variant="on">
                                     <InputText id="cost_name" type="text"></InputText>
-                                    <label for="cost_name">Name</label>
+                                    <label for="cost_name">{{ $t('item.fields.name', 'Name') }}</label>
                                 </FloatLabel>
                             </FormField>
                             <FormField name="budget">
-                                <FieldSelect label="Budget" type="Budget" label_type="on"></FieldSelect>
+                                <FieldSelect :label="$t('management.budget.label', 1)" type="Budget" label_type="on"></FieldSelect>
                             </FormField>
                             <FormField name="date_begin">
                                 <FloatLabel variant="on">
                                     <DatePicker inputId="cost_date_begin" showClear showIcon></DatePicker>
-                                    <label for="cost_date_begin">Begin Date</label>
+                                    <label for="cost_date_begin">{{ $t('item.fields.date_begin') }}</label>
                                 </FloatLabel>
                             </FormField>
                             <FormField name="date_end">
                                 <FloatLabel variant="on">
                                     <DatePicker inputId="cost_date_end" showClear showIcon></DatePicker>
-                                    <label for="cost_date_end">End Date</label>
+                                    <label for="cost_date_end">{{ $t('item.fields.date_end') }}</label>
                                 </FloatLabel>
                             </FormField>
                             <FormField name="duration">
                                 <FloatLabel variant="on">
                                     <InputMask inputId="cost_duration" mask="99:99"
                                                placeholder="hh:mm"/>
-                                    <label for="task_duration">Duration</label>
+                                    <label for="task_duration">{{ $t('item.fields.duration') }}</label>
                                 </FloatLabel>
                             </FormField>
                             <div class="grid grid-cols-3 col-span-2 gap-2">
@@ -100,7 +100,7 @@
                                     <FormField name="cost_time">
                                         <FloatLabel variant="on">
                                             <InputNumber inputId="cost_time" mode="decimal" :minFractionDigits="2"></InputNumber>
-                                            <label for="cost_time">Time Cost</label>
+                                            <label for="cost_time">{{ $t('management.cost.fields.cost_time', 'Time cost') }}</label>
                                         </FloatLabel>
                                     </FormField>
                                 </FormField>
@@ -108,7 +108,7 @@
                                     <FormField name="cost_fixed">
                                         <FloatLabel variant="on">
                                             <InputNumber inputId="cost_fixed" mode="decimal" :minFractionDigits="2"></InputNumber>
-                                            <label for="cost_fixed">Fixed Cost</label>
+                                            <label for="cost_fixed">{{ $t('management.cost.fields.cost_fixed', 'Fixed cost') }}</label>
                                         </FloatLabel>
                                     </FormField>
                                 </FormField>
@@ -116,7 +116,7 @@
                                     <FormField name="cost_material">
                                         <FloatLabel variant="on">
                                             <InputNumber inputId="cost_material" mode="decimal" :minFractionDigits="2"></InputNumber>
-                                            <label for="cost_material">Material Cost</label>
+                                            <label for="cost_material">{{ $t('management.cost.fields.cost_material', 'Material cost') }}</label>
                                         </FloatLabel>
                                     </FormField>
                                 </FormField>
@@ -124,14 +124,14 @@
                             <FormField name="comment" class="col-span-2">
                                 <FloatLabel variant="on">
                                     <Textarea id="comment" rows="3"></Textarea>
-                                    <label for="comment">Comment</label>
+                                    <label for="comment">{{ $t('item.fields.comment', 'Comment') }}</label>
                                 </FloatLabel>
                             </FormField>
                         </div>
                     </Fluid>
                 </template>
                 <template #footer>
-                    <Button type="submit" :icon="cost.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="cost.id ? 'Save' : 'Add'"></Button>
+                    <Button type="submit" :icon="cost.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="cost.id ? $t('item.save', 'Save') : $t('item.add', 'Add')"></Button>
                 </template>
             </Card>
         </AdvancedForm>

@@ -3,6 +3,7 @@
     import {onMounted, ref} from "vue";
     import {useApi} from "@/common/useApi";
     import {useDebounceFn} from "@vueuse/core";
+    import { components } from "../../../../data/hlapiv2_schema";
 
     const { doGraphQLRequest } = useApi();
     const nodes = ref([]);
@@ -50,8 +51,12 @@
 </script>
 
 <template>
-    <Message v-if="nodes.length >= RESULT_LIMIT" severity="info" class="mb-3">Results have been limited to {{ RESULT_LIMIT }} for performance reasons. Please use the search to load more specific results.</Message>
-    <InputText v-model="search_term" placeholder="Search" class="mb-3 w-full" @input="loadSoftware"></InputText>
+    <Message v-if="nodes.length >= RESULT_LIMIT" severity="info" class="mb-3">
+        {{ $t('common.error.results_limited', {
+                limit: RESULT_LIMIT,
+        }, 'Results have been limited to {limit} for performance reasons. Please use the search to load more specific results.') }}
+    </Message>
+    <InputText v-model="search_term" :placeholder="$t('search.placeholder', 'Search')" class="mb-3 w-full" @input="loadSoftware"></InputText>
     <Tree :value="nodes" loadingMode="icon" @nodeExpand="onNodeExpand"></Tree>
 </template>
 

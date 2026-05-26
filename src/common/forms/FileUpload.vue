@@ -14,7 +14,7 @@
         <template #empty>
             <div class="text-center text-gray-500">
                 <i class="ti ti-upload text-3xl mb-2 me-2"></i>
-                <span>Drag and drop files here to attach</span>
+                <span>{{ $t('fileupload.drag_and_drop', 'Drag and drop files here to attach') }}</span>
             </div>
         </template>
     </FileUpload>

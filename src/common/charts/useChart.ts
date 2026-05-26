@@ -7,6 +7,7 @@ import { computed, MaybeRef, onMounted, onUnmounted, ref, type Ref, watch } from
 import Chart from "chart.js/auto";
 import { deepMerge } from "@/core/util/objectUtils";
 import { usePreferredColorScheme } from "@vueuse/core";
+import { useI18n } from "vue-i18n";
 
 export function useChart<TType extends ChartType = ChartType, TData = DefaultDataPoint<TType>, TLabel = unknown>(
     item: Ref<ChartItem>,
@@ -26,6 +27,7 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
         }
     };
 
+    const { t: $t } = useI18n();
     const preferredColorScheme = usePreferredColorScheme();
     let chart = null;
 
@@ -147,7 +149,7 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
             const datasets = chart.data.datasets || [];
 
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += `Label,${datasets.map(ds => ds.label).join(',')}\n`;
+            csvContent += `${$t('charts.default_a11y_y_axis_label', 'Label')},${datasets.map(ds => ds.label).join(',')}\n`;
 
             labels.forEach((label: string, index: number) => {
                 const row = [label, ...datasets.map(ds => ds.data[index])].join(',');

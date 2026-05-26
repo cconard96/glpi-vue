@@ -105,13 +105,16 @@
             }">
                 <template #header>
                     <div class="flex flex-row-reverse">
-                        <Button icon="ti ti-x" class="p-button-text p-button-plain" title="Close" aria-label="Close" @click="$emit('close')"></Button>
+                        <Button icon="ti ti-x" class="p-button-text p-button-plain" :title="$t('common.close', 'Close')"
+                                :aria-label="$t('common.close', 'Close')" @click="$emit('close')"></Button>
                     </div>
                 </template>
                 <template #content>
                     <div class="flex mb-2 -mt-2">
                         <FormField name="followup_template">
-                            <FieldSelect label="Template" type="FollowupTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
+                            <FieldSelect :label="$t('setup.dropdown.followuptemplate.label', 1, {
+                                    default: 'Followup template | Followup templates'
+                                })" type="FollowupTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
                         </FormField>
                     </div>
                     <div class="flex">
@@ -122,13 +125,15 @@
                         </div>
                         <div class="flex-3 ps-2">
                             <Fluid class="flex flex-col gap-2">
-                                <Button icon="ti ti-search" label="Search KB" fluid severity="secondary" @click="showKBSearch"></Button>
+                                <Button icon="ti ti-search" :label="$t('tools.knowbase.search_kb', 'Search KB')" fluid severity="secondary" @click="showKBSearch"></Button>
                                 <FormField name="request_type">
-                                    <FieldSelect label="Request source" type="RequestType" label_type="on" show-clear></FieldSelect>
+                                    <FieldSelect :label="$t('setup.dropdown.requesttype.label', 1, {
+                                            default: 'Request source | Request sources'
+                                        })" type="RequestType" label_type="on" show-clear></FieldSelect>
                                 </FormField>
                                 <div v-if="hasRight('followup', ITILSubItemRights.SEEPRIVATE)">
                                     <FormField name="is_private" class="flex items-center">
-                                        <label for="is_private" class="ml-2">Private</label>
+                                        <label for="is_private" class="ml-2">{{ $t('assistance.fields.private', 'Private') }}</label>
                                         <ToggleSwitch inputId="is_private" class="ms-2">
                                             <template #handle="slotProps">
                                                 <span v-if="slotProps.checked" class="ti ti-lock"></span>
@@ -142,7 +147,7 @@
                     </div>
                 </template>
                 <template #footer>
-                    <Button type="submit" :icon="followup.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="followup.id ? 'Save' : 'Add'"></Button>
+                    <Button type="submit" :icon="followup.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="followup.id ? $t('item.save', 'Save') : $t('item.add', 'Add')"></Button>
                 </template>
             </Card>
         </AdvancedForm>

@@ -23,28 +23,36 @@
     const relationTypes = [
         {
             key: 'environment',
-            label: $t('dropdowns.appliance_environment', 'Environment'),
+            label: $t('setup.dropdown.applianceenvironment.label', 1, {
+                default: 'Appliance Environment | Appliance Environments',
+            }),
             type: 'ApplianceEnvironment',
             icon: 'ti ti-versions',
             defaultFilter: '',
         },
         {
             key: 'domain',
-            label: $t('management.domain', 'Domain'),
+            label: $t('management.domain.label', 1, {
+                default: 'Domain | Domains',
+            }),
             type: 'Domain',
             icon: 'ti ti-world-www',
             defaultFilter: 'is_deleted==false;is_template==false',
         },
         {
             key: 'location',
-            label: $t('dropdowns.location', 'Location'),
+            label: $t('setup.dropdowns.location', 1, {
+                default: 'Location | Locations',
+            }),
             type: 'Location',
             icon: 'ti ti-map-pin',
             defaultFilter: '',
         },
         {
             key: 'network',
-            label: $t('dropdowns.network', 'Network'),
+            label: $t('setup.dropdowns.network', 1, {
+                default: 'Network | Networks',
+            }),
             type: 'Network',
             icon: 'ti ti-network',
             defaultFilter: '',

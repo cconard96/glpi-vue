@@ -14,7 +14,6 @@ interface GraphQLResponseData {
     errors?: any;
 }
 
-let api_schema = null;
 // Map of lowercase component names to actual component names
 let component_name_map = null;
 

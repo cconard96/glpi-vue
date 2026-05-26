@@ -6,6 +6,7 @@
     import { useRoute } from 'vue-router';
     import { components } from "../../../data/hlapiv2_schema";
     import { useDataHelper } from "@/common/useDataHelper.ts";
+    import { useI18n } from "vue-i18n";
 
     const { component_module, itemtype } = defineProps({
         component_module: {
@@ -20,6 +21,7 @@
 
     const { getComponentSchema, search, normalizeComponentName } = useApi();
     const { formatDate, formatDateTime } = useDataHelper();
+    const { t: $t } = useI18n();
 
     const schema = new ComponentSchema(await getComponentSchema(await normalizeComponentName(itemtype)));
     const is_deleted = ref(0);
@@ -86,6 +88,8 @@
     };
 
     onMounted(() => {
+        //TODO Use "Search {itemtype}" as title and translate it. Need to know the itemtype's label here.
+        document.title = $t('search.title', 'Search');
         updateResults();
     });
 
@@ -127,13 +131,13 @@
             })"
         >
             <template #header>
-                <div><InputText fluid placeholder="Search"></InputText></div>
+                <div><InputText fluid :placeholder="$t('search.placeholder', 'Search')"></InputText></div>
                 <div>
-                    <SelectButton v-model="is_deleted" size="small" :options="[{label: 'Active', value: 0}, {label: 'Deleted', value: 1}]" optionLabel="label" optionValue="value"/>
+                    <SelectButton v-model="is_deleted" size="small" :options="[{label: $t('search.item_status.active', 'Active'), value: 0}, {label: $t('search.item_status.deleted', 'Deleted'), value: 1}]" optionLabel="label" optionValue="value"/>
                 </div>
             </template>
             <template #empty>
-                <Message severity="info">No results found.</Message>
+                <Message severity="info">{{ $t('search.no_results_found', 'No results found') }}</Message>
             </template>
             <Column v-for="col of columns" :field="col.field" :header="col.header">
                 <template #body="slotProps">

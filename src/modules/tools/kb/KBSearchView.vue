@@ -2,10 +2,12 @@
     import {ProgressSpinner, Tree} from 'primevue';
     import type { TreeNode } from 'primevue/treenode';
     import { useApi } from '@/common/useApi.ts';
-    import {ref} from "vue";
+    import {ref, onMounted} from "vue";
     import KBArticle from "./KBArticle.vue";
     import {useRoute, RouterLink} from "vue-router";
+    import { useI18n } from "vue-i18n";
 
+    const { t: $t } = useI18n();
     const { doGraphQLRequest } = useApi();
     const route = useRoute();
 
@@ -13,6 +15,10 @@
         { key: '0', label: 'No category', icon: 'ti ti-folder', selectable: false, children: [] }
     ]);
     const selected_article = ref<TreeNode | null>(null);
+
+    onMounted(() => {
+        document.title = $t('tools.knowbase.label', 'Knowledge base');
+    });
 
     await doGraphQLRequest(`query { KBCategory { id name parent { id name } } KBArticle { id name categories { id } } }`).then((res) => {
         const categories = res.data.KBCategory;

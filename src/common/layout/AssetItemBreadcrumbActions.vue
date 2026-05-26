@@ -1,19 +1,21 @@
 <script setup lang="ts">
     import { Button, SplitButton } from "primevue";
     import { AssetCapabilities, getDefinition } from "@/modules/assets/useAsset.js";
+    import { useI18n } from "vue-i18n";
 
     const props = defineProps<{
         itemtype: string;
         items_id: number;
     }>();
 
+    const { t: $t } = useI18n();
     const asset = getDefinition(props.itemtype);
     const extraAddActions = [];
     if (asset && asset.canCreate()) {
         if (asset.capabilities.includes(AssetCapabilities.HasTemplates)) {
             extraAddActions.push(
-                { label: 'Add from template', icon: 'ti ti-copy', command: () => {} },
-                { label: 'Manage templates', icon: 'ti ti-settings', command: () => {} },
+                { label: $t('item.add_from_template', 'Add from template'), icon: 'ti ti-copy', command: () => {} },
+                { label: $t('item.manage_templates', 'Manage templates'), icon: 'ti ti-settings', command: () => {} },
             );
         }
         extraAddActions.push(

@@ -3,6 +3,7 @@
     import {computed, onBeforeMount, ref} from "vue";
     import { useApi } from '@/common/useApi';
     import { components } from "../../../data/hlapiv2_schema";
+    import { useI18n } from "vue-i18n";
 
     interface ActorInfo {
         id: number,
@@ -26,6 +27,7 @@
     const actor_data = props.actor_data;
     const loaded = ref(false);
     const { doGraphQLRequest } = useApi();
+    const { t: $t } = useI18n();
 
     onBeforeMount(() => {
         if (props.actor_type === 'User') {
@@ -54,7 +56,7 @@
     });
 
     const display_name = computed(() => {
-        const fallback_name = props.actor_data.username || props.actor_data.name || 'Unknown User';
+        const fallback_name = props.actor_data.username || props.actor_data.name || $t('user.unknown', 'Unknown User');
         if (props.actor_data.firstname && props.actor_data.realname) {
             return `${props.actor_data.firstname} ${props.actor_data.realname}`;
         } else if (props.actor_data.firstname) {
@@ -71,12 +73,12 @@
     <Card :pt="{ body: { class: 'p-0' } }">
         <template #content>
             <h3>{{ display_name }}</h3>
-            <p v-if="actor_data.title"><strong>Title:</strong> {{ actor_data.title }}</p>
-            <p v-if="actor_data.category"><strong>Category:</strong> {{ actor_data.category }}</p>
-            <a v-if="actor_data.email" :href="`mailto:${actor_data.email}`"><strong>Email:</strong> {{ actor_data.email }}</a>
-            <p v-if="actor_data.phone"><strong>Phone:</strong> {{ actor_data.phone }}</p>
-            <p v-if="actor_data.phone2"><strong>Phone 2:</strong> {{ actor_data.phone2 }}</p>
-            <p v-if="actor_data.mobile"><strong>Mobile:</strong> {{ actor_data.mobile }}</p>
+            <p v-if="actor_data.title"><strong>{{ $t('user.fields.title', 'Title') }}</strong> {{ actor_data.title }}</p>
+            <p v-if="actor_data.category"><strong>{{ $t('user.fields.category', 'Category') }}</strong> {{ actor_data.category }}</p>
+            <a v-if="actor_data.email" :href="`mailto:${actor_data.email}`"><strong>{{ $t('user.fields.email', 'Email') }}</strong> {{ actor_data.email }}</a>
+            <p v-if="actor_data.phone"><strong>{{ $t('user.fields.phone', 'Phone') }}</strong> {{ actor_data.phone }}</p>
+            <p v-if="actor_data.phone2"><strong>{{ $t('user.fields.phone2', 'Phone 2') }}</strong> {{ actor_data.phone2 }}</p>
+            <p v-if="actor_data.mobile"><strong>{{ $t('user.fields.mobile', 'Mobile') }}</strong> {{ actor_data.mobile }}</p>
         </template>
     </Card>
 </template>

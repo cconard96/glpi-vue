@@ -75,7 +75,7 @@
                     </template>
                 </Suspense>
                 <div v-else>
-                    <Message severity="info">This doesn't seem to be implemented yet</Message>
+                    <Message severity="info">{{ $t('common.error.not_implemented', "Not implemented") }}</Message>
                 </div>
             </LazyTabPanel>
         </TabPanels>

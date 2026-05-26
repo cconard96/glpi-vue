@@ -1,6 +1,7 @@
 import { useApi } from '@/common/useApi.ts';
 import { defineAsyncComponent } from "vue";
 import { RouteLocationNormalizedGeneric, RouteRecordRaw } from "vue-router";
+import { i18n } from "./i18n.ts"
 
 function normalizeItemtype<T extends string>(itemtype: T): Capitalize<T> {
     return (itemtype.charAt(0).toUpperCase() + itemtype.slice(1)) as Capitalize<T>;
@@ -9,17 +10,17 @@ function normalizeItemtype<T extends string>(itemtype: T): Capitalize<T> {
 function getComponentModuleLabel(component_module: string): string {
     switch (component_module) {
         case 'assets':
-            return 'Assets';
+            return i18n.global.t('assets.menu_label');
         case 'assistance':
-            return 'Assistance';
+            return i18n.global.t('assistance.menu_label');
         case 'management':
-            return 'Management';
+            return i18n.global.t('management.menu_label');
         case 'tools':
-            return 'Tools';
+            return i18n.global.t('tools.menu_label');
         case 'administration':
-            return 'Administration';
+            return i18n.global.t('administration.menu_label');
         case 'setup':
-            return 'Setup';
+            return i18n.global.t('setup.menu_label');
         default:
             return component_module.charAt(0).toUpperCase() + component_module.slice(1);
     }
@@ -68,7 +69,6 @@ export const routes: RouteRecordRaw[] = [
                     };
                 },
                 meta: {
-                    title: (route: RouteLocationNormalizedGeneric) => `Search ${normalizeItemtype(route.params.itemtype as string)}`,
                     breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
                         return [
                             ...route.params.component_module ? [
@@ -225,7 +225,6 @@ export const routes: RouteRecordRaw[] = [
                 alias: ['tools/knowbase/:article_id(\\d+)?', '/tools/knowledgebase/:article_id(\\d+)?', '/tools/kb/:article_id(\\d+)?'],
                 component: () => import('@/modules/tools/kb/KBSearchView.vue'),
                 meta: {
-                    title: 'Knowledge Base',
                     breadcrumbs: () => {
                         return [
                             { label: 'Tools', disabled: true },
@@ -249,7 +248,6 @@ export const routes: RouteRecordRaw[] = [
                 path: 'setup/settings',
                 component: () => import('@/modules/setup/settings/SettingsView.vue'),
                 meta: {
-                    title: 'Settings',
                     breadcrumbs: () => {
                         return [
                             { label: 'Setup', disabled: true },

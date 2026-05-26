@@ -111,14 +111,16 @@
             }">
                 <template #header>
                     <div class="flex flex-row-reverse">
-                        <Button icon="ti ti-x" class="p-button-text p-button-plain" title="Close"
-                                aria-label="Close" @click="$emit('close')"></Button>
+                        <Button icon="ti ti-x" class="p-button-text p-button-plain" :title="$t('common.close', 'Close')"
+                                :aria-label="$t('common.close', 'Close')" @click="$emit('close')"></Button>
                     </div>
                 </template>
                 <template #content>
                     <div class="flex mb-2 -mt-2">
                         <FormField name="task_template">
-                            <FieldSelect label="Template" type="TaskTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
+                            <FieldSelect :label="$t('setup.dropdown.followuptemplate.label', 1, {
+                                    default: 'Task template | Tasks templates'
+                                })" type="TaskTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
                         </FormField>
                     </div>
                     <div class="flex">
@@ -134,7 +136,7 @@
                                         <DatePicker inputId="date" placeholder="Current date and time"
                                                     showTime showIcon
                                                     class="max-w-full"/>
-                                        <label for="date">Date</label>
+                                        <label for="date">{{ $t('item.fields.date') }}</label>
                                     </FloatLabel>
                                 </FormField>
                                 <FormField name="duration">
@@ -142,7 +144,7 @@
                                         <InputMask inputId="task_duration" mask="99:99"
                                                    placeholder="hh:mm"
                                                    class="w-full"/>
-                                        <label for="task_duration">Duration</label>
+                                        <label for="task_duration">{{ $t('item.fields.duration') }}</label>
                                     </FloatLabel>
                                 </FormField>
                                 <FormField name="state">
@@ -160,11 +162,11 @@
                                     </FieldSelect>
                                 </FormField>
                                 <FormField name="category">
-                                    <FieldSelect label="Category" type="TaskCategory" label_type="on"></FieldSelect>
+                                    <FieldSelect :label="$t('assistance.task.fields.category', 'Category')" label_type="on"></FieldSelect>
                                 </FormField>
                                 <div v-if="hasRight('task', ITILSubItemRights.SEEPRIVATE)">
                                     <FormField name="is_private" class="flex items-center">
-                                        <label for="is_private" class="ml-2">Private</label>
+                                        <label for="is_private" class="ml-2">{{ $t('assistance.fields.private', 'Private') }}</label>
                                         <ToggleSwitch inputId="is_private" class="ms-2">
                                             <template #handle="slotProps">
                                                 <span v-if="slotProps.checked" class="ti ti-lock"></span>
@@ -174,21 +176,21 @@
                                     </FormField>
                                 </div>
                                 <FormField name="save_to_kb" class="flex items-center">
-                                    <label for="save_to_kb" class="ml-2">Save to KB</label>
+                                    <label for="save_to_kb" class="ml-2">{{ $t('tools.knowbase.save_to_kb', 'Save to KB') }}</label>
                                     <ToggleSwitch inputId="save_to_kb" class="ms-2"></ToggleSwitch>
                                 </FormField>
                                 <FormField name="user_tech">
-                                    <FieldSelect label="User" type="User" label_type="on" :fields="['id', 'username', 'realname', 'firstname']" :name_field="(opt) => formatUsername(opt)"></FieldSelect>
+                                    <FieldSelect :label="$t('administration.user.label')" type="User" label_type="on" :fields="['id', 'username', 'realname', 'firstname']" :name_field="(opt) => formatUsername(opt)"></FieldSelect>
                                 </FormField>
                                 <FormField name="group_tech">
-                                    <FieldSelect label="Group" type="Group" label_type="on" condition="maybe_assigned_task==1"></FieldSelect>
+                                    <FieldSelect :label="$t('administration.group.label')" type="Group" label_type="on" condition="maybe_assigned_task==1"></FieldSelect>
                                 </FormField>
                             </Fluid>
                         </div>
                     </div>
                 </template>
                 <template #footer>
-                    <Button type="submit" :icon="task.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="task.id ? 'Save' : 'Add'"></Button>
+                    <Button type="submit" :icon="task.id ? 'ti ti-device-floppy' : 'ti ti-plus'" :label="task.id ? $t('item.save', 'Save') : $t('item.add', 'Add')"></Button>
                 </template>
             </Card>
         </AdvancedForm>

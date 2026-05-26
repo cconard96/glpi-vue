@@ -210,7 +210,9 @@
     <PrintTarget>
         <section ref="pdf_root" class="grid grid-rows-[auto_1fr] h-full not-print:overflow-hidden">
             <div class="text-lg flex justify-between p-2">
-                <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}" title="Back to list">
+                <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}"
+                            :title="$t('item_form.back_to_search', 'Back to search results')"
+                            :aria-label="$t('item_form.back_to_search', 'Back to search results')">
                     <i class="ti ti-list-search"></i>
                 </RouterLink>
                 <header>

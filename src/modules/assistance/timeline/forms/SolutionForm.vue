@@ -63,7 +63,8 @@
             }">
                 <template #header>
                     <div class="flex flex-row-reverse">
-                        <Button icon="ti ti-x" class="p-button-text p-button-plain" title="Close" aria-label="Close" @click="$emit('close')"></Button>
+                        <Button icon="ti ti-x" class="p-button-text p-button-plain" :title="$t('common.close', 'Close')"
+                                :aria-label="$t('common.close', 'Close')" @click="$emit('close')"></Button>
                     </div>
                 </template>
                 <template #content>
@@ -74,7 +75,9 @@
                                     optionValue="key" optionLabel="label"
                                     class="min-w-32"
                             ></Select>
-                            <label for="solution_template">Template</label>
+                            <label for="solution_template">{{ $t('setup.dropdown.followuptemplate.label', 1, {
+                                default: 'Solution template | Solution templates'
+                            }) }}</label>
                         </FloatLabel>
                     </div>
                     <div class="flex">
@@ -84,24 +87,26 @@
                             </FormField>
                         </div>
                         <div class="flex flex-col flex-3 gap-2 ps-2">
-                            <Button icon="ti ti-search" label="Search KB" fluid severity="secondary" @click="showKBSearch"></Button>
+                            <Button icon="ti ti-search" :label="$t('tools.knowbase.search_kb', 'Search KB')" fluid severity="secondary" @click="showKBSearch"></Button>
                             <FloatLabel variant="on">
                                 <Select inputId="solution_type" name="solution_type"
                                         filterMode="lenient" :options="[]"
                                         optionValue="key" optionLabel="label" show-clear
                                         class="w-full"
                                 ></Select>
-                                <label for="solution_type">Solution type</label>
+                                <label for="solution_type">{{ $t('setup.dropdown.solutiontype.label', 1, {
+                                    default: 'Solution type | Solution types'
+                                }) }}</label>
                             </FloatLabel>
                             <div class="flex items-center mt-2">
-                                <label for="save_to_kb" class="ml-2">Save to KB</label>
+                                <label for="save_to_kb" class="ml-2">{{ $t('tools.knowbase.save_to_kb', 'Save to KB') }}</label>
                                 <ToggleSwitch inputId="save_to_kb" class="ms-2"></ToggleSwitch>
                             </div>
                         </div>
                     </div>
                 </template>
                 <template #footer>
-                    <Button type="submit" icon="ti ti-plus" label="Add"></Button>
+                    <Button type="submit" icon="ti ti-plus" :label="$t('item.add', 'Add')"></Button>
                 </template>
             </Card>
         </AdvancedForm>

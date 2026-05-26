@@ -19,12 +19,12 @@
             }">
                 <template #header>
                     <div class="flex flex-row-reverse">
-                        <Button icon="ti ti-x" class="p-button-text p-button-plain" title="Close"
-                                aria-label="Close" @click="$emit('close')"></Button>
+                        <Button icon="ti ti-x" class="p-button-text p-button-plain" :title="$t('common.close', 'Close')"
+                                :aria-label="$t('common.close', 'Close')" @click="$emit('close')"></Button>
                     </div>
                 </template>
                 <template #content>
-                    <Message>Not implemented yet. File uploads not yet properly supported in the new GLPI API.</Message>
+                    <Message>{{ $t('common.error.not_implemented') }}</Message>
                     <div class="flex">
                         <div class="flex-12">
                             <FloatLabel>
@@ -33,7 +33,7 @@
                                         optionValue="key" optionLabel="label" show-clear
                                         class="w-full"
                                 ></Select>
-                                <label for="heading">Heading</label>
+                                <label for="heading">{{ $t('management.document.fields.heading', 'Heading') }}</label>
                             </FloatLabel>
                             <FileUpload :pt="{
                                 root: {
@@ -46,7 +46,7 @@
                                 <template #empty>
                                     <div class="text-center text-gray-500">
                                         <i class="ti ti-upload text-4xl mb-2"></i>
-                                        <div>Drag and drop files here to attach</div>
+                                        <div>{{ $t('fileupload.drag_and_drop') }}</div>
                                     </div>
                                 </template>
                             </FileUpload>
@@ -54,7 +54,7 @@
                     </div>
                 </template>
                 <template #footer>
-                    <Button icon="ti ti-plus" label="Add"></Button>
+                    <Button icon="ti ti-plus" :label="$t('item.add', 'Add')"></Button>
                 </template>
             </Card>
         </Form>

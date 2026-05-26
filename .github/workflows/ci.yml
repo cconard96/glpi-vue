@@ -1,0 +1,15 @@
+name: i18n Check
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Check missing translations
+        run: npm run report-i18n
