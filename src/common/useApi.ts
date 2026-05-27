@@ -51,6 +51,8 @@ export interface SearchResult {
     total: number | null;
 }
 
+const activeRESTRequestPromises = new Map<string, Promise<AxiosResponse<any>>>();
+
 export function useApi() {
     const { getAuthToken, refreshAuthToken } = useAuth();
     const { getOpenAPIComponent, getAllOpenAPIComponentNames, getOpenAPISchemaNameForGLPIItemtype } = useIndexedDB();
@@ -71,21 +73,42 @@ export function useApi() {
         }
     }
 
+    function getRESTApiCallID(config: AxiosRequestConfig): string {
+        return `${config.method}:${config.url}:${JSON.stringify(config.params)}`;
+    }
+
     const doApiRequest = (url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> => {
-        const host = import.meta.env.VITE_GLPI_URL;
-        // ensure the url does not start with a slash
-        if (url.startsWith('/')) {
-            url = url.substring(1);
-        }
         return refreshAuthToken().then(() => {
-            return axios.request({
+            const host = import.meta.env.VITE_GLPI_URL;
+            // ensure the url does not start with a slash
+            if (url.startsWith('/')) {
+                url = url.substring(1);
+            }
+            const axiosConfig: AxiosRequestConfig = {
+                ...config,
+                url: `${host}/api.php/${url}`,
+                headers: Object.assign({
+                    'Authorization': `Bearer ${getAuthToken()}`,
+                    ...getSessionHeaders()
+                }, config.headers || {})
+            };
+            const call_id = getRESTApiCallID(axiosConfig);
+            if (activeRESTRequestPromises.has(call_id)) {
+                return activeRESTRequestPromises.get(call_id);
+            }
+
+            const promise = axios.request({
                 ...config,
                 url: `${host}/api.php/${url}`,
                 headers: Object.assign({
                     'Authorization': `Bearer ${getAuthToken()}`,
                     ...getSessionHeaders()
                 })
+            }).finally(() => {
+                activeRESTRequestPromises.delete(call_id);
             });
+            activeRESTRequestPromises.set(call_id, promise);
+            return promise;
         });
     }
 
