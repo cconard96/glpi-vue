@@ -2,7 +2,7 @@
     import {PanelMenu, Menubar} from 'primevue';
     import {RouterLink, useRoute} from "vue-router";
     import { useMainMenu } from '@/common/useMainMenu.ts';
-    import {ref, watch} from "vue";
+    import { computed, ref, watch } from "vue";
     const { menu } = useMainMenu();
     const items = ref(menu);
 
@@ -13,6 +13,20 @@
     // Expanded keys for the PanelMenu based on the current route
     const expanded_keys = ref({});
     const route = useRoute();
+
+    const visibleItems = computed(() => {
+        // Remove all nodes (bottom-up) that have no children and no route
+        const filterItems = (items) => {
+            return items.filter(item => {
+                if (item.items) {
+                    item.items = filterItems(item.items);
+                }
+                return item.route || (item.items && item.items.length > 0);
+            });
+        };
+        return filterItems(items.value);
+    });
+
     const updateExpandedKeys = () => {
         const pathSegments = route.path.split('/').filter(segment => segment);
         if (pathSegments.length > 0) {
@@ -33,7 +47,7 @@
             GLPI
         </RouterLink>
         <div style="height: calc(100% - var(--spacing) * 16)">
-            <PanelMenu v-if="!mobile" :model="items" v-model:expanded-keys="expanded_keys" class="h-full w-full overflow-y-auto"
+            <PanelMenu v-if="!mobile" :model="visibleItems" v-model:expanded-keys="expanded_keys" class="h-full w-full overflow-y-auto"
                        :pt="{
                             panel: { class: 'bg-inherit border-0' },
                             headerContent: { class: 'light:text-surface-100 hover:bg-[#212c46]' },
@@ -53,7 +67,7 @@
                     </a>
                 </template>
             </PanelMenu>
-            <Menubar v-else :model="items" :pt="{
+            <Menubar v-else :model="visibleItems" :pt="{
                 rootlist: {
                     'class': 'justify-self-start z-1000 w-auto max-w-screen'
                 },

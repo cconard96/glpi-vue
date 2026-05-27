@@ -429,6 +429,9 @@ export const useMainMenu = () => {
     ];
 
     for (const def of assetDefinitions) {
+        if (!def.canView()) {
+            continue;
+        }
         const section = menu.find(s => s.key === 'assets');
         if (section) {
             section.items.push({
