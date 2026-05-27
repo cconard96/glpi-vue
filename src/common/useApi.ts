@@ -19,7 +19,7 @@ let component_name_map = null;
 
 const graphql_cache = new InMemoryCache();
 // @ts-ignore
-const oauth_link = new SetContextLink(async (_, { headers }) => {
+const oauth_link = new SetContextLink(async ({ headers }) => {
     const { getAuthToken, refreshAuthToken } = useAuth();
     await refreshAuthToken();
     return {
@@ -181,6 +181,11 @@ export function useApi() {
             query: gql`${query}`,
             fetchPolicy: fetchPolicy,
             errorPolicy: errorPolicy,
+            context: {
+                headers: {
+                    ...getSessionHeaders()
+                }
+            }
         });
     };
 
