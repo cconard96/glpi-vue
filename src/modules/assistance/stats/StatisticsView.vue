@@ -13,7 +13,7 @@
                 {
                     assistance_type: 'Ticket',
                     report_type: 'Global',
-                    label: $t('assistnace.statistics.global_report', 'Global'),
+                    label: $t('assistance.statistics.global_report', 'Global'),
                     component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue')))
                 },
                 // { assistance_type: 'Ticket', report_type: 'Characteristics', label: 'By ticket' },
@@ -21,7 +21,7 @@
                 {
                     assistance_type: 'Ticket',
                     report_type: 'Asset',
-                    label: $t('assistnace.statistics.by_hardware_report', 'Ny hardware'),
+                    label: $t('assistance.statistics.by_hardware_report', 'Ny hardware'),
                     component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue')))
                 },
             ]
@@ -32,7 +32,7 @@
                 {
                     assistance_type: 'Problem',
                     report_type: 'Global',
-                    label: $t('assistnace.statistics.global_report', 'Global'),
+                    label: $t('assistance.statistics.global_report', 'Global'),
                     component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue')))
                 },
                 // { assistance_type: 'Problem', report_type: 'Characteristics', label: 'By problem' },
@@ -40,7 +40,7 @@
                 {
                     assistance_type: 'Problem',
                     report_type: 'Asset',
-                    label: $t('assistnace.statistics.by_hardware_report', 'Ny hardware'),
+                    label: $t('assistance.statistics.by_hardware_report', 'Ny hardware'),
                     component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue')))
                 },
             ]
@@ -51,7 +51,7 @@
                 {
                     assistance_type: 'Change',
                     report_type: 'Global',
-                    label: $t('assistnace.statistics.global_report', 'Global'),
+                    label: $t('assistance.statistics.global_report', 'Global'),
                     component: markRaw(defineAsyncComponent(() => import('./GlobalStatReport.vue')))
                 },
                 // { assistance_type: 'Change', report_type: 'Characteristics', label: 'By change' },
@@ -59,7 +59,7 @@
                 {
                     assistance_type: 'Change',
                     report_type: 'Asset',
-                    label: $t('assistnace.statistics.by_hardware_report', 'Ny hardware'),
+                    label: $t('assistance.statistics.by_hardware_report', 'Ny hardware'),
                     component: markRaw(defineAsyncComponent(() => import('./AssetStateReport.vue')))
                 },
             ]

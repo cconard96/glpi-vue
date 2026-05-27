@@ -611,7 +611,9 @@
       "satisfaction_survey_avg_rating": {
         "title": "Satisfaction Survey Average Rating",
         "avg_rating": "Average Rating"
-      }
+      },
+      "global_report": "Global",
+      "by_hardware_report": "Ny hardware"
     },
     "planning": {
       "label": "Planning"
@@ -822,12 +824,6 @@
       "phone": "Phone",
       "phone2": "Phone 2",
       "mobile": "Mobile"
-    }
-  },
-  "assistnace": {
-    "statistics": {
-      "global_report": "Global",
-      "by_hardware_report": "Ny hardware"
     }
   }
 }
