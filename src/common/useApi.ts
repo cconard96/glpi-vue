@@ -74,7 +74,7 @@ export function useApi() {
     }
 
     function getRESTApiCallID(config: AxiosRequestConfig): string {
-        return `${config.method}:${config.url}:${JSON.stringify(config.params)}`;
+        return `${config.url}:${JSON.stringify(config.params)}`;
     }
 
     const doApiRequest = (url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> => {
@@ -93,21 +93,20 @@ export function useApi() {
                 }, config.headers || {})
             };
             const call_id = getRESTApiCallID(axiosConfig);
-            if (activeRESTRequestPromises.has(call_id)) {
-                return activeRESTRequestPromises.get(call_id);
+            if (axiosConfig?.method ?? 'get' === 'get') {
+                if (activeRESTRequestPromises.has(call_id)) {
+                    return activeRESTRequestPromises.get(call_id);
+                }
             }
 
-            const promise = axios.request({
-                ...config,
-                url: `${host}/api.php/${url}`,
-                headers: Object.assign({
-                    'Authorization': `Bearer ${getAuthToken()}`,
-                    ...getSessionHeaders()
-                })
-            }).finally(() => {
-                activeRESTRequestPromises.delete(call_id);
+            const promise = axios.request(axiosConfig).finally(() => {
+                if (axiosConfig?.method ?? 'get' === 'get') {
+                    activeRESTRequestPromises.delete(call_id);
+                }
             });
-            activeRESTRequestPromises.set(call_id, promise);
+            if (axiosConfig?.method ?? 'get' === 'get') {
+                activeRESTRequestPromises.set(call_id, promise);
+            }
             return promise;
         });
     }

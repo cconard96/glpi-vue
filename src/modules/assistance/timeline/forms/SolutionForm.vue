@@ -75,7 +75,7 @@
                                     optionValue="key" optionLabel="label"
                                     class="min-w-32"
                             ></Select>
-                            <label for="solution_template">{{ $t('setup.dropdown.followuptemplate.label', 1, {
+                            <label for="solution_template">{{ $t('setup.dropdown.solutiontemplate.label', 1, {
                                 default: 'Solution template | Solution templates'
                             }) }}</label>
                         </FloatLabel>

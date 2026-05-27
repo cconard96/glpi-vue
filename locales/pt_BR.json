@@ -747,7 +747,7 @@
         "label": "Appliance Environment | Appliance Environments"
       },
       "followuptemplate": {
-        "label": "Solution template | Solution templates"
+        "label": "Followup template | Followup templates"
       },
       "solutiontype": {
         "label": "Solution type | Solution types"
@@ -760,6 +760,9 @@
       },
       "approvalstep": {
         "label": "Approval step | Approval steps"
+      },
+      "solutiontemplate": {
+        "label": "Solution template | Solution templates"
       }
     },
     "component": {
