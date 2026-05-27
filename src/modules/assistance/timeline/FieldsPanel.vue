@@ -26,6 +26,7 @@
     import SLMFields from "./SLMFields.vue";
     import { useAssistanceItem } from "./useAssistanceItem.ts";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";
+    import { useI18n } from "vue-i18n";
 
     const props = defineProps<{
         itemtype: 'Ticket' | 'Change' | 'Problem',
@@ -35,6 +36,7 @@
 
     const toast = useToast();
     const dialog = useDialog();
+    const { t: $t } = useI18n();
     const { doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
     const {
         statusOptions, getTypeName, urgencyImpactOptions, priorityOptions, itemtypeIcon, assistanceLinkTypeLabels,
@@ -252,6 +254,26 @@
         });
     }
 
+    function showItemLinkSelection() {
+        const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/modules/assets/AssetLinkItemSelector.vue')), {
+            props: {
+                header: $t('common.select_items_to_link', 'Select items to link'),
+                modal: true,
+                draggable: false,
+            },
+            data: {
+                itemtype: props.itemtype,
+                itemid: props.item.id,
+            },
+            emits: {
+                onItemSelected: ({ itemtype, id }) => {
+                    // TODO Link the selected item to the assistance item
+                    dialogInstance.close();
+                }
+            }
+        });
+    }
+
     function showNotImplementedToast() {
         toast.add({
             severity: 'info',
@@ -385,7 +407,7 @@
                     </AccordionHeader>
                     <AccordionContent>
                         <div v-if="item_links.length === 0">
-                            <Message severity="info">No linked items.</Message>
+                            <Message severity="info">{{ $t('common.error.no_linked_items', 'No linked items.') }}</Message>
                         </div>
                         <div v-else class="flex flex-col space-y-2">
                             <div v-for="link in item_links" :key="link.itemtype + '_' + link.items_id" class="hover:bg-gray-800 p-2">

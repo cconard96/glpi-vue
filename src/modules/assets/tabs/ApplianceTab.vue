@@ -30,7 +30,7 @@
     });
 
     function openAddRelationDialog(usedRelationsData: { environment: any[]; domain: any[]; location: any[]; network: any[]; }) {
-        const relationDialog = dialog.open(defineAsyncComponent(() => import('@/modules/assets/dialogs/AddApplianceRelation.vue')), {
+        const relationDialog = dialog.open(defineAsyncComponent(() => import('@/common/dialog/ItemSelectionDialog.vue')), {
             props: {
                 header: $t('management.appliance.addRelation', 'Add Relation'),
                 modal: true,
@@ -38,12 +38,16 @@
                 //dismissableMask: true, //TODO the other dialogs need this
             },
             data: {
-                usedRelations: {
-                    environment: usedRelationsData.environment,
-                    domain: usedRelationsData.domain,
-                    location: usedRelationsData.location,
-                    network: usedRelationsData.network,
-                }
+                allowedItemtypes: ['ApplianceEnvironment', 'Domain', 'Location', 'Network'],
+                selectedItems: {
+                    ApplianceEnvironment: usedRelationsData.environment,
+                    Domain: usedRelationsData.domain,
+                    Location: usedRelationsData.location,
+                    Network: usedRelationsData.network,
+                },
+                itemtypeSelectProps: {
+                    placeholder: $t('management.appliance.selectRelationType', 'Select relation type'),
+                },
             },
             emits: {
                 onSave: ({ selectedRelations }) => {

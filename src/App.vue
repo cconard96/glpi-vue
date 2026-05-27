@@ -6,7 +6,7 @@
     const route = useRoute();
 
     onErrorCaptured(() => {
-        if (route.name !== 'Login') {
+        if (route.name !== 'Login' && !import.meta.env.DEV) {
             router.push({ name: 'Login', query: { error: '2' } });
         }
     });
