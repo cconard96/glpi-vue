@@ -147,7 +147,6 @@ export function useAuth() {
         const client_id = import.meta.env.VITE_CLIENT_ID;
         const client_secret = import.meta.env.VITE_CLIENT_SECRET;
         const auth_url = `${host}/api.php/token`;
-        console.log('Handling auth callback with code:', code);
 
         return axios.post(auth_url, {
             grant_type: 'authorization_code',
@@ -156,7 +155,6 @@ export function useAuth() {
             code: code,
             redirect_uri: `${window.location.origin}/auth-callback`,
         }).then(response => {
-            console.log('Authorization code exchange successful:', response.data);
             const jwt = response.data;
             // Add expiration time (current time + expires_in seconds)
             jwt.expiration = Date.now() + (jwt.expires_in * 1000);

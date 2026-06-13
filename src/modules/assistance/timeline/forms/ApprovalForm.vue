@@ -10,12 +10,13 @@
     import { useAssistanceTimelineItem } from "@/modules/assistance/timeline/items/useAssistanceTimelineItem";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";
     import ValidatedFormField from "@/common/forms/ValidatedFormField.vue";
+    import { useAssistanceItem } from "@/modules/assistance/timeline/useAssistanceItem.ts";
 
     const { getFriendlyName, getUserID } = useSessionStore();
     const { getComponentSchema, doApiRequest, doGraphQLRequest } = useApi();
     const emits = defineEmits(['close', 'add']);
     const newTimelineItem: TemplateRef<HTMLDivElement> = useTemplateRef('new_timeline_item');
-    const assistanceItemInstance = inject('assistanceItemInstance');
+    const assistanceItemInstance = inject<typeof useAssistanceItem>('assistanceItemInstance');
     const { resolveFields } = useOpenAPIForm(getComponentSchema(`${assistanceItemInstance.itemtype as 'Ticket' | 'Change'}Validation`));
     const assistanceTimelineItemInstance = inject<ReturnType<typeof useAssistanceTimelineItem>>('assistanceTimelineItemInstance', useAssistanceTimelineItem('Validation', ref({
         requester: getUserID

@@ -6,7 +6,6 @@ const currentLang = useLocalStorage('lang', navigator.language || 'en');
 
 const supportedAppLocales = {
     'en_GB': 'English (UK)',
-    'en_US': 'English (US)',
     'fr_FR': 'Français (France)',
     'pt_BR': 'Português (Brasil)',
 }
@@ -42,7 +41,7 @@ const userLang = computed({
 
 function resolveLocale(locale) {
     const normalizedLocale = locale.replace('-', '_');
-    const supportedLocales = ['en_GB', 'en_US', 'fr_FR', 'pt_BR'];
+    const supportedLocales = ['en_GB', 'fr_FR', 'pt_BR'];
 
     if (supportedLocales.includes(normalizedLocale)) {
         return normalizedLocale;
@@ -53,6 +52,7 @@ function resolveLocale(locale) {
 const i18n = createI18n({
     legacy: false,
     locale: resolveLocale(currentLang.value),
+    globalInjection: true,
 });
 
 try {

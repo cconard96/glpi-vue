@@ -1,6 +1,5 @@
 import InstallSoftware from "./InstallSoftware.vue";
-import { render } from "vitest-browser-vue";
-import { defaultOptions } from "primevue/config";
+import { render } from "@tests/utils.ts";
 
 vi.mock('@/common/useApi', () => ({
     useApi: () => ({
@@ -15,16 +14,8 @@ vi.mock('@/common/useApi', () => ({
     }),
 }));
 
-test('Renders', () => {
-    const { baseElement } = render(InstallSoftware, {
-        global: {
-            mocks: {
-                $primevue: {
-                    config: defaultOptions
-                }
-            }
-        }
-    });
+test('Renders', async () => {
+    const { baseElement } = await render(InstallSoftware);
     expect(baseElement).toBeDefined();
 })
 

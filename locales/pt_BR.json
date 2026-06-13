@@ -38,7 +38,8 @@
       "item_deletion": "Failed to delete the {itemType}. Please try again.",
       "item_additon": "Failed to add the {itemType}. Please try again.",
       "item_update": "Failed to update the {itemType}. Please try again.",
-      "go_back_home": "Go back to home"
+      "go_back_home": "Go back to home",
+      "no_linked_items": "No linked items."
     },
     "main_navigation": "Main Navigation",
     "priority": {
@@ -70,7 +71,8 @@
     "delete": "Delete",
     "edit": "Edit",
     "actions": "Actions",
-    "uploaded": "Uploaded {dateTime}"
+    "uploaded": "Uploaded {dateTime}",
+    "select_items_to_link": "Select items to link"
   },
   "search": {
     "placeholder": "Search",

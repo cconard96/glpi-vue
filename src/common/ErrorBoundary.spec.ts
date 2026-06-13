@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { render } from 'vitest-browser-vue';
+import { render } from "@tests/utils.ts";
 import ErrorBoundary from "@/common/ErrorBoundary.vue";
 import { RouterLinkStub } from "@vue/test-utils";
 

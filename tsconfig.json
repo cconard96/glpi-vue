@@ -8,10 +8,11 @@
         "noEmit": true,
         "allowUmdGlobalAccess": true,
         "allowImportingTsExtensions": true,
-        "rootDirs": ["src", "plugins"],
+        "rootDirs": ["src", "plugins", "tests"],
         "allowSyntheticDefaultImports": true,
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@tests/*": ["./tests/*"],
         },
         "types": ["vitest/globals"],
     }

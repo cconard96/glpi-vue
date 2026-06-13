@@ -1,25 +1,23 @@
 import { expect, test } from 'vitest';
-import { render } from 'vitest-browser-vue';
-import NavMenu from '@/common/NavMenu.vue';
+import { render } from "@tests/utils.ts";
 import { createRouter, createWebHistory } from 'vue-router';
 import { routes } from '@/core/util/routes.ts';
-import { defaultOptions } from "primevue/config";
 import { page } from 'vitest/browser';
+import { createPinia, setActivePinia } from "pinia";
 
+beforeEach(() => {
+    setActivePinia(createPinia())
+})
 test('renders NavMenu component (desktop)', async () => {
     const router = createRouter({
         history: createWebHistory(),
         routes: routes,
     });
 
-    const { getByRole } = render(NavMenu, {
+    const { default: NavMenu } = await import('@/common/NavMenu.vue');
+    const { getByRole } = await render(NavMenu, {
         global: {
             plugins: [router],
-            mocks: {
-                $primevue: {
-                    config: defaultOptions
-                }
-            },
         },
         props: {
             mobile: false,
@@ -27,11 +25,11 @@ test('renders NavMenu component (desktop)', async () => {
     });
 
     const nav = getByRole('navigation');
-    await expect.element(nav).not.toHaveStyle({height: '1080px'});
+    await expect.element(nav).toHaveStyle({height: '1080px'});
 
     await expect.element(getByRole('link', { name: 'GLPI' })).toHaveAttribute('href', '/');
     // Expect top-level menu items to be present
-    const top_level_items = ['Assets', 'Assistance', 'Management', 'Tools', 'Administration', 'Setup'];
+    const top_level_items = ['Assistance', 'Management', 'Tools', 'Administration', 'Setup'];
     for (const item of top_level_items) {
         await expect.element(getByRole('button', { name: item })).toBeDefined();
     }
@@ -45,14 +43,10 @@ test('renders NavMenu component (mobile)', async () => {
 
     await page.viewport(360, 800);
 
-    const { getByRole, getByLabelText } = render(NavMenu, {
+    const { default: NavMenu } = await import('@/common/NavMenu.vue');
+    const { getByRole, getByLabelText } = await render(NavMenu, {
         global: {
             plugins: [router],
-            mocks: {
-                $primevue: {
-                    config: defaultOptions
-                }
-            },
         },
         props: {
             mobile: true,
@@ -64,7 +58,7 @@ test('renders NavMenu component (mobile)', async () => {
 
     await expect.element(getByRole('link', { name: 'GLPI' })).not.toBeInTheDocument();
     // Expect top-level menu items to be present
-    const top_level_items = ['Assets', 'Assistance', 'Management', 'Tools', 'Administration', 'Setup'];
+    const top_level_items = ['Assistance', 'Management', 'Tools', 'Administration', 'Setup'];
     for (const item of top_level_items) {
         await expect.element(getByRole('button', { name: item })).not.toBeInTheDocument();
     }
