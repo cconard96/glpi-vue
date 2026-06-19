@@ -1,7 +1,7 @@
 import { ComponentRenderOptions, render as renderVitest } from 'vitest-browser-vue';
 import { defineComponent } from "vue";
 import { Tooltip } from "primevue";
-import { useAuth } from "@/common/useAuth.ts";
+import { useAuth } from "@/common/api/useAuth.ts";
 import { i18n } from "@/common/util/i18n.ts";
 import { defaultOptions } from "primevue/config";
 import FocusTrap from "primevue/focustrap";
