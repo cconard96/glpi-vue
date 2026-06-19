@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { DataView, Menubar, SelectButton, Message, Avatar } from "primevue";
     import { onMounted, ref } from "vue";
-    import { useApi } from "@/common/useApi.ts";
+    import { useApi } from "@/common/api/useApi.ts";
 
     const PluginState = {
         [-1]: 'Unknown',

@@ -3,7 +3,7 @@
     import { FormField, FormSubmitEvent } from '@primevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/common/useSessionStore";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { defineAsyncComponent, inject, onMounted, TemplateRef, ref, useTemplateRef } from "vue";

@@ -1,7 +1,7 @@
 import InstallSoftware from "./InstallSoftware.vue";
 import { render } from "@tests/utils.ts";
 
-vi.mock('@/common/useApi', () => ({
+vi.mock('@/common/api/useApi', () => ({
     useApi: () => ({
         doGraphQLRequest: vi.fn().mockResolvedValue({
             data: {

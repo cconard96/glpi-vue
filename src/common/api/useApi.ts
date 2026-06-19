@@ -5,8 +5,8 @@ import { RetryLink } from "@apollo/client/link/retry"
 import { SetContextLink } from "@apollo/client/link/context";
 import { gql } from "graphql-tag";
 import { useAuth } from "./useAuth";
-import { useSessionStore } from "./useSessionStore";
-import {type components} from "../../data/hlapiv2_schema";
+import { useSessionStore } from "@/common/useSessionStore";
+import {type components} from "../../../data/hlapiv2_schema";
 import { OpenAPISchemaDefinition } from "@/types";
 import { useIndexedDB } from "@/common/useIndexedDB.ts";
 

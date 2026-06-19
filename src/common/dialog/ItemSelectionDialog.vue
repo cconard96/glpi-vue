@@ -4,7 +4,7 @@
     import { components } from "../../../data/hlapiv2_schema";
     import { inject, type Ref, ref, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
-    import { useApi } from "@/common/useApi.ts";
+    import { useApi } from "@/common/api/useApi.ts";
     import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 
     defineEmits<{

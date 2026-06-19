@@ -2,7 +2,7 @@
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import FormFields from "@/common/forms/FormFields.vue";
     import { DatePicker, Fieldset, InputNumber, InputText, Message, Textarea } from "primevue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import type { useAsset } from "@/modules/assets/useAsset.js";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";

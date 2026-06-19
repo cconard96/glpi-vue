@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { Tree, Message, InputText } from 'primevue';
     import {onMounted, ref} from "vue";
-    import {useApi} from "@/common/useApi";
+    import {useApi} from "@/common/api/useApi";
     import {useDebounceFn} from "@vueuse/core";
     import { components } from "../../../../data/hlapiv2_schema";
 

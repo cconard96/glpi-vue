@@ -23,7 +23,7 @@ export class ComponentSchema {
     private readonly properties: Record<string, OpenAPISchemaDefinition>;
     private description: string;
 
-    constructor(component_schema: OpenAPISchemaDefinition) {
+    constructor(component_schema: Partial<OpenAPISchemaDefinition>) {
         this.description = component_schema.description || '';
         this.properties = component_schema.properties || {};
     }

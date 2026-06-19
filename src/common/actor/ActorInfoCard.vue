@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { Card } from 'primevue';
     import {computed, onBeforeMount, ref} from "vue";
-    import { useApi } from '@/common/useApi';
+    import { useApi } from '@/common/api/useApi';
     import { components } from "../../../data/hlapiv2_schema";
     import { useI18n } from "vue-i18n";
 

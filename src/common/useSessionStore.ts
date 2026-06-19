@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useApi } from "@/common/useApi";
+import { useApi } from "@/common/api/useApi";
 import {components} from "../../data/hlapiv2_schema";
 
 // oxlint-disable-next-line no-unused-vars

@@ -2,16 +2,16 @@ import { NavigationFailure, useRouter } from "vue-router";
 import { Checkbox, InputNumber, InputText, SelectButton } from "primevue";
 import { useI18n } from "vue-i18n";
 import { type Component, computed, defineAsyncComponent, ref } from "vue";
-import { useApi } from "@/common/useApi.ts";
+import { useApi } from "@/common/api/useApi.ts";
 import { components } from "../../../../data/hlapiv2_schema";
 import FieldSelect from "@/common/forms/FieldSelect.vue";
 import { useFuse } from "@vueuse/integrations/useFuse";
-import { getApplicationSettings } from "@/core/util/settings/applicationSettings.ts";
-import { getItemLocksSettings } from "@/core/util/settings/itemLocksSettings.ts";
-import { getProjectSettings } from "@/core/util/settings/projectSettings.ts";
-import { getSearchSettings } from "@/core/util/settings/searchSettings.ts";
-import { getSecuritySettings } from "@/core/util/settings/securitySettings.ts";
-import { getUserPreferencesSettings } from "@/core/util/settings/userPreferences.ts";
+import { getApplicationSettings } from "@/common/util/settings/applicationSettings.ts";
+import { getItemLocksSettings } from "@/common/util/settings/itemLocksSettings.ts";
+import { getProjectSettings } from "@/common/util/settings/projectSettings.ts";
+import { getSearchSettings } from "@/common/util/settings/searchSettings.ts";
+import { getSecuritySettings } from "@/common/util/settings/securitySettings.ts";
+import { getUserPreferencesSettings } from "@/common/util/settings/userPreferences.ts";
 
 interface SettingCategoryData {
     label: string;

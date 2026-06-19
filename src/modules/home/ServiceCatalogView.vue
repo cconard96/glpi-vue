@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { useApi } from "@/common/useApi.ts";
-    import { getIllustrationPath } from "@/core/util/illustrations.ts";
+    import { useApi } from "@/common/api/useApi.ts";
+    import { getIllustrationPath } from "@/common/util/illustrations.ts";
     import { InputText, useToast } from "primevue";
 
     const { doGraphQLRequest } = useApi();

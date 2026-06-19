@@ -3,7 +3,7 @@
     import { useDataHelper } from "@/common/useDataHelper";
     import { components } from "../../../../../data/hlapiv2_schema";
     import { inject, Ref, useTemplateRef } from "vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { useAssistanceTimelineItem } from "./useAssistanceTimelineItem";
 
     const props = defineProps<{

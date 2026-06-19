@@ -3,7 +3,7 @@
         Accordion, AccordionContent, AccordionHeader, AccordionPanel,
         Card, Column, DataTable, DataView, Message, ProgressBar
     } from 'primevue';
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref, watch } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";
     import type { useAsset } from "@/modules/assets/useAsset.js";

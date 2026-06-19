@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import {DatePicker, FloatLabel, DataTable, Column} from "primevue";
     import {computed} from "vue";
-    import {useApi} from "@/common/useApi";
+    import {useApi} from "@/common/api/useApi";
     import { useI18n } from "vue-i18n";
 
     const {selected_report, report_data} = defineProps<{

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { render } from "@tests/utils.ts";
 import { createRouter, createWebHistory } from 'vue-router';
-import { routes } from '@/core/util/routes.ts';
+import { routes } from '@/common/util/routes.ts';
 import { page } from 'vitest/browser';
 import { createPinia, setActivePinia } from "pinia";
 

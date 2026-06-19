@@ -1,5 +1,5 @@
 import { defineAsyncComponent, type Ref, ref } from "vue";
-import { useApi } from "@/common/useApi";
+import { useApi } from "@/common/api/useApi";
 import { useSessionStore, BaseRights } from "@/common/useSessionStore";
 import { type AxiosResponse } from "axios";
 import { BaseItemDefinition, GLPICreateResponseBody, SchemaName, TabDefinition, useBaseItem } from "@/types";

@@ -4,12 +4,12 @@
     import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog, Select, Button } from "primevue";
     import { useSessionStore } from "@/common/useSessionStore.ts";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
-    import { useAuth } from "@/common/useAuth.ts";
+    import { useAuth } from "@/common/api/useAuth.ts";
     import ErrorBoundary from "@/common/ErrorBoundary.vue";
     import DynamicBreadcrumbs from "@/common/layout/DynamicBreadcrumbs.vue";
     import NetworkStatusArea from "@/common/layout/NetworkStatusArea.vue";
     import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
-    import { supportedAppLocales, userLang } from "@/core/util/i18n.ts";
+    import { supportedAppLocales, userLang } from "@/common/util/i18n.ts";
 
     const session_store = useSessionStore();
     const { logout } = useAuth();

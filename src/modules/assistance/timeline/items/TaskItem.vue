@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { Button, Card, Checkbox, Menu, Tag } from "primevue";
     import { useDataHelper } from "@/common/useDataHelper";
-    import { useApi } from '@/common/useApi';
+    import { useApi } from '@/common/api/useApi';
     import { components } from "../../../../../data/hlapiv2_schema";
     import { inject, Ref, useTemplateRef } from "vue";
     import { useAssistanceTimelineItem } from "./useAssistanceTimelineItem";

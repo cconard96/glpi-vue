@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import { InputText, Listbox, ListboxChangeEvent, Message } from 'primevue';
     import {computed, onMounted, shallowRef} from "vue";
-    import { useApi } from "@/common/useApi";
-    import { useAuth } from "@/common/useAuth";
+    import { useApi } from "@/common/api/useApi";
+    import { useAuth } from "@/common/api/useAuth";
     import { useSessionStore } from "@/common/useSessionStore";
 
     const { doGraphQLRequest } = useApi();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Card, ProgressSpinner, Button, Popover, Divider, Menu, InputText, Tree } from 'primevue';
-    import { useApi } from '@/common/useApi.ts';
+    import { useApi } from '@/common/api/useApi.ts';
     import {computed, ref, useTemplateRef, watch} from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";
     import {useSessionStore} from "@/common/useSessionStore";

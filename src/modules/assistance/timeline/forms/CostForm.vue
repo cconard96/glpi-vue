@@ -4,7 +4,7 @@
     import {useSessionStore} from "@/common/useSessionStore";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";
     import { useAssistanceTimelineItem } from "@/modules/assistance/timeline/items/useAssistanceTimelineItem";
     import { useDataHelper } from "@/common/useDataHelper";

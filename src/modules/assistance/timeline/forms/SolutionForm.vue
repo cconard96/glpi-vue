@@ -5,7 +5,7 @@
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";
 
     const props = defineProps<{

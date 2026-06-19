@@ -4,7 +4,7 @@
     import { useDataHelper } from "@/common/useDataHelper";
     import { components } from "../../../../../data/hlapiv2_schema";
     import { computed, inject, onMounted, onUpdated, Ref, shallowRef, useTemplateRef, watch } from "vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { useSessionStore } from "@/common/useSessionStore";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";
     import { useAssistanceTimelineItem } from "./useAssistanceTimelineItem";

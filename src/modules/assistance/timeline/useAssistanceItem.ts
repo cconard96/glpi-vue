@@ -1,7 +1,7 @@
 import {type Component, computed, type ComputedRef, defineAsyncComponent, ref, type Ref, type ShallowRef, shallowRef} from "vue";
 import {type components} from "../../../../data/hlapiv2_schema";
 import { useSessionStore, ITILSubItemRights, BaseRights, TicketApprovalRights, TicketRights } from "@/common/useSessionStore";
-import { useApi } from "@/common/useApi";
+import { useApi } from "@/common/api/useApi";
 import { useDataHelper } from "@/common/useDataHelper";
 import { AssistanceTimelineItemtype } from "./items/useAssistanceTimelineItem.ts";
 

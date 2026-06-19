@@ -3,7 +3,7 @@
     import { FormResolverOptions } from "@primevue/forms/form";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm.ts";
     import { computed } from "vue";
-    import { useApi } from "@/common/useApi.ts";
+    import { useApi } from "@/common/api/useApi.ts";
     import { SchemaName } from "@/types";
 
     const props = defineProps<{

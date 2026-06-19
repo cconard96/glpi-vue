@@ -3,7 +3,7 @@
     import { MultiSelect, SelectButton, FloatLabel, InputText } from "primevue";
     import { shallowRef, ref, useTemplateRef } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { useDebounceFn } from "@vueuse/core";
     import { useI18n } from "vue-i18n";
 

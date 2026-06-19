@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { useApi } from '@/common/useApi';
+    import { useApi } from '@/common/api/useApi';
     import {computed, onMounted, ref, useTemplateRef} from "vue";
     import { Message } from 'primevue';
     import { GridStack } from 'gridstack';

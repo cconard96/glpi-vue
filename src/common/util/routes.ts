@@ -1,4 +1,4 @@
-import { useApi } from '@/common/useApi.ts';
+import { useApi } from '@/common/api/useApi.ts';
 import { defineAsyncComponent } from "vue";
 import { RouteLocationNormalizedGeneric, RouteRecordRaw } from "vue-router";
 import { i18n } from "./i18n.ts"

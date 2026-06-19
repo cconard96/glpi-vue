@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import TimelineItem from "./TimelineItem.vue";
     import { computed, onMounted, provide, ref, type Ref, useId, useTemplateRef, watch } from "vue";
-    import { useApi } from "@/common/useApi.ts";
+    import { useApi } from "@/common/api/useApi.ts";
     import {
         Button, ButtonGroup, Menu, Popover, ProgressBar,
         SelectButton, SplitButton, Timeline, ToggleSwitch, useToast

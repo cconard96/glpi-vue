@@ -5,7 +5,7 @@ import type {
 } from "chart.js";
 import { computed, MaybeRef, onMounted, onUnmounted, ref, type Ref, watch } from "vue";
 import Chart from "chart.js/auto";
-import { deepMerge } from "@/core/util/objectUtils";
+import { deepMerge } from "@/common/util/objectUtils.ts";
 import { usePreferredColorScheme } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 

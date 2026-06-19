@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Button, Column, DataTable } from "primevue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import type { useAsset } from "@/modules/assets/useAsset.js";
 

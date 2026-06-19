@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useSessionStore} from "@/common/useSessionStore";
-import { useApi } from "@/common/useApi";
+import { useApi } from "@/common/api/useApi";
 import { useRouter } from "vue-router";
 import { usePreferencesStore } from "@/common/usePreferencesStore.ts";
 import { useIndexedDB } from "@/common/useIndexedDB.ts";

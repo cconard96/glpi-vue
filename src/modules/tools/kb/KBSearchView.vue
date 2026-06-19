@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import {ProgressSpinner, Tree} from 'primevue';
     import type { TreeNode } from 'primevue/treenode';
-    import { useApi } from '@/common/useApi.ts';
+    import { useApi } from '@/common/api/useApi.ts';
     import {ref, onMounted} from "vue";
     import KBArticle from "./KBArticle.vue";
     import {useRoute, RouterLink} from "vue-router";

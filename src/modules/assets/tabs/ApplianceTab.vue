@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Column, DataTable, Button, useDialog, useToast } from "primevue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { defineAsyncComponent, inject, onMounted, ref } from "vue";
     import { type useAsset } from "@/modules/assets/useAsset.js";
     import { useI18n } from "vue-i18n";

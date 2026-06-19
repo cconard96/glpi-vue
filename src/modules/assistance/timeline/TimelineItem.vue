@@ -10,7 +10,7 @@
         watch,
         type WatchHandle
     } from "vue";
-    import { useApi } from '@/common/useApi';
+    import { useApi } from '@/common/api/useApi';
     import { useIntersectionObserver } from '@vueuse/core';
     import ActorAvatar from "@/common/actor/ActorAvatar.vue";
     import { useDataHelper } from "@/common/useDataHelper";

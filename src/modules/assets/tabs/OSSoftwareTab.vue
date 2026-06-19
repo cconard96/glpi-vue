@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { defineAsyncComponent, inject, onMounted, ref } from "vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import FormFields from "@/common/forms/FormFields.vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { Button, Column, DataTable, InputText, Message, Tag, useDialog } from "primevue";

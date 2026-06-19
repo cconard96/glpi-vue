@@ -1,4 +1,4 @@
-import { useApi } from "@/common/useApi";
+import { useApi } from "@/common/api/useApi";
 import { ref, type Ref } from "vue";
 
 const { doGraphQLRequest } = useApi();

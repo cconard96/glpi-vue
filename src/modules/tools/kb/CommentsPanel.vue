@@ -2,7 +2,7 @@
     import { Card, InputText, Tree, type TreeNode } from "primevue";
     import { useDataHelper } from "@/common/useDataHelper.ts";
     import { onMounted, ref } from "vue";
-    import { useApi } from "@/common/useApi.ts";
+    import { useApi } from "@/common/api/useApi.ts";
     import { components } from "../../../../data/hlapiv2_schema";
 
     const props = defineProps<{

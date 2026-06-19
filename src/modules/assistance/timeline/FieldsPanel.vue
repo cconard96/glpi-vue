@@ -18,7 +18,7 @@
     } from "primevue";
     import { FormField } from "@primevue/forms";
     import { defineAsyncComponent, inject, onMounted, onUnmounted, ref } from "vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import type { components } from "../../../../data/hlapiv2_schema";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { RouterLink } from "vue-router";
@@ -255,23 +255,23 @@
     }
 
     function showItemLinkSelection() {
-        const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/modules/assets/AssetLinkItemSelector.vue')), {
-            props: {
-                header: $t('common.select_items_to_link', 'Select items to link'),
-                modal: true,
-                draggable: false,
-            },
-            data: {
-                itemtype: props.itemtype,
-                itemid: props.item.id,
-            },
-            emits: {
-                onItemSelected: ({ itemtype, id }) => {
-                    // TODO Link the selected item to the assistance item
-                    dialogInstance.close();
-                }
-            }
-        });
+        // const dialogInstance = dialog.open(defineAsyncComponent(() => import('@/modules/assets/AssetLinkItemSelector.vue')), {
+        //     props: {
+        //         header: $t('common.select_items_to_link', 'Select items to link'),
+        //         modal: true,
+        //         draggable: false,
+        //     },
+        //     data: {
+        //         itemtype: props.itemtype,
+        //         itemid: props.item.id,
+        //     },
+        //     emits: {
+        //         onItemSelected: ({ itemtype, id }) => {
+        //             // TODO Link the selected item to the assistance item
+        //             dialogInstance.close();
+        //         }
+        //     }
+        // });
     }
 
     function showNotImplementedToast() {
@@ -288,102 +288,102 @@
     <AdvancedForm :id="formID" :schemaName="itemtype" :initialValues="item" :resolver="form_resolver" @submit="onFormSubmit" class="w-full">
         <ScrollPanel>
             <Accordion v-model:value="accordionActive" multiple>
-                <AccordionPanel value="main">
-                    <AccordionHeader class="p-3" as="div">
-                        <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">
-                            <i :class="`${itemtypeIcon} me-2`"></i>
-                            {{ getTypeName(1) }}
-                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item.entity.name }}</span></Tag>
-                        </span>
-                    </AccordionHeader>
-                    <AccordionContent>
-                        <Fluid>
-                            <div class="flex flex-col space-y-4">
-                                <FormField name="date">
-                                    <FloatLabel variant="on">
-                                        <DatePicker inputId="item_date" showTime showIcon />
-                                        <label for="item_date">Opening date</label>
-                                    </FloatLabel>
-                                </FormField>
-                                <FormField v-if="'type' in item" name="type">
-                                    <SelectButton :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"
-                                                  optionValue="key" optionLabel="label" size="small"></SelectButton>
-                                </FormField>
-                                <FormField name="category">
-                                    <!-- TODO Make a tree select -->
-                                    <FieldSelect label="Category" type="ITILCategory" label_type="on" treeMode></FieldSelect>
-                                </FormField>
-                                <FormField name="location">
-                                    <FieldSelect label="Location" type="Location" label_type="on"></FieldSelect>
-                                </FormField>
-                                <FormField name="status">
-                                    <FieldSelect label="Status" :options="statusOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false"></FieldSelect>
-                                </FormField>
-                                <div v-if="('global_validation' in item && item.global_validation) > 1">
-                                    <i class="me-2" :class="globalApprovalIcon"></i>
-                                    <span>Approval Status: {{ globalApprovalLabel }}</span>
-                                </div>
-                                <FormField name="request_type">
-                                    <FieldSelect label="Request source" type="RequestType" label_type="on"></FieldSelect>
-                                </FormField>
-                                <FormField name="urgency">
-                                    <FieldSelect label="Urgency" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
-                                        <template #value="slotProps">
-                                            <div class="flex items-baseline">
-                                                <i class="ti ti-circle-filled me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
-                                                <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
-                                            </div>
-                                        </template>
-                                        <template #option="slotProps">
-                                            <div class="flex items-baseline">
-                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>
-                                                <div>{{ slotProps.option['label'] }}</div>
-                                            </div>
-                                        </template>
-                                    </FieldSelect>
-                                </FormField>
-                                <FormField name="impact">
-                                    <FieldSelect label="Impact" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
-                                        <template #value="slotProps">
-                                            <div class="flex items-baseline">
-                                                <i class="ti ti-circle-filled me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
-                                                <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
-                                            </div>
-                                        </template>
-                                        <template #option="slotProps">
-                                            <div class="flex items-baseline">
-                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>
-                                                <div>{{ slotProps.option['label'] }}</div>
-                                            </div>
-                                        </template>
-                                    </FieldSelect>
-                                </FormField>
-                                <FormField name="priority">
-                                    <FieldSelect label="Priority" :options="priorityOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">
-                                        <template #value="slotProps">
-                                            <div class="flex items-baseline">
-                                                <i class="ti ti-circle-filled me-2" :style="`color: ${priorityOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>
-                                                <div>{{ priorityOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>
-                                            </div>
-                                        </template>
-                                        <template #option="slotProps">
-                                            <div class="flex items-baseline">
-                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>
-                                                <div>{{ slotProps.option['label'] }}</div>
-                                            </div>
-                                        </template>
-                                    </FieldSelect>
-                                </FormField>
-                                <FormField name="external_id">
-                                    <FloatLabel variant="on">
-                                        <InputText id="item_external_id"/>
-                                        <label for="item_external_id">External ID</label>
-                                    </FloatLabel>
-                                </FormField>
-                            </div>
-                        </Fluid>
-                    </AccordionContent>
-                </AccordionPanel>
+<!--                <AccordionPanel value="main">-->
+<!--                    <AccordionHeader class="p-3" as="div">-->
+<!--                        <span class="max-w-full text-nowrap flex items-center overflow-hidden me-4">-->
+<!--                            <i :class="`${itemtypeIcon} me-2`"></i>-->
+<!--                            {{ getTypeName(1) }}-->
+<!--                            <Tag class="ms-2 overflow-hidden text-truncate flex justify-end"><span class="">Entity: {{ item.entity.name }}</span></Tag>-->
+<!--                        </span>-->
+<!--                    </AccordionHeader>-->
+<!--                    <AccordionContent>-->
+<!--                        <Fluid>-->
+<!--                            <div class="flex flex-col space-y-4">-->
+<!--                                <FormField name="date">-->
+<!--                                    <FloatLabel variant="on">-->
+<!--                                        <DatePicker inputId="item_date" showTime showIcon />-->
+<!--                                        <label for="item_date">Opening date</label>-->
+<!--                                    </FloatLabel>-->
+<!--                                </FormField>-->
+<!--                                <FormField v-if="'type' in item" name="type">-->
+<!--                                    <SelectButton :options="[{key: 1, label: 'Incident'}, {key: 2, label: 'Request'}]"-->
+<!--                                                  optionValue="key" optionLabel="label" size="small"></SelectButton>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="category">-->
+<!--                                    &lt;!&ndash; TODO Make a tree select &ndash;&gt;-->
+<!--                                    <FieldSelect label="Category" type="ITILCategory" label_type="on" treeMode></FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="location">-->
+<!--                                    <FieldSelect label="Location" type="Location" label_type="on"></FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="status">-->
+<!--                                    <FieldSelect label="Status" :options="statusOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false"></FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <div v-if="('global_validation' in item && item.global_validation) > 1">-->
+<!--                                    <i class="me-2" :class="globalApprovalIcon"></i>-->
+<!--                                    <span>Approval Status: {{ globalApprovalLabel }}</span>-->
+<!--                                </div>-->
+<!--                                <FormField name="request_type">-->
+<!--                                    <FieldSelect label="Request source" type="RequestType" label_type="on"></FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="urgency">-->
+<!--                                    <FieldSelect label="Urgency" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">-->
+<!--                                        <template #value="slotProps">-->
+<!--                                            <div class="flex items-baseline">-->
+<!--                                                <i class="ti ti-circle-filled me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>-->
+<!--                                                <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                        <template #option="slotProps">-->
+<!--                                            <div class="flex items-baseline">-->
+<!--                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>-->
+<!--                                                <div>{{ slotProps.option['label'] }}</div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                    </FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="impact">-->
+<!--                                    <FieldSelect label="Impact" :options="urgencyImpactOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">-->
+<!--                                        <template #value="slotProps">-->
+<!--                                            <div class="flex items-baseline">-->
+<!--                                                <i class="ti ti-circle-filled me-2" :style="`color: ${urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>-->
+<!--                                                <div>{{ urgencyImpactOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                        <template #option="slotProps">-->
+<!--                                            <div class="flex items-baseline">-->
+<!--                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>-->
+<!--                                                <div>{{ slotProps.option['label'] }}</div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                    </FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="priority">-->
+<!--                                    <FieldSelect label="Priority" :options="priorityOptions" optionValue="key" optionLabel="label" label_type="on" :showClear="false">-->
+<!--                                        <template #value="slotProps">-->
+<!--                                            <div class="flex items-baseline">-->
+<!--                                                <i class="ti ti-circle-filled me-2" :style="`color: ${priorityOptions.find(opt => opt['key'] === slotProps.value)?.['color']}`"></i>-->
+<!--                                                <div>{{ priorityOptions.find(opt => opt['key'] === slotProps.value)?.['label'] || slotProps.value }}</div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                        <template #option="slotProps">-->
+<!--                                            <div class="flex items-baseline">-->
+<!--                                                <i class="ti ti-circle-filled me-2" :style="`color: ${slotProps.option['color']}`"></i>-->
+<!--                                                <div>{{ slotProps.option['label'] }}</div>-->
+<!--                                            </div>-->
+<!--                                        </template>-->
+<!--                                    </FieldSelect>-->
+<!--                                </FormField>-->
+<!--                                <FormField name="external_id">-->
+<!--                                    <FloatLabel variant="on">-->
+<!--                                        <InputText id="item_external_id"/>-->
+<!--                                        <label for="item_external_id">External ID</label>-->
+<!--                                    </FloatLabel>-->
+<!--                                </FormField>-->
+<!--                            </div>-->
+<!--                        </Fluid>-->
+<!--                    </AccordionContent>-->
+<!--                </AccordionPanel>-->
                 <AccordionPanel value="actors">
                     <AccordionHeader class="p-3" as="div">
                         <span>
@@ -396,116 +396,116 @@
                         <ActorFields :requesters="requesters" :observers="observers" :assigned="assigned"></ActorFields>
                     </AccordionContent>
                 </AccordionPanel>
-                <AccordionPanel value="items">
-                    <AccordionHeader class="p-3" as="div">
-                        <span>
-                            <i class="ti ti-package me-2"></i>
-                            Items
-                            <Tag v-if="item_links.length > 0" class="align-middle" severity="secondary" :value="item_links.length"></Tag>
-                        </span>
-                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>
-                    </AccordionHeader>
-                    <AccordionContent>
-                        <div v-if="item_links.length === 0">
-                            <Message severity="info">{{ $t('common.error.no_linked_items', 'No linked items.') }}</Message>
-                        </div>
-                        <div v-else class="flex flex-col space-y-2">
-                            <div v-for="link in item_links" :key="link.itemtype + '_' + link.items_id" class="hover:bg-gray-800 p-2">
-                                <!-- TODO Do not assume the item is an asset -->
-                                <RouterLink :to="{ name: 'AssetItemForm', params: { component_module: 'assets', itemtype: link.itemtype, id: link.items_id } }">
-                                    {{ link.itemtype }}: {{ link.name }}
-                                </RouterLink>
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionPanel>
-                <AccordionPanel v-if="itemtype === 'Ticket'" value="service_levels">
-                    <AccordionHeader class="p-3" as="div">
-                        <span>
-                            <i class="ti ti-clock me-2"></i>
-                            Service levels
-                        </span>
-                    </AccordionHeader>
-                    <AccordionContent>
-                        <Fluid>
-                            <div class="flex flex-col space-y-4">
-                                <!--suppress TypeScriptValidateTypes -->
-                                <SLMFields :fields="[
-                                    { field: 'own_date', label: 'Time to Own', type: 'SLA', assignedLevel: slaTTOName ? {id: (item as components['schemas']['Ticket']).sla_tto, name: slaTTOName} : null },
-                                    { field: 'resolution_date', label: 'Time to Resolve', type: 'SLA', assignedLevel: slaTTRName ? {id: (item as components['schemas']['Ticket']).sla_ttr, name: slaTTRName} : null },
-                                    { field: 'internal_take_into_account_date', label: 'Internal Time to Own', type: 'OLA', assignedLevel: olaTTOName ? {id: (item as components['schemas']['Ticket']).ola_tto, name: olaTTOName} : null },
-                                    { field: 'internal_resolution_date', label: 'Internal Time to Resolve', type: 'OLA', assignedLevel: olaTTRName ? {id: (item as components['schemas']['Ticket']).ola_ttr, name: olaTTRName} : null },
-                                ]"></SLMFields>
-                            </div>
-                        </Fluid>
-                    </AccordionContent>
-                </AccordionPanel>
-                <AccordionPanel value="linked_assistance_objects">
-                    <AccordionHeader class="p-3" as="div">
-                        <span>
-                            <i class="ti ti-link me-2"></i>
-                            Linked assistance objects
-                            <Tag v-if="assistance_links.length > 0" class="align-middle" severity="secondary" :value="assistance_links.length"></Tag>
-                        </span>
-                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>
-                    </AccordionHeader>
-                    <AccordionContent>
-                        <div v-if="assistance_links.length === 0">
-                            <Message severity="info">No linked assistance objects.</Message>
-                        </div>
-                        <div v-else class="flex flex-col">
-                            <div v-for="link in assistance_links" :key="link.link_type + '_' + link.linked_item.id" class="hover:bg-gray-800 p-2">
-                                <RouterLink :to="{ name: 'ITILTimeline', params: { itemtype: link.linked_item.__typename, id: link.linked_item.id } }">
-                                    {{ assistanceLinkTypeLabels[link.link] ?? 'Linked to' }} {{ link.linked_item.__typename }}: {{ link.linked_item.name }}
-                                </RouterLink>
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionPanel>
-                <AccordionPanel value="linked_projects">
-                    <AccordionHeader class="p-3">
-                        <span>
-                            <i class="ti ti-layout-kanban me-2"></i>
-                            Linked Projects
-                            <Tag v-if="project_links.length > 0" class="align-middle" severity="secondary" :value="project_links.length"></Tag>
-                        </span>
-                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>
-                    </AccordionHeader>
-                    <AccordionContent>
-                        <div v-if="project_links.length === 0">
-                            <Message severity="info">No linked projects.</Message>
-                        </div>
-                        <div v-else class="flex flex-col space-y-2">
-                            <div v-for="project in project_links" :key="project.id" class="hover:bg-gray-800 p-2">
-<!--                                <RouterLink :to="{ name: 'Project', params: { id: project.id } }">-->
-                                    {{ project.name }}
+<!--                <AccordionPanel value="items">-->
+<!--                    <AccordionHeader class="p-3" as="div">-->
+<!--                        <span>-->
+<!--                            <i class="ti ti-package me-2"></i>-->
+<!--                            Items-->
+<!--                            <Tag v-if="item_links.length > 0" class="align-middle" severity="secondary" :value="item_links.length"></Tag>-->
+<!--                        </span>-->
+<!--                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>-->
+<!--                    </AccordionHeader>-->
+<!--                    <AccordionContent>-->
+<!--                        <div v-if="item_links.length === 0">-->
+<!--                            <Message severity="info">{{ $t('common.error.no_linked_items', 'No linked items.') }}</Message>-->
+<!--                        </div>-->
+<!--                        <div v-else class="flex flex-col space-y-2">-->
+<!--                            <div v-for="link in item_links" :key="link.itemtype + '_' + link.items_id" class="hover:bg-gray-800 p-2">-->
+<!--                                &lt;!&ndash; TODO Do not assume the item is an asset &ndash;&gt;-->
+<!--                                <RouterLink :to="{ name: 'AssetItemForm', params: { component_module: 'assets', itemtype: link.itemtype, id: link.items_id } }">-->
+<!--                                    {{ link.itemtype }}: {{ link.name }}-->
 <!--                                </RouterLink>-->
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionPanel>
-                <AccordionPanel value="kbarticles">
-                    <AccordionHeader class="p-3" as="div">
-                        <span>
-                            <i class="ti ti-lifebuoy me-2"></i>
-                            KB Articles
-                            <Tag v-if="kbitems.length > 0" class="align-middle" severity="secondary" :value="kbitems.length"></Tag>
-                        </span>
-                        <Button icon="ti ti-plus" label="Search/Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showKBSearch()"></Button>
-                    </AccordionHeader>
-                    <AccordionContent>
-                        <div v-if="kbitems.length === 0">
-                            <Message severity="info">No linked KB articles.</Message>
-                        </div>
-                        <div v-else class="flex flex-col space-y-2">
-                            <div v-for="kbitem in kbitems" :key="kbitem.id" class="hover:bg-gray-800 p-2">
-                                <RouterLink :to="{ name: 'Knowbase', params: { article_id: kbitem.kbarticle.id } }">
-                                    {{ kbitem.kbarticle.name }}
-                                </RouterLink>
-                            </div>
-                        </div>
-                    </AccordionContent>
-                </AccordionPanel>
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </AccordionContent>-->
+<!--                </AccordionPanel>-->
+<!--                <AccordionPanel v-if="itemtype === 'Ticket'" value="service_levels">-->
+<!--                    <AccordionHeader class="p-3" as="div">-->
+<!--                        <span>-->
+<!--                            <i class="ti ti-clock me-2"></i>-->
+<!--                            Service levels-->
+<!--                        </span>-->
+<!--                    </AccordionHeader>-->
+<!--                    <AccordionContent>-->
+<!--                        <Fluid>-->
+<!--                            <div class="flex flex-col space-y-4">-->
+<!--                                &lt;!&ndash;suppress TypeScriptValidateTypes &ndash;&gt;-->
+<!--                                <SLMFields :fields="[-->
+<!--                                    { field: 'own_date', label: 'Time to Own', type: 'SLA', assignedLevel: slaTTOName ? {id: (item as components['schemas']['Ticket']).sla_tto, name: slaTTOName} : null },-->
+<!--                                    { field: 'resolution_date', label: 'Time to Resolve', type: 'SLA', assignedLevel: slaTTRName ? {id: (item as components['schemas']['Ticket']).sla_ttr, name: slaTTRName} : null },-->
+<!--                                    { field: 'internal_take_into_account_date', label: 'Internal Time to Own', type: 'OLA', assignedLevel: olaTTOName ? {id: (item as components['schemas']['Ticket']).ola_tto, name: olaTTOName} : null },-->
+<!--                                    { field: 'internal_resolution_date', label: 'Internal Time to Resolve', type: 'OLA', assignedLevel: olaTTRName ? {id: (item as components['schemas']['Ticket']).ola_ttr, name: olaTTRName} : null },-->
+<!--                                ]"></SLMFields>-->
+<!--                            </div>-->
+<!--                        </Fluid>-->
+<!--                    </AccordionContent>-->
+<!--                </AccordionPanel>-->
+<!--                <AccordionPanel value="linked_assistance_objects">-->
+<!--                    <AccordionHeader class="p-3" as="div">-->
+<!--                        <span>-->
+<!--                            <i class="ti ti-link me-2"></i>-->
+<!--                            Linked assistance objects-->
+<!--                            <Tag v-if="assistance_links.length > 0" class="align-middle" severity="secondary" :value="assistance_links.length"></Tag>-->
+<!--                        </span>-->
+<!--                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>-->
+<!--                    </AccordionHeader>-->
+<!--                    <AccordionContent>-->
+<!--                        <div v-if="assistance_links.length === 0">-->
+<!--                            <Message severity="info">No linked assistance objects.</Message>-->
+<!--                        </div>-->
+<!--                        <div v-else class="flex flex-col">-->
+<!--                            <div v-for="link in assistance_links" :key="link.link_type + '_' + link.linked_item.id" class="hover:bg-gray-800 p-2">-->
+<!--                                <RouterLink :to="{ name: 'ITILTimeline', params: { itemtype: link.linked_item.__typename, id: link.linked_item.id } }">-->
+<!--                                    {{ assistanceLinkTypeLabels[link.link] ?? 'Linked to' }} {{ link.linked_item.__typename }}: {{ link.linked_item.name }}-->
+<!--                                </RouterLink>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </AccordionContent>-->
+<!--                </AccordionPanel>-->
+<!--                <AccordionPanel value="linked_projects">-->
+<!--                    <AccordionHeader class="p-3">-->
+<!--                        <span>-->
+<!--                            <i class="ti ti-layout-kanban me-2"></i>-->
+<!--                            Linked Projects-->
+<!--                            <Tag v-if="project_links.length > 0" class="align-middle" severity="secondary" :value="project_links.length"></Tag>-->
+<!--                        </span>-->
+<!--                        <Button icon="ti ti-plus" label="Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showNotImplementedToast"></Button>-->
+<!--                    </AccordionHeader>-->
+<!--                    <AccordionContent>-->
+<!--                        <div v-if="project_links.length === 0">-->
+<!--                            <Message severity="info">No linked projects.</Message>-->
+<!--                        </div>-->
+<!--                        <div v-else class="flex flex-col space-y-2">-->
+<!--                            <div v-for="project in project_links" :key="project.id" class="hover:bg-gray-800 p-2">-->
+<!--&lt;!&ndash;                                <RouterLink :to="{ name: 'Project', params: { id: project.id } }">&ndash;&gt;-->
+<!--                                    {{ project.name }}-->
+<!--&lt;!&ndash;                                </RouterLink>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </AccordionContent>-->
+<!--                </AccordionPanel>-->
+<!--                <AccordionPanel value="kbarticles">-->
+<!--                    <AccordionHeader class="p-3" as="div">-->
+<!--                        <span>-->
+<!--                            <i class="ti ti-lifebuoy me-2"></i>-->
+<!--                            KB Articles-->
+<!--                            <Tag v-if="kbitems.length > 0" class="align-middle" severity="secondary" :value="kbitems.length"></Tag>-->
+<!--                        </span>-->
+<!--                        <Button icon="ti ti-plus" label="Search/Add" severity="secondary" size="small" class="ms-auto" @click.prevent.stop="showKBSearch()"></Button>-->
+<!--                    </AccordionHeader>-->
+<!--                    <AccordionContent>-->
+<!--                        <div v-if="kbitems.length === 0">-->
+<!--                            <Message severity="info">No linked KB articles.</Message>-->
+<!--                        </div>-->
+<!--                        <div v-else class="flex flex-col space-y-2">-->
+<!--                            <div v-for="kbitem in kbitems" :key="kbitem.id" class="hover:bg-gray-800 p-2">-->
+<!--                                <RouterLink :to="{ name: 'Knowbase', params: { article_id: kbitem.kbarticle.id } }">-->
+<!--                                    {{ kbitem.kbarticle.name }}-->
+<!--                                </RouterLink>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </AccordionContent>-->
+<!--                </AccordionPanel>-->
             </Accordion>
         </ScrollPanel>
     </AdvancedForm>

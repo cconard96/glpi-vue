@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { Column, DataTable } from "primevue";
     import FileUpload from "@/common/forms/FileUpload.vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import type { useAsset } from "@/modules/assets/useAsset.js";
     import { useDataHelper } from "@/common/useDataHelper";

@@ -1,8 +1,8 @@
 <script setup lang="ts">
     import { Message, TreeSelect, Button, Tree } from 'primevue';
     import {computed, onMounted, ref, shallowRef, watch} from "vue";
-    import { useApi } from "@/common/useApi";
-    import { useAuth } from "@/common/useAuth";
+    import { useApi } from "@/common/api/useApi";
+    import { useAuth } from "@/common/api/useAuth";
     import { useSessionStore } from "@/common/useSessionStore";
 
     const entity_tree = shallowRef([]);

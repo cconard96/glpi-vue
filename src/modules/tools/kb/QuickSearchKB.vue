@@ -2,7 +2,7 @@
     import { Button, DataView, InputText, Message, Skeleton } from "primevue";
     import { inject, ref, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { useDataHelper } from "@/common/useDataHelper";
 
     const props = defineProps({

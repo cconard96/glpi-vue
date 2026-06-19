@@ -4,7 +4,7 @@
     import { ITILSubItemRights, useSessionStore } from "@/common/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { useDataHelper } from "@/common/useDataHelper";

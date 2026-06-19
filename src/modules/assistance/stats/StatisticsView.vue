@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import {Card, Select, FloatLabel, Message, ProgressSpinner} from 'primevue';
-    import { useApi } from "@/common/useApi";
+    import { useApi } from "@/common/api/useApi";
     import {watchEffect, ref, defineAsyncComponent, markRaw} from "vue";
     import { useI18n } from "vue-i18n";
 

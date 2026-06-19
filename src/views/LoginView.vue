@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Card, Button, Message } from 'primevue';
-    import { useAuth } from '@/common/useAuth';
+    import { useAuth } from '@/common/api/useAuth';
     import { useRouter } from "vue-router";
     import { computed, onMounted, ref } from "vue";
     import { useI18n } from "vue-i18n";
