@@ -118,7 +118,7 @@
                 <template #content>
                     <div class="flex mb-2 -mt-2">
                         <FormField name="task_template">
-                            <FieldSelect :label="$t('setup.dropdown.followuptemplate.label', 1, {
+                            <FieldSelect :label="$t('setup.dropdown.tasktemplate.label', 1, {
                                     default: 'Task template | Tasks templates'
                                 })" type="TaskTemplate" label_type="on" @change="applySelectedTemplate"></FieldSelect>
                         </FormField>

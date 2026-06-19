@@ -765,6 +765,9 @@
       },
       "solutiontemplate": {
         "label": "Solution template | Solution templates"
+      },
+      "tasktemplate": {
+        "label": "Task template | Tasks templates"
       }
     },
     "component": {
