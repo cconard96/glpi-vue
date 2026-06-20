@@ -2,8 +2,8 @@
     /**
      * Wrapper for PrimeVue Select/MultiSelect component which automatically determines default options based on item properties so it does not show an empty select on load.
      */
-    import {Select, MultiSelect, TreeSelect, Chip, VirtualScrollerLazyEvent, TreeNode} from "primevue";
-    import { computed, ComputedRef, defineModel, inject, PropType, type Ref, ref, useId, watch } from 'vue';
+    import {Select, MultiSelect, Chip, VirtualScrollerLazyEvent} from "primevue";
+    import { computed, inject, PropType, type Ref, ref, useId } from 'vue';
     import {useDropdown} from "@/common/useDropdown";
     import { components } from "../../../data/hlapiv2_schema";
 

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useApi } from "@/common/api/useApi";
 import {components} from "../../data/hlapiv2_schema";
+import { GLPIItem, GLPIItemType } from "@/common/useBaseItem.ts";
 
 // oxlint-disable-next-line no-unused-vars
 interface EntityTreeNode {
@@ -41,6 +42,10 @@ export const useSessionStore = defineStore('session', {
         groups: [],
         /** @type {EntityTreeNode[]} */
         entityTreeData: null,
+        /** @type {Map<number, number[]>} Cache of known parent entities. This cache is only populated as needed and should not be relied on outside this Pinia store. */
+        entityParentMapCache: new Map(),
+        /** @type {Map<number, number[]>} Cache of known child entities. This cache is only populated as needed and should not be relied on outside this Pinia store. */
+        entityChildMapCache: new Map(),
     }),
     actions: {
         loadSession(sessionData: components['schemas']['Session']) {
@@ -57,6 +62,8 @@ export const useSessionStore = defineStore('session', {
             this.active_profile = sessionData.active_profile || null;
             this.active_entity = sessionData.active_entity || null;
             this.groups = sessionData.groups || [];
+            this.entityParentMapCache = new Map();
+            this.entityChildMapCache = new Map();
 
             const { apollo_client } = useApi();
             apollo_client.resetStore();
@@ -78,6 +85,8 @@ export const useSessionStore = defineStore('session', {
             this.active_profile = null;
             this.active_entity = null;
             this.groups = [];
+            this.entityParentMapCache = new Map();
+            this.entityChildMapCache = new Map();
 
             const { apollo_client } = useApi();
             apollo_client.resetStore();
@@ -94,31 +103,6 @@ export const useSessionStore = defineStore('session', {
         },
         setDebugMode(isDebug) {
             this.use_mode = isDebug ? 2 : 1;
-        },
-        getParentEntities(entityId: number) {
-            // traverse the entity tree data to find all parent entities of the given entity id
-            const parents = [];
-            function traverse(nodes, parentId = null) {
-                for (const node of nodes) {
-                    if (node.key === entityId) {
-                        if (parentId !== null) {
-                            parents.push(parentId);
-                        }
-                        return true; // stop traversal once the entity is found
-                    }
-                    if (traverse(node.children, node.key)) {
-                        if (parentId !== null) {
-                            parents.push(parentId);
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            }
-            if (this.entityTreeData) {
-                traverse(this.entityTreeData);
-            }
-            return parents;
         },
         getValidProfilesForEntity(entityId: number) {
             // for a profile to be valid, it must be directly assigned to the entity or, to a parent of the entity AND recursive.
@@ -188,6 +172,129 @@ export const useSessionStore = defineStore('session', {
                 return rights.every(right => (module_rights & right) === right);
             };
         },
+        getParentEntities(state) {
+            return (entityId: number) => {
+                if (state.entityParentMapCache.has(entityId)) {
+                    return state.entityParentMapCache.get(entityId);
+                }
+                // traverse the entity tree data to find all parent entities of the given entity id
+                const parents = [];
+
+                function traverse(nodes, parentId = null) {
+                    for (const node of nodes) {
+                        if (node.key === entityId) {
+                            if (parentId !== null) {
+                                parents.push(parentId);
+                            }
+                            return true; // stop traversal once the entity is found
+                        }
+                        if (traverse(node.children, node.key)) {
+                            if (parentId !== null) {
+                                parents.push(parentId);
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (state.entityTreeData) {
+                    traverse(state.entityTreeData);
+                }
+
+                state.entityParentMapCache.set(entityId, parents);
+                return parents;
+            }
+        },
+        getChildEntities(state) {
+            return (entityId: number) => {
+                if (state.entityChildMapCache.has(entityId)) {
+                    return state.entityChildMapCache.get(entityId);
+                }
+                // traverse the entity tree data to find all child entities of the given entity id
+                const children = [];
+
+                function traverse(nodes) {
+                    for (const node of nodes) {
+                        if (node.key === entityId) {
+                            collectChildren(node);
+                            return true; // stop traversal once the entity is found
+                        }
+                        if (traverse(node.children)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                function collectChildren(node) {
+                    for (const child of node.children) {
+                        children.push(child.key);
+                        collectChildren(child);
+                    }
+                }
+
+                if (state.entityTreeData) {
+                    traverse(state.entityTreeData);
+                }
+
+                state.entityChildMapCache.set(entityId, children);
+                return children;
+            }
+        },
+        hasAccessToEntity: (state) => {
+            return function(entityId: number, is_recursive = false) {
+                // If the root entity is active and recursive, then all entities are accessible
+                if (state.active_entity.id === 0 && state.active_entity.recursive) {
+                    return true;
+                }
+                if (state.active_entities.includes(entityId)) {
+                    return true;
+                }
+                if (!is_recursive) {
+                    return false;
+                }
+                // Check if the user has access to any of the child entities in case the user is connected to a parent of the entity
+                const childEntities = state.entityChildMapCache.get(entityId) || this.getChildEntities(entityId);
+                return state.active_entities.some(activeEntityId => childEntities.includes(activeEntityId));
+            }
+        },
+        /** Check if the user can currently see the entity a given item belongs to */
+        hasEntityAccessForItem: (state) => {
+            const _hasEntityAccessForItem: {
+                (item: GLPIItem<GLPIItemType>): boolean,
+                (itemtype: string, items_id: number): boolean,
+            } = (itemOrItemtype: GLPIItem<GLPIItemType> | string, items_id?: number) => {
+                if (typeof itemOrItemtype === 'string') {
+                    //TODO load the item from the API to get its entity and recursive properties
+                    //note that 'itemtype' is the class name on the GLPI server side, not the API schema name so we need to implement
+                    //a mapping between itemtypes (which can be found in the OpenAPI schema) and the schema names.
+                }
+                const item = itemOrItemtype as GLPIItem<GLPIItemType>;
+                // Item is global (not linked to any entity), so it's accessible
+                //TODO check schema, not provided data to tell if the item is global or not.
+                if (!('entity' in item)) {
+                    return true;
+                }
+                // If the root entity is active and recursive, then all entities are accessible
+                if (state.active_entity.id === 0 && state.active_entity.recursive) {
+                    return true;
+                }
+
+                const itemEntityID = item.entity;
+                if (state.active_entities.includes(itemEntityID)) {
+                    return true;
+                }
+
+                if (!('is_recursive' in item) || !item.is_recursive) {
+                    return false;
+                }
+                // Check if the user has access to any of the child entities of the item's entity in case the user is connected to a child of the item's entity
+                const childEntities = state.entityChildMapCache.get(itemEntityID) || this.getChildEntities(itemEntityID);
+                return state.active_entities.some(activeEntityId => childEntities.includes(activeEntityId));
+            }
+            return _hasEntityAccessForItem;
+        }
     },
     persist: true,
 });

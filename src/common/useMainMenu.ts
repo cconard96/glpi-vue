@@ -428,7 +428,7 @@ export const useMainMenu = () => {
         },
     ];
 
-    for (const def of assetDefinitions) {
+    for (const [asset_type, def] of assetDefinitions.entries()) {
         if (!def.canView()) {
             continue;
         }
@@ -437,27 +437,12 @@ export const useMainMenu = () => {
             section.items.push({
                 label: def.getLabel(99), //TODO find way to get a count for the 'many' form of the label
                 icon: def.icon || "ti ti-package",
-                route: `/assets/${def.key}`,
+                route: `/assets/${asset_type}`,
             });
-        }
-    }
-
-    function getItemtypeModelForRoute(route_path) {
-        // remove query parameters
-        const path_without_query = route_path.split('?')[0];
-        // if the given route has an id part at the end, remove it
-        const clean_route = path_without_query.replace(/\/\d+$/, '');
-        for (const section of menu) {
-            for (const item of section.items) {
-                if (item.route === clean_route && item.itemtype_model) {
-                    return item.itemtype_model;
-                }
-            }
         }
     }
 
     return {
         menu,
-        getItemtypeModelForRoute,
     };
 }

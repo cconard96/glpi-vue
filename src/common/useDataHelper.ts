@@ -141,7 +141,7 @@ export function useDataHelper() {
         if (diff < 60) return $t('common.relative_time.seconds_ago', {
             count: diff,
         }, '{count} seconds ago');
-        if (diff < 3600) return $t('common.relative_time.seconds_ago', {
+        if (diff < 3600) return $t('common.relative_time.minutes_ago', {
             count: Math.floor(diff / 60),
         }, '{count} minutes ago');
         if (diff < 86400) return $t('common.relative_time.hours_ago', {

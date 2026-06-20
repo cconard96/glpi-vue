@@ -4,6 +4,9 @@ import { useSessionStore, ITILSubItemRights, BaseRights, TicketApprovalRights, T
 import { useApi } from "@/common/api/useApi";
 import { useDataHelper } from "@/common/useDataHelper";
 import { AssistanceTimelineItemtype } from "./items/useAssistanceTimelineItem.ts";
+import { BaseItemDefinition, useBaseItem } from "@/types";
+import { useI18n } from "vue-i18n";
+import { getDefaultRightChecks } from "@/common/useBaseItem.ts";
 
 type TimelineItem = components['schemas']['Followup'] | components['schemas']['TicketTask']
     | components['schemas']['ChangeTask'] | components['schemas']['ProblemTask'] | components['schemas']['Solution']
@@ -12,7 +15,182 @@ type TimelineItem = components['schemas']['Followup'] | components['schemas']['T
 type AssistanceType = 'Ticket' | 'Change' | 'Problem';
 type AssistanceSchema<T extends AssistanceType = AssistanceType> = components['schemas'][T];
 
-export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: Ref<AssistanceSchema<T>>) {
+export const enum AssistanceItemStatus {
+    NEW = 1,
+    ASSIGNED = 2,
+    PLANNED = 3,
+    WAITING = 4,
+    SOLVED = 5,
+    CLOSED =  6,
+    ACCEPTED =  7,
+    OBSERVE =  8,
+    EVAL = 9,
+    APPROVAL = 10,
+    TEST = 11,
+    QUALIF = 12,
+    REFUSED = 13,
+    CANCELED = 14,
+}
+
+export const AssistanceItemStatusInfo: {
+    [key in AssistanceItemStatus]: {
+        key: string,
+        label: string,
+        icon: string,
+        color: string,
+    }
+} = {
+    1: { key: 'new', label: 'New', icon: 'ti ti-circle-filled', color: '#49bf4d' },
+    2: { key: 'assigned', label: 'Processing (Assigned)', icon: 'ti ti-circle', color: '#49bf4d' },
+    3: { key: 'planned', label: 'Processing (Planned)', icon: 'ti ti-calendar', color: '#1b2f62' },
+    4: { key: 'waiting', label: 'Pending', icon: 'ti ti-circle-filled', color: '#ffa500' },
+    5: { key: 'solved', label: 'Solved', icon: 'ti ti-circle', color: '#000000' },
+    6: { key: 'closed', label: 'Closed', icon: 'ti ti-circle-filled', color: '#000000' },
+    7: { key: 'accepted', label: 'Accepted', icon: 'ti ti-circle-check-filled', color: '#00ff00' },
+    8: { key: 'observe', label: 'Review', icon: 'ti ti-eye', color: '#000000' },
+    9: { key: 'eval', label: 'Evaluation', icon: 'ti ti-circle', color: '#add8e6' },
+    10: { key: 'approval', label: 'Approval', icon: 'ti ti-help', color: '#8cabdb' },
+    11: { key: 'test', label: 'Testing', icon: 'ti ti-help', color: '#ffa500' },
+    12: { key: 'qualif', label: 'Qualification', icon: 'ti ti-circle', color: '#ffa500' },
+    13: { key: 'refused', label: 'Refused', icon: 'ti ti-circle-x', color: '#a72f00' },
+    14: { key: 'canceled', label: 'Canceled', icon: 'ti ti-ban', color: '#000000' }
+}
+
+type AssistanceDefinition<T extends AssistanceType, U extends AssistanceItemStatus[] = AssistanceItemStatus[]> = BaseItemDefinition<T> & {
+    allStatuses: U,
+    /** @description The statuses that are considered "solved". Must be a subset of allStatuses. */
+    solvedStatuses: U[AssistanceItemStatus][],
+    /** @description The statuses that are considered "closed". Must be a subset of allStatuses. */
+    closedStatuses: U[AssistanceItemStatus][],
+};
+
+function getDefaultAssistanceRightChecks(rightname: string): ReturnType<typeof getDefaultRightChecks> {
+    const defaultChecks = getDefaultRightChecks(rightname);
+    return {
+        ...defaultChecks,
+    };
+}
+
+const assistanceDefinitions: Map<AssistanceType, AssistanceDefinition<AssistanceType>> = new Map([
+    ['Ticket', {
+        key: 'Ticket',
+        module: 'Assistance',
+        restEndpoint: 'Ticket',
+        getLabel: (count: number) => {
+            const { t: $t } = useI18n();
+            return $t('assistance.ticket.label', count, {
+                default: 'Ticket | Tickets',
+            });
+        },
+        icon: 'ti ti-alert-circle',
+        rightname: 'ticket',
+        ...getDefaultAssistanceRightChecks('ticket'),
+        allStatuses: [
+            AssistanceItemStatus.NEW, AssistanceItemStatus.APPROVAL, AssistanceItemStatus.ASSIGNED, AssistanceItemStatus.PLANNED,
+            AssistanceItemStatus.WAITING, AssistanceItemStatus.SOLVED, AssistanceItemStatus.CLOSED
+        ],
+        solvedStatuses: [AssistanceItemStatus.SOLVED],
+        closedStatuses: [AssistanceItemStatus.CLOSED],
+    }],
+    ['Change', {
+        key: 'Change',
+        module: 'Assistance',
+        restEndpoint: 'Change',
+        getLabel: (count: number) => {
+            const { t: $t } = useI18n();
+            return $t('assistance.change.label', count, {
+                default: 'Change | Changes',
+            });
+        },
+        icon: 'ti ti-clipboard-check',
+        rightname: 'change',
+        ...getDefaultAssistanceRightChecks('change'),
+        allStatuses: [
+            AssistanceItemStatus.NEW, AssistanceItemStatus.EVAL, AssistanceItemStatus.APPROVAL, AssistanceItemStatus.ACCEPTED,
+            AssistanceItemStatus.WAITING, AssistanceItemStatus.TEST, AssistanceItemStatus.QUALIF, AssistanceItemStatus.SOLVED,
+            AssistanceItemStatus.OBSERVE, AssistanceItemStatus.CLOSED, AssistanceItemStatus.CANCELED, AssistanceItemStatus.REFUSED
+        ],
+        solvedStatuses: [AssistanceItemStatus.OBSERVE, AssistanceItemStatus.SOLVED],
+        closedStatuses: [AssistanceItemStatus.CLOSED, AssistanceItemStatus.CANCELED, AssistanceItemStatus.REFUSED],
+    }],
+    ['Problem', {
+        key: 'Problem',
+        module: 'Assistance',
+        restEndpoint: 'Problem',
+        getLabel: (count: number) => {
+            const { t: $t } = useI18n();
+            return $t('assistance.problem.label', count, {
+                default: 'Problem | Problems',
+            });
+        },
+        icon: 'ti ti-alert-triangle',
+        rightname: 'problem',
+        ...getDefaultAssistanceRightChecks('problem'),
+        allStatuses: [
+            AssistanceItemStatus.NEW, AssistanceItemStatus.ACCEPTED, AssistanceItemStatus.ASSIGNED, AssistanceItemStatus.PLANNED,
+            AssistanceItemStatus.WAITING, AssistanceItemStatus.SOLVED, AssistanceItemStatus.CLOSED, AssistanceItemStatus.OBSERVE
+        ],
+        solvedStatuses: [AssistanceItemStatus.OBSERVE, AssistanceItemStatus.SOLVED],
+        closedStatuses: [AssistanceItemStatus.CLOSED],
+    }],
+]);
+
+export const getAllDefinitions = (): Map<AssistanceType, AssistanceDefinition<AssistanceType>> => {
+    return assistanceDefinitions;
+}
+
+type Requester = components['schemas']['TeamMember'] & {role: 'requester'};
+type Observer = components['schemas']['TeamMember'] & {role: 'observer'};
+type Assigned = components['schemas']['TeamMember'] & {role: 'assigned'};
+
+export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: Ref<AssistanceSchema<T>>): useBaseItem<T> & {
+    itemtype: T,
+    timelineItems: Ref<Array<{type: AssistanceTimelineItemtype, item: TimelineItem}>>,
+    loadTimelineItems: () => Promise<void>,
+    all_timeline_actions: Ref<{
+        label: string,
+        icon: string,
+        command: () => void,
+        isAllowedAction?: ComputedRef<boolean> | boolean
+    }[]>,
+    allowed_timeline_actions: ComputedRef<{
+        label: string,
+        icon: string,
+        command: () => void,
+        isAllowedAction?: ComputedRef<boolean> | boolean
+    }[]>,
+    current_new_item: ShallowRef<{
+        component: Component,
+        props?: Record<string, any>
+    }>,
+    mainTimelineAction: ComputedRef<{
+        label: string,
+        icon: string,
+        command: () => void,
+        isAllowedAction?: ComputedRef<boolean> | boolean
+    }>,
+    extraTimelineActions: ComputedRef<{
+        label: string,
+        icon: string,
+        command: () => void,
+        isAllowedAction?: ComputedRef<boolean> | boolean
+    }[]>,
+    requesters: ComputedRef<Requester[]>,
+    observers: ComputedRef<Observer[]>,
+    assigned: ComputedRef<Assigned[]>,
+    statusIcon: ComputedRef<string>,
+    statusColor: ComputedRef<string>,
+    statusOptions: ComputedRef<Array<{key: AssistanceItemStatus, label: string}>>,
+    itemtypeIcon: ComputedRef<string>,
+    urgencyImpactOptions: Array<{key: number, label: string, color: string}>,
+    priorityOptions: Array<{key: number, label: string, color: string}>,
+    getTypeName: (count: number) => string,
+    assistanceLinkTypeLabels: Record<number, string>,
+    globalApprovalIcon: ComputedRef<string | null>,
+    globalApprovalLabel: ComputedRef<string | null>,
+    canUpdateItem: ComputedRef<boolean>,
+    milestones: ComputedRef<Array<{status: string, date: string}>>,
+} {
     const session = useSessionStore();
     const { doApiRequest } = useApi();
     const { formatDateTime } = useDataHelper();
@@ -21,39 +199,21 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         component: Component,
         props?: Record<string, any>
     }> = shallowRef(null);
-    const statuses = {
-        1: { key: 'new', label: 'New', icon: 'ti ti-circle-filled', color: '#49bf4d' },
-        2: { key: 'assigned', label: 'Processing (Assigned)', icon: 'ti ti-circle', color: '#49bf4d' },
-        3: { key: 'planned', label: 'Processing (Planned)', icon: 'ti ti-calendar', color: '#1b2f62' },
-        4: { key: 'waiting', label: 'Pending', icon: 'ti ti-circle-filled', color: '#ffa500' },
-        5: { key: 'solved', label: 'Solved', icon: 'ti ti-circle', color: '#000000' },
-        6: { key: 'closed', label: 'Closed', icon: 'ti ti-circle-filled', color: '#000000' },
-        7: { key: 'accepted', label: 'Accepted', icon: 'ti ti-circle-check-filled', color: '#00ff00' },
-        8: { key: 'observe', label: 'Review', icon: 'ti ti-eye', color: '#000000' },
-        9: { key: 'eval', label: 'Evaluation', icon: 'ti ti-circle', color: '#add8e6' },
-        10: { key: 'approval', label: 'Approval', icon: 'ti ti-help', color: '#8cabdb' },
-        11: { key: 'test', label: 'Testing', icon: 'ti ti-help', color: '#ffa500' },
-        12: { key: 'qualif', label: 'Qualification', icon: 'ti ti-circle', color: '#ffa500' },
-        13: { key: 'refused', label: 'Refused', icon: 'ti ti-circle-x', color: '#a72f00' },
-        14: { key: 'canceled', label: 'Canceled', icon: 'ti ti-ban', color: '#000000' }
-    };
 
-    const requesters = computed(() => item.value.team.filter(team => team.role === 'requester'));
-    const observers = computed(() => item.value.team.filter(team => team.role === 'observer'));
-    const assigned = computed(() => item.value.team.filter(team => team.role === 'assigned'));
+    function getDefinition(): AssistanceDefinition<T> {
+        return assistanceDefinitions.get(itemtype) as AssistanceDefinition<T>;
+    }
+
+    const requesters = computed(() => item.value.team.filter(team => team.role === 'requester') as Requester[]);
+    const observers = computed(() => item.value.team.filter(team => team.role === 'observer') as Observer[]);
+    const assigned = computed(() => item.value.team.filter(team => team.role === 'assigned') as Assigned[]);
 
     const isMyItem = computed(() => {
         return item.value.user_recipient.id === session.user_id || requesters.value.some(team => team.id === session.user_id && team.type === 'User');
     });
     const isItemSolvedOrClosed = computed(() => {
-        //TODO combine with ITILStatus class info
-        const solved_closed_statuses = [5, 6];
-        if (itemtype === 'Change') {
-            solved_closed_statuses.push(8, 13, 14);
-        } else if (itemtype === 'Problem') {
-            solved_closed_statuses.push(8);
-        }
-        return solved_closed_statuses.includes(item.value.status.id);
+        const def = getDefinition();
+        return def.solvedStatuses.includes(item.value.status.id) || def.closedStatuses.includes(item.value.status.id);
     });
 
     const isUserAssigned = computed(() => {
@@ -129,7 +289,7 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         if (itemtype === 'Ticket') {
             return session.hasRight(
                 validation_rightname,
-                item.value.type === 1 ? TicketApprovalRights.CREATEINCIDENT : TicketApprovalRights.CREATEREQUEST
+                (item.value as AssistanceSchema<'Ticket'>).type === 1 ? TicketApprovalRights.CREATEINCIDENT : TicketApprovalRights.CREATEREQUEST
             );
         } else {
             return session.hasRight(validation_rightname, BaseRights.CREATE);
@@ -251,35 +411,20 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
     /** The allowed timeline actions minus the main timeline action, which show as the options in the SplitButton dropdown. */
     const extraTimelineActions = computed(() => allowed_timeline_actions.value.length > 1 ? allowed_timeline_actions.value.slice(1) : []);
 
-    const statusIcon = computed(() => statuses[item.value.status.id] ? statuses[item.value.status.id].icon : '');
-    const statusColor = computed(() => statuses[item.value.status.id] ? statuses[item.value.status.id].color : '#000000');
+    const statusIcon = computed(() => AssistanceItemStatusInfo[item.value.status.id] ? AssistanceItemStatusInfo[item.value.status.id].icon : '');
+    const statusColor = computed(() => AssistanceItemStatusInfo[item.value.status.id] ? AssistanceItemStatusInfo[item.value.status.id].color : '#000000');
     const statusOptions = computed(() => {
-        const statusesByItemtype = {
-            'Ticket': [1, 10, 2, 3, 4, 5, 6],
-            'Change': [1, 9, 10, 7, 4, 11, 12, 5, 8, 6, 14, 13],
-            'Problem': [1, 7, 2, 3, 4, 5, 8, 6],
-        };
-        return Object.entries(statuses).filter(([id, _status]) => {
-            return statusesByItemtype[itemtype].includes(parseInt(id));
-        }).map(([id, status]) => {
+        return getDefinition().allStatuses.map(status_id => {
+            const status_info = AssistanceItemStatusInfo[status_id];
             return {
-                key: parseInt(id),
-                label: status.label,
+                key: status_id,
+                label: status_info ? status_info.label : `Status ${status_id}`,
             }
         });
     });
 
     const itemtypeIcon = computed(() => {
-        switch (itemtype) {
-            case 'Ticket':
-                return 'ti ti-alert-circle';
-            case 'Change':
-                return 'ti ti-clipboard-check';
-            case 'Problem':
-                return 'ti ti-alert-triangle';
-            default:
-                return 'ti ti-alert-circle';
-        }
+        return getDefinition().icon;
     });
 
     const urgencyImpactOptions = [
@@ -294,18 +439,8 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         ...urgencyImpactOptions
     ];
 
-    //TODO proper translations/pluralization
     const getTypeName = (count: number) => {
-        switch (itemtype) {
-            case 'Ticket':
-                return count === 1 ? 'Ticket' : 'Tickets';
-            case 'Change':
-                return count === 1 ? 'Change' : 'Changes';
-            case 'Problem':
-                return count === 1 ? 'Problem' : 'Problems';
-            default:
-                return itemtype;
-        }
+        return getDefinition().getLabel(count);
     }
 
     const assistanceLinkTypeLabels = {
@@ -362,16 +497,19 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
                 });
                 const newTimelineItems = [...updated_items, ...costs];
 
-                (updated_items as Array<{type: string, item: object}>).forEach(timeline_item => {
-                    if (timeline_item.type === 'Validation' && timeline_item.item.status.id >= 3) {
+                (updated_items as Array<{type: string, item: TimelineItem}>).forEach(timeline_item => {
+                    if (
+                        timeline_item.type === 'Validation'
+                        && (timeline_item.item as components['schemas']['TicketValidation' | 'ChangeValidation']).status >= 3
+                    ) {
                         newTimelineItems.push({
                             type: 'ValidationAnswer',
                             item: {
                                 approval_id: timeline_item.item.id,
-                                date: timeline_item.item.approval_date,
-                                comment: timeline_item.item.approval_comment,
-                                status: timeline_item.item.status,
-                                user: timeline_item.item.approver
+                                date: (timeline_item.item as components['schemas']['TicketValidation' | 'ChangeValidation']).approval_date,
+                                comment: (timeline_item.item as components['schemas']['TicketValidation' | 'ChangeValidation']).approval_comment,
+                                status: (timeline_item.item as components['schemas']['TicketValidation' | 'ChangeValidation']).status,
+                                user: (timeline_item.item as components['schemas']['TicketValidation' | 'ChangeValidation']).approver
                             }
                         });
                     }
@@ -416,6 +554,7 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
     });
 
     return {
+        getDefinition,
         itemtype,
         item,
         timelineItems,

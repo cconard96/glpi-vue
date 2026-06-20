@@ -1,26 +1,50 @@
 import type { Component, Ref } from "vue";
 import type { components } from "../../data/hlapiv2_schema";
+import { GLPIItem, GLPIItemType } from "@/common/useBaseItem.ts";
 
 export type SchemaName = keyof components['schemas'];
 
-export interface BaseItemDefinition {
-    key: string,
+export interface BaseItemDefinition<T extends GLPIItemType> {
+    key: T,
+    /** @description The module the item definition belongs to. May be used in the future to allow building slim versions of the frontend or disabling modules at runtime. **/
     module: string,
     restEndpoint: string,
     getLabel: (count: number) => string,
     icon: string,
-    rightname: string,
-    main_tab_component: Component,
+    /**
+     * @description The name of the right to check for this item.
+     * Some itemtypes may not have a right name for themselves.
+     * For example, ManualLink items are always linked to a parent item and require the UPDATE permission on the parent.
+     **/
+    rightname: string | null,
+    /** @description The global view permission check method **/
     canView: () => boolean,
+    /** @description The global create permission check method **/
     canCreate: () => boolean,
+    /** @description The global update permission check method **/
     canUpdate: () => boolean,
+    /** @description The global delete permission check method **/
     canDelete: () => boolean,
+    /** @description The global purge permission check method **/
     canPurge: () => boolean,
+    /** @description The global restore permission check method **/
     canRestore: () => boolean,
+    /** @description The item-specific view permission check method. The global view permission check is not done here. **/
+    canViewItem: (item: GLPIItem<T>) => boolean,
+    /** @description The item-specific create permission check method. The global create permission check is not done here. **/
+    canCreateItem: (data: Partial<components['schemas'][T]>) => boolean,
+    /** @description The item-specific update permission check method. The global update permission check is not done here. **/
+    canUpdateItem: (item: GLPIItem<T>) => boolean,
+    /** @description The item-specific delete permission check method. The global delete permission check is not done here. **/
+    canDeleteItem: (item: GLPIItem<T>) => boolean,
+    /** @description The item-specific purge permission check method. The global purge permission check is not done here. **/
+    canPurgeItem: (item: GLPIItem<T>) => boolean,
+    /** @description The item-specific restore permission check method. The global restore permission check is not done here. **/
+    canRestoreItem: (item: GLPIItem<T>) => boolean,
 }
 
-export interface useBaseItem<T extends SchemaName> {
-    getDefinition: () => BaseItemDefinition,
+export interface useBaseItem<T extends GLPIItemType> {
+    getDefinition: () => BaseItemDefinition<T>,
     item: Ref<components['schemas'][T]>,
 }
 

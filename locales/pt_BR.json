@@ -55,7 +55,8 @@
       "just_now": "Just now",
       "seconds_ago": "{count} seconds ago",
       "hours_ago": "{count} hours ago",
-      "days_ago": "{count} days ago"
+      "days_ago": "{count} days ago",
+      "minutes_ago": "{count} minutes ago"
     },
     "date_range": "Date range",
     "close": "Close",
@@ -809,6 +810,24 @@
     "dropdowns": {
       "location": "Location | Locations",
       "network": "Network | Networks"
+    },
+    "slm": {
+      "label": "SLM | SLMs"
+    },
+    "field_unicity": {
+      "label": "Field unicity | Field unicities"
+    },
+    "externallink": {
+      "label": "External link | External links"
+    },
+    "manuallink": {
+      "label": "Manual link | Manual links"
+    },
+    "automaticaction": {
+      "label": "Automatic action | Automatic actions"
+    },
+    "emailcollector": {
+      "label": "Email collector | Email collectors"
     }
   },
   "charts": {
@@ -832,6 +851,28 @@
       "phone": "Phone",
       "phone2": "Phone 2",
       "mobile": "Mobile"
+    }
+  },
+  "knowbase": {
+    "article": {
+      "label": "KB Article | KB Articles"
+    }
+  },
+  "dropdowns": {
+    "location": {
+      "label": "Location | Locations"
+    },
+    "item_status": {
+      "label": "Item status | Item statuses"
+    },
+    "manufacturer": {
+      "label": "Manufacturer | Manufacturers"
+    },
+    "denylist": {
+      "label": "Denylist | Denylists"
+    },
+    "denied_mail_content": {
+      "label": "Denied mail content | Denied mail contents"
     }
   }
 }

@@ -1,12 +1,10 @@
 <script setup lang="ts">
     import { InputText, Listbox, ListboxChangeEvent, Message } from 'primevue';
-    import {computed, onMounted, shallowRef} from "vue";
-    import { useApi } from "@/common/api/useApi";
+    import {computed, shallowRef} from "vue";
     import { useAuth } from "@/common/api/useAuth";
     import { useSessionStore } from "@/common/useSessionStore";
 
-    const { doGraphQLRequest } = useApi();
-    const { active_profile, changeProfile, getValidProfilesForEntity, getActiveEntity, getParentEntities } = useSessionStore();
+    const { active_profile, changeProfile, getValidProfilesForEntity, getActiveEntity } = useSessionStore();
     const nodes = shallowRef([]);
 
     Object.values(getValidProfilesForEntity(getActiveEntity.id)).forEach((profile: any) => {

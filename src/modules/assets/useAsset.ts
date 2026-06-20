@@ -1,12 +1,12 @@
-import { defineAsyncComponent, type Ref, ref } from "vue";
+import { Component, defineAsyncComponent, type Ref, ref } from "vue";
 import { useApi } from "@/common/api/useApi";
-import { useSessionStore, BaseRights } from "@/common/useSessionStore";
 import { type AxiosResponse } from "axios";
-import { BaseItemDefinition, GLPICreateResponseBody, SchemaName, TabDefinition, useBaseItem } from "@/types";
+import { BaseItemDefinition, GLPICreateResponseBody, TabDefinition, useBaseItem } from "@/types";
 import { components } from "../../../data/hlapiv2_schema";
 import { useRouter } from "vue-router";
 import { ToastServiceMethods } from "primevue";
 import { useI18n } from "vue-i18n";
+import { GLPIItem, GLPIItemType, getDefaultRightChecks } from "@/common/useBaseItem.ts";
 
 export enum AssetCapabilities {
     HasType = 'hasType',
@@ -54,23 +54,16 @@ export const AssetCapabilitySets = {
     NetworkingSet: [AssetCapabilities.HasNetworkPorts, AssetCapabilities.HasSockets, AssetCapabilities.HasDomains],
 }
 
-type AssetDefinition = BaseItemDefinition & {
+type AssetDefinition = BaseItemDefinition<AssetType> & {
     capabilities: AssetCapabilities[],
+    /** @description The component to use for rendering this item in the main tab */
+    main_tab_component: Component,
 }
 
-const getDefaultRightChecks = (rightname: string) => {
-    return {
-        canView: () => hasRight(rightname, BaseRights.READ),
-        canCreate: () => hasRight(rightname, BaseRights.CREATE),
-        canUpdate: () => hasRight(rightname, BaseRights.UPDATE),
-        canDelete: () => hasRight(rightname, BaseRights.DELETE),
-        canPurge: () => hasRight(rightname, BaseRights.PURGE),
-        canRestore: () => hasRight(rightname, BaseRights.PURGE),
-    }
-}
+export type AssetType = Extract<GLPIItemType, 'Computer' | 'Monitor' | 'Software' | 'NetworkEquipment' | 'Peripheral' | 'Printer' | 'Cartridge'>;
 
-const builtinAssets: Array<AssetDefinition> = [
-    {
+const builtinAssets: Map<AssetType, AssetDefinition> = new Map([
+    ['Computer', {
         key: 'Computer',
         module: 'assets',
         restEndpoint: 'Assets/Computer',
@@ -91,8 +84,8 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./ComputerForm.vue')),
         ...getDefaultRightChecks('computer'),
-    },
-    {
+    }],
+    ['Monitor', {
         key: 'Monitor',
         module: 'assets',
         restEndpoint: 'Assets/Monitor',
@@ -112,8 +105,8 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./MonitorForm.vue')),
         ...getDefaultRightChecks('monitor'),
-    },
-    {
+    }],
+    ['Software', {
         key: 'Software',
         module: 'assets',
         restEndpoint: 'Assets/Software',
@@ -130,8 +123,8 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./SoftwareForm.vue')),
         ...getDefaultRightChecks('software'),
-    },
-    {
+    }],
+    ['NetworkEquipment', {
         key: 'NetworkEquipment',
         module: 'assets',
         restEndpoint: 'Assets/NetworkEquipment',
@@ -152,8 +145,8 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./NetworkEquipmentForm.vue')),
         ...getDefaultRightChecks('networking'),
-    },
-    {
+    }],
+    ['Peripheral', {
         key: 'Peripheral',
         module: 'assets',
         restEndpoint: 'Assets/Peripheral',
@@ -173,8 +166,8 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./PeripheralForm.vue')),
         ...getDefaultRightChecks('peripheral'),
-    },
-    {
+    }],
+    ['Printer', {
         key: 'Printer',
         module: 'assets',
         restEndpoint: 'Assets/Printer',
@@ -194,8 +187,8 @@ const builtinAssets: Array<AssetDefinition> = [
         ],
         main_tab_component: defineAsyncComponent(() => import('./PrinterForm.vue')),
         ...getDefaultRightChecks('printer'),
-    },
-    {
+    }],
+    ['Cartridge', {
         key: 'Cartridge',
         module: 'assets',
         restEndpoint: 'Assets/Cartridge',
@@ -210,14 +203,12 @@ const builtinAssets: Array<AssetDefinition> = [
         capabilities: [], //TODO
         main_tab_component: defineAsyncComponent(() => import('./CartridgeForm.vue')),
         ...getDefaultRightChecks('cartridge'),
-    }
-];
+    }]
+]);
 
-export type AssetType = keyof components['schemas'] & AssetDefinition['key'];
-type AssetSchema<T extends AssetType> = components['schemas'][T];
+type AssetSchema<T extends AssetType> = GLPIItem<T>;
 
 const { getComponentSchema, doApiRequest, doGraphQLRequest, getCompleteFieldsRequestForSchema } = useApi();
-const { hasRight } = useSessionStore();
 const router = useRouter();
 
 export function loadItem<T extends AssetType>(asset_type: T, id: number, fields: string[] = []): Promise<Ref<AssetSchema<T>>> {
@@ -230,6 +221,7 @@ export function loadItem<T extends AssetType>(asset_type: T, id: number, fields:
                 }
             }
         `).then((response) => {
+            // @ts-ignore
             return ref(response.data[asset_type][0] satisfies AssetSchema<T>);
         });
     });
@@ -264,11 +256,11 @@ export function getEmptyItem<T extends AssetType>(asset_type: T): Promise<Ref<As
     });
 }
 
-export function getDefinition<T extends AssetType>(asset_type: T): AssetDefinition {
-    return builtinAssets.find(asset => asset.key === asset_type);
+export const getDefinition = <T extends AssetType>(asset_type: T): AssetDefinition => {
+    return builtinAssets.get(asset_type);
 }
 
-export function getAllDefinitions(): Array<AssetDefinition> {
+export const getAllDefinitions = (): Map<AssetType, AssetDefinition> => {
     return builtinAssets;
 }
 
@@ -293,10 +285,10 @@ export function useAsset<T extends AssetType>(asset_type: T, item: Ref<component
     canPurgeItem: () => boolean,
     canRestoreItem: () => boolean,
     updateItem: (fields: components['schemas'][T]) => Promise<AxiosResponse>,
-    createOrUpdateItem: (fields: components['schemas'][T], toastService?: ToastServiceMethods, redirectToNewItem?: boolean) => Promise<AxiosResponse>,
+    createOrUpdateItem: (fields: components['schemas'][T], toastService?: ToastServiceMethods, redirectToNewItem?: boolean) => Promise<void | AxiosResponse>,
 } {
     function getDefinition(): AssetDefinition {
-        return builtinAssets.find(asset => asset.key === asset_type);
+        return builtinAssets.get(asset_type);
     }
 
     function hasCapability(capability: AssetCapabilities): boolean {
@@ -483,6 +475,7 @@ export function useAsset<T extends AssetType>(asset_type: T, item: Ref<component
     }
 
     return {
+        // @ts-ignore
         getDefinition,
         hasCapability,
         hasAllCapabilities,

@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 import ApprovalForm from './ApprovalForm.vue';
 import { defaultOptions } from "primevue/config";
-import { setActivePinia, createPinia } from "pinia";
 import { ConfirmationService, ToastService } from "primevue";
 import { useAssistanceItem } from "@/modules/assistance/timeline/useAssistanceItem.ts";
 import { login, renderAsync } from "@tests/utils.ts";
@@ -10,7 +9,6 @@ import { startMockServer, stopMockServer } from '@tests/request-mocks.ts';
 
 beforeEach(async () => {
     await startMockServer();
-    setActivePinia(createPinia());
     await login('jdoe', 0, true, 4);
 });
 
