@@ -38,7 +38,7 @@
             </template>
         </Breadcrumb>
         <div class="content-center">
-            <component v-if="breadcrumbActionsComponent" :is="breadcrumbActionsComponent" :itemtype="itemtype" :items_id="items_id"></component>
+            <component v-if="breadcrumbActionsComponent && itemtype" :is="breadcrumbActionsComponent" :itemtype="itemtype" :items_id="items_id"></component>
         </div>
     </div>
 </template>

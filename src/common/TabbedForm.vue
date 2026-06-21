@@ -1,8 +1,9 @@
 <script setup lang="ts">
     import { Message, ProgressSpinner, Tab, TabList, TabPanels, Tabs } from 'primevue';
     import LazyTabPanel from "@/common/LazyTabPanel.vue";
-    import { ref, useTemplateRef } from "vue";
+    import { computed, useTemplateRef } from "vue";
     import { TabDefinition } from "@/types";
+    import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
 
     const props = defineProps<{
         tabs: TabDefinition[],
@@ -12,10 +13,21 @@
     }>();
 
     const tab_panel_refs = useTemplateRef('tabPanelRefs');
+    const { isMobileScreenSize } = useDeviceCapabilities();
+    const tab_orientation = computed(() => isMobileScreenSize.value ? 'horizontal' : 'vertical');
+    const tablist_pt = computed(() => ({
+        tabList: {
+            class: tab_orientation.value === 'vertical' ? 'flex-col overflow-y-auto max-h-full' : '',
+            'aria-orientation': tab_orientation.value
+        }
+    }));
 
     const main_tab = props.tabs.find(tab => tab.key === 'main') || props.tabs[0];
 
     function onKeyDown(e: KeyboardEvent) {
+        if (isMobileScreenSize.value) {
+            return;
+        }
         if (e.key === 'ArrowUp') {
             e.preventDefault();
             const prev = (e.target as HTMLElement).previousElementSibling as HTMLElement;
@@ -57,8 +69,12 @@
 </script>
 
 <template>
-    <Tabs v-if="tabs.length > 1" :value="main_tab.key" @update:value="$emit('update:value', $event as string)" class="grid grid-cols-[200px_1fr] overflow-hidden" orientation="vertical" lazy>
-        <TabList :pt="{ tabList: {class: 'flex-col overflow-y-auto max-h-full', 'aria-orientation': 'vertical'} }">
+    <Tabs v-if="tabs.length > 1" :value="main_tab.key" @update:value="$emit('update:value', $event as string)"
+          :class="tab_orientation === 'vertical' ? 'grid grid-cols-[200px_1fr] overflow-hidden' : 'min-w-[0]'" :orientation="tab_orientation"
+          :lazy="tab_orientation === 'vertical'"
+          :scrollable="tab_orientation === 'horizontal'"
+    >
+        <TabList :pt="tablist_pt">
             <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">
                 <i v-if="tab.icon" :class="`${tab.icon} me-2`"></i>
                 {{ tab.label }}
