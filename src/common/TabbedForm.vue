@@ -70,7 +70,7 @@
 
 <template>
     <Tabs v-if="tabs.length > 1" :value="main_tab.key" @update:value="$emit('update:value', $event as string)"
-          :class="tab_orientation === 'vertical' ? 'grid grid-cols-[200px_1fr] overflow-hidden' : 'min-w-[0]'" :orientation="tab_orientation"
+          :class="tab_orientation === 'vertical' ? 'grid grid-cols-[200px_1fr] overflow-hidden' : 'min-w-0 grid grid-rows-[auto_1fr] overflow-hidden'" :orientation="tab_orientation"
           :lazy="tab_orientation === 'vertical'"
           :scrollable="tab_orientation === 'horizontal'"
     >
@@ -80,8 +80,8 @@
                 {{ tab.label }}
             </Tab>
         </TabList>
-        <TabPanels class="overflow-auto">
-            <LazyTabPanel v-for="tab in tabs" :key="tab.key" :value="tab.key" class="p-4 w-full" ref="tabPanelRefs">
+        <TabPanels class="overflow-auto" :class="tab_orientation === 'vertical' ? '' : 'px-0'">
+            <LazyTabPanel v-for="tab in tabs" :key="tab.key" :value="tab.key" class="w-full" :class="tab_orientation === 'vertical' ? 'px-4' : ''" ref="tabPanelRefs">
                 <Suspense v-if="tab.component">
                     <component :is="tab.component"/>
                     <template #fallback>
