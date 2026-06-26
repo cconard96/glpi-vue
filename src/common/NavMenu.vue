@@ -67,12 +67,26 @@
                     </a>
                 </template>
             </PanelMenu>
-            <Menubar v-else :model="visibleItems" :pt="{
+            <Menubar v-else :model="visibleItems" class="static" :pt="{
                 rootlist: {
-                    'class': 'justify-self-start z-1000 w-auto max-w-screen'
+                    'class': 'w-auto max-w-screen top-[55px] left-[14px]'
                 },
                 root: { class: 'p-2' },
-            }"></Menubar>
+            }">
+                <template #item="{ item }" :key="item.key ?? item.label.toLowerCase()">
+                    <RouterLink v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom class="w-full">
+                        <a class="flex items-center cursor-pointer px-4 py-2" :href="href" @click="navigate">
+                            <span :class="item.icon" />
+                            <span class="ml-2">{{ item.label }}</span>
+                        </a>
+                    </RouterLink>
+                    <a v-else class="flex items-center cursor-pointer px-4 py-2" :href="item.url" :target="item.target">
+                        <span :class="item.icon" />
+                        <span class="ml-2">{{ item.label }}</span>
+                        <span v-if="item.items" class="ti ti-chevron-down text-primary ml-auto" />
+                    </a>
+                </template>
+            </Menubar>
         </div>
     </nav>
 </template>

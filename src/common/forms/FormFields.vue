@@ -1,11 +1,20 @@
 <script setup lang="ts">
     import { computed } from "vue";
+    import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
 
     const props = defineProps<{
         columns?: number;
     }>();
 
+    const { isMobileScreenSize } = useDeviceCapabilities();
     const defaultColumnCount = 2;
+
+    const currentColumnCount = computed(() => {
+        if (isMobileScreenSize.value) {
+            return 1;
+        }
+        return props.columns ?? defaultColumnCount;
+    });
 
     /**
      * Tailwind classes for the form fields container. Adjusts the layout based on the number of columns specified in props.
@@ -13,7 +22,7 @@
      * This will be used in place of the current hardcoded classes in the template to allow for dynamic column counts and easier maintenance.
      */
     const styleClasses = computed(() => {
-        const columnCount = props.columns ?? defaultColumnCount;
+        const columnCount = currentColumnCount.value;
         const baseClasses = [
             "gap-y-4",
             "grid",

@@ -30,20 +30,22 @@
 </script>
 
 <template>
-    <Card class="mx-auto mt-10 w-fit min-w-64" v-focustrap>
-        <template #title>
-            <h1 class="text-center text-4xl mb-4" v-text="brandName"></h1>
-        </template>
-        <template #content>
-            <div class="w-100 text-center">
-                <Message v-if="$route.query.error" class="mb-4" severity="error" variant="outlined">
-                    {{ error_message }}
-                </Message>
-                <Button :label="$t('login.button.login', 'Login')" severity="primary" @click="authorize"/>
-    <!--            <Button label="Continue as guest" class="w-full" severity="secondary" @click="router.push('/')"/>-->
-            </div>
-        </template>
-    </Card>
+    <div class="h-screen pt-10">
+        <Card class="mx-auto w-fit min-w-64" v-focustrap>
+            <template #title>
+                <h1 class="text-center text-4xl mb-4" v-text="brandName"></h1>
+            </template>
+            <template #content>
+                <div class="w-100 text-center">
+                    <Message v-if="$route.query.error" class="mb-4" severity="error" variant="outlined">
+                        {{ error_message }}
+                    </Message>
+                    <Button :label="$t('login.button.login', 'Login')" severity="primary" @click="authorize"/>
+        <!--            <Button label="Continue as guest" class="w-full" severity="secondary" @click="router.push('/')"/>-->
+                </div>
+            </template>
+        </Card>
+    </div>
 </template>
 
 <style scoped>
