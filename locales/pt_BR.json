@@ -703,7 +703,9 @@
     "knowbase": {
       "label": "Knowledge base",
       "search_kb": "Search KB",
-      "save_to_kb": "Save to KB"
+      "save_to_kb": "Save to KB",
+      "add_article": "Add article",
+      "add_category": "Add category"
     },
     "reservation": {
       "label": "Reservation | Reservations"
@@ -883,5 +885,9 @@
     "denied_mail_content": {
       "label": "Denied mail content | Denied mail contents"
     }
+  },
+  "comment": {
+    "reply": "Reply...",
+    "no_comments": "No comments yet."
   }
 }
