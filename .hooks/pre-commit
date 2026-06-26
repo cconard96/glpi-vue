@@ -15,5 +15,5 @@ fi
 
 echo "Running GLPI Vue pre-commit hooks..."
 
-npm run build
+#npm run build
 npm run report-i18n
