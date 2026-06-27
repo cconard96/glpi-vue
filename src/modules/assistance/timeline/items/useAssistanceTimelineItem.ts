@@ -29,12 +29,11 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
     const toast = useToast();
     const confirm = useConfirm();
     const { doApiRequest } = useApi();
+    const { t: $t } = useI18n();
     const assistanceItemInstance: ReturnType<typeof useAssistanceItem>|null = inject('assistanceItemInstance', null);
     const editMode = ref(false);
 
-    //TODO proper translations/pluralization
     function getTypeName(count: number) {
-        const { t: $t } = useI18n();
         switch (itemtype) {
             case 'content':
                 return $t('assistance.timeline.content');
@@ -75,26 +74,38 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
      * If undefined, the itemtype from the provided assistanceItemInstance will be used.
      * @param parentID The ID of the parent item.
      * If undefined, the ID from the provided assistanceItemInstance will be used.
+     * @param useItemID If true, the returned endpoint will include the ID of the current timeline item. If false, it will return the base endpoint for the timeline item type.
      */
-    function getRESTEndpoint(parentItemtype: string = undefined, parentID: number = undefined) {
+    function getRESTEndpoint(parentItemtype: string = undefined, parentID: number = undefined, useItemID: boolean = true) {
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
+        let baseRESTEndpoint = '';
         switch (itemtype) {
             case 'Followup':
-                return `/Assistance/${parentItemtype}/${parentID}/Timeline/Followup`;
+                baseRESTEndpoint = `/Assistance/${parentItemtype}/${parentID}/Timeline/Followup`;
+                break;
             case 'Task':
-                return `/Assistance/${parentItemtype}/${parentID}/Timeline/Task`;
+                baseRESTEndpoint = `/Assistance/${parentItemtype}/${parentID}/Timeline/Task`;
+                break;
             case 'Solution':
-                return `/Assistance/${parentItemtype}/${parentID}/Timeline/Solution`;
+                baseRESTEndpoint = `/Assistance/${parentItemtype}/${parentID}/Timeline/Solution`;
+                break;
             case 'Document':
-                return `/Assistance/${parentItemtype}/${parentID}/Timeline/Document`;
+                baseRESTEndpoint = `/Assistance/${parentItemtype}/${parentID}/Timeline/Document`;
+                break;
             case 'Cost':
-                return `/Assistance/${parentItemtype}/${parentID}/Cost`;
+                baseRESTEndpoint = `/Assistance/${parentItemtype}/${parentID}/Cost`;
+                break;
             case 'Validation':
             case 'ValidationAnswer':
                 // approval requests and their answers are part of the same item. For display purposes, they show as separate items in the timeline.
-                return `/Assistance/${parentItemtype}/${parentID}/Timeline/Validation`;
+                baseRESTEndpoint = `/Assistance/${parentItemtype}/${parentID}/Timeline/Validation`;
+                break;
         }
+        if (useItemID && 'id' in item.value && item.value.id > 0) {
+            return `${baseRESTEndpoint}/${item.value.id}`;
+        }
+        return baseRESTEndpoint;
     }
 
     const itemBackgroundColor = computed(() => {
@@ -170,8 +181,6 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
 
-        const { t: $t } = useI18n();
-
         if (itemtype === 'content') {
             // not a real timeline item, but rather a representation of the ticket/change/problem description.
             return;
@@ -201,7 +210,7 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
                     });
                 }
 
-                doApiRequest(`${getRESTEndpoint(parentItemtype, parentID)}/${(item.value as Exclude<AssistanceTimelineItem, ContentItem>).id}`, {
+                doApiRequest(getRESTEndpoint(parentItemtype, parentID), {
                     method: 'DELETE'
                 }).catch(() => {
                     toast.add({
@@ -234,8 +243,6 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
 
-        const { t: $t } = useI18n();
-
         if (itemtype === 'content') {
             return;
         }
@@ -247,7 +254,7 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
             });
         }
 
-        return doApiRequest(getRESTEndpoint(parentItemtype, parentID), {
+        return doApiRequest(getRESTEndpoint(parentItemtype, parentID, false), {
             method: 'POST',
             data: itemData,
         }).catch(() => {
@@ -279,8 +286,6 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
         parentItemtype ??= assistanceItemInstance?.itemtype;
         parentID ??= assistanceItemInstance?.item.value.id;
 
-        const { t: $t } = useI18n();
-
         if (itemtype === 'content') {
             return;
         }
@@ -297,7 +302,7 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
             }
         }
 
-        return doApiRequest(`${getRESTEndpoint(parentItemtype, parentID)}/${item.value.id}`, {
+        return doApiRequest(getRESTEndpoint(parentItemtype, parentID), {
             method: 'PATCH',
             data: itemData,
         }).catch(() => {
@@ -318,7 +323,6 @@ export function useAssistanceTimelineItem(itemtype: AssistanceTimelineItemtype, 
 
     const actionsMenuOptions = computed(() => {
         const options = [];
-        const { t: $t } = useI18n();
 
         if (['Followup', 'Task', 'Solution', 'Document', 'Cost', 'Validation'].includes(itemtype)) {
             options.push({key: 'edit', label: $t('common.edit', 'Edit'), icon: 'ti ti-pencil', command: () => { editMode.value = true }});

@@ -47,7 +47,7 @@
                 <Button variant="link" size="small" class="p-0 text-inherit font-bold" @click="scrollToOriginalRequest">{{ $t('assistance.approval.original_request', 'Original request') }}</Button>
                 <div :class="item.status === 3 ? 'text-green-700' : 'text-red-700'">
                     {{ $t('assistance.approval.request_answer_status', {
-                        status: item.status === 3 ? '@:assistance.approval.status.approved' : '@:assistance.approval.status.refused'
+                        status: item.status === 3 ? $t('assistance.approval.status.approved', 'Approved') : $t('assistance.approval.status.refused', 'Refused')
                     }, 'Approval request answer: {status}') }}
                 </div>
                 <div v-dompurify-html="item.comment"></div>

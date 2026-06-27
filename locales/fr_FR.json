@@ -655,6 +655,10 @@
       "action": {
         "refuse": "Refuse",
         "approve": "Approve"
+      },
+      "status": {
+        "approved": "Approved",
+        "refused": "Refused"
       }
     },
     "timeline": {
