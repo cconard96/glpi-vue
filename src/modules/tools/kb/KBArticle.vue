@@ -38,7 +38,7 @@
             const article_data = res.data.KBArticle[0];
             article.value = article_data;
             article.value.name = ref(article_data.name);
-            article.value.content = ref(article_data.content);
+            article.value.content = ref(article_data.content ?? '');
             loading.value = false;
             document.title = `KB Article - ${article.value.name}`;
             replaceRoute({ path: '/tools/knowbase/' + article.value.id });
@@ -76,18 +76,18 @@
 </script>
 
 <template>
-    <div :class="`grid h-full ${comments_opened ? 'grid-cols-[1fr_250px]' : ''}`">
-        <Card v-if="!loading && article" role="article" class="h-full overflow-hidden" :pt="{ body: { class: 'overflow-auto' } }">
+    <div :class="`grid h-full gap-2 ${comments_opened ? 'grid-cols-[1fr_250px]' : ''}`">
+        <Card v-if="!loading && article" role="article" class="h-full overflow-hidden rounded-none" :pt="{ body: { class: 'overflow-auto py-0' } }">
             <template #header>
                 <div v-if="hasRight('knowbase', 2)" class="flex justify-end p-4 gap-2">
-                    <Button icon="ti ti-share" label="Share" severity="secondary"
+                    <Button icon="ti ti-share" label="Share" severity="secondary" size="small"
                             @click="toggleShareOptions" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                     <Popover ref="share_popover">
                         Share options (not implemented)
                     </Popover>
-                    <Button :icon="edit_mode ? 'ti ti-device-floppy' : 'ti ti-edit'" :label="edit_mode ? 'Save' : 'Edit'" @click="edit_mode = !edit_mode"></Button>
-                    <Divider layout="vertical"></Divider>
-                    <Button icon="ti ti-dots-vertical" title="More actions" variant="outlined"
+                    <Button :icon="edit_mode ? 'ti ti-device-floppy' : 'ti ti-edit'" size="small" :label="edit_mode ? 'Save' : 'Edit'" @click="edit_mode = !edit_mode"></Button>
+                    <Divider layout="vertical" class="mx-2"></Divider>
+                    <Button icon="ti ti-dots-vertical" size="small" title="More actions" variant="outlined"
                             @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
                     <Menu ref="actions_menu" popup :model="[
                         { key: 'show_comments', label: 'Show comments', icon: 'ti ti-messages', command: () => { comments_opened = !comments_opened } }
@@ -112,7 +112,10 @@
                         {{ formatDate(article.date_mod, { year: 'numeric', month: 'long', day: 'numeric' }) }}
                     </time>
                     <span class="mx-2">|</span>
-                    <span>{{ article.views }} Views</span>
+                    <span>
+                        <i class="ti ti-eye align-text-bottom" aria-hidden="true"></i>
+                        {{ article.views }} Views
+                    </span>
                 </div>
             </template>
             <template #content>
@@ -125,7 +128,7 @@
         <div v-else-if="loading" class="flex justify-center items-center h-64">
             <ProgressSpinner />
         </div>
-        <CommentsPanel v-if="comments_opened" :article="article" ref="comments_panel"></CommentsPanel>
+        <CommentsPanel v-if="comments_opened" :article="article" ref="comments_panel" @close="comments_opened = false"></CommentsPanel>
     </div>
 </template>
 

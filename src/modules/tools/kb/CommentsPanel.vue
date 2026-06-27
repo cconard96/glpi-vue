@@ -1,16 +1,21 @@
 <script setup lang="ts">
-    import { Card, InputText, Tree, type TreeNode } from "primevue";
+    import { Card, InputText, Tree, Button } from "primevue";
     import { useDataHelper } from "@/common/useDataHelper.ts";
-    import { onMounted, ref } from "vue";
+    import { nextTick, onMounted, ref, useTemplateRef } from "vue";
     import { useApi } from "@/common/api/useApi.ts";
     import { components } from "../../../../data/hlapiv2_schema";
+    import ActorAvatar from "@/common/actor/ActorAvatar.vue";
 
     const props = defineProps<{
         article: components['schemas']['KBArticle']
     }>();
+    defineEmits<{
+        (e: 'close'): void
+    }>();
 
     const { formatUsername, formatDate } = useDataHelper();
     const { doGraphQLRequest } = useApi();
+    const comments_panel = useTemplateRef('comments_panel');
     const comment_expanded_keys = ref(new Map<string, boolean>());
     const comments = ref([]);
 
@@ -47,35 +52,55 @@
             });
             comments.value = comment_tree;
         });
+        comments_panel.value.focus();
     });
 </script>
 
 <template>
-    <Card class="h-full overflow-hidden" role="complementary" aria-label="Comments"
-          :pt="{ body: { class: 'h-full' }, content: { class: 'overflow-auto grow-1' } }">
-        <template #content>
-            <Tree :value="comments" :expandedKeys="comment_expanded_keys">
-                <template #default="{node}">
-                    <Card>
-                        <template #title>
-                            <span v-text="formatUsername(node.user)"></span>
+    <div ref="comments_panel" tabindex="0" role="complementary" aria-label="Comments">
+        <Card class="h-full overflow-hidden rounded-none"
+              :pt="{ body: { class: 'p-2 grow' }, content: { class: 'overflow-auto grow-1 px-2' } }">
+            <template #header>
+                <div class="flex flex-row-reverse px-2">
+                    <Button icon="ti ti-x" severity="secondary" variant="text" size="small" @click="$emit('close')"></Button>
+                </div>
+            </template>
+            <template #content>
+                <div class="grid grid-rows-[auto_1fr] h-full">
+                    <InputText placeholder="Add a comment..." fluid></InputText>
+                    <Tree :value="comments" :expandedKeys="comment_expanded_keys" class="p-0" :class="comments.length === 0 ? 'h-full flex items-center justify-center' : ''">
+                        <template #empty>
+                            <div>
+                                <span v-text="$t('comment.no_comments', 'No comments yet.')"></span>
+                            </div>
                         </template>
-                        <template #subtitle>
-                            <time :datetime="new Date(node.date_creation).toISOString()">
-                                {{ formatDate(node.date_creation, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
-                            </time>
+                        <template #nodetoggleicon="{ node, expanded }">
+                            <i class="ti" :class="expanded ? 'ti-chevron-down' : 'ti-chevron-right'"></i>
                         </template>
-                        <template #content>
-                            <span class="ms-2" v-text="node.comment"></span>
+                        <template #default="{node}">
+                            <div class="hover:[&>button]:block">
+                                <Card class="bg-surface-200 dark:bg-surface-700" :pt="{ body: { class: 'p-2 gap-1' }, caption: { class: 'gap-1' } }">
+                                    <template #title>
+                                        <ActorAvatar actor_type="User" :actor_data="node.user" size="small"></ActorAvatar>
+                                        <span class="text-base" v-text="formatUsername(node.user)"></span>
+                                    </template>
+                                    <template #subtitle>
+                                        <time class="text-sm" :datetime="new Date(node.date_creation).toISOString()">
+                                            {{ formatDate(node.date_creation, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
+                                        </time>
+                                    </template>
+                                    <template #content>
+                                        <span class="text-base" v-text="node.comment"></span>
+                                    </template>
+                                </Card>
+                                <Button class="hidden [@media(hover:none)]:block" :label="$t('comment.reply', 'Reply...')" variant="text" size="small"></Button>
+                            </div>
                         </template>
-                    </Card>
-                </template>
-            </Tree>
-        </template>
-        <template #footer>
-            <InputText placeholder="Add a comment..." fluid></InputText>
-        </template>
-    </Card>
+                    </Tree>
+                </div>
+            </template>
+        </Card>
+    </div>
 </template>
 
 <style scoped>
