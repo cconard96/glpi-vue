@@ -2,6 +2,7 @@ import { useApi } from '@/common/api/useApi.ts';
 import { defineAsyncComponent } from "vue";
 import { RouteLocationNormalizedGeneric, RouteRecordRaw } from "vue-router";
 import { i18n } from "./i18n.ts"
+import { useSessionStore } from "@/common/useSessionStore.ts";
 
 function normalizeItemtype<T extends string>(itemtype: T): Capitalize<T> {
     return (itemtype.charAt(0).toUpperCase() + itemtype.slice(1)) as Capitalize<T>;
@@ -56,7 +57,7 @@ export const routes: RouteRecordRaw[] = [
         path: '/',
         component: () => import('@/views/HomeView.vue'),
         children: [
-            { name: 'Central', path: '/', component: () => import('@/modules/home/CentralView.vue'), props: true },
+            { name: 'Homepage', path: '/', component: () => import('@/modules/home/Homepage.vue'), props: true },
             { name: 'ServiceCatalog', path: '/ServiceCatalog', component: () => import('@/modules/home/ServiceCatalogView.vue'), props: true },
             {
                 name: 'Search',

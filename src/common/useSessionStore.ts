@@ -296,7 +296,31 @@ export const useSessionStore = defineStore('session', {
             return _hasEntityAccessForItem;
         }
     },
-    persist: true,
+    persist: {
+        storage: localStorage,
+        serializer: {
+            serialize: (state) => {
+                const maps = ['entityParentMapCache', 'entityChildMapCache'];
+                const stateToSerialize = { ...state };
+                for (const mapKey of maps) {
+                    if (stateToSerialize[mapKey]) {
+                        stateToSerialize[mapKey] = Array.from(stateToSerialize[mapKey].entries());
+                    }
+                }
+                return JSON.stringify(stateToSerialize);
+            },
+            deserialize: (state) => {
+                const maps = ['entityParentMapCache', 'entityChildMapCache'];
+                const parsedState = JSON.parse(state);
+                for (const mapKey of maps) {
+                    if (parsedState[mapKey]) {
+                        parsedState[mapKey] = new Map(parsedState[mapKey]);
+                    }
+                }
+                return parsedState;
+            }
+        }
+    },
 });
 
 // declare ts constants for rights
