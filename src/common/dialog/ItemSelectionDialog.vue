@@ -2,13 +2,13 @@
     import type { SelectProps, InputTextProps, ListboxProps } from "primevue";
     import { Select, InputText, Listbox, Chip, Button } from "primevue";
     import { components } from "../../../data/hlapiv2_schema";
-    import { inject, type Ref, ref, watch } from "vue";
+    import { inject, type Ref, ref, toRaw, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
     import { useApi } from "@/common/api/useApi.ts";
     import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
 
-    defineEmits<{
-        (e: 'save', value: Record<keyof components['schemas'], { id: string; name: string }[]>): void;
+    const emit = defineEmits<{
+        (e: 'save', addedItems: Record<keyof components['schemas'], { id: string; name: string }[]>, removedItems: Record<keyof components['schemas'], { id: string; name: string }[]>): void;
     }>();
 
     const { doGraphQLRequest } = useApi();
@@ -20,6 +20,7 @@
         resultsListboxProps?: ListboxProps,
         searchResultLimit?: number,
     };
+    const originalSelectedItems = JSON.parse(JSON.stringify(toRaw(selectedItems))) as Record<keyof components['schemas'], { id: string; name: string }[]>;
     const selectedItemtype = ref(null);
     const searchTerm = ref('');
     const results = ref([]);
@@ -50,10 +51,24 @@
 
     function selectResult(id) {
         const item = results.value.find(r => r.id === id);
-        console.log(id, item);
         if (item && !selectedItems[selectedItemtype.value].some(i => i.id === id)) {
             selectedItems[selectedItemtype.value].push(item);
         }
+    }
+
+    function save() {
+        const addedItems: Record<string, { id: string; name: string }[]> = {};
+        const removedItems: Record<string, { id: string; name: string }[]> = {};
+
+        for (const itemtype of allowedItemtypes) {
+            const original = originalSelectedItems[itemtype] || [];
+            const current = selectedItems[itemtype] || [];
+
+            addedItems[itemtype] = current.filter(i => !original.some(o => o.id === i.id));
+            removedItems[itemtype] = original.filter(o => !current.some(i => i.id === o.id));
+        }
+
+        emit('save', addedItems, removedItems);
     }
 </script>
 
@@ -73,7 +88,7 @@
             </template>
         </div>
         <div class="flex justify-end">
-            <Button :label="$t('button.save', 'Save')" class="mt-2" @click="$emit('save', selectedItems)"></Button>
+            <Button :label="$t('button.save', 'Save')" class="mt-2" @click="save"></Button>
         </div>
     </div>
 </template>

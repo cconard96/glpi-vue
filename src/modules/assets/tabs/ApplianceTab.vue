@@ -5,7 +5,7 @@
     import { type useAsset } from "@/modules/assets/useAsset.js";
     import { useI18n } from "vue-i18n";
 
-    const { doGraphQLRequest } = useApi();
+    const { doGraphQLRequest, doApiRequest } = useApi();
     const dialog = useDialog();
     const toast = useToast();
     const { t: $t } = useI18n();
@@ -13,7 +13,11 @@
     const mainItem: ReturnType<typeof useAsset> = inject('mainItem');
 
     onMounted(() => {
-        doGraphQLRequest(`
+        loadRelations();
+    });
+
+    async function loadRelations() {
+        return doGraphQLRequest(`
             query {
                 Appliance_Item(filter: "itemtype==${mainItem.getDefinition().key};items_id==${mainItem.item.value.id}") {
                     id itemtype items_id
@@ -27,9 +31,9 @@
         `).then((res) => {
             appliance_info.value = res.data.Appliance_Item;
         });
-    });
+    }
 
-    function openAddRelationDialog(usedRelationsData: { environment: any[]; domain: any[]; location: any[]; network: any[]; }) {
+    function openAddRelationDialog(usedRelationsData: { appliance: {id: number}, environment: any[]; domain: any[]; location: any[]; network: any[]; }) {
         const relationDialog = dialog.open(defineAsyncComponent(() => import('@/common/dialog/ItemSelectionDialog.vue')), {
             props: {
                 header: $t('management.appliance.addRelation', 'Add Relation'),
@@ -50,14 +54,53 @@
                 },
             },
             emits: {
-                onSave: ({ selectedRelations }) => {
-                    toast.add({
-                        severity: 'info',
-                        summary: 'Not implemented',
-                        detail: 'This action is not implemented yet.',
-                        life: 5000,
-                    });
+                onSave: async (addedItems, removedItems) => {
+                    const endpoint = `/Assets/${mainItem.getDefinition().key}/${mainItem.item.value.id}/Appliance/${usedRelationsData.appliance.id}`;
+
+                    const apiRequests = [];
+                    let failureCount = 0;
+                    for (const [itemtype, items] of Object.entries(addedItems)) {
+                        const api_itemtype = itemtype === 'ApplianceEnvironment' ? 'Environment' : itemtype;
+                        for (const item of items) {
+                            apiRequests.push(doApiRequest(`${endpoint}/${api_itemtype}/${item.id}`, {
+                                method: 'POST',
+                            }).catch(() => {
+                                failureCount++;
+                            }));
+                        }
+                    }
+
+                    for (const [itemtype, items] of Object.entries(removedItems)) {
+                        const api_itemtype = itemtype === 'ApplianceEnvironment' ? 'Environment' : itemtype;
+                        for (const item of items) {
+                            apiRequests.push(doApiRequest(`${endpoint}/${api_itemtype}/${item.id}`, {
+                                method: 'DELETE',
+                            }).catch(() => {
+                                failureCount++;
+                            }));
+                        }
+                    }
+
                     relationDialog.close();
+
+                    await Promise.all(apiRequests);
+
+                    await loadRelations();
+                    if (failureCount > 0) {
+                        toast.add({
+                            severity: 'error',
+                            summary: $t('common.error.error', 'Error'),
+                            detail: $t('management.appliance.relationUpdateFailed', 'Failed to update some relations.'),
+                            life: 5000,
+                        });
+                    } else {
+                        toast.add({
+                            severity: 'success',
+                            summary: $t('common.success.success', 'Success'),
+                            detail: $t('management.appliance.relationUpdateSuccess', 'Relations updated successfully.'),
+                            life: 3000,
+                        });
+                    }
                 }
             }
         });

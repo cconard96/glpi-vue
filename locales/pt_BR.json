@@ -73,7 +73,10 @@
     "edit": "Edit",
     "actions": "Actions",
     "uploaded": "Uploaded {dateTime}",
-    "select_items_to_link": "Select items to link"
+    "select_items_to_link": "Select items to link",
+    "success": {
+      "success": "Success"
+    }
   },
   "search": {
     "placeholder": "Search",
@@ -519,7 +522,9 @@
     "appliance": {
       "addRelation": "Add Relation",
       "label": "Appliance | Appliances",
-      "selectRelationType": "Select relation type"
+      "selectRelationType": "Select relation type",
+      "relationUpdateFailed": "Failed to update some relations.",
+      "relationUpdateSuccess": "Relations updated successfully."
     },
     "menu_label": "Management",
     "license": {
