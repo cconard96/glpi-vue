@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {ProgressSpinner, Tree} from 'primevue';
+    import {ProgressSpinner, Tree, Button} from 'primevue';
     import type { TreeNode } from 'primevue/treenode';
     import { useApi } from '@/common/api/useApi.ts';
     import {ref, onMounted} from "vue";
@@ -20,7 +20,7 @@
         document.title = $t('tools.knowbase.label', 'Knowledge base');
     });
 
-    await doGraphQLRequest(`query { KBCategory { id name parent { id name } } KBArticle { id name categories { id } } }`).then((res) => {
+    await doGraphQLRequest(`query { KBCategory { id name parent { id } } KBArticle { id name categories { id } } }`, {}, 'cache-first').then((res) => {
         const categories = res.data.KBCategory;
         const articles = res.data.KBArticle;
         // Build category tree
@@ -73,16 +73,26 @@
 </script>
 
 <template>
-    <div class="grid grid-cols-[250px_1fr] gap-4 overflow-hidden">
-        <Tree :value="articles_list" @nodeSelect="loadArticle" selectionMode="single">
-            <template #nodetoggleicon="{ node, expanded }">
+    <div class="grid grid-cols-[250px_1fr] gap-2 overflow-hidden">
+        <Tree :value="articles_list" @nodeSelect="loadArticle" selectionMode="single" :pt="{nodeContent: {class: 'group p-0'}}">
+            <template #nodetoggleicon="{ expanded }">
                 <i class="ti" :class="expanded ? 'ti-chevron-down' : 'ti-chevron-right'"></i>
             </template>
             <template #default="{node}">
-                <span v-if="node.children" class="ms-2">{{ node.label }}</span>
-                <RouterLink v-else :to="{ params: { article_id: node.key } }" class="no-underline text-inherit">
-                    {{ node.label }}
-                </RouterLink>
+                <div class="flex gap-2 items-center">
+                    <span v-if="node.children" class="ms-2">{{ node.label }}</span>
+                    <RouterLink v-else :to="{ params: { article_id: node.key } }" class="no-underline text-inherit">
+                        {{ node.label }}
+                    </RouterLink>
+                    <Button variant="text" size="small" class="invisible group-hover:visible p-1 w-auto" icon="ti ti-file-plus"
+                            :title="$t('tools.knowbase.add_article', 'Add article')"
+                            :aria-label="$t('tools.knowbase.add_article', 'Add article')"
+                    ></Button>
+                    <Button variant="text" size="small" class="invisible group-hover:visible p-1 w-auto" icon="ti ti-folder-plus"
+                            :title="$t('tools.knowbase.add_category', 'Add category')"
+                            :aria-label="$t('tools.knowbase.add_category', 'Add category')"
+                    ></Button>
+                </div>
             </template>
         </Tree>
         <div class="overflow-hidden">
