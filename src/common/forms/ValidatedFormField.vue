@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="P extends Record<string, any>">
-    import { FormField } from "@primevue/forms";
-    import { Checkbox, Message } from "primevue";
+    import { FormField } from "@cjdevstudios/bumblevue-forms";
+    import { Checkbox, Message } from "@cjdevstudios/bumblevue";
     import { type Component, computed, inject } from "vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
 

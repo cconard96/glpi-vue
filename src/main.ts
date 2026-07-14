@@ -1,19 +1,19 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { routes } from '@/common/util/routes.ts';
-import PrimeVue from 'primevue/config';
-import Lara from '@primeuix/themes/lara';
+import BumbleVue from '@cjdevstudios/bumblevue/config';
+import Lara from '@cjdevstudios/bumbleuix-themes/lara';
 import '@/main.css';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import FocusTrap from 'primevue/focustrap';
+import FocusTrap from '@cjdevstudios/bumblevue/focustrap';
 import {createRouter, createWebHistory} from "vue-router";
 import {useAuth} from "@/common/api/useAuth.ts";
 import VueDOMPurifyHTML from 'vue-dompurify-html';
-import { ConfirmationService, DialogService, ToastService } from "primevue";
-import {definePreset} from "@primeuix/themes";
+import { ConfirmationService, DialogService, ToastService } from "@cjdevstudios/bumblevue";
+import {definePreset} from "@cjdevstudios/bumbleuix-themes";
 import { all } from 'primelocale';
-import { Tooltip } from "primevue";
+import { Tooltip } from "@cjdevstudios/bumblevue";
 import { i18n } from "@/common/util/i18n.ts";
 import { primeVuePassthrough } from "@/common/util/primeVuePassthrough.ts";
 
@@ -61,15 +61,15 @@ const theme_preset = definePreset(Lara, {});
 createApp(App)
     .use(router)
     .use(pinia)
-    .use(PrimeVue, {
+    .use(BumbleVue, {
         theme: {
             preset: theme_preset,
             options: {
                 prefix: 'p',
                 darkModeSelector: 'system',
                 cssLayer: {
-                    name: 'primevue',
-                    order: 'theme, base, primevue'
+                    name: 'bumblevue',
+                    order: 'theme, base, bumblevue'
                 },
             },
         },

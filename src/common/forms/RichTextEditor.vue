@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import FileUpload from "./FileUpload.vue";
-    import Editor from "primevue/editor";
+    import Editor from "@cjdevstudios/bumblevue/editor";
     import { inject } from "vue";
 
     defineProps({

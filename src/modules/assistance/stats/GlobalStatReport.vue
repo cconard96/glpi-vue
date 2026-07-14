@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { FloatLabel, DatePicker } from 'primevue';
+    import { FloatLabel, DatePicker } from '@cjdevstudios/bumblevue';
     import Chart from "@/common/charts/Chart.vue";
 
     const {selected_report, report_data} = defineProps<{

@@ -1,5 +1,5 @@
 import { components } from "../../../../../data/hlapiv2_schema";
-import { useConfirm, useToast } from "primevue";
+import { useConfirm, useToast } from "@cjdevstudios/bumblevue";
 import { useApi } from "@/common/api/useApi";
 import type { useAssistanceItem } from "@/modules/assistance/timeline/useAssistanceItem";
 import { computed, defineAsyncComponent, inject, ref, Ref } from "vue";

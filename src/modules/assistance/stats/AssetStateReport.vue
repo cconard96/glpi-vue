@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {DatePicker, FloatLabel, DataTable, Column} from "primevue";
+    import {DatePicker, FloatLabel, DataTable, Column} from "@cjdevstudios/bumblevue";
     import {computed} from "vue";
     import {useApi} from "@/common/api/useApi";
     import { useI18n } from "vue-i18n";

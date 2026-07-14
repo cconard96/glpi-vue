@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Message, TreeSelect, Button, Tree } from 'primevue';
+    import { Message, TreeSelect, Button, Tree } from '@cjdevstudios/bumblevue';
     import {computed, onMounted, ref, shallowRef, watch} from "vue";
     import { useApi } from "@/common/api/useApi";
     import { useAuth } from "@/common/api/useAuth";

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "tailwindcss-primeui";
+@import "@cjdevstudios/tailwindcss-bumblevue";
 @import 'lib/tabler-icons/tabler-icons.min.css';
 
 html {

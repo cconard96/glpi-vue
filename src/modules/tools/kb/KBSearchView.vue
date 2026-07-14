@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import {ProgressSpinner, Tree} from 'primevue';
-    import type { TreeNode } from 'primevue/treenode';
+    import {ProgressSpinner, Tree} from '@cjdevstudios/bumblevue';
+    import type { TreeNode } from '@cjdevstudios/bumblevue/treenode';
     import { useApi } from '@/common/api/useApi.ts';
     import {ref, onMounted} from "vue";
     import KBArticle from "./KBArticle.vue";
@@ -74,7 +74,7 @@
 
 <template>
     <div class="grid grid-cols-[250px_1fr] gap-4 overflow-hidden">
-        <Tree :value="articles_list" @nodeSelect="loadArticle" selectionMode="single">
+        <Tree :value="articles_list" @nodeSelect="loadArticle" selectionMode="single" class="overflow-y-auto">
             <template #nodetoggleicon="{ node, expanded }">
                 <i class="ti" :class="expanded ? 'ti-chevron-down' : 'ti-chevron-right'"></i>
             </template>

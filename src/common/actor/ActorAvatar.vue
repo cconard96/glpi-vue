@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Avatar, Popover } from 'primevue';
+    import { Avatar, Popover } from '@cjdevstudios/bumblevue';
     import {computed, useTemplateRef} from "vue";
     import ActorInfoCard from "./ActorInfoCard.vue";
 

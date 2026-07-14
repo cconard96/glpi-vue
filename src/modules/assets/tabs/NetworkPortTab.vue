@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Column, DataTable, Message } from "primevue";
+    import { Column, DataTable, Message } from "@cjdevstudios/bumblevue";
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";

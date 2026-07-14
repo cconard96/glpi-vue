@@ -15,8 +15,8 @@
         Tag,
         useDialog,
         useToast
-    } from "primevue";
-    import { FormField } from "@primevue/forms";
+    } from "@cjdevstudios/bumblevue";
+    import { FormField } from "@cjdevstudios/bumblevue-forms";
     import { defineAsyncComponent, inject, onMounted, onUnmounted, ref } from "vue";
     import { useApi } from "@/common/api/useApi";
     import type { components } from "../../../../data/hlapiv2_schema";

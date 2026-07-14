@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { PanelMenu } from "primevue";
+    import { PanelMenu } from "@cjdevstudios/bumblevue";
 
 </script>
 

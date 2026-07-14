@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import FileUpload from "primevue/fileupload";
+    import FileUpload from "@cjdevstudios/bumblevue/fileupload";
 </script>
 
 <template>

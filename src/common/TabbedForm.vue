@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Message, ProgressSpinner, Tab, TabList, TabPanels, Tabs } from 'primevue';
+    import { Message, ProgressSpinner, Tab, TabList, TabPanels, Tabs } from '@cjdevstudios/bumblevue';
     import LazyTabPanel from "@/common/LazyTabPanel.vue";
     import { computed, useTemplateRef } from "vue";
     import { TabDefinition } from "@/types";
@@ -71,11 +71,11 @@
 <template>
     <Tabs v-if="tabs.length > 1" :value="main_tab.key" @update:value="$emit('update:value', $event as string)"
           :class="tab_orientation === 'vertical' ? 'grid grid-cols-[200px_1fr] overflow-hidden' : 'min-w-0 grid grid-rows-[auto_1fr] overflow-hidden'" :orientation="tab_orientation"
-          :lazy="tab_orientation === 'vertical'"
+          :lazy="true"
           :scrollable="tab_orientation === 'horizontal'"
     >
-        <TabList :pt="tablist_pt">
-            <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2" @keydown="onKeyDown">
+        <TabList>
+            <Tab v-for="tab in tabs" :key="tab.key" :value="tab.key" class="text-start border-0 px-4 py-2">
                 <i v-if="tab.icon" :class="`${tab.icon} me-2`"></i>
                 {{ tab.label }}
             </Tab>

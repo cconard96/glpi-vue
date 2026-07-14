@@ -3,7 +3,7 @@
     import { useApi } from "@/common/api/useApi";
     import FormFields from "@/common/forms/FormFields.vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
-    import { Button, Column, DataTable, InputText, Message, Tag, useDialog } from "primevue";
+    import { Button, Column, DataTable, InputText, Message, Tag, useDialog } from "@cjdevstudios/bumblevue";
     import { useDataHelper } from "@/common/useDataHelper";
     import { AssetCapabilities, useAsset } from "@/modules/assets/useAsset.js";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";

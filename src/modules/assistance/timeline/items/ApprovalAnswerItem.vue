@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Card, Button } from "primevue";
+    import { Card, Button } from "@cjdevstudios/bumblevue";
     import { useDataHelper } from "@/common/useDataHelper";
 
     const props = defineProps<{

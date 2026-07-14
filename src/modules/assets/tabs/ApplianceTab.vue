@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Column, DataTable, Button, useDialog, useToast } from "primevue";
+    import { Column, DataTable, Button, useDialog, useToast } from "@cjdevstudios/bumblevue";
     import { useApi } from "@/common/api/useApi";
     import { defineAsyncComponent, inject, onMounted, ref } from "vue";
     import { type useAsset } from "@/modules/assets/useAsset.js";

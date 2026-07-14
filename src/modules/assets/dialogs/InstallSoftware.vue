@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Tree, Message, InputText } from 'primevue';
+    import { Tree, Message, InputText } from '@cjdevstudios/bumblevue';
     import {onMounted, ref} from "vue";
     import {useApi} from "@/common/api/useApi";
     import {useDebounceFn} from "@vueuse/core";

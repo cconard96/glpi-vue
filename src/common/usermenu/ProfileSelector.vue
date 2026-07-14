@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { InputText, Listbox, ListboxChangeEvent, Message } from 'primevue';
+    import { InputText, Listbox, ListboxChangeEvent, Message } from '@cjdevstudios/bumblevue';
     import {computed, shallowRef} from "vue";
     import { useAuth } from "@/common/api/useAuth";
     import { useSessionStore } from "@/common/useSessionStore";

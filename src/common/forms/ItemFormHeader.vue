@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Tag, ToggleButton } from "primevue";
+    import { Tag, ToggleButton } from "@cjdevstudios/bumblevue";
     import { RouterLink } from "vue-router";
     import { useBaseItem } from "@/types";
     import { inject } from "vue";

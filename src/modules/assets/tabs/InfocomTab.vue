@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import FormFields from "@/common/forms/FormFields.vue";
-    import { DatePicker, Fieldset, InputNumber, InputText, Message, Textarea } from "primevue";
+    import { DatePicker, Fieldset, InputNumber, InputText, Message, Textarea } from "@cjdevstudios/bumblevue";
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import type { useAsset } from "@/modules/assets/useAsset.js";
@@ -34,7 +34,7 @@
         <AdvancedForm schemaName="Infocom" :initialValues="infocom_info" class="flex flex-col gap-4 w-full sm-w-56 px-4">
             <Fieldset legend="Asset Lifecycle">
                 <FormFields>
-                    <ValidatedFormField name="date_order" label="Order Date" :as="DatePicker" :fieldProps="{showIcon: true}"></ValidatedFormField>
+                    <ValidatedFormField name="date_order" label="Order Date" :as="DatePicker" :fieldProps="{showIcon: true, showClear: true}"></ValidatedFormField>
                     <ValidatedFormField name="date_purchase" label="Date of Purchase" :as="DatePicker" :fieldProps="{showIcon: true}"></ValidatedFormField>
                     <ValidatedFormField name="date_delivery" label="Delivery Date" :as="DatePicker" :fieldProps="{showIcon: true}"></ValidatedFormField>
                     <ValidatedFormField name="date_use" label="Startup Date" :as="DatePicker" :fieldProps="{showIcon: true}"></ValidatedFormField>
