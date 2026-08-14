@@ -5,7 +5,7 @@
     import {
         Button, ButtonGroup, Menu, Popover, ProgressBar,
         SelectButton, SplitButton, Timeline, ToggleSwitch, useToast
-    } from 'primevue';
+    } from '@cjdevstudios/bumblevue';
     import { RouterLink } from "vue-router";
     import FieldsPanel from "./FieldsPanel.vue";
     import { type components } from "../../../../data/hlapiv2_schema";

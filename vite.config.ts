@@ -82,7 +82,7 @@ export default defineConfig(({ mode }) => {
     if (mode !== 'test') {
         plugins.push(vueDevTools());
         plugins.push(VitePWA(pwaConfig));
-        plugins.push(extractI18nPlugin());
+        // plugins.push(extractI18nPlugin());
     }
 
     return {
@@ -108,7 +108,7 @@ export default defineConfig(({ mode }) => {
             'globalThis.__DEV__': mode === 'development',
         },
         optimizeDeps: {
-            include: ['primevue/config', '@primeuix/themes/lara', 'pinia-plugin-persistedstate', 'primevue/focustrap'],
+            include: ['@cjdevstudios/bumblevue/config', '@cjdevstudios/bumbleuix-themes/lara', 'pinia-plugin-persistedstate', '@cjdevstudios/bumblevue/focustrap'],
         },
         resolve: {
             alias: {

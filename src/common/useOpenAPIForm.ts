@@ -1,4 +1,4 @@
-import { FormResolverOptions } from "@primevue/forms";
+import { FormResolverOptions } from "@cjdevstudios/bumblevue-forms";
 import { ref } from "vue";
 
 export function useOpenAPIForm(schema: Record<string, any>) {

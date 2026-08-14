@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Column, DataTable } from "primevue";
+    import { Column, DataTable } from "@cjdevstudios/bumblevue";
     import FileUpload from "@/common/forms/FileUpload.vue";
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";

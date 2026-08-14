@@ -1,11 +1,11 @@
 <script setup lang="ts">
-    import type { SelectProps, InputTextProps, ListboxProps } from "primevue";
-    import { Select, InputText, Listbox, Chip, Button } from "primevue";
+    import type { SelectProps, InputTextProps, ListboxProps } from "@cjdevstudios/bumblevue";
+    import { Select, InputText, Listbox, Chip, Button } from "@cjdevstudios/bumblevue";
     import { components } from "../../../data/hlapiv2_schema";
     import { inject, type Ref, ref, toRaw, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
     import { useApi } from "@/common/api/useApi.ts";
-    import type { DynamicDialogInstance } from "primevue/dynamicdialogoptions";
+    import type { DynamicDialogInstance } from "@cjdevstudios/bumblevue/dynamicdialogoptions";
 
     const emit = defineEmits<{
         (e: 'save', addedItems: Record<keyof components['schemas'], { id: string; name: string }[]>, removedItems: Record<keyof components['schemas'], { id: string; name: string }[]>): void;

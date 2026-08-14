@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Button, DatePicker, FloatLabel, InputGroup, InputGroupAddon, Tag } from "primevue";
-    import { FormField } from "@primevue/forms";
+    import { Button, DatePicker, FloatLabel, InputGroup, InputGroupAddon, Tag } from "@cjdevstudios/bumblevue";
+    import { FormField } from "@cjdevstudios/bumblevue-forms";
 
     defineProps<{
         fields: {

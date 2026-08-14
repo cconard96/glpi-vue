@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Card, type Component } from 'primevue';
+    import { Card, type Component } from '@cjdevstudios/bumblevue';
     import { useSessionStore, TicketRights, BaseAssistanceRights, TicketApprovalRights, ChangeApprovalRights } from "@/common/useSessionStore";
     import { computed } from "vue";
 

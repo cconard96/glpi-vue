@@ -1,5 +1,5 @@
 import { NavigationFailure, useRouter } from "vue-router";
-import { Checkbox, InputNumber, InputText, SelectButton } from "primevue";
+import { Checkbox, InputNumber, InputText, SelectButton } from "@cjdevstudios/bumblevue";
 import { useI18n } from "vue-i18n";
 import { type Component, computed, defineAsyncComponent, ref } from "vue";
 import { useApi } from "@/common/api/useApi.ts";

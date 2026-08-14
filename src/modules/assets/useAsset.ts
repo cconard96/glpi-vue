@@ -4,7 +4,7 @@ import { type AxiosResponse } from "axios";
 import { BaseItemDefinition, GLPICreateResponseBody, TabDefinition, useBaseItem } from "@/types";
 import { components } from "../../../data/hlapiv2_schema";
 import { useRouter } from "vue-router";
-import { ToastServiceMethods } from "primevue";
+import { ToastServiceMethods } from "@cjdevstudios/bumblevue";
 import { useI18n } from "vue-i18n";
 import { GLPIItem, GLPIItemType, getDefaultRightChecks } from "@/common/useBaseItem.ts";
 

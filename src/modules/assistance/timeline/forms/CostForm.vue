@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Avatar, Card, Button, FloatLabel, InputText, DatePicker, Fluid, InputMask, InputNumber, Textarea, } from "primevue";
-    import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
+    import { Avatar, Card, Button, FloatLabel, InputText, DatePicker, Fluid, InputMask, InputNumber, Textarea, } from "@cjdevstudios/bumblevue";
+    import { Form, FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";

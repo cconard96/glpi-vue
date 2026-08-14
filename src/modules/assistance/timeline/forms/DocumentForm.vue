@@ -1,7 +1,7 @@
 <script setup lang="ts">
-    import {Avatar, Button, Card, FloatLabel, Select, Message} from "primevue";
-    import { Form, FormField, FormSubmitEvent } from '@primevue/forms';
-    import FileUpload from "primevue/fileupload";
+    import {Avatar, Button, Card, FloatLabel, Select, Message} from "@cjdevstudios/bumblevue";
+    import { Form, FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import FileUpload from "@cjdevstudios/bumblevue/fileupload";
     import { useSessionStore } from "@/common/useSessionStore";
 
     const { getFriendlyName } = useSessionStore();

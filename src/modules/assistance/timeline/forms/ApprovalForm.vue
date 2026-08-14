@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Avatar, Card, Button, Select, FloatLabel, useToast, Fluid, Message } from "primevue";
-    import { FormSubmitEvent } from '@primevue/forms';
+    import { Avatar, Card, Button, Select, FloatLabel, useToast, Fluid, Message } from "@cjdevstudios/bumblevue";
+    import { FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";

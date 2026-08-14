@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { FormSubmitEvent } from '@primevue/forms';
-    import { Button, Checkbox, InputNumber, InputText, SelectButton, Textarea, useToast } from "primevue";
+    import { FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { Button, Checkbox, InputNumber, InputText, SelectButton, Textarea, useToast } from "@cjdevstudios/bumblevue";
     import { inject } from "vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import FormFields from "@/common/forms/FormFields.vue";

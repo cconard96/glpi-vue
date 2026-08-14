@@ -2,7 +2,7 @@
     import {
         Accordion, AccordionContent, AccordionHeader, AccordionPanel,
         Card, Column, DataTable, DataView, Message, ProgressBar
-    } from 'primevue';
+    } from '@cjdevstudios/bumblevue';
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref, watch } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";

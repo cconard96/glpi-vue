@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import {Avatar, Card, Button, Select, FloatLabel, ToggleSwitch, useDialog} from "primevue";
-    import { Form, FormField, FormInstance, FormSubmitEvent } from '@primevue/forms';
+    import {Avatar, Card, Button, Select, FloatLabel, ToggleSwitch, useDialog} from "@cjdevstudios/bumblevue";
+    import { Form, FormField, FormInstance, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";

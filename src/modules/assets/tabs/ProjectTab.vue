@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Column, DataTable, ProgressBar } from "primevue";
+    import { Column, DataTable, ProgressBar } from "@cjdevstudios/bumblevue";
     import { useApi } from "@/common/api/useApi";
     import { useDataHelper } from "@/common/useDataHelper";
     import { inject, onMounted, ref } from "vue";

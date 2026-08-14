@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primevue';
+    import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@cjdevstudios/bumblevue';
     import DashboardView from "@/common/dashboard/DashboardView.vue";
     import { usePreferencesStore } from "@/common/usePreferencesStore.ts";
     import PersonalTab from "@/modules/home/tabs/PersonalTab.vue";

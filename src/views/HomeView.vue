@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import NavMenu from "@/common/NavMenu.vue";
     import { RouterView, useRouter } from "vue-router";
-    import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog, Select, Button } from "primevue";
+    import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog, Select, Button } from "@cjdevstudios/bumblevue";
     import { useSessionStore } from "@/common/useSessionStore.ts";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
     import { useAuth } from "@/common/api/useAuth.ts";

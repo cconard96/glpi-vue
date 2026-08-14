@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import ApprovalForm from './ApprovalForm.vue';
-import { defaultOptions } from "primevue/config";
-import { ConfirmationService, ToastService } from "primevue";
+import { defaultOptions } from "@cjdevstudios/bumblevue/config";
+import { ConfirmationService, ToastService } from "@cjdevstudios/bumblevue";
 import { useAssistanceItem } from "@/modules/assistance/timeline/useAssistanceItem.ts";
 import { login, renderAsync } from "@tests/utils.ts";
 import { ref } from "vue";
@@ -20,7 +20,7 @@ test('Renders new approval form', async () => {
     const { getByRole, getByLabelText, locator } = await renderAsync(ApprovalForm, {
         global: {
             mocks: {
-                $primevue: {
+                $@cjdevstudios/bumblevue: {
                     config: defaultOptions
                 },
             },

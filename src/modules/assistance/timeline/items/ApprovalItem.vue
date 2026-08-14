@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Button, Card, Menu, Tag, useToast } from "primevue";
-    import { Form, FormField, FormInstance } from '@primevue/forms';
+    import { Button, Card, Menu, Tag, useToast } from "@cjdevstudios/bumblevue";
+    import { Form, FormField, FormInstance } from '@cjdevstudios/bumblevue-forms';
     import { useDataHelper } from "@/common/useDataHelper";
     import { components } from "../../../../../data/hlapiv2_schema";
     import { computed, inject, onMounted, onUpdated, Ref, shallowRef, useTemplateRef, watch } from "vue";

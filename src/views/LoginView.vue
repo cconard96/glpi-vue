@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Card, Button, Message } from 'primevue';
+    import { Card, Button, Message } from '@cjdevstudios/bumblevue';
     import { useAuth } from '@/common/api/useAuth';
     import { useRouter } from "vue-router";
     import { computed, onMounted, ref } from "vue";

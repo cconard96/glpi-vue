@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Button, DataView, InputText, Message, Skeleton } from "primevue";
+    import { Button, DataView, InputText, Message, Skeleton } from "@cjdevstudios/bumblevue";
     import { inject, ref, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";
     import { useApi } from "@/common/api/useApi";

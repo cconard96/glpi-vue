@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Form, FormSubmitEvent } from "@primevue/forms";
-    import { FormResolverOptions } from "@primevue/forms/form";
+    import { Form, FormSubmitEvent } from "@cjdevstudios/bumblevue-forms";
+    import { FormResolverOptions } from "@cjdevstudios/bumblevue-forms/form";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm.ts";
     import { computed } from "vue";
     import { useApi } from "@/common/api/useApi.ts";
