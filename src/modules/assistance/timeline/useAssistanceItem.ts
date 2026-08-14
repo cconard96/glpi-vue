@@ -394,6 +394,14 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
             },
             isAllowedAction: canUpdateItem
         },
+        {
+            label: 'Add signature',
+            icon: 'ti ti-signature',
+            command: () => {
+                current_new_item.value = {component: defineAsyncComponent(() => import('./forms/SignatureForm.vue'))};
+            },
+            isAllowedAction: canAddFollowups
+        }
     ]);
 
     const allowed_timeline_actions = computed(() => {
