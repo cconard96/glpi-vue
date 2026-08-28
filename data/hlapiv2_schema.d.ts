@@ -322,7 +322,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Never returned */
+                /** @description Success */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -350,7 +350,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description No route found for the requested path */
+                /** @description Not found */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -387,13 +387,6 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Never returned */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
                 /** @description Bad request */
                 400: {
                     headers: {
@@ -415,7 +408,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description No route found for the requested path */
+                /** @description Not found */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -452,13 +445,6 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Never returned */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
                 /** @description Success (created) */
                 201: {
                     headers: {
@@ -495,7 +481,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description No route found for the requested path */
+                /** @description Not found */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -538,13 +524,6 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Never returned */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
                 /** @description Success (no content) */
                 204: {
                     headers: {
@@ -573,7 +552,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description No route found for the requested path */
+                /** @description Not found */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -663,7 +642,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Never returned */
+                /** @description Success */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -691,7 +670,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description No route found for the requested path */
+                /** @description Not found */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -37938,6 +37917,6326 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/Assets/Computer/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Monitor/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/NetworkEquipment/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Peripheral/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Phone/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Printer/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/SoftwareLicense/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Certificate/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Unmanaged/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Appliance/{asset_id}/Appliance/{id}/Environment/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Computer/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Monitor/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/NetworkEquipment/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Peripheral/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Phone/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Printer/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/SoftwareLicense/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Certificate/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Unmanaged/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Appliance/{asset_id}/Appliance/{id}/Domain/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Computer/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Monitor/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/NetworkEquipment/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Peripheral/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Phone/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Printer/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/SoftwareLicense/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Certificate/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Unmanaged/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Appliance/{asset_id}/Appliance/{id}/Location/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Computer/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Monitor/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/NetworkEquipment/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Peripheral/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Phone/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Printer/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/SoftwareLicense/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Certificate/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Unmanaged/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Appliance/{asset_id}/Appliance/{id}/Network/{relation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Create an appliance relationship for the link between an asset and an appliance */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete an appliance relationship for the link between an asset and an appliance */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    relation_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/Assets/Computer/{asset_id}/Domain": {
         parameters: {
             query?: never;
@@ -59983,6 +66282,5856 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21162": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom assets of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21162"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21162"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21162"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21424": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom assets of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21424"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21424"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21424"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Car": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom assets of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Car"][];
+                        "text/csv": components["schemas"]["CustomAsset_Car"][];
+                        "application/xml": components["schemas"]["CustomAsset_Car"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Car"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21724": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom assets of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21724"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21724"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21724"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/AllCapacities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom assets of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacities"][];
+                        "text/csv": components["schemas"]["CustomAsset_AllCapacities"][];
+                        "application/xml": components["schemas"]["CustomAsset_AllCapacities"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_AllCapacities"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21162/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21162"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21162"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21162"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype} */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21424/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21424"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21424"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21424"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype} */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Car/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Car"];
+                        "text/csv": components["schemas"]["CustomAsset_Car"];
+                        "application/xml": components["schemas"]["CustomAsset_Car"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Car"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype} */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Car"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21724/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21724"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21724"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21724"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype} */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/AllCapacities/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacities"];
+                        "text/csv": components["schemas"]["CustomAsset_AllCapacities"];
+                        "application/xml": components["schemas"]["CustomAsset_AllCapacities"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_AllCapacities"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype} */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacities"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21162Model": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162Model"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21162Model"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21162Model"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset model of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21162Model"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21424Model": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424Model"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21424Model"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21424Model"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset model of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21424Model"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/CarModel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_CarModel"][];
+                        "text/csv": components["schemas"]["CustomAsset_CarModel"][];
+                        "application/xml": components["schemas"]["CustomAsset_CarModel"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset model of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_CarModel"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21724Model": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724Model"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21724Model"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21724Model"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset model of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21724Model"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/AllCapacitiesModel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacitiesModel"][];
+                        "text/csv": components["schemas"]["CustomAsset_AllCapacitiesModel"][];
+                        "application/xml": components["schemas"]["CustomAsset_AllCapacitiesModel"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset model of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_AllCapacitiesModel"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21162Model/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset model of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162Model"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21162Model"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21162Model"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset model of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset model of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21162Model"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Model */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162Model"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21424Model/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset model of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424Model"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21424Model"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21424Model"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset model of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset model of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21424Model"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Model */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424Model"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/CarModel/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset model of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_CarModel"];
+                        "text/csv": components["schemas"]["CustomAsset_CarModel"];
+                        "application/xml": components["schemas"]["CustomAsset_CarModel"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset model of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset model of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_CarModel"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Model */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_CarModel"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21724Model/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset model of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724Model"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21724Model"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21724Model"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset model of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset model of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21724Model"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Model */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724Model"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/AllCapacitiesModel/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset model of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacitiesModel"];
+                        "text/csv": components["schemas"]["CustomAsset_AllCapacitiesModel"];
+                        "application/xml": components["schemas"]["CustomAsset_AllCapacitiesModel"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset model of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset model of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_AllCapacitiesModel"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Model */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacitiesModel"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21162Type": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162Type"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21162Type"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21162Type"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset type of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21162Type"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21424Type": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424Type"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21424Type"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21424Type"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset type of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21424Type"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/CarType": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_CarType"][];
+                        "text/csv": components["schemas"]["CustomAsset_CarType"][];
+                        "application/xml": components["schemas"]["CustomAsset_CarType"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset type of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_CarType"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21724Type": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724Type"][];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21724Type"][];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21724Type"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset type of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21724Type"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/AllCapacitiesType": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search custom asset models of a specific type */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacitiesType"][];
+                        "text/csv": components["schemas"]["CustomAsset_AllCapacitiesType"][];
+                        "application/xml": components["schemas"]["CustomAsset_AllCapacitiesType"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new custom asset type of a specific type */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_AllCapacitiesType"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21162Type/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset type of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162Type"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21162Type"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21162Type"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset type of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset type of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21162Type"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21162Type"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21424Type/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset type of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424Type"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21424Type"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21424Type"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset type of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset type of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21424Type"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21424Type"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/CarType/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset type of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_CarType"];
+                        "text/csv": components["schemas"]["CustomAsset_CarType"];
+                        "application/xml": components["schemas"]["CustomAsset_CarType"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset type of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset type of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_CarType"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_CarType"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/Issue21724Type/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset type of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724Type"];
+                        "text/csv": components["schemas"]["CustomAsset_Issue21724Type"];
+                        "application/xml": components["schemas"]["CustomAsset_Issue21724Type"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset type of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset type of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_Issue21724Type"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_Issue21724Type"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Assets/Custom/AllCapacitiesType/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing custom asset type of a specific type */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacitiesType"];
+                        "text/csv": components["schemas"]["CustomAsset_AllCapacitiesType"];
+                        "application/xml": components["schemas"]["CustomAsset_AllCapacitiesType"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a custom asset type of a specific type */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing custom asset type of a specific type */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    /** @description The ID of the Asset */
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["CustomAsset_AllCapacitiesType"];
+                };
+            };
+            responses: {
+                /** @description The updated CustomAsset_{itemtype}Type */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CustomAsset_AllCapacitiesType"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         trace?: never;
     };
     "/Components": {
@@ -103945,6 +116094,326 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Administration/User/{users_id}/Email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for EmailAddress[]s */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new EmailAddress */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["EmailAddress"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Administration/User/{users_id}/Email/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing EmailAddress */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    users_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["EmailAddress"];
+                        "text/csv": components["schemas"]["EmailAddress"];
+                        "application/xml": components["schemas"]["EmailAddress"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a EmailAddress */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    users_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -169485,6 +181954,387 @@ export interface paths {
         };
         trace?: never;
     };
+    "/Tools/Reminder/{reminder_id}/Translation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for ReminderTranslations */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReminderTranslation"][];
+                        "text/csv": components["schemas"]["ReminderTranslation"][];
+                        "application/xml": components["schemas"]["ReminderTranslation"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Tools/Reminder/{reminder_id}/Translation/{language}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing ReminderTranslation */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReminderTranslation"];
+                        "text/csv": components["schemas"]["ReminderTranslation"];
+                        "application/xml": components["schemas"]["ReminderTranslation"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new ReminderTranslation */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ReminderTranslation"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        /** @description Delete a ReminderTranslation */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing ReminderTranslation */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["ReminderTranslation"];
+                };
+            };
+            responses: {
+                /** @description The updated ReminderTranslation */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReminderTranslation"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
     "/Setup/": {
         parameters: {
             query?: never;
@@ -177201,6 +190051,780 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/Setup/AssetDefinition": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for AssetDefinitions */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AssetDefinition"][];
+                        "text/csv": components["schemas"]["AssetDefinition"][];
+                        "application/xml": components["schemas"]["AssetDefinition"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new AssetDefinition */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["AssetDefinition"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Setup/AssetDefinition/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing AssetDefinition */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AssetDefinition"];
+                        "text/csv": components["schemas"]["AssetDefinition"];
+                        "application/xml": components["schemas"]["AssetDefinition"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a AssetDefinition */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing AssetDefinition */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["AssetDefinition"];
+                };
+            };
+            responses: {
+                /** @description The updated AssetDefinition */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AssetDefinition"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Setup/AssetDefinition/{assetdefinition_id}/CustomField": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for AssetDefinitionCustomFields */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AssetDefinitionCustomField"][];
+                        "text/csv": components["schemas"]["AssetDefinitionCustomField"][];
+                        "application/xml": components["schemas"]["AssetDefinitionCustomField"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new AssetDefinitionCustomField */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["AssetDefinitionCustomField"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Setup/AssetDefinition/{assetdefinition_id}/CustomField/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing AssetDefinitionCustomField */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AssetDefinitionCustomField"];
+                        "text/csv": components["schemas"]["AssetDefinitionCustomField"];
+                        "application/xml": components["schemas"]["AssetDefinitionCustomField"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a AssetDefinitionCustomField */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing AssetDefinitionCustomField */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["AssetDefinitionCustomField"];
+                };
+            };
+            responses: {
+                /** @description The updated AssetDefinitionCustomField */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AssetDefinitionCustomField"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         trace?: never;
     };
     "/Entity/{items_id}/Note": {
@@ -194061,6 +207685,2917 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/ServiceCatalog/My": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get the service catalog information for the current user. */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ServiceCatalogInfo"];
+                        "text/csv": components["schemas"]["ServiceCatalogInfo"];
+                        "application/xml": components["schemas"]["ServiceCatalogInfo"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Kanban/Project/{items_id}/View/{users_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for KanbanViews */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KanbanView"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a KanbanView */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Kanban/Ticket/{items_id}/View/{users_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for KanbanViews */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KanbanView"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a KanbanView */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Kanban/Change/{items_id}/View/{users_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for KanbanViews */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KanbanView"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a KanbanView */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Kanban/Problem/{items_id}/View/{users_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for KanbanViews */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["KanbanView"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a KanbanView */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Kanban/Project/{items_id}/View/{users_id}/Column/{column_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: boolean */
+                        folded?: boolean;
+                        /** Format: boolean */
+                        visible?: boolean;
+                        /** Format: int64 */
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Ticket/{items_id}/View/{users_id}/Column/{column_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: boolean */
+                        folded?: boolean;
+                        /** Format: boolean */
+                        visible?: boolean;
+                        /** Format: int64 */
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Change/{items_id}/View/{users_id}/Column/{column_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: boolean */
+                        folded?: boolean;
+                        /** Format: boolean */
+                        visible?: boolean;
+                        /** Format: int64 */
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Problem/{items_id}/View/{users_id}/Column/{column_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: boolean */
+                        folded?: boolean;
+                        /** Format: boolean */
+                        visible?: boolean;
+                        /** Format: int64 */
+                        position?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Project/{items_id}/View/{users_id}/Column/{column_id}/Cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Ticket/{items_id}/View/{users_id}/Column/{column_id}/Cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Change/{items_id}/View/{users_id}/Column/{column_id}/Cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Kanban/Problem/{items_id}/View/{users_id}/Column/{column_id}/Cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    items_id: number;
+                    users_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        /** Format: string */
+                        itemtype?: string;
+                        /** Format: int64 */
+                        items_id?: number;
+                        /** Format: int64 */
+                        position?: number;
+                    }[];
+                };
+            };
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Form/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for Forms */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Form"][];
+                        "text/csv": components["schemas"]["Form"][];
+                        "application/xml": components["schemas"]["Form"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new Form */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Form"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Form/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing Form */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Form"];
+                        "text/csv": components["schemas"]["Form"];
+                        "application/xml": components["schemas"]["Form"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a Form */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing Form */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["Form"];
+                };
+            };
+            responses: {
+                /** @description The updated Form */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Form"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Form/{form_id}/Section": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for FormSections */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FormSection"][];
+                        "text/csv": components["schemas"]["FormSection"][];
+                        "application/xml": components["schemas"]["FormSection"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new FormSection */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FormSection"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Form/{form_id}/Section/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing FormSection */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FormSection"];
+                        "text/csv": components["schemas"]["FormSection"];
+                        "application/xml": components["schemas"]["FormSection"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a FormSection */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing FormSection */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FormSection"];
+                };
+            };
+            responses: {
+                /** @description The updated FormSection */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FormSection"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/Form/{form_id}/Section/{section_id}/Question": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description List or search for FormQuestions */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description RSQL query string */
+                    filter?: components["parameters"]["filter"];
+                    /** @description The first item to return */
+                    start?: components["parameters"]["start"];
+                    /** @description The maximum number of items to return */
+                    limit?: components["parameters"]["limit"];
+                    /** @description One or more properties to sort by in the form of property:direction where property is the full property name in dot notation and direction is either asc or desc. If no direction is provided, asc is assumed. Multiple sorts can be provided by separating them with a comma. */
+                    sort?: components["parameters"]["sort"];
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    section_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FormQuestion"][];
+                        "text/csv": components["schemas"]["FormQuestion"][];
+                        "application/xml": components["schemas"]["FormQuestion"][];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        /** @description Create a new FormQuestion */
+        post: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    section_id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FormQuestion"];
+                };
+            };
+            responses: {
+                /** @description Success (created) */
+                201: {
+                    headers: {
+                        /** @description The URL of the newly created resource */
+                        Location?: string;
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: int64 */
+                            readonly id?: number;
+                            href?: string;
+                        };
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Form/{form_id}/Section/{section_id}/Question/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an existing FormQuestion */
+        get: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    section_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FormQuestion"];
+                        "text/csv": components["schemas"]["FormQuestion"];
+                        "application/xml": components["schemas"]["FormQuestion"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /** @description Delete a FormQuestion */
+        delete: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description If "true", the item will be permanently deleted instead of being moved to the trash (if the item supported soft-deletion).
+                     * @default false
+                     */
+                    force?: boolean;
+                };
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    section_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success (no content) */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** @description Update an existing FormQuestion */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: {
+                    /** @description The ID of the entity to use. If not specified, the default entity for the user is used. */
+                    "GLPI-Entity"?: number;
+                    /** @description The ID of the profile to use. If not specified, the default profile for the user is used. */
+                    "GLPI-Profile"?: number;
+                    /** @description "true" if the entity access should include child entities. This is false by default. */
+                    "GLPI-Entity-Recursive"?: "true" | "false";
+                    /** @description The language to use for the response. If not specified, the default language for the user is used. */
+                    "Accept-Language"?: string;
+                };
+                path: {
+                    form_id: number;
+                    section_id: number;
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["FormQuestion"];
+                };
+            };
+            responses: {
+                /** @description The updated FormQuestion */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FormQuestion"];
+                        "text/csv": components["schemas"]["FormQuestion"];
+                        "application/xml": components["schemas"]["FormQuestion"];
+                    };
+                };
+                /** @description Bad request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -194371,6 +210906,60 @@ export interface components {
             time_treatment_avg?: number;
             /** @description The total time it took to completely treat the assistance items (in seconds) */
             time_treatment_total?: number;
+        };
+        /** @description Asset definition */
+        AssetDefinition: {
+            /** Format: int64 */
+            readonly id?: number;
+            system_name?: string;
+            label?: string;
+            icon?: string;
+            readonly picture?: string;
+            comment?: string;
+            /** @default false */
+            is_active: boolean;
+            /** @description JSON encoded array of capacities. Each capacity is an object with "name" and "config" properties. */
+            capacities?: string;
+            /** @description JSON encoded object where the keys are profile IDs and the values are the raw numeric right values. */
+            readonly profiles?: string;
+            /** @description JSON encoded object of translations for the asset type label where the keys are the language and the values are objects with properties for "one", "many" and "other". */
+            translations?: string;
+            custom_fields?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly label?: string;
+                system_name?: string;
+            }[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Custom field */
+        AssetDefinitionCustomField: {
+            /** Format: int64 */
+            readonly id?: number;
+            asset_definition?: {
+                /** Format: int64 */
+                id?: number;
+                readonly system_name?: string;
+            };
+            system_name?: string;
+            label?: string;
+            /** @enum {string} */
+            type?: "Glpi\\Asset\\CustomFieldType\\DateTimeType" | "Glpi\\Asset\\CustomFieldType\\DateType" | "Glpi\\Asset\\CustomFieldType\\DropdownType" | "Glpi\\Asset\\CustomFieldType\\NumberType" | "Glpi\\Asset\\CustomFieldType\\BooleanType" | "Glpi\\Asset\\CustomFieldType\\TextType" | "Glpi\\Asset\\CustomFieldType\\URLType" | "Glpi\\Asset\\CustomFieldType\\StringType";
+            /** @description JSON encoded object of field options. The available options depend on the field type. */
+            field_options?: string;
+            /** @description Used when the field type is a dropdown to specify the itemtype of the dropdown values. */
+            itemtype?: string;
+            /** @description The default value for the field which is always JSON encoded. The format of the default value depends on the field type. */
+            default_value?: string;
+            /** @description JSON encoded object of translations for the field label where the keys are the language and the values are the translated label. */
+            translations?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
         };
         AssetStats: {
             /** @description The item the stats are grouped by */
@@ -194943,7 +211532,6 @@ export interface components {
                 name?: string;
                 comment?: string;
             }[];
-            /** @description List of cartridges */
             cartridges?: {
                 /** Format: int64 */
                 readonly id?: number;
@@ -195920,7 +212508,6 @@ export interface components {
                 id?: number;
                 readonly name?: string;
             };
-            /** @description List of consumables */
             consumables?: {
                 /** Format: int64 */
                 readonly id?: number;
@@ -196212,6 +212799,683 @@ export interface components {
             comment?: string;
             product_number?: string;
         };
+        /** @description AllCapacities */
+        CustomAsset_AllCapacities: {
+            /** Format: int64 */
+            readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
+            name?: string;
+            comment?: string;
+            serial?: string;
+            otherserial?: string;
+            contact?: string;
+            contact_num?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            user_tech?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group_tech?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            location?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            manufacturer?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            state?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            is_recursive?: boolean;
+            is_deleted?: boolean;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            readonly custom_fields?: Record<string, never>;
+            type?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+            model?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+        };
+        /** @description AllCapacities model */
+        CustomAsset_AllCapacitiesModel: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            product_number?: string;
+            weight?: number;
+            required_units?: number;
+            /** Format: float */
+            depth?: number;
+            power_connections?: number;
+            power_consumption?: number;
+            is_half_rack?: boolean;
+            readonly picture_front?: string;
+            readonly picture_rear?: string;
+            pictures?: string[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description AllCapacities type */
+        CustomAsset_AllCapacitiesType: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Car */
+        CustomAsset_Car: {
+            /** Format: int64 */
+            readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
+            name?: string;
+            comment?: string;
+            serial?: string;
+            otherserial?: string;
+            contact?: string;
+            contact_num?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            user_tech?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group_tech?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            location?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            manufacturer?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            state?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            is_recursive?: boolean;
+            is_deleted?: boolean;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            readonly custom_fields?: {
+                had_accident?: string;
+                horsepower?: string;
+                last_service_date?: string;
+            };
+            type?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+            model?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+        };
+        /** @description Car model */
+        CustomAsset_CarModel: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            product_number?: string;
+            weight?: number;
+            required_units?: number;
+            /** Format: float */
+            depth?: number;
+            power_connections?: number;
+            power_consumption?: number;
+            is_half_rack?: boolean;
+            readonly picture_front?: string;
+            readonly picture_rear?: string;
+            pictures?: string[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Car type */
+        CustomAsset_CarType: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Issue21162 */
+        CustomAsset_Issue21162: {
+            /** Format: int64 */
+            readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
+            name?: string;
+            comment?: string;
+            serial?: string;
+            otherserial?: string;
+            contact?: string;
+            contact_num?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            user_tech?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group_tech?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            location?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            manufacturer?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            state?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            is_recursive?: boolean;
+            is_deleted?: boolean;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            readonly custom_fields?: {
+                tag?: string;
+                maintag?: string;
+                computer?: string;
+                multicomputers?: string;
+                test?: string;
+            };
+            type?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+            model?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+        };
+        /** @description Issue21162 model */
+        CustomAsset_Issue21162Model: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            product_number?: string;
+            weight?: number;
+            required_units?: number;
+            /** Format: float */
+            depth?: number;
+            power_connections?: number;
+            power_consumption?: number;
+            is_half_rack?: boolean;
+            readonly picture_front?: string;
+            readonly picture_rear?: string;
+            pictures?: string[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Issue21162 type */
+        CustomAsset_Issue21162Type: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Issue21424 */
+        CustomAsset_Issue21424: {
+            /** Format: int64 */
+            readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
+            name?: string;
+            comment?: string;
+            serial?: string;
+            otherserial?: string;
+            contact?: string;
+            contact_num?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            user_tech?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group_tech?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            location?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            manufacturer?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            state?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            is_recursive?: boolean;
+            is_deleted?: boolean;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            readonly custom_fields?: Record<string, never>;
+            type?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+            model?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+        };
+        /** @description Issue21424 model */
+        CustomAsset_Issue21424Model: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            product_number?: string;
+            weight?: number;
+            required_units?: number;
+            /** Format: float */
+            depth?: number;
+            power_connections?: number;
+            power_consumption?: number;
+            is_half_rack?: boolean;
+            readonly picture_front?: string;
+            readonly picture_rear?: string;
+            pictures?: string[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Issue21424 type */
+        CustomAsset_Issue21424Type: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Issue21724 */
+        CustomAsset_Issue21724: {
+            /** Format: int64 */
+            readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
+            name?: string;
+            comment?: string;
+            serial?: string;
+            otherserial?: string;
+            contact?: string;
+            contact_num?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            user_tech?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group_tech?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            location?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            manufacturer?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            state?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            is_recursive?: boolean;
+            is_deleted?: boolean;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            readonly custom_fields?: {
+                testdate?: string;
+            };
+            type?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+            model?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+        };
+        /** @description Issue21724 model */
+        CustomAsset_Issue21724Model: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            product_number?: string;
+            weight?: number;
+            required_units?: number;
+            /** Format: float */
+            depth?: number;
+            power_connections?: number;
+            power_consumption?: number;
+            is_half_rack?: boolean;
+            readonly picture_front?: string;
+            readonly picture_rear?: string;
+            pictures?: string[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description Issue21724 type */
+        CustomAsset_Issue21724Type: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description esdfdsf */
+        CustomAsset_esdfdsf: {
+            /** Format: int64 */
+            readonly id?: number;
+            /** Format: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i */
+            uuid?: string;
+            name?: string;
+            comment?: string;
+            serial?: string;
+            otherserial?: string;
+            contact?: string;
+            contact_num?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            user_tech?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            group_tech?: {
+                /**
+                 * Format: int64
+                 * @description ID
+                 */
+                id?: number;
+                name?: string;
+            }[];
+            location?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            manufacturer?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            state?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            is_recursive?: boolean;
+            is_deleted?: boolean;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            readonly custom_fields?: {
+                string1?: string;
+                string2?: string;
+                string3?: string;
+                string4?: string;
+                string5?: string;
+                string6?: string;
+                string7?: string;
+                string8?: string;
+                string9?: string;
+                string10?: string;
+            };
+            type?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+            model?: {
+                /** Format: int64 */
+                readonly id?: number;
+                name?: string;
+            };
+        };
+        /** @description esdfdsf model */
+        CustomAsset_esdfdsfModel: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            product_number?: string;
+            weight?: number;
+            required_units?: number;
+            /** Format: float */
+            depth?: number;
+            power_connections?: number;
+            power_consumption?: number;
+            is_half_rack?: boolean;
+            readonly picture_front?: string;
+            readonly picture_rear?: string;
+            pictures?: string[];
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
+        /** @description esdfdsf type */
+        CustomAsset_esdfdsfType: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            comment?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
         /** @description Server room */
         DCRoom: {
             /** Format: int64 */
@@ -196257,9 +213521,11 @@ export interface components {
                 readonly name?: string;
             };
             filters?: {
+                /** Format: int64 */
                 readonly id?: number;
             }[];
             items?: {
+                /** Format: int64 */
                 readonly id?: number;
             }[];
         };
@@ -196442,7 +213708,7 @@ export interface components {
             database?: {
                 /** Format: int64 */
                 readonly id?: number;
-                name?: string;
+                readonly name?: string;
             }[];
         };
         /** @description Database instance category */
@@ -196859,6 +214125,11 @@ export interface components {
              * @description ID
              */
             readonly id?: number;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
             /** @description Email address */
             email?: string;
             /** @description Is default */
@@ -197070,15 +214341,10 @@ export interface components {
             comment?: string;
             /** @description Complete name */
             readonly completename?: string;
-            /** @description Parent entity */
             parent?: {
-                /**
-                 * Format: int64
-                 * @description ID
-                 */
-                id?: number;
-                /** @description Name */
-                name?: string;
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
             };
             /** @description Level */
             readonly level?: number;
@@ -197513,6 +214779,18 @@ export interface components {
             /** Format: date-time */
             date_mod?: string;
         };
+        /** @description General */
+        ExternalPageTile: {
+            /** @enum {string} */
+            _tile_type?: "ExternalPageTile";
+            /** Format: int64 */
+            readonly id?: number;
+            title?: string;
+            description?: string;
+            illustration?: string;
+            weight?: number;
+            url?: string;
+        };
         /** @description Fields unicity */
         FieldUnicity: {
             /** Format: int64 */
@@ -197721,6 +214999,203 @@ export interface components {
             /** Format: date-time */
             date_mod?: string;
         };
+        /** @description Form */
+        Form: {
+            /** Format: int64 */
+            readonly id?: number;
+            readonly uuid?: string;
+            entity?: {
+                /** Format: int64 */
+                readonly id?: number;
+                readonly name?: string;
+            };
+            /** @default false */
+            is_recursive: boolean;
+            /** @default false */
+            is_active: boolean;
+            /** @default false */
+            is_deleted: boolean;
+            /** @default false */
+            is_draft: boolean;
+            /** @default false */
+            is_pinned: boolean;
+            /**
+             * @default step_by_step
+             * @enum {string}
+             */
+            render_layout: "single_page" | "step_by_step";
+            name?: string;
+            /** Format: html */
+            form_description?: string;
+            /** Format: html */
+            service_catalog_description?: string;
+            illustration?: string;
+            category?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            /** Format: int64 */
+            readonly usage_count?: number;
+            /**
+             * @default always_visible
+             * @enum {string}
+             */
+            submit_button_visibility_strategy: "always_visible" | "hidden_if" | "visible_if";
+            /**
+             * @description JSON encoded array of conditions to apply to the submit button.
+             *                                 The order of the conditions is important as it affects the evaluation with the logic_operator value.
+             *                                 Each condition will contain an `item_type` and an `item_uuid` field to specify the item the condition is based on and `value_operator` to specify the condition operator.
+             *                                 A `logic_operator` field can be set to specify how the condition should be evaluated with the next condition. If not set, it will default to "AND".
+             *                                 If the `value_operator` uses a value, a `value` field will also be present to specify the value to compare with.
+             */
+            submit_button_conditions?: string;
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+            access_controls?: {
+                /** Format: int64 */
+                readonly id?: number;
+                /** @enum {string} */
+                strategy?: "Glpi\\Form\\AccessControl\\ControlType\\AllowList" | "Glpi\\Form\\AccessControl\\ControlType\\DirectAccess";
+            }[];
+            sections?: {
+                /** Format: int64 */
+                readonly id?: number;
+            }[];
+        };
+        /** @description Access control */
+        FormAccessControl: {
+            /** Format: int64 */
+            readonly id?: number;
+            form?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            /** @enum {string} */
+            strategy?: "Glpi\\Form\\AccessControl\\ControlType\\AllowList" | "Glpi\\Form\\AccessControl\\ControlType\\DirectAccess";
+            /**
+             * @description JSON encoded configuration for the access control strategy. The content of this field will depend on the strategy used.
+             *                                 DirectAccess strategy contains a `token` string and `allow_unauthenticated` boolean in its config.
+             *                                 AllowList strategy contains `user_ids`, `group_ids` and `profile_ids` array fields in its config where the values are IDs of the items or 'all' (for users only).
+             */
+            config?: string;
+            /** @default false */
+            is_active: boolean;
+        };
+        /** @description Service catalog category */
+        FormCategory: {
+            /** Format: int64 */
+            readonly id?: number;
+            name?: string;
+            readonly completename?: string;
+            /** Format: html */
+            description?: string;
+            illustration?: string;
+            parent?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            readonly level?: number;
+            comment?: string;
+        };
+        /** @description Question */
+        FormQuestion: {
+            /** Format: int64 */
+            readonly id?: number;
+            section?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            readonly uuid?: string;
+            /** @default  */
+            name: string;
+            /** @enum {string} */
+            type?: string;
+            /** @default false */
+            is_mandatory: boolean;
+            /** @default 0 */
+            vertical_rank: number;
+            /** @default 0 */
+            horizontal_rank: number;
+            /** Format: html */
+            description?: string;
+            default_value?: string;
+            /** @description JSON encoded value */
+            extra_data?: string;
+            /**
+             * @default always_visible
+             * @enum {string}
+             */
+            visibility_strategy: "always_visible" | "hidden_if" | "visible_if";
+            visibility_conditions?: string;
+            /**
+             * @default no_validation
+             * @enum {string}
+             */
+            validation_strategy: "invalid_if" | "no_validation" | "valid_if";
+            validation_conditions?: string;
+        };
+        /** @description Section */
+        FormSection: {
+            /** Format: int64 */
+            readonly id?: number;
+            form?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            readonly uuid?: string;
+            /** @default  */
+            name: string;
+            /** Format: html */
+            description?: string;
+            /** @default 0 */
+            rank: number;
+            /**
+             * @default always_visible
+             * @enum {string}
+             */
+            visibility_strategy: "always_visible" | "hidden_if" | "visible_if";
+            conditions?: string;
+            questions?: {
+                /** Format: int64 */
+                readonly id?: number;
+            }[];
+        };
+        /** @description General */
+        FormTile: {
+            /** @enum {string} */
+            _tile_type?: "FormTile";
+            /** Format: int64 */
+            readonly id?: number;
+            title?: string;
+            description?: string;
+            illustration?: string;
+            weight?: number;
+            form?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+        };
+        /** @description General */
+        GLPIPageTile: {
+            /** @enum {string} */
+            _tile_type?: "GLPIPageTile";
+            /** Format: int64 */
+            readonly id?: number;
+            title?: string;
+            description?: string;
+            illustration?: string;
+            weight?: number;
+            /** @enum {string} */
+            page?: "service_catalog" | "faq" | "reservation" | "approval" | "tickets";
+        };
         /** @description Generic device */
         GenericDevice: {
             /** Format: int64 */
@@ -197922,15 +215397,10 @@ export interface components {
             comment?: string;
             /** @description Complete name */
             readonly completename?: string;
-            /** @description Parent group */
             parent?: {
-                /**
-                 * Format: int64
-                 * @description ID
-                 */
+                /** Format: int64 */
                 id?: number;
-                /** @description Name */
-                name?: string;
+                readonly name?: string;
             };
             /** @description Level */
             readonly level?: number;
@@ -198392,9 +215862,9 @@ export interface components {
             translations?: {
                 /** Format: int64 */
                 readonly id?: number;
+                readonly name?: string;
                 /** @description Language code (POSIX compliant format e.g. en_US or fr_FR) */
                 language?: string;
-                name?: string;
             }[];
         };
         /** @description Comment */
@@ -198416,7 +215886,7 @@ export interface components {
             comment?: string;
             parent?: {
                 /** Format: int64 */
-                readonly id?: number;
+                id?: number;
             };
             /** Format: date-time */
             date_creation?: string;
@@ -198589,6 +216059,17 @@ export interface components {
             /** Format: date-time */
             date_mod?: string;
         };
+        KanbanView: {
+            /** Format: int64 */
+            column?: number;
+            folded?: boolean;
+            visible?: boolean;
+            cards?: {
+                itemtype?: string;
+                /** Format: int64 */
+                items_id?: number;
+            }[];
+        }[];
         /** @description LDAP directory */
         LDAPDirectory: {
             /** Format: int64 */
@@ -199726,6 +217207,7 @@ export interface components {
             /** Format: date-time */
             readonly date_mod?: string;
             recipients?: {
+                /** Format: int64 */
                 readonly id?: number;
             }[];
         };
@@ -199813,6 +217295,7 @@ export interface components {
             /** Format: date-time */
             readonly date_mod?: string;
             translations?: {
+                /** Format: int64 */
                 readonly id?: number;
             }[];
         };
@@ -201405,8 +218888,9 @@ export interface components {
             tasks?: {
                 /** Format: int64 */
                 readonly id?: number;
-                name?: string;
+                readonly name?: string;
                 comment?: string;
+                /** Format: html */
                 content?: string;
             }[];
             costs?: {
@@ -201895,7 +219379,6 @@ export interface components {
             measured_power?: number;
             /** Format: int32 */
             max_weight?: number;
-            /** @description List of items in the rack */
             items?: {
                 /** Format: int64 */
                 readonly id?: number;
@@ -202069,6 +219552,29 @@ export interface components {
             /** Format: date-time */
             date_mod?: string;
         };
+        /** @description Translation */
+        ReminderTranslation: {
+            /** Format: int64 */
+            readonly id?: number;
+            reminder?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            language?: string;
+            name?: string;
+            /** Format: html */
+            text?: string;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                readonly name?: string;
+            };
+            /** Format: date-time */
+            date_creation?: string;
+            /** Format: date-time */
+            date_mod?: string;
+        };
         /** @description Remote management */
         RemoteManagement: {
             /** Format: int64 */
@@ -202128,7 +219634,7 @@ export interface components {
             readonly id?: number;
             reservable_item?: {
                 /** Format: int64 */
-                readonly id?: number;
+                id?: number;
                 /** @description The itemtype of the reservable item */
                 itemtype?: string;
                 /**
@@ -202181,7 +219687,7 @@ export interface components {
              * @description The order in which to evaluate this rule. Lower numbers are evaluated first. Changing the ranking of a rule may shift the rankings of other rules.
              */
             ranking?: number;
-            readonly criteria?: {
+            criteria?: {
                 /** Format: int64 */
                 readonly id?: number;
                 /** @description The criteria to use. See /Rule/Collection/{collection}/CriteriaCriteria for a complete list of criteria. */
@@ -202191,7 +219697,7 @@ export interface components {
                 /** @description The value/pattern to match against. If the condition relates to regular expressions, this value needs to be a valid regular expression including the delimiters. */
                 pattern?: string;
             }[];
-            readonly actions?: {
+            actions?: {
                 /** Format: int64 */
                 readonly id?: number;
                 /** @description The action to perform. See /Rule/Collection/{collection}/ActionType for a complete list of actions. */
@@ -202566,6 +220072,11 @@ export interface components {
             name?: string;
             comment?: string;
         };
+        ServiceCatalogInfo: {
+            helpdesk_home_title?: string;
+            helpdesk_home_search_enabled?: boolean;
+            tiles?: (components["schemas"]["GLPIPageTile"] | components["schemas"]["ExternalPageTile"] | components["schemas"]["FormTile"])[];
+        };
         Session: {
             /** Format: date-time */
             current_time?: string;
@@ -202926,11 +220437,17 @@ export interface components {
                      */
                     devicesimcard_pinpuk?: 1 | 2;
                     /**
-                     * @description Document items rights. Possible values:
-                     *     - 8192: See private ones
+                     * @description Documents rights. Possible values:
+                     *     - 1: Read
+                     *     - 2: Update
+                     *     - 4: Create
+                     *     - 8: Delete
+                     *     - 16: Purge
+                     *     - 32: Read notes
+                     *     - 64: Update notes
                      * @enum {integer}
                      */
-                    document?: 8192;
+                    document?: 1 | 2 | 4 | 8 | 16 | 32 | 64;
                     /**
                      * @description Domains rights. Possible values:
                      *     - 1: View all
@@ -202957,6 +220474,7 @@ export interface components {
                      */
                     dropdown?: 1 | 2 | 4 | 16;
                     dropdown_tag?: number;
+                    enclosure?: number;
                     /**
                      * @description Entities rights. Possible values:
                      *     - 1: Read
@@ -204064,7 +221582,7 @@ export interface components {
             status?: 1 | 2 | 3 | 4;
             approval_followup?: {
                 /** Format: int64 */
-                readonly id?: number;
+                id?: number;
             };
             /** Format: date-time */
             date_creation?: string;
@@ -205020,15 +222538,10 @@ export interface components {
             phone2?: string;
             /** @description Mobile phone number */
             mobile?: string;
-            /** @description Email addresses */
             emails?: {
-                /**
-                 * Format: int64
-                 * @description ID
-                 */
-                id?: number;
-                /** @description Email address */
-                email?: string;
+                /** Format: int64 */
+                readonly id?: number;
+                readonly email?: string;
                 /** @description Is default */
                 is_default?: boolean;
                 /** @description Is dynamic */
@@ -205579,6 +223092,9 @@ export interface components {
             /** Format: date-time */
             date_mod?: string;
         };
+        mapping: components["schemas"]["GLPIPageTile"];
+        "discriminator-mapping": components["schemas"]["ExternalPageTile"];
+        "items-discriminator-mapping": components["schemas"]["FormTile"];
     };
     responses: never;
     parameters: {

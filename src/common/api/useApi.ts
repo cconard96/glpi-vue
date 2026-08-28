@@ -254,6 +254,21 @@ export function useApi() {
         });
     }
 
+    /**
+     * Escape a value for use (unquoted) in an RSQL filter of the GLPI HL API.
+     * The lexer allows `;`, `,`, `(`, `)` and `\` to be escaped with a backslash.
+     */
+    function rsqlEscape(value: string): string {
+        return value.replace(/[;,()\\]/g, '\\$&');
+    }
+
+    /**
+     * Escape a string to be embedded in a double-quoted GraphQL string literal (e.g. the `filter` argument)
+     */
+    function graphQLStringEscape(value: string): string {
+        return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+    }
+
     return {
         getComponentSchema,
         search,
@@ -264,5 +279,7 @@ export function useApi() {
         apollo_client,
         getValidSchemaTypesFromItemtypes,
         getCompleteFieldsRequestForSchema,
+        rsqlEscape,
+        graphQLStringEscape,
     };
 }

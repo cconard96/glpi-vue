@@ -11,7 +11,8 @@
     import MultiSelect from '@cjdevstudios/bumblevue/multiselect';
     import Chip from '@cjdevstudios/bumblevue/chip';
     import TreeSelect from '@cjdevstudios/bumblevue/treeselect';
-    import { computed, defineComponent, inject, PropType, provide, type Ref, ref, useId } from 'vue';
+    import { computed, inject, PropType, type Ref, ref, useId } from 'vue';
+    import FormContextIsolation from "@/common/forms/FormContextIsolation";
     import {useDropdown} from "@/common/useDropdown";
     import { components } from "../../../data/hlapiv2_schema";
 
@@ -207,18 +208,6 @@
         return fieldProps;
     });
 
-    /**
-     * Hides the form context from its children.
-     * TreeSelect would otherwise bind itself to the form field and read/write the raw form value as its selection keys.
-     */
-    const FormContextIsolation = defineComponent({
-        setup(_, { slots }) {
-            provide('$pcForm', undefined);
-            provide('$pcFormField', undefined);
-            return () => slots.default?.();
-        }
-    });
-
     function onTreeChange() {
         emit('change', { originalEvent: null, value: selectedValue.value });
     }
@@ -271,6 +260,7 @@
 <template>
     <div class="flex items-baseline" :class="label_type === 'on' ? 'p-floatlabel p-floatlabel-on' : ''">
         <label v-if="label && label_type === 'inline'" class="w-1/3 text-end me-4" :id="labelID">{{ label }}</label>
+        <!-- TreeSelect would otherwise bind itself to the form field and read/write the raw form value as its selection keys -->
         <FormContextIsolation v-if="isTree">
             <TreeSelect v-bind="treeFieldProps" :invalid="formField.field.states.invalid" :aria-labelledby="labelID" class="min-w-32" :class="label_type === 'inline' ? 'w-2/3' : ''"
                         :selectionMode="multiple ? 'multiple' : 'single'" :metaKeySelection="false" v-model="treeSelectionKeys" :options="treeNodes"
