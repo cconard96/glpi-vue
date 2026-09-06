@@ -7,6 +7,8 @@
     import {useRouter} from "vue-router";
     import {useDataHelper} from "@/common/useDataHelper";
     import CommentsPanel from "./CommentsPanel.vue";
+    import { useToast } from '@cjdevstudios/bumblevue/usetoast';
+    import { useI18n } from "vue-i18n";
 
     const props = defineProps({
         article_id: {
@@ -17,13 +19,20 @@
 
     const { replace: replaceRoute } = useRouter();
     const { hasRight } = useSessionStore();
-    const { doGraphQLRequest } = useApi();
+    const { doGraphQLRequest, doApiRequest } = useApi();
     const { formatUsername, formatDate } = useDataHelper();
     const loading = ref(false);
     const article = ref(null);
     const edit_mode = ref(false);
     const share_popover_el = useTemplateRef('share_popover');
     const actions_menu_el = useTemplateRef('actions_menu');
+    const { t: $t } = useI18n();
+    const toast = useToast();
+
+    const preEditArticle = ref({
+        name: '',
+        content: ''
+    });
 
     function loadArticle(article_id: string|number) {
         loading.value = true;
@@ -73,6 +82,55 @@
             actions_menu_el.value.toggle(e);
         }
     }
+
+    function editArticle() {
+        edit_mode.value = true;
+        // Store the current article state in preEditArticle
+        if (article.value) {
+            preEditArticle.value.name = article.value.name;
+            preEditArticle.value.content = article.value.content;
+        }
+    }
+
+    function saveArticle() {
+        if (!article.value) {
+            return;
+        }
+        const payload = {
+            name: article.value.name,
+            content: article.value.content
+        };
+        doApiRequest(`/Knowledgebase/Article/${article.value.id}/`, {
+            method: 'PATCH',
+            data: payload
+        }).then((res) => {
+            article.value = res.data;
+            article.value.name = ref(article.value.name);
+            article.value.content = ref(article.value.content ?? '');
+            edit_mode.value = false;
+            toast.add({
+                severity: 'success',
+                summary: $t('common.success', 'Success'),
+                detail: $t('tools.knowbase.article_saved', 'Article saved successfully.'),
+                life: 3000
+            });
+        }).catch((err) => {
+            toast.add({
+                severity: 'error',
+                summary: $t('common.error', 'Error'),
+                detail: err.response.data.detail,
+                life: 3000
+            });
+        });
+    }
+
+    function cancelEdit() {
+        edit_mode.value = false;
+        if (article.value) {
+            article.value.name = preEditArticle.value.name;
+            article.value.content = preEditArticle.value.content;
+        }
+    }
 </script>
 
 <template>
@@ -85,7 +143,8 @@
                     <Popover ref="share_popover">
                         Share options (not implemented)
                     </Popover>
-                    <Button :icon="edit_mode ? 'ti ti-device-floppy' : 'ti ti-edit'" size="small" :label="edit_mode ? 'Save' : 'Edit'" @click="edit_mode = !edit_mode"></Button>
+                    <Button v-if="edit_mode" icon="ti ti-x" size="small" label="Cancel" severity="secondary" @click="cancelEdit()"></Button>
+                    <Button :icon="edit_mode ? 'ti ti-device-floppy' : 'ti ti-edit'" size="small" :label="edit_mode ? 'Save' : 'Edit'" @click="!edit_mode ? editArticle() : saveArticle()"></Button>
                     <Divider layout="vertical" class="mx-2"></Divider>
                     <Button icon="ti ti-dots-vertical" size="small" title="More actions" variant="outlined"
                             @click="toggleActionsMenu" aria-haspopup="true" aria-controls="overlay_menu"></Button>
