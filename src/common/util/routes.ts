@@ -46,6 +46,9 @@ export const routes: RouteRecordRaw[] = [
         props: (route) => {
             return {
                 code: route.query.code,
+                state: route.query.state,
+                error: route.query.error,
+                error_description: route.query.error_description,
             };
         },
         component: () => import('@/views/AuthCallbackView.vue'),

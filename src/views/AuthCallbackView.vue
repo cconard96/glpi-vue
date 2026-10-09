@@ -5,21 +5,43 @@
     const props = defineProps({
         code: {
             type: String,
-            required: true
+            required: false
         },
+        state: {
+            type: String,
+            required: false
+        },
+        error: {
+            type: String,
+            required: false
+        },
+        error_description: {
+            type: String,
+            required: false
+        }
     })
 
-    const { handleAuthCallback } = useAuth();
+    const { handleAuthCallback, takePostLoginRedirect } = useAuth();
     const router = useRouter();
 
-    handleAuthCallback(props.code).then(() => {
-        // After handling the callback, redirect to the home page or the path specified in the query parameter 'redirect'
-        const redirectPath = router.currentRoute.value.query.redirect || '/';
-        router.push(redirectPath);
-    }).catch((err) => {
-        alert('An error occurred during authentication. Please try logging in again.');
-        router.push('/login');
-    });
+    const failLogin = (reason: string) => {
+        console.error('Authentication failed:', reason);
+        router.push({ name: 'Login', query: { error: '2' } });
+    };
+
+    if (props.error) {
+        // The authorization server rejected the request or the user denied consent
+        failLogin(props.error_description || props.error);
+    } else if (!props.code) {
+        failLogin('No authorization code was returned');
+    } else {
+        handleAuthCallback(props.code, props.state ?? null).then(() => {
+            // Return to wherever the user was headed before being sent to the login screen
+            router.push(takePostLoginRedirect() || '/');
+        }).catch((err) => {
+            failLogin(err?.message ?? String(err));
+        });
+    }
 </script>
 
 <template>

@@ -12,6 +12,16 @@
     const loading = ref(false);
     const { t: $t } = useI18n();
 
+    const startLogin = () => {
+        loading.value = true;
+        // Carry the originally requested path through the redirect to the authorization server
+        const redirect = router.currentRoute.value.query.redirect;
+        authorize(typeof redirect === 'string' ? redirect : null).catch((err) => {
+            console.error('Failed to start the authorization flow:', err);
+            loading.value = false;
+        });
+    };
+
     onMounted(() => {
         document.title = $t('login.title', {
             brandName: brandName.value,
@@ -40,7 +50,7 @@
                     <Message v-if="$route.query.error" class="mb-4" severity="error" variant="outlined">
                         {{ error_message }}
                     </Message>
-                    <Button :label="$t('login.button.login', 'Login')" severity="primary" @click="authorize"/>
+                    <Button :label="$t('login.button.login', 'Login')" severity="primary" :loading="loading" @click="startLogin"/>
         <!--            <Button label="Continue as guest" class="w-full" severity="secondary" @click="router.push('/')"/>-->
                 </div>
             </template>
