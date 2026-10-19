@@ -167,7 +167,7 @@
             assistance_links.value = links;
 
             // handle fetching extra data about the assets for this assistance item
-            const linked_assets_data = res.data[`${props.itemtype}_Item`];
+            const linked_assets_data = res.data[`${props.itemtype}_Item`] || [];
             getValidSchemaTypesFromItemtypes(linked_assets_data.map(i => i.itemtype)).then((valid_types) => {
                 if (valid_types.length === 0) {
                     return;
