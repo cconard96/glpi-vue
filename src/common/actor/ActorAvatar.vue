@@ -17,10 +17,13 @@
         email?: string,
         picture?: string,
     }
-    const props = defineProps<{
+    const props = withDefaults(defineProps<{
         actor_type: 'User'|'Group'|'Supplier',
-        actor_data: ActorInfo
-    }>();
+        actor_data: ActorInfo,
+        size?: 'small'|'medium'|'large'
+    }>(), {
+        size: 'large'
+    });
 
     const actor_card_el = useTemplateRef('actor_card');
 
@@ -51,7 +54,7 @@
         v-bind="$attrs" class="select-none"
         :image="actor_data.picture ? (actor_data.picture.endsWith('picture.png') ? null : actor_data.picture) : null"
         :label="(!actor_data.picture || actor_data.picture.endsWith('picture.png')) ? initials : null"
-        shape="square" size="large" @mouseover="actor_card_el?.show" @mouseleave="actor_card_el?.hide"
+        shape="square" :size="size" @mouseover="actor_card_el?.show" @mouseleave="actor_card_el?.hide"
         @touchstart.passive="actor_card_el?.show" @touchend.passive="actor_card_el?.hide"
     ></Avatar>
     <Popover ref="actor_card" :key="actor_type + '_' + actor_data.id">

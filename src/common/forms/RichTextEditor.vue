@@ -18,7 +18,10 @@
         }
     });
 
-    const model = defineModel();
+    const model = defineModel({
+        default: '',
+        type: String
+    });
 </script>
 
 <template>
