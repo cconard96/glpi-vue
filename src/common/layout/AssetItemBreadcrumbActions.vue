@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    import { Button, SplitButton } from "@cjdevstudios/bumblevue";
+    import Button from "@cjdevstudios/bumblevue/button";
+    import SplitButton from "@cjdevstudios/bumblevue/splitbutton";
     import { AssetCapabilities, getDefinition } from "@/modules/assets/useAsset.js";
     import { useI18n } from "vue-i18n";
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    import {PanelMenu, Menubar} from '@cjdevstudios/bumblevue';
+    import PanelMenu from '@cjdevstudios/bumblevue/panelmenu';
+    import Menubar from '@cjdevstudios/bumblevue/menubar';
     import {RouterLink, useRoute} from "vue-router";
     import { useMainMenu } from '@/common/useMainMenu.ts';
     import { computed, ref, watch } from "vue";

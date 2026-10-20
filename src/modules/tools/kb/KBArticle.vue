@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import { Card, ProgressSpinner, Button, Popover, Divider, Menu, InputText, Tree } from '@cjdevstudios/bumblevue';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import ProgressSpinner from '@cjdevstudios/bumblevue/progressspinner';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Popover from '@cjdevstudios/bumblevue/popover';
+    import Divider from '@cjdevstudios/bumblevue/divider';
+    import Menu from '@cjdevstudios/bumblevue/menu';
     import { useApi } from '@/common/api/useApi.ts';
     import {computed, ref, useTemplateRef, watch} from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";

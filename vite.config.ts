@@ -97,6 +97,11 @@ export default defineConfig(({ mode }) => {
                                 name: 'chartjs',
                                 test: /[\\/]node_modules[\\/]chart.js/,
                                 priority: 20,
+                            },
+                            {
+                                name: 'bumblevue',
+                                test: /[\\/]node_modules[\\/]@cjdevstudios[\\/]bumblevue/,
+                                priority: 10,
                             }
                         ],
                     },

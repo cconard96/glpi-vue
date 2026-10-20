@@ -1,5 +1,6 @@
 import type { ComposerTranslation } from "vue-i18n";
-import { Checkbox, InputNumber } from "@cjdevstudios/bumblevue";
+import Checkbox from '@cjdevstudios/bumblevue/checkbox';
+import InputNumber from '@cjdevstudios/bumblevue/inputnumber';
 import { Setting } from "@/modules/setup/settings/useSettings.ts";
 import FieldSelect from "@/common/forms/FieldSelect.vue";
 

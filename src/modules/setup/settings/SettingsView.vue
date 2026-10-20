@@ -1,7 +1,10 @@
 <script setup lang="ts">
     import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
-    import { onMounted, ref, useId, useTemplateRef, watch } from "vue";
-    import { Button, AutoComplete, InputGroup, InputGroupAddon } from "@cjdevstudios/bumblevue";
+    import { onMounted, ref, useId } from "vue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import AutoComplete from '@cjdevstudios/bumblevue/autocomplete';
+    import InputGroup from '@cjdevstudios/bumblevue/inputgroup';
+    import InputGroupAddon from '@cjdevstudios/bumblevue/inputgroupaddon';
     import DynamicSettingsForm from "./DynamicSettingsForm.vue";
     import { useSettings, settingCategories, Setting } from "./useSettings.ts";
     import { useI18n } from "vue-i18n";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Skeleton } from "@cjdevstudios/bumblevue";
+    import Skeleton from "@cjdevstudios/bumblevue/skeleton";
 
     const props = defineProps({
         gridstack_id: {

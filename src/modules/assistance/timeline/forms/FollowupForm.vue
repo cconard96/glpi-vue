@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import { Button, Card, Fluid, ToggleSwitch, useDialog } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Fluid from '@cjdevstudios/bumblevue/fluid';
+    import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
+    import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
     import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import { ITILSubItemRights, useSessionStore } from "@/common/useSessionStore";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";

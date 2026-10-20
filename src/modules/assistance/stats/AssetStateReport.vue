@@ -1,5 +1,8 @@
 <script setup lang="ts">
-    import {DatePicker, FloatLabel, DataTable, Column} from "@cjdevstudios/bumblevue";
+    import DatePicker from '@cjdevstudios/bumblevue/datepicker';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import Column from '@cjdevstudios/bumblevue/column';
     import {computed} from "vue";
     import {useApi} from "@/common/api/useApi";
     import { useI18n } from "vue-i18n";

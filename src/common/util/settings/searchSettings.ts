@@ -1,7 +1,8 @@
 import type { ComposerTranslation } from "vue-i18n";
-import { Checkbox, InputNumber, SelectButton } from "@cjdevstudios/bumblevue";
+import Checkbox from '@cjdevstudios/bumblevue/checkbox';
+import InputNumber from '@cjdevstudios/bumblevue/inputnumber';
+import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
 import { Setting } from "@/modules/setup/settings/useSettings.ts";
-import FieldSelect from "@/common/forms/FieldSelect.vue";
 
 export function getSearchSettings($t: ComposerTranslation): Array<Setting> {
     return [

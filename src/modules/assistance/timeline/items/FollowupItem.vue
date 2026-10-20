@@ -1,5 +1,8 @@
 <script setup lang="ts">
-    import { Button, Card, Menu, Tag } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Menu from '@cjdevstudios/bumblevue/menu';
+    import Tag from '@cjdevstudios/bumblevue/tag';
     import { useDataHelper } from "@/common/useDataHelper";
     import { components } from "../../../../../data/hlapiv2_schema";
     import { inject, Ref, useTemplateRef } from "vue";

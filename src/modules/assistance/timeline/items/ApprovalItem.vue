@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import { Button, Card, Menu, Tag, useToast } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Menu from '@cjdevstudios/bumblevue/menu';
+    import Tag from '@cjdevstudios/bumblevue/tag';
+    import { useToast } from "@cjdevstudios/bumblevue/usetoast";
     import { Form, FormField, FormInstance } from '@cjdevstudios/bumblevue-forms';
     import { useDataHelper } from "@/common/useDataHelper";
     import { components } from "../../../../../data/hlapiv2_schema";

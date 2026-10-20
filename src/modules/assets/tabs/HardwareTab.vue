@@ -1,8 +1,14 @@
 <script setup lang="ts">
-    import {
-        Accordion, AccordionContent, AccordionHeader, AccordionPanel,
-        Card, Column, DataTable, DataView, Message, ProgressBar
-    } from '@cjdevstudios/bumblevue';
+    import Accordion from '@cjdevstudios/bumblevue/accordion';
+    import AccordionContent from '@cjdevstudios/bumblevue/accordioncontent';
+    import AccordionHeader from '@cjdevstudios/bumblevue/accordionheader';
+    import AccordionPanel from '@cjdevstudios/bumblevue/accordionpanel';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Column from '@cjdevstudios/bumblevue/column';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import DataView from '@cjdevstudios/bumblevue/dataview';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import ProgressBar from '@cjdevstudios/bumblevue/progressbar';
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref, watch } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";

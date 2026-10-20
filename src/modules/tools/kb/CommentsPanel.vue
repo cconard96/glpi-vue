@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { Card, InputText, Tree, type TreeNode } from "@cjdevstudios/bumblevue";
+    import Card from '@cjdevstudios/bumblevue/card';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import Tree from '@cjdevstudios/bumblevue/tree';
     import { useDataHelper } from "@/common/useDataHelper.ts";
     import { onMounted, ref } from "vue";
     import { useApi } from "@/common/api/useApi.ts";

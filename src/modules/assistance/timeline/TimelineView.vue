@@ -2,10 +2,16 @@
     import TimelineItem from "./TimelineItem.vue";
     import { computed, onMounted, provide, ref, type Ref, useId, useTemplateRef, watch } from "vue";
     import { useApi } from "@/common/api/useApi.ts";
-    import {
-        Button, ButtonGroup, Menu, Popover, ProgressBar,
-        SelectButton, SplitButton, Timeline, ToggleSwitch, useToast
-    } from '@cjdevstudios/bumblevue';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import ButtonGroup from '@cjdevstudios/bumblevue/buttongroup';
+    import Menu from '@cjdevstudios/bumblevue/menu';
+    import Popover from '@cjdevstudios/bumblevue/popover';
+    import ProgressBar from '@cjdevstudios/bumblevue/progressbar';
+    import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
+    import SplitButton from '@cjdevstudios/bumblevue/splitbutton';
+    import Timeline from '@cjdevstudios/bumblevue/timeline';
+    import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
+    import { useToast } from '@cjdevstudios/bumblevue/usetoast';
     import { RouterLink } from "vue-router";
     import FieldsPanel from "./FieldsPanel.vue";
     import { type components } from "../../../../data/hlapiv2_schema";

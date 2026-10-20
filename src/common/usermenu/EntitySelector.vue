@@ -1,5 +1,8 @@
 <script setup lang="ts">
-    import { Message, TreeSelect, Button, Tree } from '@cjdevstudios/bumblevue';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import TreeSelect from '@cjdevstudios/bumblevue/treeselect';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Tree from '@cjdevstudios/bumblevue/tree';
     import {computed, onMounted, ref, shallowRef, watch} from "vue";
     import { useApi } from "@/common/api/useApi";
     import { useAuth } from "@/common/api/useAuth";

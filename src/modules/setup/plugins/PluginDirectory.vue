@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import { DataView, Menubar, SelectButton, Message, Avatar } from "@cjdevstudios/bumblevue";
+    import DataView from '@cjdevstudios/bumblevue/dataview';
+    import Menubar from '@cjdevstudios/bumblevue/menubar';
+    import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import Avatar from '@cjdevstudios/bumblevue/avatar';
     import { onMounted, ref } from "vue";
     import { useApi } from "@/common/api/useApi.ts";
 

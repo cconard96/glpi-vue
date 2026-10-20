@@ -1,7 +1,6 @@
 import { BaseItemDefinition, useBaseItem } from "@/types";
 import { GLPIItemType, getDefaultRightChecks } from "@/common/useBaseItem.ts";
 import { useI18n } from "vue-i18n";
-import { AssetType } from "@/modules/assets/useAsset.ts";
 
 type DropdownDefinition = BaseItemDefinition & {
     group: string,

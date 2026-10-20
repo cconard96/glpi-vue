@@ -1,6 +1,9 @@
 <script setup lang="ts">
     import { components } from "../../../../data/hlapiv2_schema";
-    import { MultiSelect, SelectButton, FloatLabel, InputText } from "@cjdevstudios/bumblevue";
+    import MultiSelect from '@cjdevstudios/bumblevue/multiselect';
+    import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
     import { shallowRef, ref, useTemplateRef } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";
     import { useApi } from "@/common/api/useApi";

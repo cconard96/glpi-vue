@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import { Button, Card, Checkbox, Menu, Tag } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Checkbox from '@cjdevstudios/bumblevue/checkbox';
+    import Menu from '@cjdevstudios/bumblevue/menu';
+    import Tag from '@cjdevstudios/bumblevue/tag';
     import { useDataHelper } from "@/common/useDataHelper";
     import { useApi } from '@/common/api/useApi';
     import { components } from "../../../../../data/hlapiv2_schema";

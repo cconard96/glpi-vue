@@ -1,10 +1,10 @@
 import { Component, defineAsyncComponent, type Ref, ref } from "vue";
 import { useApi } from "@/common/api/useApi";
-import { type AxiosResponse } from "axios";
-import { BaseItemDefinition, GLPICreateResponseBody, TabDefinition, useBaseItem } from "@/types";
-import { components } from "../../../data/hlapiv2_schema";
+import type { AxiosResponse } from "axios";
+import type { BaseItemDefinition, GLPICreateResponseBody, TabDefinition, useBaseItem } from "@/types";
+import type { components } from "../../../data/hlapiv2_schema";
 import { useRouter } from "vue-router";
-import { ToastServiceMethods } from "@cjdevstudios/bumblevue";
+import type { ToastServiceMethods } from "@cjdevstudios/bumblevue";
 import { useI18n } from "vue-i18n";
 import { GLPIItem, GLPIItemType, getDefaultRightChecks } from "@/common/useBaseItem.ts";
 

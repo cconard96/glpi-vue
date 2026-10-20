@@ -1,5 +1,8 @@
 <script setup lang="ts">
-    import { InputText, Listbox, ListboxChangeEvent, Message } from '@cjdevstudios/bumblevue';
+    import type { ListboxChangeEvent } from '@cjdevstudios/bumblevue';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import Listbox from '@cjdevstudios/bumblevue/listbox';
+    import Message from '@cjdevstudios/bumblevue/message';
     import {computed, shallowRef} from "vue";
     import { useAuth } from "@/common/api/useAuth";
     import { useSessionStore } from "@/common/useSessionStore";
@@ -8,7 +11,6 @@
     const nodes = shallowRef([]);
 
     Object.values(getValidProfilesForEntity(getActiveEntity.id)).forEach((profile: any) => {
-        console.log(profile);
         nodes.value.push({
             key: profile.id,
             label: profile.name

@@ -1,5 +1,11 @@
 <script setup lang="ts">
-    import {Avatar, Card, Button, Select, FloatLabel, ToggleSwitch, useDialog} from "@cjdevstudios/bumblevue";
+    import Avatar from '@cjdevstudios/bumblevue/avatar';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Select from '@cjdevstudios/bumblevue/select';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
+    import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
     import { Form, FormField, FormInstance, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";

@@ -1,7 +1,14 @@
 <script setup lang="ts">
     import NavMenu from "@/common/NavMenu.vue";
     import { RouterView, useRouter } from "vue-router";
-    import { ConfirmDialog, DynamicDialog, Menubar, ProgressSpinner, Toast, useDialog, Select, Button } from "@cjdevstudios/bumblevue";
+    import ConfirmDialog from '@cjdevstudios/bumblevue/confirmdialog';
+    import DynamicDialog from '@cjdevstudios/bumblevue/dynamicdialog';
+    import Menubar from '@cjdevstudios/bumblevue/menubar';
+    import ProgressSpinner from '@cjdevstudios/bumblevue/progressspinner';
+    import Toast from '@cjdevstudios/bumblevue/toast';
+    import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
+    import Select from '@cjdevstudios/bumblevue/select';
+    import Button from '@cjdevstudios/bumblevue/button';
     import { useSessionStore } from "@/common/useSessionStore.ts";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
     import { useAuth } from "@/common/api/useAuth.ts";

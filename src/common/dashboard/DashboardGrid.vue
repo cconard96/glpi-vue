@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { useApi } from '@/common/api/useApi';
     import {computed, onMounted, ref, useTemplateRef} from "vue";
-    import { Message } from '@cjdevstudios/bumblevue';
+    import Message from '@cjdevstudios/bumblevue/message';
     import { GridStack } from 'gridstack';
     import 'gridstack/dist/gridstack.min.css';
     import DashboardItem from "./DashboardItem.vue";

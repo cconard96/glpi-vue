@@ -1,5 +1,7 @@
 import type { ComposerTranslation } from "vue-i18n";
-import { Checkbox, InputNumber, InputText } from "@cjdevstudios/bumblevue";
+import Checkbox from '@cjdevstudios/bumblevue/checkbox';
+import InputNumber from '@cjdevstudios/bumblevue/inputnumber';
+import InputText from '@cjdevstudios/bumblevue/inputtext';
 import { defineAsyncComponent } from "vue";
 import { Setting } from "@/modules/setup/settings/useSettings.ts";
 

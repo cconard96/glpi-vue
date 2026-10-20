@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { Column, DataTable, ProgressBar } from "@cjdevstudios/bumblevue";
+    import Column from '@cjdevstudios/bumblevue/column';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import ProgressBar from '@cjdevstudios/bumblevue/progressbar';
     import { useApi } from "@/common/api/useApi";
     import { useDataHelper } from "@/common/useDataHelper";
     import { inject, onMounted, ref } from "vue";

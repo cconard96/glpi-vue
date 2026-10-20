@@ -3,7 +3,13 @@
     import { useApi } from "@/common/api/useApi";
     import FormFields from "@/common/forms/FormFields.vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
-    import { Button, Column, DataTable, InputText, Message, Tag, useDialog } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Column from '@cjdevstudios/bumblevue/column';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import Tag from '@cjdevstudios/bumblevue/tag';
+    import { useDialog } from "@cjdevstudios/bumblevue/usedialog";
     import { useDataHelper } from "@/common/useDataHelper";
     import { AssetCapabilities, useAsset } from "@/modules/assets/useAsset.js";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";

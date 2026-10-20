@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { Button, Column, DataTable } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Column from '@cjdevstudios/bumblevue/column';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import type { useAsset } from "@/modules/assets/useAsset.js";

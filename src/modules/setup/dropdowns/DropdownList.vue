@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { PanelMenu } from "@cjdevstudios/bumblevue";
+    import PanelMenu from "@cjdevstudios/bumblevue/panelmenu";
 
 </script>
 

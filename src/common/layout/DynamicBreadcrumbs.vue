@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { RouterLink, useRoute } from "vue-router";
-    import { Breadcrumb } from "@cjdevstudios/bumblevue";
+    import Breadcrumb from "@cjdevstudios/bumblevue/breadcrumb";
     import { computed } from "vue";
     import { useDeviceCapabilities } from "@/common/useDeviceCapabilities.ts";
 

@@ -1,10 +1,8 @@
 import { NavigationFailure, useRouter } from "vue-router";
-import { Checkbox, InputNumber, InputText, SelectButton } from "@cjdevstudios/bumblevue";
 import { useI18n } from "vue-i18n";
-import { type Component, computed, defineAsyncComponent, ref } from "vue";
+import { type Component, computed, ref } from "vue";
 import { useApi } from "@/common/api/useApi.ts";
 import { components } from "../../../../data/hlapiv2_schema";
-import FieldSelect from "@/common/forms/FieldSelect.vue";
 import { useFuse } from "@vueuse/integrations/useFuse";
 import { getApplicationSettings } from "@/common/util/settings/applicationSettings.ts";
 import { getItemLocksSettings } from "@/common/util/settings/itemLocksSettings.ts";

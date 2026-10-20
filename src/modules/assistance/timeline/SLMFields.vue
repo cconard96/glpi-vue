@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import { Button, DatePicker, FloatLabel, InputGroup, InputGroupAddon, Tag } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import DatePicker from '@cjdevstudios/bumblevue/datepicker';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import InputGroup from '@cjdevstudios/bumblevue/inputgroup';
+    import InputGroupAddon from '@cjdevstudios/bumblevue/inputgroupaddon';
+    import Tag from '@cjdevstudios/bumblevue/tag';
     import { FormField } from "@cjdevstudios/bumblevue-forms";
 
     defineProps<{

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-    import { Button, DataView, Message, SelectButton } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import DataView from '@cjdevstudios/bumblevue/dataview';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";

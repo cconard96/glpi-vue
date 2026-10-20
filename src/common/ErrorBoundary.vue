@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { onErrorCaptured, ref, type Ref } from "vue";
-    import { Message } from '@cjdevstudios/bumblevue';
+    import Message from '@cjdevstudios/bumblevue/message';
 
     const error: Ref<Error | null> = ref(null);
     const dev_mode = import.meta.env.DEV;

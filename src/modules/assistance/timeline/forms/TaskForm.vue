@@ -1,5 +1,11 @@
 <script setup lang="ts">
-    import { Button, Card, DatePicker, FloatLabel, Fluid, InputMask, ToggleSwitch } from "@cjdevstudios/bumblevue";
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import DatePicker from '@cjdevstudios/bumblevue/datepicker';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import Fluid from '@cjdevstudios/bumblevue/fluid';
+    import InputMask from '@cjdevstudios/bumblevue/inputmask';
+    import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
     import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import { ITILSubItemRights, useSessionStore } from "@/common/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";

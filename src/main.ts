@@ -10,10 +10,12 @@ import FocusTrap from '@cjdevstudios/bumblevue/focustrap';
 import {createRouter, createWebHistory} from "vue-router";
 import {useAuth} from "@/common/api/useAuth.ts";
 import VueDOMPurifyHTML from 'vue-dompurify-html';
-import { ConfirmationService, DialogService, ToastService } from "@cjdevstudios/bumblevue";
+import ConfirmationService from '@cjdevstudios/bumblevue/confirmationservice';
+import DialogService from '@cjdevstudios/bumblevue/dialogservice';
+import ToastService from '@cjdevstudios/bumblevue/toastservice';
 import {definePreset} from "@cjdevstudios/bumbleuix-themes";
 import { all } from 'primelocale';
-import { Tooltip } from "@cjdevstudios/bumblevue";
+import Tooltip from "@cjdevstudios/bumblevue/tooltip";
 import { i18n } from "@/common/util/i18n.ts";
 import { primeVuePassthrough } from "@/common/util/primeVuePassthrough.ts";
 

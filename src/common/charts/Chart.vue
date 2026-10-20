@@ -6,7 +6,7 @@
         ChartType,
         DefaultDataPoint
     } from "chart.js";
-    import { Button } from "@cjdevstudios/bumblevue";
+    import Button from "@cjdevstudios/bumblevue/button";
     import { useChart } from "@/common/charts/useChart.ts";
     import { useTemplateRef } from "vue";
 

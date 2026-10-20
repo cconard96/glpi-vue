@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import DashboardGrid from "./DashboardGrid.vue";
-    import { ProgressSpinner } from "@cjdevstudios/bumblevue";
+    import ProgressSpinner from "@cjdevstudios/bumblevue/progressspinner";
 </script>
 
 <template>

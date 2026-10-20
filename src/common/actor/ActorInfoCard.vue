@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Card } from '@cjdevstudios/bumblevue';
+    import Card from '@cjdevstudios/bumblevue/card';
     import {computed, onBeforeMount, ref} from "vue";
     import { useApi } from '@/common/api/useApi';
     import { components } from "../../../data/hlapiv2_schema";

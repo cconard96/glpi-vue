@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
 import ApprovalForm from './ApprovalForm.vue';
 import { defaultOptions } from "@cjdevstudios/bumblevue/config";
-import { ConfirmationService, ToastService } from "@cjdevstudios/bumblevue";
+import ConfirmationService from '@cjdevstudios/bumblevue/confirmationservice';
+import ToastService from '@cjdevstudios/bumblevue/toastservice';
 import { useAssistanceItem } from "@/modules/assistance/timeline/useAssistanceItem.ts";
 import { login, renderAsync } from "@tests/utils.ts";
 import { ref } from "vue";

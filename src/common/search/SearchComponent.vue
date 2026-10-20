@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import {DataTable, Column, InputText, SelectButton, Message} from '@cjdevstudios/bumblevue';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import Column from '@cjdevstudios/bumblevue/column';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
+    import Message from '@cjdevstudios/bumblevue/message';
     import { useApi, type SearchResult } from '@/common/api/useApi.ts';
     import { ComponentSchema } from "@/common/api/ComponentSchema";
     import { computed, onMounted, PropType, ref, watch } from "vue";

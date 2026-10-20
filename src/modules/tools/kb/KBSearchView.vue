@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    import {ProgressSpinner, Tree} from '@cjdevstudios/bumblevue';
+    import ProgressSpinner from '@cjdevstudios/bumblevue/progressspinner';
+    import Tree from '@cjdevstudios/bumblevue/tree';
     import type { TreeNode } from '@cjdevstudios/bumblevue/treenode';
     import { useApi } from '@/common/api/useApi.ts';
     import {ref, onMounted} from "vue";

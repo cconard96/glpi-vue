@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import { Message, ProgressSpinner, Tab, TabList, TabPanels, Tabs } from '@cjdevstudios/bumblevue';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import ProgressSpinner from '@cjdevstudios/bumblevue/progressspinner';
+    import Tab from '@cjdevstudios/bumblevue/tab';
+    import TabList from '@cjdevstudios/bumblevue/tablist';
+    import TabPanels from '@cjdevstudios/bumblevue/tabpanels';
+    import Tabs from '@cjdevstudios/bumblevue/tabs';
     import LazyTabPanel from "@/common/LazyTabPanel.vue";
     import { computed, useTemplateRef } from "vue";
     import { TabDefinition } from "@/types";

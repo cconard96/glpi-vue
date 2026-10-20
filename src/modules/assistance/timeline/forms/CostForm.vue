@@ -1,6 +1,15 @@
 <script setup lang="ts">
-    import { Avatar, Card, Button, FloatLabel, InputText, DatePicker, Fluid, InputMask, InputNumber, Textarea, } from "@cjdevstudios/bumblevue";
-    import { Form, FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import Avatar from '@cjdevstudios/bumblevue/avatar';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import DatePicker from '@cjdevstudios/bumblevue/datepicker';
+    import Fluid from '@cjdevstudios/bumblevue/fluid';
+    import InputMask from '@cjdevstudios/bumblevue/inputmask';
+    import InputNumber from '@cjdevstudios/bumblevue/inputnumber';
+    import Textarea from '@cjdevstudios/bumblevue/textarea';
+    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";

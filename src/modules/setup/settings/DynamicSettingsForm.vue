@@ -1,6 +1,5 @@
 <script setup lang="ts">
     import { computed } from "vue";
-    import { computedAsync } from "@vueuse/core";
     import { useSettings } from "./useSettings.ts";
     import FormFields from "@/common/forms/FormFields.vue";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";

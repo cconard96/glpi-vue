@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { Column, DataTable, Message } from "@cjdevstudios/bumblevue";
+    import Column from '@cjdevstudios/bumblevue/column';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import Message from '@cjdevstudios/bumblevue/message';
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-    import {Avatar, Button, Card, FloatLabel, Select, Message} from "@cjdevstudios/bumblevue";
+    import Avatar from '@cjdevstudios/bumblevue/avatar';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import Select from '@cjdevstudios/bumblevue/select';
+    import Message from '@cjdevstudios/bumblevue/message';
     import { Form, FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import FileUpload from "@cjdevstudios/bumblevue/fileupload";
     import { useSessionStore } from "@/common/useSessionStore";

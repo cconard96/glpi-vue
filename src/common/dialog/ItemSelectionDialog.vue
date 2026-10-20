@@ -1,6 +1,10 @@
 <script setup lang="ts">
     import type { SelectProps, InputTextProps, ListboxProps } from "@cjdevstudios/bumblevue";
-    import { Select, InputText, Listbox, Chip, Button } from "@cjdevstudios/bumblevue";
+    import Select from '@cjdevstudios/bumblevue/select';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import Listbox from '@cjdevstudios/bumblevue/listbox';
+    import Chip from '@cjdevstudios/bumblevue/chip';
+    import Button from '@cjdevstudios/bumblevue/button';
     import { components } from "../../../data/hlapiv2_schema";
     import { inject, type Ref, ref, toRaw, watch } from "vue";
     import { useDebounceFn } from "@vueuse/core";

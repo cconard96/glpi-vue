@@ -1,5 +1,7 @@
 <script setup lang="ts">
-    import { Card, Button, Message } from '@cjdevstudios/bumblevue';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Message from '@cjdevstudios/bumblevue/message';
     import { useAuth } from '@/common/api/useAuth';
     import { useRouter } from "vue-router";
     import { computed, onMounted, ref } from "vue";

@@ -1,6 +1,10 @@
 <script setup lang="ts">
     import { FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
-    import { Button, InputNumber, InputText, SelectButton, Textarea, useToast } from "@cjdevstudios/bumblevue";
+    import Button from "@cjdevstudios/bumblevue/button";
+    import InputNumber from "@cjdevstudios/bumblevue/inputnumber";
+    import InputText from "@cjdevstudios/bumblevue/inputtext";
+    import Textarea from "@cjdevstudios/bumblevue/textarea";
+    import { useToast } from "@cjdevstudios/bumblevue/usetoast";
     import { inject } from "vue";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import FormFields from "@/common/forms/FormFields.vue";

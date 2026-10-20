@@ -1,5 +1,12 @@
 <script setup lang="ts">
-    import { Avatar, Card, Button, Select, FloatLabel, useToast, Fluid, Message } from "@cjdevstudios/bumblevue";
+    import Avatar from '@cjdevstudios/bumblevue/avatar';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import Select from '@cjdevstudios/bumblevue/select';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import { useToast } from '@cjdevstudios/bumblevue/usetoast';
+    import Fluid from '@cjdevstudios/bumblevue/fluid';
+    import Message from '@cjdevstudios/bumblevue/message';
     import { FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";

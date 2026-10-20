@@ -1,7 +1,12 @@
 <script setup lang="ts">
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import FormFields from "@/common/forms/FormFields.vue";
-    import { DatePicker, Fieldset, InputNumber, InputText, Message, Textarea } from "@cjdevstudios/bumblevue";
+    import DatePicker from '@cjdevstudios/bumblevue/datepicker';
+    import Fieldset from '@cjdevstudios/bumblevue/fieldset';
+    import InputNumber from '@cjdevstudios/bumblevue/inputnumber';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import Textarea from '@cjdevstudios/bumblevue/textarea';
     import { useApi } from "@/common/api/useApi";
     import { inject, onMounted, ref } from "vue";
     import type { useAsset } from "@/modules/assets/useAsset.js";

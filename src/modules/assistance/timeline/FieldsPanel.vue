@@ -1,21 +1,19 @@
 <script setup lang="ts">
-    import {
-        Accordion,
-        AccordionContent,
-        AccordionHeader,
-        AccordionPanel,
-        Button,
-        DatePicker,
-        FloatLabel,
-        Fluid,
-        InputText,
-        Message,
-        ScrollPanel,
-        SelectButton,
-        Tag,
-        useDialog,
-        useToast
-    } from "@cjdevstudios/bumblevue";
+    import Accordion from '@cjdevstudios/bumblevue/accordion';
+    import AccordionContent from '@cjdevstudios/bumblevue/accordioncontent';
+    import AccordionHeader from '@cjdevstudios/bumblevue/accordionheader';
+    import AccordionPanel from '@cjdevstudios/bumblevue/accordionpanel';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import DatePicker from '@cjdevstudios/bumblevue/datepicker';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import Fluid from '@cjdevstudios/bumblevue/fluid';
+    import InputText from '@cjdevstudios/bumblevue/inputtext';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import ScrollPanel from '@cjdevstudios/bumblevue/scrollpanel';
+    import SelectButton from '@cjdevstudios/bumblevue/selectbutton';
+    import Tag from '@cjdevstudios/bumblevue/tag';
+    import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
+    import { useToast } from '@cjdevstudios/bumblevue/usetoast';
     import { FormField } from "@cjdevstudios/bumblevue-forms";
     import { defineAsyncComponent, inject, onMounted, onUnmounted, ref } from "vue";
     import { useApi } from "@/common/api/useApi";

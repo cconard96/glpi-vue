@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import { Column, DataTable, Button, useDialog, useToast } from "@cjdevstudios/bumblevue";
+    import Column from '@cjdevstudios/bumblevue/column';
+    import DataTable from '@cjdevstudios/bumblevue/datatable';
+    import Button from '@cjdevstudios/bumblevue/button';
+    import { useDialog } from "@cjdevstudios/bumblevue/usedialog";
+    import { useToast } from "@cjdevstudios/bumblevue/usetoast";
     import { useApi } from "@/common/api/useApi";
     import { defineAsyncComponent, inject, onMounted, ref } from "vue";
     import { type useAsset } from "@/modules/assets/useAsset.js";

@@ -1,5 +1,9 @@
 <script setup lang="ts">
-    import {Card, Select, FloatLabel, Message, ProgressSpinner} from '@cjdevstudios/bumblevue';
+    import Card from '@cjdevstudios/bumblevue/card';
+    import Select from '@cjdevstudios/bumblevue/select';
+    import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
+    import Message from '@cjdevstudios/bumblevue/message';
+    import ProgressSpinner from '@cjdevstudios/bumblevue/progressspinner';
     import { useApi } from "@/common/api/useApi";
     import {watchEffect, ref, defineAsyncComponent, markRaw} from "vue";
     import { useI18n } from "vue-i18n";
