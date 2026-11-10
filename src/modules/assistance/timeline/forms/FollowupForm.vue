@@ -4,7 +4,7 @@
     import Fluid from '@cjdevstudios/bumblevue/fluid';
     import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
     import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
-    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/common/useSessionStore";
     import { useOpenAPIForm } from "@/common/useOpenAPIForm";
     import { useApi } from "@/common/api/useApi";

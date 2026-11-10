@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { routes } from '@/common/util/routes.ts';
 import BumbleVue from '@cjdevstudios/bumblevue/config';
-import Lara from '@cjdevstudios/bumbleuix-themes/lara';
+import Lara from '@cjdevstudios/bumblevue/themes/lara';
 import '@/main.css';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
@@ -13,7 +13,7 @@ import VueDOMPurifyHTML from 'vue-dompurify-html';
 import ConfirmationService from '@cjdevstudios/bumblevue/confirmationservice';
 import DialogService from '@cjdevstudios/bumblevue/dialogservice';
 import ToastService from '@cjdevstudios/bumblevue/toastservice';
-import {definePreset} from "@cjdevstudios/bumbleuix-themes";
+import {definePreset} from "@cjdevstudios/bumblevue/themes";
 import { all } from 'primelocale';
 import Tooltip from "@cjdevstudios/bumblevue/tooltip";
 import { i18n } from "@/common/util/i18n.ts";

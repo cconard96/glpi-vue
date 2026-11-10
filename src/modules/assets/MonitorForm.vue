@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import Button from "@cjdevstudios/bumblevue/button";
     import Checkbox from "@cjdevstudios/bumblevue/checkbox";
     import InputNumber from "@cjdevstudios/bumblevue/inputnumber";

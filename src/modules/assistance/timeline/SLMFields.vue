@@ -5,7 +5,7 @@
     import InputGroup from '@cjdevstudios/bumblevue/inputgroup';
     import InputGroupAddon from '@cjdevstudios/bumblevue/inputgroupaddon';
     import Tag from '@cjdevstudios/bumblevue/tag';
-    import { FormField } from "@cjdevstudios/bumblevue-forms";
+    import { FormField } from "@cjdevstudios/bumblevue/forms";
 
     defineProps<{
         fields: {

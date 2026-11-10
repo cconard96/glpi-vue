@@ -9,7 +9,7 @@
     import InputMask from '@cjdevstudios/bumblevue/inputmask';
     import InputNumber from '@cjdevstudios/bumblevue/inputnumber';
     import Textarea from '@cjdevstudios/bumblevue/textarea';
-    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import FieldSelect from "@/common/forms/FieldSelect.vue";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";

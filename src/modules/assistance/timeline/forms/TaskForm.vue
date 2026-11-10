@@ -6,7 +6,7 @@
     import Fluid from '@cjdevstudios/bumblevue/fluid';
     import InputMask from '@cjdevstudios/bumblevue/inputmask';
     import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
-    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import { ITILSubItemRights, useSessionStore } from "@/common/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";

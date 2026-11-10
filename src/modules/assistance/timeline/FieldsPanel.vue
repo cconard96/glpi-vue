@@ -14,7 +14,7 @@
     import Tag from '@cjdevstudios/bumblevue/tag';
     import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
     import { useToast } from '@cjdevstudios/bumblevue/usetoast';
-    import { FormField } from "@cjdevstudios/bumblevue-forms";
+    import { FormField } from "@cjdevstudios/bumblevue/forms";
     import { defineAsyncComponent, inject, onMounted, onUnmounted, ref } from "vue";
     import { useApi } from "@/common/api/useApi";
     import type { components } from "../../../../data/hlapiv2_schema";

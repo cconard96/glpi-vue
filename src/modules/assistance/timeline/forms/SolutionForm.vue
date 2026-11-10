@@ -6,7 +6,7 @@
     import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
     import ToggleSwitch from '@cjdevstudios/bumblevue/toggleswitch';
     import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
-    import { Form, FormField, FormInstance, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { Form, FormField, FormInstance, FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import { defineAsyncComponent, ref, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";

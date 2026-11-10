@@ -113,7 +113,8 @@ export default defineConfig(({ mode }) => {
             'globalThis.__DEV__': mode === 'development',
         },
         optimizeDeps: {
-            include: ['@cjdevstudios/bumblevue/config', '@cjdevstudios/bumbleuix-themes/lara', 'pinia-plugin-persistedstate', '@cjdevstudios/bumblevue/focustrap'],
+            include: ['@cjdevstudios/bumblevue/config', '@cjdevstudios/bumblevue/themes/lara', 'pinia-plugin-persistedstate', '@cjdevstudios/bumblevue/focustrap'],
+            exclude: ['@cjdevstudios/bumblevue'],
         },
         resolve: {
             alias: {
@@ -121,6 +122,7 @@ export default defineConfig(({ mode }) => {
                 '@tests': fileURLToPath(new URL('./tests', import.meta.url)),
                 html2canvas: 'html2canvas-pro',
             },
+            preserveSymlinks: true, // allow linked packages to be resolved correctly
         },
         test: {
             browser: {

@@ -7,7 +7,7 @@
     import { useToast } from '@cjdevstudios/bumblevue/usetoast';
     import Fluid from '@cjdevstudios/bumblevue/fluid';
     import Message from '@cjdevstudios/bumblevue/message';
-    import { FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import {useSessionStore} from "@/common/useSessionStore";
     import { inject, onMounted, ref, TemplateRef, useTemplateRef } from "vue";
     import RichTextEditor from "@/common/forms/RichTextEditor.vue";

@@ -4,7 +4,7 @@
     import Menu from '@cjdevstudios/bumblevue/menu';
     import Tag from '@cjdevstudios/bumblevue/tag';
     import { useToast } from "@cjdevstudios/bumblevue/usetoast";
-    import { Form, FormField, FormInstance } from '@cjdevstudios/bumblevue-forms';
+    import { Form, FormField, FormInstance } from '@cjdevstudios/bumblevue/forms';
     import { useDataHelper } from "@/common/useDataHelper";
     import { components } from "../../../../../data/hlapiv2_schema";
     import { computed, inject, onMounted, onUpdated, Ref, shallowRef, useTemplateRef, watch } from "vue";

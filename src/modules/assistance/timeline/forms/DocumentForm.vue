@@ -5,7 +5,7 @@
     import FloatLabel from '@cjdevstudios/bumblevue/floatlabel';
     import Select from '@cjdevstudios/bumblevue/select';
     import Message from '@cjdevstudios/bumblevue/message';
-    import { Form, FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue-forms';
+    import { Form, FormField, FormSubmitEvent } from '@cjdevstudios/bumblevue/forms';
     import FileUpload from "@cjdevstudios/bumblevue/fileupload";
     import { useSessionStore } from "@/common/useSessionStore";
 
