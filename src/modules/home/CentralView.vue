@@ -31,7 +31,7 @@
             </TabList>
             <TabPanels class="grow shrink-0 basis-auto overflow-y-auto">
                 <TabPanel value="dashboard">
-                    <DashboardView current="central"></DashboardView>
+                    <DashboardView current="central" :demo="true"></DashboardView>
                 </TabPanel>
                 <TabPanel value="personal">
                     <PersonalTab></PersonalTab>

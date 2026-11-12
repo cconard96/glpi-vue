@@ -22,7 +22,7 @@
 </script>
 
 <template>
-    <div>
+    <div class="w-full h-full relative justify-items-center">
         <div class="w-full flex flex-row-reverse relative top-10">
             <Button v-if="showSaveAsImage" @click="saveAsImage" variant="text" severity="secondary" size="small"
                     :title="$t('charts.save_as_image', 'Save as image')" :aria-label="$t('charts.save_as_image', 'Save as image')">

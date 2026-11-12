@@ -28,6 +28,10 @@
             type: Number,
             default: 24
         },
+        demo: {
+            type: Boolean,
+            default: false
+        }
     });
 
     const CELL_MARGIN = 3;
@@ -56,9 +60,19 @@
                     }
                     items {
                         id card x y width height card_options
+                        value(demo: ${props.demo}) {
+                            ...BigNumberFields
+                            ...ListFields
+                            ...SeriesFields
+                            ...ArticleFields
+                        }
                     }
                 }
             }
+            fragment BigNumberFields on DashboardCardNumber { itemtype number label icon }
+            fragment ListFields on DashboardCardList { icon label distributed items { label color number} }
+            fragment SeriesFields on DashboardCardSeries { icon label labels series { values name} }
+            fragment ArticleFields on DashboardCardArticles { icon label number articles { date label content author } }
         `, {}, 'cache-first').then((response) => {
             items.value = [];
             response.data.Dashboard[0].items.forEach((item) => {
@@ -70,6 +84,7 @@
                     width: item.width,
                     height: item.height,
                     card_options: item.card_options ? JSON.parse(item.card_options) : {},
+                    value: item.value,
                 };
                 items.value.push(dashboard_item);
             });
@@ -106,9 +121,8 @@
 
 <template>
     <div ref="ref_dashboardgrid">
-        <Message severity="warn">Card rendering not implemented. Only skeleton loaders will be shown.</Message>
         <div :class="`grid-stack grid-stack-${cols} w-full`" :gs-column="cols" :gs-min-row="rows">
-            <DashboardItem v-for="item in items" :key="item.id" :gridstack_id="item.card" :x="item.x" :y="item.y" :width="item.width" :height="item.height" :card_options="item.card_options"></DashboardItem>
+            <DashboardItem v-for="item in items" :key="item.id" :gridstack_id="item.card" :x="item.x" :y="item.y" :width="item.width" :height="item.height" :card_options="item.card_options" :value="item.value"></DashboardItem>
             <div :class="`grid-guide ${edit_mode ? '' : 'hidden'}`">
                 <template v-for="n in cols" :key="`col-${n}`">
                     <template v-for="m in rows" :key="`col-${n}-row-${m}`">
