@@ -129,7 +129,7 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
     onMounted(() => {
         chart = new Chart(item.value, {
             type: chartType.value,
-            data: chartData.value,
+            data: computedData.value,
             options: computedOptions.value,
             plugins: chartPlugins?.value || [],
         } as ChartConfiguration<TType, TData, TLabel>);

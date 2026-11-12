@@ -38,16 +38,20 @@
 
     // GLPI widget types: ["bigNumber","summaryNumbers","multipleNumber","pie","donut","halfpie","halfdonut","bar","hbar","searchShowList","line","area","lines","areas","bars","stackedbars","hBars","stackedHBars","articleList","markdown"]
 
-    const barWidgetTypes = ['bar', 'hbar', 'hBars', 'stackedbars', 'stackedHBars'];
+    const barWidgetTypes = ['bar', 'hbar', 'bars', 'hBars', 'stackedbars', 'stackedHBars'];
+    const lineWidgetTypes = ['line', 'lines', 'area', 'areas'];
     const widgetType = computed(() => {
-        if (props.card_options?.widgettype === 'halfdonut') {
+        const type = props.card_options?.widgettype;
+        if (type === 'halfdonut') {
             return 'donut';
-        } else if (props.card_options?.widgettype === 'halfpie') {
+        } else if (type === 'halfpie') {
             return 'pie';
-        } else if (barWidgetTypes.includes(props.card_options?.widgettype)) {
+        } else if (barWidgetTypes.includes(type)) {
             return 'bar';
+        } else if (lineWidgetTypes.includes(type)) {
+            return 'line';
         }
-        return props.card_options?.widgettype;
+        return type;
     });
 
     const cardOptions = computed(() => {
@@ -59,6 +63,8 @@
         } else if (barWidgetTypes.includes(type)) {
             opts.orientation = ['hbar', 'hBars', 'stackedHBars'].includes(type) ? 'horizontal' : 'vertical';
             opts.stacked = ['stackedbars', 'stackedHBars'].includes(type);
+        } else if (lineWidgetTypes.includes(type)) {
+            opts.fill = ['area', 'areas'].includes(type);
         }
         return opts;
     });
@@ -72,7 +78,7 @@
             <component v-if="widgetType === 'bigNumber'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/BigNumber.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value"></component>
             <component v-else-if="widgetType === 'donut'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/DonutChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value"></component>
             <component v-else-if="widgetType === 'pie'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/DonutChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value" displayAs="pie"></component>
-            <component v-else-if="widgetType === 'bar'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/BarChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value"></component>
+            <component v-else-if="widgetType === 'bar' || widgetType === 'line'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/SeriesChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value" :displayAs="widgetType"></component>
         </div>
     </div>
 </template>
