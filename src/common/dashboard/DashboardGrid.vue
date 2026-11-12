@@ -48,6 +48,7 @@
     const edit_mode = ref(false);
 
     async function refreshData() {
+        //TODO Use cache-and-network (use @vue/apollo-composable)
         return doGraphQLRequest(`
             query {
                 Dashboard(filter: "key==${props.current}", limit: 1) {
