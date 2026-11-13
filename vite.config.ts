@@ -113,7 +113,7 @@ export default defineConfig(({ mode }) => {
             'globalThis.__DEV__': mode === 'development',
         },
         optimizeDeps: {
-            include: ['@cjdevstudios/bumblevue/config', '@cjdevstudios/bumbleuix-themes/lara', 'pinia-plugin-persistedstate', '@cjdevstudios/bumblevue/focustrap'],
+            include: ['@cjdevstudios/bumblevue/config', '@cjdevstudios/bumbleuix-themes/lara', 'pinia-plugin-persistedstate', '@cjdevstudios/bumblevue/focustrap', ...(mode === 'test' ? ['vue3-snapshot-serializer'] : [])],
         },
         resolve: {
             alias: {

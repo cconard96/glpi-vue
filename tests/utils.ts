@@ -1,10 +1,10 @@
 import { ComponentRenderOptions, render as renderVitest } from 'vitest-browser-vue';
 import { defineComponent } from "vue";
-import { Tooltip } from "primevue";
+import Tooltip from "@cjdevstudios/bumblevue/tooltip";
 import { useAuth } from "@/common/api/useAuth.ts";
 import { i18n } from "@/common/util/i18n.ts";
-import { defaultOptions } from "primevue/config";
-import FocusTrap from "primevue/focustrap";
+import { defaultOptions } from "@cjdevstudios/bumblevue/config";
+import FocusTrap from "@cjdevstudios/bumblevue/focustrap";
 
 function getOptionsWithDefaults(options: ComponentRenderOptions<unknown, unknown> = {}): ComponentRenderOptions<unknown, unknown> {
     const mocks = options.global?.mocks || {};
@@ -16,7 +16,7 @@ function getOptionsWithDefaults(options: ComponentRenderOptions<unknown, unknown
         global: {
             ...options.global,
             mocks: {
-                $primevue: {
+                $bumblevue: {
                     config: defaultOptions
                 },
                 ...mocks,

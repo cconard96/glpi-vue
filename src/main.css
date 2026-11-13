@@ -16,6 +16,13 @@ html {
     }
 }
 
+/* The theme's fluid style for TreeSelect is missing the full width that Select/MultiSelect have */
+@layer bumblevue {
+    .p-treeselect-fluid {
+        width: 100%;
+    }
+}
+
 @theme {
     --text-base: 14px;
 }

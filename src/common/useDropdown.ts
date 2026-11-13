@@ -79,28 +79,27 @@ export function useDropdown(
         const filter_clause = complete_filter ? `, filter:"${complete_filter}"` : '';
         const params = `${filter_clause}`.replace(/^, /, '');
 
-        const fields_request = 'key: id label: name level parent { id }';
+        const fields_request = 'id name parent { id }';
         return doGraphQLRequest(`
             query { ${schema_name}${params ? ('(' + params + ')') : ''} { ${fields_request} } }
         `, {}).then((response) => {
             const optionsTree: Array<any> = [];
             const itemsById: { [key: number]: any } = {};
+            const items = response.data[schema_name];
 
-            response.data[schema_name].forEach((item: any) => {
-                const option = {
-                    key: item.key,
-                    label: item.label,
+            // Create all options first so children are attached even if they are returned before their parent
+            items.forEach((item: any) => {
+                itemsById[item.id] = {
+                    id: item.id,
+                    name: item.name,
                     children: [],
                 };
-                itemsById[item.key] = option;
-
-                if (item.parent && item.parent.id) {
-                    const parentOption = itemsById[item.parent.id];
-                    if (parentOption) {
-                        parentOption.children.push(option);
-                    } else {
-                        optionsTree.push(option);
-                    }
+            });
+            items.forEach((item: any) => {
+                const option = itemsById[item.id];
+                const parentOption = item.parent?.id ? itemsById[item.parent.id] : undefined;
+                if (parentOption) {
+                    parentOption.children.push(option);
                 } else {
                     optionsTree.push(option);
                 }
