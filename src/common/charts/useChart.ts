@@ -1,7 +1,7 @@
 import type {
     ChartItem, ChartConfiguration, ChartData, ChartType,
     ChartDatasetCustomTypesPerDataset, ChartOptions, ChartDataCustomTypesPerDataset,
-    DefaultDataPoint,
+    DefaultDataPoint, Plugin
 } from "chart.js";
 import { computed, MaybeRef, onMounted, onUnmounted, ref, type Ref, watch } from "vue";
 import Chart from "chart.js/auto";
@@ -13,7 +13,8 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
     item: Ref<ChartItem>,
     type: MaybeRef<TType>,
     options: MaybeRef<ChartOptions<TType>>,
-    data: MaybeRef<ChartData<TType, TData, TLabel> | ChartDataCustomTypesPerDataset<TType, TData,  TLabel>>
+    data: MaybeRef<ChartData<TType, TData, TLabel> | ChartDataCustomTypesPerDataset<TType, TData,  TLabel>>,
+    plugins?: MaybeRef<Plugin[]>,
 ) {
 
     const defaultDatasetOptions: Partial<{
@@ -45,10 +46,14 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
 
     const chartType = ref(type);
     const chartOptions = ref(options);
+    const chartPlugins = ref(plugins);
     const computedOptions = computed(() => {
+        // Arc-based charts (pie/doughnut/polarArea) use ArcElement, which doesn't implement inXRange,
+        // so the 'x' interaction mode never matches any element and tooltips never show.
+        const isArcChart = ['pie', 'doughnut', 'polarArea'].includes(chartType.value);
         const defaultOptions: ChartOptions = {
             responsive: true,
-            interaction: {
+            interaction: isArcChart ? {} : {
                 mode: 'x', // Show all tooltips for the same horizontal position even if they don't share the same point (e.g. for multiple lines)
             },
             scales: {
@@ -68,6 +73,10 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
                     labels: {
                         usePointStyle: true,
                         color: chartStyles.value.fgColor,
+                        filter: (legendItem, chart) => {
+                            // Hide undefined labels
+                            return legendItem.text !== undefined && legendItem.text !== 'undefined';
+                        }
                     }
                 },
                 title: {
@@ -122,6 +131,7 @@ export function useChart<TType extends ChartType = ChartType, TData = DefaultDat
             type: chartType.value,
             data: chartData.value,
             options: computedOptions.value,
+            plugins: chartPlugins?.value || [],
         } as ChartConfiguration<TType, TData, TLabel>);
     });
 
