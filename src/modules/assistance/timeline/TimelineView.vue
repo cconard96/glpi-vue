@@ -214,7 +214,7 @@
 
 <template>
     <PrintTarget>
-        <section ref="pdf_root" class="grid grid-rows-[auto_1fr] h-full not-print:overflow-hidden">
+        <section ref="pdf_root" class="grid grid-rows-[auto_1fr] h-full not-print:overflow-hidden w-full">
             <div class="text-lg flex justify-between p-2">
                 <RouterLink :to="{ name: 'Search', params: {component_module: 'assistance', itemtype: itemtype}}"
                             :title="$t('item_form.back_to_search', 'Back to search results')"
@@ -229,7 +229,7 @@
                 </header>
                 <div></div>
             </div>
-            <div class="grid grid-cols-12 not-print:overflow-y-hidden">
+            <div class="grid grid-cols-12 not-print:overflow-y-hidden grid-rows-[1fr_auto] h-full">
                 <div ref="left-side" class="col-span-8 2xl:col-span-9 flex flex-col-reverse space-y-4 px-10 overflow-y-auto pb-10">
                     <template v-if="view_mode !== 'milestones'">
                         <component id="timeline-new-item-form" v-if="current_new_item !== null && view_mode === 'default'" :is="current_new_item.component" @close="current_new_item = null"></component>
