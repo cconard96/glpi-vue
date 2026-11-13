@@ -2,21 +2,12 @@
     import Chart from "@/common/charts/Chart.vue";
     import { computed } from "vue";
     import type { ChartData, ChartDataset, ChartOptions } from "chart.js";
+    import type { ListCardValue, ResolvedCardOptions, SeriesCardValue, SeriesWidgetType } from "@/common/dashboard/dashboard";
 
-    /**
-     * Bar, line and area charts for the GLPI dashboard.
-     * Accepts either a single list ("DashboardCardList" with `items`) or
-     * multiple series ("DashboardCardSeries" with `labels` and `series`).
-     *
-     * Options (set by DashboardItem):
-     * - orientation: 'vertical' | 'horizontal' (bar only)
-     * - stacked: boolean
-     * - fill: boolean (line only, renders an area chart)
-     */
     const props = withDefaults(defineProps<{
         gridstack_id: string;
-        options: Record<string, any>;
-        value: Record<string, any>;
+        options: ResolvedCardOptions<SeriesWidgetType>;
+        value: ListCardValue | SeriesCardValue | null;
         displayAs?: 'bar' | 'line';
     }>(), {
         displayAs: 'bar',
@@ -26,13 +17,14 @@
 
     const color = computed(() => props.options?.color);
     const isLine = computed(() => props.displayAs === 'line');
-    // Horizontal lines aren't a thing in GLPI, so orientation only applies to bars
     const isHorizontal = computed(() => !isLine.value && props.options?.orientation === 'horizontal');
     const isStacked = computed(() => !!props.options?.stacked);
     const isArea = computed(() => isLine.value && !!props.options?.fill);
 
-    const listItems = computed(() => Array.isArray(props.value?.items) ? props.value.items : null);
-    const seriesItems = computed(() => Array.isArray(props.value?.series) ? props.value.series : null);
+    const listValue = computed(() => props.value && 'items' in props.value && Array.isArray(props.value.items) ? props.value : null);
+    const seriesValue = computed(() => props.value && 'series' in props.value && Array.isArray(props.value.series) ? props.value : null);
+    const listItems = computed(() => listValue.value?.items ?? null);
+    const seriesItems = computed(() => seriesValue.value?.series ?? null);
 
     /**
      * Add transparency to a hex color so filled areas don't hide each other.
@@ -62,7 +54,7 @@
     const data = computed<ChartData<'bar' | 'line', number[], string>>(() => {
         // Multiple datasets
         if (seriesItems.value !== null) {
-            const labels: string[] = Array.isArray(props.value?.labels) ? props.value.labels.map((l: unknown) => String(l ?? '')) : [];
+            const labels: string[] = Array.isArray(seriesValue.value?.labels) ? seriesValue.value.labels.map((l: unknown) => String(l ?? '')) : [];
             const datasets = seriesItems.value.map((serie, index) => applyTypeOptions({
                 label: serie.name ?? '',
                 data: (serie.values ?? []).map((v) => v ?? 0),

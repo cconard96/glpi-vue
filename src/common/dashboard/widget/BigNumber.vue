@@ -1,15 +1,15 @@
 <script setup lang="ts">
     import { computed, onMounted, ref } from "vue";
+    import type { CardOptions, CardValue } from "@/common/dashboard/dashboard";
 
     const props = defineProps<{
         gridstack_id: string;
-        options: Record<string, any>;
-        value: Record<string, any>;
+        options: CardOptions<'bigNumber'>;
+        value: CardValue<'bigNumber'> | null;
     }>();
 
     const { color } = props.options;
     const valueNumber = computed(() => props.value?.number ?? 0);
-    const { label, icon } = props.value;
 
     // fancy count-up animation with easing
     const animationDuration = 1000;
@@ -63,7 +63,7 @@
             <span class="text-3xl tabular-nums" :aria-label="`${displayedNumberRaw}`">{{ displayedNumber }}</span>
             <i v-if="props.value?.icon" :class="`text-4xl ${props.value.icon}`" :aria-hidden="true"></i>
         </div>
-        <div>{{ props.value.label }}</div>
+        <div>{{ props.value?.label }}</div>
     </div>
 </template>
 

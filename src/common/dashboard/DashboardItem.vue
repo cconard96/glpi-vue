@@ -1,73 +1,37 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends WidgetTypes">
     import { computed, defineAsyncComponent } from "vue";
+    import type { WidgetTypes, BaseCardOptions, CardValue, CardOptions, ResolvedCard } from "@/common/dashboard/dashboard";
+    import { isBarWidgetType, isPieCard, isSeriesCard, resolveCard } from "@/common/dashboard/cardOptions";
 
-    const props = defineProps({
-        gridstack_id: {
-            type: String,
-            required: true,
-        },
-        x: {
-            type: Number,
-            required: true,
-            default: -1,
-        },
-        y: {
-            type: Number,
-            required: true,
-            default: -1,
-        },
-        width: {
-            type: Number,
-            required: true,
-            default: 2,
-        },
-        height: {
-            type: Number,
-            required: true,
-            default: 2,
-        },
-        card_options: {
-            type: Object,
-            required: true,
-        },
-        value: {
-            type: Object,
-            required: true,
-        },
+    const props = withDefaults(defineProps<{
+        gridstack_id: string;
+        x?: number;
+        y?: number;
+        width?: number;
+        height?: number;
+        /** `CardOptions<T>` alone is an indexed access type which TS cannot infer `T` from, so `BaseCardOptions<T>` is intersected to infer it from `widgettype` */
+        card_options: BaseCardOptions<T> & CardOptions<T>;
+        value: CardValue<T> | null;
+    }>(), {
+        x: -1,
+        y: -1,
+        width: 2,
+        height: 2,
     });
 
-    // GLPI widget types: ["bigNumber","summaryNumbers","multipleNumber","pie","donut","halfpie","halfdonut","bar","hbar","searchShowList","line","area","lines","areas","bars","stackedbars","hBars","stackedHBars","articleList","markdown"]
+    // Defined once here rather than inline in the template, otherwise a new component is created on every render
+    const BigNumber = defineAsyncComponent(() => import('@/common/dashboard/widget/BigNumber.vue'));
+    const DonutChart = defineAsyncComponent(() => import('@/common/dashboard/widget/DonutChart.vue'));
+    const SeriesChart = defineAsyncComponent(() => import('@/common/dashboard/widget/SeriesChart.vue'));
+    const Markdown = defineAsyncComponent(() => import('@/common/dashboard/widget/Markdown.vue'));
+    const ArticlesList = defineAsyncComponent(() => import('@/common/dashboard/widget/ArticlesList.vue'));
+    const UnsupportedWidget = defineAsyncComponent(() => import('@/common/dashboard/widget/UnsupportedWidget.vue'));
 
-    const barWidgetTypes = ['bar', 'hbar', 'bars', 'hBars', 'stackedbars', 'stackedHBars'];
-    const lineWidgetTypes = ['line', 'lines', 'area', 'areas'];
-    const widgetType = computed(() => {
-        const type = props.card_options?.widgettype;
-        if (type === 'halfdonut') {
-            return 'donut';
-        } else if (type === 'halfpie') {
-            return 'pie';
-        } else if (barWidgetTypes.includes(type)) {
-            return 'bar';
-        } else if (lineWidgetTypes.includes(type)) {
-            return 'line';
-        }
-        return type;
-    });
-
-    const cardOptions = computed(() => {
-        // Copy to avoid mutating the prop
-        const opts: Record<string, any> = { ...props.card_options };
-        const type = props.card_options?.widgettype;
-        if (type === 'halfdonut' || type === 'halfpie') {
-            opts.displayMode = 'half';
-        } else if (barWidgetTypes.includes(type)) {
-            opts.orientation = ['hbar', 'hBars', 'stackedHBars'].includes(type) ? 'horizontal' : 'vertical';
-            opts.stacked = ['stackedbars', 'stackedHBars'].includes(type);
-        } else if (lineWidgetTypes.includes(type)) {
-            opts.fill = ['area', 'areas'].includes(type);
-        }
-        return opts;
-    });
+    /**
+     * Widened from `ResolvedCard<T>` because TS does not narrow unions that depend on an unresolved generic.
+     * As a plain discriminated union, the `widgettype` checks in the template narrow the options and value for each widget.
+     */
+    const card = computed<ResolvedCard>(() => resolveCard<T>(props.card_options, props.value));
 </script>
 
 <template>
@@ -75,10 +39,14 @@
          :gs-w="width" :gs-h="height" :gs-x="x >= 0 ? x : undefined" :gs-y="y >= 0 ? y : undefined"
          :gs-auto-position="!(x >= 0 && y >= 0)">
         <div class="grid-stack-item-content overflow-hidden!">
-            <component v-if="widgetType === 'bigNumber'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/BigNumber.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value"></component>
-            <component v-else-if="widgetType === 'donut'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/DonutChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value"></component>
-            <component v-else-if="widgetType === 'pie'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/DonutChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value" displayAs="pie"></component>
-            <component v-else-if="widgetType === 'bar' || widgetType === 'line'" :is="defineAsyncComponent(() => import('@/common/dashboard/widget/SeriesChart.vue'))" :gridstack_id="gridstack_id" :options="cardOptions" :value="value" :displayAs="widgetType"></component>
+            <BigNumber v-if="card.widgettype === 'bigNumber'" :gridstack_id="gridstack_id" :options="card.options" :value="card.value"/>
+            <DonutChart v-else-if="isPieCard(card)" :gridstack_id="gridstack_id" :options="card.options" :value="card.value"
+                        :displayAs="card.widgettype === 'pie' || card.widgettype === 'halfpie' ? 'pie' : 'donut'"/>
+            <SeriesChart v-else-if="isSeriesCard(card)" :gridstack_id="gridstack_id" :options="card.options" :value="card.value"
+                         :displayAs="isBarWidgetType(card.widgettype) ? 'bar' : 'line'"/>
+            <Markdown v-else-if="card.widgettype === 'markdown'" :gridstack_id="gridstack_id" :options="card.options"/>
+            <ArticlesList v-else-if="card.widgettype === 'articleList'" :gridstack_id="gridstack_id" :options="card.options" :value="card.value"/>
+            <UnsupportedWidget v-else/>
         </div>
     </div>
 </template>

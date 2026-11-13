@@ -2,11 +2,12 @@
     import Chart from "@/common/charts/Chart.vue";
     import { computed } from "vue";
     import { type ChartOptions } from "chart.js";
+    import type { ListCardValue, PieWidgetType, ResolvedCardOptions } from "@/common/dashboard/dashboard";
 
     const props = withDefaults(defineProps<{
         gridstack_id: string;
-        options: Record<string, any>;
-        value: Record<string, any>;
+        options: ResolvedCardOptions<PieWidgetType>;
+        value: ListCardValue | null;
         displayAs?: 'donut' | 'pie';
     }>(), {
         displayAs: 'donut',
@@ -16,9 +17,9 @@
     const chartType = computed(() => props.displayAs === 'donut' ? 'doughnut' : props.displayAs);
     const data = computed(() => {
         const dataset = {
-            data: [],
+            data: [] as number[],
         };
-        const labels = [];
+        const labels: Array<string | number> = [];
         if (Array.isArray(props.value?.items)) {
             for (const item of props.value?.items ?? []) {
                 dataset.data.push(item.number ?? 0);
@@ -34,7 +35,7 @@
     const chartOptions = computed<ChartOptions<'doughnut' | 'pie'>>(() => {
         const opts: ChartOptions<'doughnut' | 'pie'> = {
             plugins: {
-                title: { text: props.value.label, font: { size: 14 } },
+                title: { text: props.value?.label, font: { size: 14 } },
                 legend: { display: false },
                 tooltip: { enabled: true },
             },
