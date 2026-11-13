@@ -14,7 +14,7 @@
     import Tag from '@cjdevstudios/bumblevue/tag';
     import { useDialog } from '@cjdevstudios/bumblevue/usedialog';
     import { useToast } from '@cjdevstudios/bumblevue/usetoast';
-    import { FormField } from "@cjdevstudios/bumblevue-forms";
+    import { FormField, FormSubmitEvent } from "@cjdevstudios/bumblevue-forms";
     import { defineAsyncComponent, inject, onMounted, onUnmounted, ref } from "vue";
     import { useApi } from "@/common/api/useApi";
     import type { components } from "../../../../data/hlapiv2_schema";
@@ -38,7 +38,8 @@
     const { doGraphQLRequest, getValidSchemaTypesFromItemtypes } = useApi();
     const {
         statusOptions, getTypeName, urgencyImpactOptions, priorityOptions, itemtypeIcon, assistanceLinkTypeLabels,
-        requesters, observers, assigned, globalApprovalIcon, globalApprovalLabel, current_new_item
+        requesters, observers, assigned, globalApprovalIcon, globalApprovalLabel, current_new_item,
+        updateItem,
     } = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance');
 
     const form_resolver = async (data) => {
@@ -49,9 +50,16 @@
         };
     };
 
-    const onFormSubmit = (data) => {
-        console.log('Form submitted:', data);
-        // Handle form submission, e.g., send data to the API.
+    const onFormSubmit = (e: FormSubmitEvent) => {
+        const touchedFields = Object.keys(e.states).filter(field => e.states[field].touched);
+        if (touchedFields.length === 0) {
+            return;
+        }
+        const touchedData: components['schemas']['Ticket' | 'Change' | 'Problem'] = {};
+        for (const field of touchedFields) {
+            touchedData[field] = e.values.values[field];
+        }
+        updateItem(touchedData, toast);
     };
 
     const assistance_link_types = [

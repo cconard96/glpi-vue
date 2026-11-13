@@ -7,6 +7,8 @@ import { AssistanceTimelineItemtype } from "./items/useAssistanceTimelineItem.ts
 import { BaseItemDefinition, useBaseItem } from "@/types";
 import { useI18n } from "vue-i18n";
 import { getDefaultRightChecks } from "@/common/useBaseItem.ts";
+import type { AxiosResponse } from "axios";
+import { ToastServiceMethods } from "@cjdevstudios/bumblevue";
 
 type TimelineItem = components['schemas']['Followup'] | components['schemas']['TicketTask']
     | components['schemas']['ChangeTask'] | components['schemas']['ProblemTask'] | components['schemas']['Solution']
@@ -190,6 +192,7 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
     globalApprovalLabel: ComputedRef<string | null>,
     canUpdateItem: ComputedRef<boolean>,
     milestones: ComputedRef<Array<{status: string, date: string}>>,
+    updateItem: (fields: components['schemas'][T], toastService: ToastServiceMethods = null) => Promise<void | AxiosResponse>,
 } {
     const session = useSessionStore();
     const { doApiRequest } = useApi();
@@ -553,6 +556,26 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         return milestone_items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     });
 
+    function updateItem(fields: components['schemas'][T], toastService: ToastServiceMethods = null): Promise<void | AxiosResponse> {
+        const handleFailure = (err) => {
+            if (err.response && err.response.data && err.response.data.message) {
+                toastService.add({severity: 'error', summary: 'Error', detail: err.response.data.message, life: 5000});
+            } else {
+                toastService.add({severity: 'error', summary: 'Error', detail: 'An unknown error occurred.', life: 5000});
+            }
+        }
+        return doApiRequest(`Assistance/${itemtype}/${item.value.id}`, {
+            method: 'PATCH',
+            data: fields,
+        }).then((res) => {
+            item.value = res.data;
+            if (toastService) {
+                toastService.add({severity: 'success', summary: 'Success', detail: 'Item updated successfully.', life: 5000});
+            }
+            return res;
+        }).catch(handleFailure);
+    }
+
     return {
         getDefinition,
         itemtype,
@@ -579,5 +602,6 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         globalApprovalLabel,
         canUpdateItem,
         milestones,
+        updateItem,
     }
 }

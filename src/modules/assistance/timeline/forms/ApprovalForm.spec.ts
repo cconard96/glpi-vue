@@ -21,7 +21,7 @@ test('Renders new approval form', async () => {
     const { getByRole, getByLabelText, locator } = await renderAsync(ApprovalForm, {
         global: {
             mocks: {
-                $@cjdevstudios/bumblevue: {
+                $bumblevue: {
                     config: defaultOptions
                 },
             },
