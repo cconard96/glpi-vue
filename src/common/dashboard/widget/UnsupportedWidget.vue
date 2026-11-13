@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+    import { useI18n } from "vue-i18n";
+
+    const { t: $t } = useI18n();
+</script>
 
 <template>
     <div class="h-full w-full flex items-center justify-center text-gray-500">

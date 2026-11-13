@@ -883,5 +883,11 @@
     "denied_mail_content": {
       "label": "Denied mail content | Denied mail contents"
     }
+  },
+  "dashboard": {
+    "no_data_available": "No data available",
+    "widget": {
+      "unsupported_widget": "Unsupported widget"
+    }
   }
 }
