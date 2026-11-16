@@ -108,7 +108,7 @@
 </script>
 
 <template>
-    <div class="h-full border rounded p-2" :style="`color: ${color ?? 'inherit'}; border-color: ${color ?? 'inherit'};`">
+    <div class="h-full p-2">
         <Chart :type="displayAs" :options="chartOptions" :data="data"></Chart>
     </div>
 </template>

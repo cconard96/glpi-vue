@@ -32,13 +32,15 @@
      * As a plain discriminated union, the `widgettype` checks in the template narrow the options and value for each widget.
      */
     const card = computed<ResolvedCard>(() => resolveCard<T>(props.card_options, props.value));
+
+    const cardOptionsColor = computed(() => props.card_options?.color || null);
 </script>
 
 <template>
     <div class="grid-stack-item" :gs-id="gridstack_id"
          :gs-w="width" :gs-h="height" :gs-x="x >= 0 ? x : undefined" :gs-y="y >= 0 ? y : undefined"
          :gs-auto-position="!(x >= 0 && y >= 0)">
-        <div class="grid-stack-item-content overflow-hidden!">
+        <div class="grid-stack-item-content overflow-hidden! border rounded shadow/50 shadow-current">
             <BigNumber v-if="card.widgettype === 'bigNumber'" :gridstack_id="gridstack_id" :options="card.options" :value="card.value"/>
             <DonutChart v-else-if="isPieCard(card)" :gridstack_id="gridstack_id" :options="card.options" :value="card.value"
                         :displayAs="card.widgettype === 'pie' || card.widgettype === 'halfpie' ? 'pie' : 'donut'"/>
@@ -52,5 +54,32 @@
 </template>
 
 <style scoped>
+    .grid-stack-item > * {
+        --dashboard-item-surface-color: var(--color-neutral-50);
+        --dashboard-item-color-base: v-bind(cardOptionsColor);
+        --dashboard-item-color-max-luminance: 0.17;
+        --dashboard-item-color: color(from var(--dashboard-item-color-base, currentColor) xyz-d65
+            calc(x * min(1, var(--dashboard-item-color-max-luminance) / y))
+            calc(y * min(1, var(--dashboard-item-color-max-luminance) / y))
+            calc(z * min(1, var(--dashboard-item-color-max-luminance) / y))
+        );
+        background-color: var(--dashboard-item-surface-color);
+    }
 
+    @media (prefers-color-scheme: dark) {
+        .grid-stack-item > * {
+            --dashboard-item-surface-color: var(--color-neutral-950);
+            --dashboard-item-color-min-luminance: 0.19;
+            /* D65 white is X = 0.95047, Y = 1, Z = 1.08883 */
+            --dashboard-item-color: color(from var(--dashboard-item-color-base, currentColor) xyz-d65
+                calc(x + (0.95047 - x) * max(0, (var(--dashboard-item-color-min-luminance) - y) / (1 - y)))
+                calc(y + (1 - y) * max(0, (var(--dashboard-item-color-min-luminance) - y) / (1 - y)))
+                calc(z + (1.08883 - z) * max(0, (var(--dashboard-item-color-min-luminance) - y) / (1 - y)))
+            );
+        }
+    }
+
+    .grid-stack-item-content {
+        color: var(--dashboard-item-color);
+    }
 </style>

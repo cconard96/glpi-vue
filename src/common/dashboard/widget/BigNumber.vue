@@ -58,12 +58,12 @@
 </script>
 
 <template>
-    <div class="h-full border rounded p-2" :style="`color: ${color ?? 'inherit'}; border-color: ${color ?? 'inherit'};`">
+    <div class="h-full p-2">
         <div class="flex justify-between">
             <span class="text-3xl tabular-nums" :aria-label="`${displayedNumberRaw}`">{{ displayedNumber }}</span>
             <i v-if="props.value?.icon" :class="`text-4xl ${props.value.icon}`" :aria-hidden="true"></i>
         </div>
-        <div>{{ props.value?.label }}</div>
+        <div class="w-full truncate">{{ props.value?.label }}</div>
     </div>
 </template>
 

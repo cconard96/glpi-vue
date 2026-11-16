@@ -1,5 +1,8 @@
 <script setup lang="ts">
-
+    defineProps<{
+        filterKey: string;
+        filterValue: any;
+    }>();
 </script>
 
 <template>

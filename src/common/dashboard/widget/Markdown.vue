@@ -13,7 +13,7 @@
 </script>
 
 <template>
-    <div class="h-full border rounded p-2" :style="`border-color: ${options.color ?? 'inherit'};`">
+    <div class="h-full p-2">
         <div v-dompurify-html="renderedContent"></div>
     </div>
 </template>

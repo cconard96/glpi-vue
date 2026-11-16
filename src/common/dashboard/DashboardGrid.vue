@@ -6,6 +6,7 @@
     import 'gridstack/dist/gridstack.min.css';
     import DashboardItem from "./DashboardItem.vue";
     import { useSessionStore } from "@/common/useSessionStore";
+    import DashboardFilters from "@/common/dashboard/DashboardFilters.vue";
 
     const props = defineProps({
         current: {
@@ -54,11 +55,7 @@
                 Dashboard(filter: "key==${props.current}", limit: 1) {
                     id key name context
                     user { id }
-                    filters {
-                        id
-                        user { id }
-                        filter
-                    }
+                    filters { filter }
                     items {
                         id card x y width height card_options
                         value(demo: ${props.demo}) {
@@ -90,12 +87,9 @@
                 items.value.push(dashboard_item);
             });
 
-            // set filters to the filter matching the current user ID or an empty object
-            const user_filter = response.data.Dashboard[0].filters.find((f) => f.user.id === getUserID);
-            try {
-                filters.value = user_filter ? JSON.parse(user_filter.filter) : {};
-            } catch {
-                filters.value = {};
+            filters.value = {};
+            for (const filter of response.data.Dashboard[0].filters) {
+                filters.value = {...filters.value, ...JSON.parse(filter.filter)};
             }
         });
     }
@@ -121,7 +115,8 @@
 </script>
 
 <template>
-    <div ref="ref_dashboardgrid">
+    <div ref="ref_dashboardgrid" class="bg-neutral-100 dark:bg-neutral-900">
+        <DashboardFilters :filters="filters"></DashboardFilters>
         <div :class="`grid-stack grid-stack-${cols} w-full`" :gs-column="cols" :gs-min-row="rows">
             <DashboardItem v-for="item in items" :key="item.id" :gridstack_id="item.card" :x="item.x" :y="item.y" :width="item.width" :height="item.height" :card_options="item.card_options" :value="item.value"></DashboardItem>
             <div :class="`grid-guide ${edit_mode ? '' : 'hidden'}`">

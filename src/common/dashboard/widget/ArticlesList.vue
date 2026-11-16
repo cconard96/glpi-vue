@@ -13,7 +13,7 @@
 </script>
 
 <template>
-    <div class="h-full border rounded p-2" :style="`border-color: ${options.color ?? 'inherit'};`">
+    <div class="h-full p-2">
         <div class="flex items-center gap-2 mb-2">
             <i :class="`pi ${value?.icon} text-lg`"></i>
             <div class="font-semibold">{{ value?.label }}</div>
