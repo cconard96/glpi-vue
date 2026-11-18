@@ -61,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/HomeView.vue'),
         children: [
             { name: 'Homepage', path: '/', component: () => import('@/modules/home/Homepage.vue'), props: true },
-            { name: 'ServiceCatalog', path: '/ServiceCatalog', component: () => import('@/modules/home/ServiceCatalogView.vue'), props: true },
+            { name: 'ServiceCatalog', path: '/ServiceCatalog', component: () => import('@/modules/home/HelpdeskView.vue'), props: true },
             {
                 name: 'Search',
                 path: `:component_module(${allModulesPattern})/:itemtype(${itemtypePattern})`,
@@ -102,6 +102,39 @@ export const routes: RouteRecordRaw[] = [
                         return [
                             { label: getComponentModuleLabel('assistance'), disabled: true },
                             { label: normalizeItemtype(route.params.itemtype as string), route: `/assistance/${route.params.itemtype}` },
+                        ];
+                    }
+                }
+            },
+            {
+                name: 'RenderedForm',
+                path: 'assistance/form/:form_id(\\d+)',
+                component: () => import('@/modules/assistance/forms/RenderedFormView.vue'),
+                props: (route: RouteLocationNormalizedGeneric) => {
+                    const form_id = parseInt(route.params.form_id as string);
+                    return {
+                        form_id: isNaN(form_id) ? null : form_id,
+                    };
+                },
+                meta: {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
+                        return [
+                            { label: getComponentModuleLabel('assistance'), disabled: true },
+                            { label: 'Form', route: `/assistance/form/${route.params.form_id}` },
+                        ];
+                    }
+                }
+            },
+            {
+                name: 'FormEditor',
+                path: 'assistance/form/:form_id(\\d+)/edit',
+                component: () => import('@/modules/assistance/forms/FormEditorView.vue'),
+                meta: {
+                    breadcrumbs: (route: RouteLocationNormalizedGeneric) => {
+                        return [
+                            { label: getComponentModuleLabel('assistance'), disabled: true },
+                            { label: 'Form', route: `/assistance/form/${route.params.form_id}` },
+                            { label: 'Edit', disabled: true },
                         ];
                     }
                 }

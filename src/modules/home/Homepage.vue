@@ -5,7 +5,7 @@
     const { active_profile } = useSessionStore();
 
     const homepageComponent = computed(() => {
-        return active_profile.interface === 'central' ? defineAsyncComponent(() => import('@/modules/home/CentralView.vue')) : defineAsyncComponent(() => import('@/modules/home/ServiceCatalogView.vue'));
+        return active_profile.interface === 'central' ? defineAsyncComponent(() => import('@/modules/home/CentralView.vue')) : defineAsyncComponent(() => import('@/modules/home/HelpdeskView.vue'));
     });
 </script>
 
