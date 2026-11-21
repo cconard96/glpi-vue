@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import FileUpload from "./FileUpload.vue";
     import Editor, { EditorProps } from "@cjdevstudios/bumblevue/editor";
-    import { FileUploadProps } from "@cjdevstudios/bumblevue";
+    import { FileUploadProps } from "@cjdevstudios/bumblevue/fileupload";
 
     withDefaults(defineProps<{
         enable_file_upload?: boolean;
