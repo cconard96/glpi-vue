@@ -9,6 +9,8 @@
         name: string;
         label?: string;
         helpText?: string;
+        /** Display a mandatory marker next to the label */
+        required?: boolean;
         as?: Component<{'$props': P}>;
         fieldProps?: P;
     }>();
@@ -20,11 +22,12 @@
 
 <template>
     <FormField :name="name" v-slot="$slot">
-        <FieldSelect v-if="props.as === FieldSelect" v-bind="{...fieldProps, label: label}" @change="$emit('change', $event.value)"></FieldSelect>
+        <FieldSelect v-if="props.as === FieldSelect" v-bind="{...fieldProps, label: required && label ? `${label} *` : label}" @change="$emit('change', $event.value)"></FieldSelect>
         <!-- TODO support FloatLabel for non-FieldSelect components similar to how FieldSelect handles it. Maybe move the logic out of FieldSelect if all forms use the AdvancedForm component and this instead of Form/FormField? -->
         <label v-else-if="as && label" :class="props.as === Checkbox ? 'items-start!' : ''">
             <span>
                 {{ label }}
+                <span v-if="required" class="text-red-500" aria-hidden="true">*</span>
                 <span v-if="helpText" v-tooltip="helpText">
                     <i class="ti ti-info-circle"></i>
                 </span>

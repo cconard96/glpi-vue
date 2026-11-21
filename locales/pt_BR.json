@@ -76,7 +76,10 @@
     "select_items_to_link": "Select items to link",
     "success": {
       "success": "Success"
-    }
+    },
+    "back": "Back",
+    "continue": "Continue",
+    "submit": "Submit"
   },
   "search": {
     "placeholder": "Search",
@@ -687,6 +690,17 @@
     },
     "approval_answer": {
       "label": "Approval Answer | Approval Answers"
+    },
+    "ticket_type": {
+      "incident": "Incident",
+      "request": "Request"
+    },
+    "urgency": {
+      "very_low": "Very low",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "very_high": "Very high"
     }
   },
   "tools": {
@@ -883,5 +897,52 @@
     "denied_mail_content": {
       "label": "Denied mail content | Denied mail contents"
     }
+  },
+  "form": {
+    "questions": {
+      "item": {
+        "unsupported_itemtype": "Items of type {itemtype} cannot be selected",
+        "category": {
+          "glpi_objects": "GLPI Objects"
+        }
+      }
+    },
+    "validation": {
+      "must": {
+        "greater_than": "The value must be greater than {value}",
+        "greater_than_or_equals": "The value must be greater than or equal to {value}",
+        "less_than": "The value must be less than {value}",
+        "less_than_or_equals": "The value must be less than or equal to {value}",
+        "match_regex": "The value must match the requested format",
+        "length_greater_than": "The length must be greater than {value}",
+        "length_greater_than_or_equals": "The length must be greater than or equal to {value}",
+        "length_less_than": "The length must be less than {value}",
+        "length_less_than_or_equals": "The length must be less than or equal to {value}"
+      },
+      "must_not": {
+        "match_regex": "The value must not match the requested format",
+        "greater_than": "The value must not be greater than {value}",
+        "greater_than_or_equals": "The value must not be greater than or equal to {value}",
+        "less_than": "The value must not be less than {value}",
+        "less_than_or_equals": "The value must not be less than or equal to {value}",
+        "length_greater_than": "The length must not be greater than {value}",
+        "length_greater_than_or_equals": "The length must not be greater than or equal to {value}",
+        "length_less_than": "The length must not be less than {value}",
+        "length_less_than_or_equals": "The length must not be less than or equal to {value}"
+      },
+      "invalid": "The value is not valid",
+      "valid_number": "Please enter a valid number",
+      "mandatory": "This field is mandatory",
+      "email": "Please enter a valid email"
+    },
+    "submit": {
+      "not_supported": {
+        "title": "Not available",
+        "detail": "Submitting forms is not supported yet."
+      },
+      "error": "An error occurred while submitting the form"
+    },
+    "step_progress": "Step {current} of {total}",
+    "not_found": "The requested form was not found or you do not have access to it."
   }
 }

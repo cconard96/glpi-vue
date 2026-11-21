@@ -6,9 +6,8 @@
     import InputText from '@cjdevstudios/bumblevue/inputtext';
     import { shallowRef, ref, useTemplateRef } from "vue";
     import { useDataHelper } from "@/common/useDataHelper";
-    import { useApi } from "@/common/api/useApi";
-    import { useDebounceFn } from "@vueuse/core";
     import { useI18n } from "vue-i18n";
+    import { ALLOWED_ACTOR_TYPES, getActorKey, useActorSearch, type ActorRole, type ActorType } from "@/common/actor/useActorSearch";
 
     const props = defineProps<{
         requesters: Array<components['schemas']['TeamMember']>
@@ -17,18 +16,13 @@
     }>();
 
     const { formatUsername } = useDataHelper();
-    const { doGraphQLRequest } = useApi();
     const { t: $t } = useI18n();
 
-    const selected_requesters = ref(props.requesters.map(member => `${member.type}-${member.id}`));
-    const selected_observers = ref(props.observers.map(member => `${member.type}-${member.id}`));
-    const selected_assigned = ref(props.assigned.map(member => `${member.type}-${member.id}`));
+    const selected_requesters = ref(props.requesters.map(member => getActorKey(member.type as ActorType, member.id)));
+    const selected_observers = ref(props.observers.map(member => getActorKey(member.type as ActorType, member.id)));
+    const selected_assigned = ref(props.assigned.map(member => getActorKey(member.type as ActorType, member.id)));
 
-    const allowed_actor_itemtypes = {
-        'requesters': ['User', 'Group'],
-        'observers': ['User', 'Group'],
-        'assigned': ['User', 'Group', 'Supplier']
-    }
+    const allowed_actor_itemtypes = ALLOWED_ACTOR_TYPES;
 
     const actor_type_labels = {
         'requesters': $t('assistance.fields.requester', 'Requesters'),
@@ -42,22 +36,6 @@
 
     // TODO actor options should account for the item's entity so it shows users that would actually be able to see the item. It may be better to have an endpoint/graphql query on the server to handle this cleaner
 
-    const rsql_filters = {
-        requesters: {
-            User: 'is_deleted==0;is_active==1',
-            Group: 'maybe_requester==1',
-        },
-        observers: {
-            User: 'is_deleted==0;is_active==1',
-            Group: 'maybe_observer==1',
-        },
-        assigned: {
-            User: 'is_deleted==0;is_active==1',
-            Group: 'maybe_assigned==1',
-            Supplier: 'is_deleted==0;is_active==1',
-        }
-    };
-
     /** User filter for requester name */
     const requester_filter = shallowRef('');
     /** User filter for observer name */
@@ -65,79 +43,29 @@
     /** User filter for assigned name */
     const assigned_filter = shallowRef('');
 
-    const requester_options = ref(props.requesters.map(member => ({key: `${member.type}-${member.id}`, member: member})));
-    const observer_options = ref(props.observers.map(member => ({key: `${member.type}-${member.id}`, member: member})));
-    const assigned_options = ref(props.assigned.map(member => ({key: `${member.type}-${member.id}`, member: member})));
+    const toOptions = (members: Array<components['schemas']['TeamMember']>) => members.map(member => ({
+        key: getActorKey(member.type as ActorType, member.id),
+        type: member.type as ActorType,
+        member: member as any,
+    }));
+    const requesterSearch = useActorSearch('requesters', toOptions(props.requesters));
+    const observerSearch = useActorSearch('observers', toOptions(props.observers));
+    const assignedSearch = useActorSearch('assigned', toOptions(props.assigned));
 
-    const isLoading = ref(false);
+    const requester_options = requesterSearch.options;
+    const observer_options = observerSearch.options;
+    const assigned_options = assignedSearch.options;
 
-    const updateActorOptions = useDebounceFn((role: 'requesters' | 'observers' | 'assigned') => {
-        if (isLoading.value) {
-            return;
+    function updateActorOptions(role: ActorRole) {
+        switch (role) {
+            case 'requesters':
+                return requesterSearch.search(requester_type_filter.value, requester_filter.value, selected_requesters.value);
+            case 'observers':
+                return observerSearch.search(observer_type_filter.value, observer_filter.value, selected_observers.value);
+            case 'assigned':
+                return assignedSearch.search(assigned_type_filter.value, assigned_filter.value, selected_assigned.value);
         }
-        isLoading.value = true;
-        const queries = [];
-        const actor_type_filter = role === 'requesters' ? requester_type_filter : role === 'observers' ? observer_type_filter : assigned_type_filter;
-
-        for (const type of actor_type_filter.value) {
-            const rsql_filter = rsql_filters[role][type];
-            const filter_value = role === 'requesters' ? requester_filter.value : role === 'observers' ? observer_filter.value : assigned_filter.value;
-            let type_filters = '';
-            switch (type) {
-                case 'User':
-                    type_filters = `;(username=ilike=*${filter_value}*,realname=ilike=*${filter_value}*,firstname=ilike=*${filter_value}*)`;
-                    break;
-                case 'Group':
-                    type_filters = `;(name=ilike=*${filter_value}*)`;
-                    break;
-                case 'Supplier':
-                    type_filters = `;(name=ilike=*${filter_value}*)`;
-                    break;
-            }
-            const search_filter = `${rsql_filter}${type_filters}`;
-            queries.push(
-                doGraphQLRequest(`
-                    query {
-                        ${type}(filter: "${search_filter}", limit: 100) {
-                            id ${type === 'User' ? 'username realname firstname' : 'name'}
-                        }
-                    }
-                `).then((res) => {
-                    if (!res.data[type]) {
-                        return [];
-                    }
-                    return res.data[type].map((member) => ({key: `${type}-${member.id}`, member: member}));
-                })
-            );
-        }
-
-        Promise.all(queries).then((results) => {
-            const options = results.flat();
-            const original_options = role === 'requesters' ? requester_options.value : role === 'observers' ? observer_options.value : assigned_options.value;
-            switch (role) {
-                case 'requesters':
-                    requester_options.value = options;
-                    break;
-                case 'observers':
-                    observer_options.value = options;
-                    break;
-                case 'assigned':
-                    assigned_options.value = options;
-                    break;
-            }
-            // re-add currently selected options that may have been filtered out by the search
-            const selected_options = role === 'requesters' ? selected_requesters.value : role === 'observers' ? selected_observers.value : selected_assigned.value;
-            for (const selected_key of selected_options) {
-                if (!options.some(option => option.key === selected_key)) {
-                    const original_option = original_options.find(option => option.key === selected_key);
-                    if (original_option) {
-                        options.push(original_option);
-                    }
-                }
-            }
-            isLoading.value = false;
-        });
-    }, 250, { maxWait: 500 });
+    }
 
     const requesterSearchEl = useTemplateRef('requester-search');
     const observerSearchEl = useTemplateRef('observer-search');

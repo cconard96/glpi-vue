@@ -1,24 +1,19 @@
 <script setup lang="ts">
     import FileUpload from "./FileUpload.vue";
-    import Editor from "@cjdevstudios/bumblevue/editor";
-    import { inject } from "vue";
+    import Editor, { EditorProps } from "@cjdevstudios/bumblevue/editor";
+    import { FileUploadProps } from "@cjdevstudios/bumblevue/fileupload";
 
-    defineProps({
-        enable_file_upload: {
-            type: Boolean,
-            default: false
-        },
-        editorProps: {
-            type: Object,
-            default: () => ({})
-        },
-        fileUploadProps: {
-            type: Object,
-            default: () => ({})
-        }
+    withDefaults(defineProps<{
+        enable_file_upload?: boolean;
+        editorProps?: EditorProps;
+        fileUploadProps?: FileUploadProps;
+    }>(), {
+        enable_file_upload: false,
+        editorProps: () => ({}),
+        fileUploadProps: () => ({})
     });
 
-    const model = defineModel();
+    const model = defineModel<string>();
 </script>
 
 <template>
