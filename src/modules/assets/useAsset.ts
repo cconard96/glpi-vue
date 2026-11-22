@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import type { ToastServiceMethods } from "@cjdevstudios/bumblevue";
 import { useI18n } from "vue-i18n";
 import { GLPIItem, GLPIItemType, getDefaultRightChecks } from "@/common/useBaseItem.ts";
+import { usePlugin } from "@/plugins/usePlugin.ts";
 
 export enum AssetCapabilities {
     HasType = 'hasType',
@@ -211,9 +212,15 @@ type AssetSchema<T extends AssetType> = GLPIItem<T>;
 const { getComponentSchema, doApiRequest, doGraphQLRequest, getCompleteFieldsRequestForSchema } = useApi();
 const router = useRouter();
 
-export function loadItem<T extends AssetType>(asset_type: T, id: number, fields: string[] = []): Promise<Ref<AssetSchema<T>>> {
+export async function loadItem<T extends AssetType>(asset_type: T, id: number, fields: string[] = []): Promise<Ref<AssetSchema<T>>> {
+    const tagPlugin = await usePlugin('tag');
     return getComponentSchema(asset_type).then(schema => {
-        const fields_to_query = fields.length > 0 ? fields.join(' ') : getCompleteFieldsRequestForSchema(schema.properties);
+        let fields_to_query = fields.length > 0 ? fields.join(' ') : getCompleteFieldsRequestForSchema(schema.properties);
+        if (tagPlugin.isAvailable) {
+            // remove the closing bracket from the fields_to_query string and add the tags field
+
+        }
+
         return doGraphQLRequest(`
             query {
                 ${asset_type}(id: ${id}) {

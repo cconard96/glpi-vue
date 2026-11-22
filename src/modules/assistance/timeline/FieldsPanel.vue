@@ -25,6 +25,8 @@
     import { useAssistanceItem } from "./useAssistanceItem.ts";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";
     import { useI18n } from "vue-i18n";
+    import { usePlugin } from "@/plugins/usePlugin.ts";
+    import PluginTagField from "@/plugins/tag/PluginTagField.vue";
 
     const props = defineProps<{
         itemtype: 'Ticket' | 'Change' | 'Problem',
@@ -41,6 +43,7 @@
         requesters, observers, assigned, globalApprovalIcon, globalApprovalLabel, current_new_item,
         updateItem,
     } = inject<ReturnType<typeof useAssistanceItem>>('assistanceItemInstance');
+    const tagPlugin = await usePlugin('tag');
 
     const form_resolver = async (data) => {
         // For now, just return the data as is.
@@ -305,6 +308,7 @@
                     <AccordionContent>
                         <Fluid>
                             <div class="flex flex-col space-y-4">
+                                <PluginTagField v-if="tagPlugin.isAvailable" :item="item"></PluginTagField>
                                 <FormField name="date">
                                     <FloatLabel variant="on">
                                         <DatePicker inputId="item_date" showTime showIcon />

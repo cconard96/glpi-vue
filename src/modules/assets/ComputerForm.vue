@@ -11,6 +11,7 @@
     import { type useAsset } from "@/modules/assets/useAsset.js";
     import AdvancedForm from "@/common/forms/AdvancedForm.vue";
     import ValidatedFormField from "@/common/forms/ValidatedFormField.vue";
+    import PluginTagField from "@/plugins/tag/PluginTagField.vue";
 
     const mainItem: ReturnType<typeof useAsset<'Computer'>> = inject('mainItem');
     const { formatUsername, formatDateTime } = useDataHelper();
@@ -29,6 +30,7 @@
     <section class="h-full overflow-y-auto">
         <AdvancedForm schemaName="Computer" :initialValues="initialValues" class="flex flex-col gap-4 w-full sm-w-56 px-4" @submit="onFormSubmit">
             <FormFields>
+                <PluginTagField :item="initialValues" class="col-span-2" />
                 <ValidatedFormField name="name" label="Name" :as="InputText" :fieldProps="{type: 'text'}"></ValidatedFormField>
                 <ValidatedFormField name="status" label="Status" :as="FieldSelect" :fieldProps="{type: 'State'}"></ValidatedFormField>
                 <ValidatedFormField name="location" label="Location" :as="FieldSelect" :fieldProps="{type: 'Location'}"></ValidatedFormField>
