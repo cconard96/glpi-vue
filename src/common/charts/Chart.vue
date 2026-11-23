@@ -8,7 +8,8 @@
     } from "chart.js";
     import Button from "@cjdevstudios/bumblevue/button";
     import { useChart } from "@/common/charts/useChart.ts";
-    import { useTemplateRef } from "vue";
+    import { toRef, useTemplateRef } from "vue";
+    import { useI18n } from "vue-i18n";
 
     const props = defineProps<{
         type: TType,
@@ -18,11 +19,38 @@
         showDownloadData?: boolean,
     }>();
 
-    const {chartOptions, chartData, saveAsImage, saveAsCSV} = useChart(useTemplateRef('chart'), props.type, props.options, props.data);
+    const { t: $t } = useI18n();
+
+    const noDataPlugin = {
+        id: 'noDataPlugin',
+        beforeDraw: (chart: any) => {
+            if (chart.data.datasets.length === 0 || chart.data.datasets.every((dataset: any) => dataset.data.length === 0)) {
+                const ctx = chart.ctx;
+                const width = chart.width;
+                const height = chart.height;
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = '16px sans-serif';
+                ctx.fillStyle = '#666';
+                ctx.fillText($t('dashboard.no_data_available', 'No data available'), width / 2, height / 2);
+                ctx.restore();
+            }
+        }
+    };
+
+    const {chartOptions, chartData, saveAsImage, saveAsCSV} = useChart(
+        useTemplateRef('chart'),
+        // Pass refs (not snapshots) so the chart updates when the parent's options/data change
+        toRef(() => props.type),
+        toRef(() => props.options),
+        toRef(() => props.data),
+        [noDataPlugin],
+    );
 </script>
 
 <template>
-    <div>
+    <div class="w-full h-full relative justify-items-center">
         <div class="w-full flex flex-row-reverse relative top-10">
             <Button v-if="showSaveAsImage" @click="saveAsImage" variant="text" severity="secondary" size="small"
                     :title="$t('charts.save_as_image', 'Save as image')" :aria-label="$t('charts.save_as_image', 'Save as image')">
