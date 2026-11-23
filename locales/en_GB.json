@@ -76,7 +76,15 @@
     "select_items_to_link": "Select items to link",
     "success": {
       "success": "Success"
-    }
+    },
+    "add": "Add",
+    "purge": "Delete permanently",
+    "restore": "Restore",
+    "content": "Content",
+    "name": "Name",
+    "color": "Color",
+    "loading": "Loading",
+    "retry": "Retry"
   },
   "search": {
     "placeholder": "Search",
@@ -883,5 +891,122 @@
     "denied_mail_content": {
       "label": "Denied mail content | Denied mail contents"
     }
+  },
+  "kanban": {
+    "add": {
+      "bulk_title": "Bulk add {type}",
+      "title": "Add {type}",
+      "bulk_list": "One item per line"
+    },
+    "card": {
+      "confirm_purge": "Are you sure you want to permanently delete \"{name}\"?",
+      "confirm_delete": "Are you sure you want to delete \"{name}\"?",
+      "goto": "Go to",
+      "move_to": "Move to",
+      "milestone": "Milestone",
+      "actions": "Item actions",
+      "subproject_of": "Subproject of {name}",
+      "subtask_of": "Subtask of {name}",
+      "tasks_complete": "{done} / {total} tasks complete",
+      "percent_done": "Percent done",
+      "planned_end_date": "Planned end date",
+      "more_team_members": "Show {count} more team members",
+      "deleted": "Deleted",
+      "status": "Status",
+      "open_full_form": "Open full form"
+    },
+    "team": {
+      "users": "Users",
+      "groups": "Groups",
+      "suppliers": "Suppliers",
+      "contacts": "Contacts",
+      "title": "Team",
+      "empty": "No team members",
+      "remove": "Remove {name} from the team",
+      "add": "Add team members",
+      "member_type": "Member type",
+      "search": "Search",
+      "member": "Member"
+    },
+    "column": {
+      "bulk_add": "Bulk add",
+      "hide": "Hide column",
+      "expand": "Expand column {name}",
+      "collapse": "Collapse column {name}",
+      "count": "{count} items",
+      "add": "Add item",
+      "more": "More actions",
+      "drop_only": "Drop items here",
+      "empty": "No items"
+    },
+    "columns": {
+      "search": "Search columns",
+      "list": "Columns",
+      "none": "No columns found",
+      "create": "Create status"
+    },
+    "filter": {
+      "label": "Filter items",
+      "placeholder": "Filter… (Ex: title:foo team:jane !type:ProjectTask)",
+      "help": "Filter help",
+      "exclusion": "Exclusion",
+      "regex": "Regular expression",
+      "help_text": "Type text to filter by title, or use the tags below. Values with spaces must be quoted.",
+      "help_exclusion": "Exclude items matching the filter",
+      "help_regex": "Match using a regular expression",
+      "invalid_regex": "The regular expression you entered is invalid. Please check it and try again.",
+      "title": "Filter items by their title",
+      "type": "Filter items by their type",
+      "milestone": "Filter items by their milestone status",
+      "content": "Filter items by their content",
+      "deleted": "Filter items by their deletion status",
+      "team": "Filter items by their team members",
+      "user": "Filter items by user team members",
+      "group": "Filter items by group team members",
+      "supplier": "Filter items by supplier team members",
+      "contact": "Filter items by contact team members"
+    },
+    "global": {
+      "name": "Global"
+    },
+    "toolbar": {
+      "reset_view": "Reset view",
+      "reset_view_confirm": "Reset the column visibility, order and card positions of this Kanban to the default?",
+      "reset": "Reset",
+      "board": "Kanban board",
+      "columns": "Columns",
+      "hidden_columns": "{count} hidden columns",
+      "refresh": "Refresh",
+      "other_actions": "Other actions"
+    },
+    "title": "Kanban: {name}",
+    "error": {
+      "loading": "An error occurred while loading the items in this Kanban.",
+      "refresh": "Failed to refresh the Kanban.",
+      "view_save_title": "Kanban view not saved",
+      "view_save": "Your changes to the Kanban view could not be saved.",
+      "move_card": "Failed to move the item. You may not have permission to update it.",
+      "add_item": "Failed to add the item.",
+      "delete_item": "Failed to delete the item.",
+      "restore_item": "Failed to restore the item.",
+      "add_team_member": "Failed to add one or more team members.",
+      "remove_team_member": "Failed to remove the team member.",
+      "create_column": "Failed to create the column."
+    },
+    "empty": "There are no columns added to this Kanban yet.",
+    "bulk_add": {
+      "title": "Bulk add",
+      "partial": "{added} of {total} items were added.",
+      "success": "{added} items were added."
+    },
+    "project": {
+      "kanban": "Kanban",
+      "nostatus": "No status",
+      "project": "Project",
+      "task": "Project task"
+    }
+  },
+  "error": {
+    "error": "Error"
   }
 }

@@ -29,9 +29,17 @@
                     <i class="ti ti-info-circle"></i>
                 </span>
             </span>
-             <component :is="as" v-bind="fieldProps" />
+             <component :is="as" v-bind="fieldProps">
+                 <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
+                     <slot :name="slotName" v-bind="slotProps ?? {}" />
+                 </template>
+             </component>
         </label>
-        <component v-else-if="as" :is="as" v-bind="fieldProps" />
+        <component v-else-if="as" :is="as" v-bind="fieldProps">
+            <template v-for="(_, slotName) in $slots" #[slotName]="slotProps">
+                <slot :name="slotName" v-bind="slotProps ?? {}" />
+            </template>
+        </component>
         <slot v-else></slot>
         <Message v-if="$slot.invalid" severity="error" size="small" variant="simple" v-text="$slot.error?.message"></Message>
     </FormField>

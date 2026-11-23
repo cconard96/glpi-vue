@@ -5,7 +5,7 @@
     import { components } from "../../../data/hlapiv2_schema";
     import { useI18n } from "vue-i18n";
 
-    interface ActorInfo {
+    export interface ActorInfo {
         id: number,
         name?: string,
         username?: string,
@@ -20,7 +20,7 @@
         picture?: string,
     }
     const props = defineProps<{
-        actor_type: 'User'|'Group'|'Supplier',
+        actor_type: 'User'|'Group'|'Supplier'|'Contact',
         actor_data: ActorInfo
     }>();
 

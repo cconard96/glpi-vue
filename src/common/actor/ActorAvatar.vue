@@ -1,27 +1,20 @@
 <script setup lang="ts">
     import Avatar from '@cjdevstudios/bumblevue/avatar';
     import Popover from '@cjdevstudios/bumblevue/popover';
-    import {computed, useTemplateRef} from "vue";
+    import {computed, shallowRef, useTemplateRef, watch} from "vue";
     import ActorInfoCard from "./ActorInfoCard.vue";
+    import { getUserPicture, releaseUserPicture } from "./useUserPicture";
+    import { type ActorInfo } from "./ActorInfoCard.vue";
 
-    interface ActorInfo {
-        id: number,
-        name?: string,
-        username?: string,
-        realname?: string,
-        firstname?: string,
-        title?: string,
-        category?: string,
-        phone?: string,
-        phone2?: string,
-        mobile?: string,
-        email?: string,
-        picture?: string,
-    }
-    const props = defineProps<{
-        actor_type: 'User'|'Group'|'Supplier',
-        actor_data: ActorInfo
-    }>();
+    const props = withDefaults(defineProps<{
+        actor_type: 'User'|'Group'|'Supplier'|'Contact',
+        actor_data: ActorInfo,
+        shape?: 'circle'|'square',
+        size?: 'normal'|'large'|'xlarge',
+    }>(), {
+        shape: 'square',
+        size: 'large',
+    });
 
     const actor_card_el = useTemplateRef('actor_card');
 
@@ -45,15 +38,30 @@
         }
         return firstInitial + lastInitial;
     });
+
+    const picture_url = shallowRef<string | null>(null);
+    watch(() => [props.actor_type, props.actor_data.id, props.actor_data.picture] as const, ([actor_type, id, picture], _, onCleanup) => {
+        picture_url.value = null;
+        if (actor_type !== 'User') {
+            return;
+        }
+        onCleanup(() => releaseUserPicture(id, picture));
+        getUserPicture(id, picture).then((url) => {
+            if (props.actor_type === actor_type && props.actor_data.id === id && props.actor_data.picture === picture) {
+                picture_url.value = url;
+            }
+        });
+    }, { immediate: true });
 </script>
 
 <template>
     <Avatar
         v-bind="$attrs" class="select-none"
-        :image="actor_data.picture ? (actor_data.picture.endsWith('picture.png') ? null : actor_data.picture) : null"
-        :label="(!actor_data.picture || actor_data.picture.endsWith('picture.png')) ? initials : null"
-        shape="square" size="large" @mouseover="actor_card_el?.show" @mouseleave="actor_card_el?.hide"
+        :image="picture_url ?? undefined"
+        :label="picture_url ? undefined : initials"
+        :shape="shape" :size="size" @mouseover="actor_card_el?.show" @mouseleave="actor_card_el?.hide"
         @touchstart.passive="actor_card_el?.show" @touchend.passive="actor_card_el?.hide"
+        :pt="{ image: { class: 'object-cover object-center aspect-square' } }"
     ></Avatar>
     <Popover ref="actor_card" :key="actor_type + '_' + actor_data.id">
         <ActorInfoCard :actor_type="actor_type" :actor_data="actor_data"></ActorInfoCard>
