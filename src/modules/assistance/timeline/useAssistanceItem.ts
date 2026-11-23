@@ -497,6 +497,10 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
         return doApiRequest(`Assistance/${itemtype}/${item.value.id}/Timeline`).then((res) => {
             return res.data;
         }).then((updated_items) => {
+            if (itemtype === 'Ticket' && !session.hasRight('ticketcost', BaseRights.READ)) {
+                timelineItems.value = updated_items;
+                return;
+            }
             // load costs as timeline items as they are not considered part of the timeline in GLPI
             return doApiRequest(`Assistance/${itemtype}/${item.value.id}/Cost`).then((res) => {
                 const costs = res.data.map(cost => {
@@ -526,6 +530,9 @@ export function useAssistanceItem<T extends AssistanceType>(itemtype: T, item: R
                     }
                 });
                 timelineItems.value = newTimelineItems;
+            }).catch(() => {
+                // User probably doesn't have rights to view costs (the client-side checks were not sufficient), so just return the timeline items without costs
+                timelineItems.value = updated_items;
             });
         });
     }
