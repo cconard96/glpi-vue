@@ -109,7 +109,7 @@ export const routes: RouteRecordRaw[] = [
             {
                 name: 'RenderedForm',
                 path: 'assistance/form/:form_id(\\d+)',
-                component: () => import('@/modules/assistance/forms/RenderedFormView.vue'),
+                component: () => import('@/modules/assistance/forms/viewer/FormViewer.vue'),
                 props: (route: RouteLocationNormalizedGeneric) => {
                     const form_id = parseInt(route.params.form_id as string);
                     return {

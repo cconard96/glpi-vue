@@ -1,12 +1,9 @@
 <script setup lang="ts">
     import { useApi } from "@/common/api/useApi.ts";
-    import { getIllustrationPath } from "@/common/util/illustrations.ts";
     import InputText from '@cjdevstudios/bumblevue/inputtext';
-    import { useToast } from '@cjdevstudios/bumblevue/usetoast';
     import HelpdeskTile from "@/modules/home/HelpdeskTile.vue";
 
     const { doGraphQLRequest } = useApi();
-    const toast = useToast();
 
     const service_catalog_info = await doGraphQLRequest(`
         query {

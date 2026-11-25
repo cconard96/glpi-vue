@@ -258,7 +258,13 @@ export const mswServer = setupWorker(...httpHandlers);
 
 export function startMockServer() {
     return mswServer.start({
-        onUnhandledRequest: 'error',
+        onUnhandledRequest(request, print) {
+            // Let the test server serve its own modules (needed for lazily imported components)
+            if (new URL(request.url).origin === location.origin) {
+                return;
+            }
+            print.error();
+        },
         quiet: true,
     });
 }
