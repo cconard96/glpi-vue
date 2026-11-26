@@ -3,6 +3,8 @@ import { useSessionStore} from "@/common/useSessionStore";
 import { useApi } from "@/common/api/useApi";
 import { usePreferencesStore } from "@/common/usePreferencesStore.ts";
 import { useIndexedDB } from "@/common/useIndexedDB.ts";
+import { clearUserPictureCache } from "@/common/actor/useUserPicture";
+import { clearActorCache } from "@/common/actor/useActorCache";
 
 interface StoredToken {
     access_token?: string,
@@ -335,6 +337,8 @@ export function useAuth() {
         clearPKCEState();
         const store = useSessionStore();
         store.clearSession();
+        clearUserPictureCache();
+        clearActorCache();
         await useIndexedDB().clearAllStores();
     };
 

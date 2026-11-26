@@ -84,6 +84,7 @@ export function useApi() {
             if (url.startsWith('/')) {
                 url = url.substring(1);
             }
+            const isGetRequest = (config.method ?? 'get').toLowerCase() === 'get';
             const axiosConfig: AxiosRequestConfig = {
                 ...config,
                 url: `${host}/api.php/${url}`,
@@ -93,18 +94,18 @@ export function useApi() {
                 }, config.headers || {})
             };
             const call_id = getRESTApiCallID(axiosConfig);
-            if (axiosConfig?.method ?? 'get' === 'get') {
+            if (isGetRequest) {
                 if (activeRESTRequestPromises.has(call_id)) {
                     return activeRESTRequestPromises.get(call_id);
                 }
             }
 
             const promise = axios.request(axiosConfig).finally(() => {
-                if (axiosConfig?.method ?? 'get' === 'get') {
+                if (isGetRequest) {
                     activeRESTRequestPromises.delete(call_id);
                 }
             });
-            if (axiosConfig?.method ?? 'get' === 'get') {
+            if (isGetRequest) {
                 activeRESTRequestPromises.set(call_id, promise);
             }
             return promise;
@@ -141,7 +142,10 @@ export function useApi() {
         }).then(normalized_name => {
             // ucfirst component_module
             component_module = component_module.charAt(0).toUpperCase() + component_module.slice(1).toLowerCase();
-            const url = `${component_module}/${normalized_name}`;
+            let url = `${component_module}/${normalized_name}`;
+            if (component_module === 'Tools' && normalized_name === 'Project') {
+                url = 'Project';
+            }
 
             const doSearch = (url, queryParams, is_retry = false): Promise<SearchResult> => {
                 return doApiRequest(url, {
